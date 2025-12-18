@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Apple, Mail, Lock, Eye, EyeOff, User, ArrowLeft, Users, Building2, ShoppingBag, Phone } from 'lucide-react';
 import { ThemeToggle } from '../components/ThemeToggle';
 
+type Page = 'home' | 'login' | 'register' | 'verification';
+
 interface RegisterPageProps {
-  onNavigate: (page: 'home' | 'login') => void;
+  onNavigate: (page: Page, email?: string) => void;
 }
 
 type UserType = 'general' | 'partner' | 'vendor' | null;
@@ -30,6 +32,8 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Register:', { userType, ...formData });
+    // Navigate to verification page with email
+    onNavigate('verification', formData.email);
   };
 
   return (
@@ -143,7 +147,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                     onClick={() => onNavigate('login')}
                     className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-semibold transition-colors"
                   >
-                    Sign In
+                    Login
                   </button>
                 </p>
               </div>
@@ -289,7 +293,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                   onClick={() => onNavigate('login')}
                   className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-semibold transition-colors"
                 >
-                  Sign In
+                  Login
                 </button>
               </p>
             </div>

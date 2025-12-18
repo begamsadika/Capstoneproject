@@ -4,16 +4,19 @@ import { ThemeToggle } from '../components/ThemeToggle';
 
 interface LoginPageProps {
   onNavigate: (page: 'home' | 'register') => void;
+  onLoginSuccess: (role: 'user' | 'vendor' | 'partner') => void;
 }
 
-export function LoginPage({ onNavigate }: LoginPageProps) {
+export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState<'user' | 'vendor' | 'partner'>('user'); // Default role
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login:', { email, password });
+    console.log('Login:', { email, password, role });
+    onLoginSuccess(role);
   };
 
   return (
@@ -101,6 +104,47 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
               </div>
             </div>
 
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                Select Role
+              </label>
+              <div className="flex space-x-4">
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    className="form-radio"
+                    name="role"
+                    value="user"
+                    checked={role === 'user'}
+                    onChange={() => setRole('user')}
+                  />
+                  <span className="ml-2 text-gray-700 dark:text-gray-300">User</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    className="form-radio"
+                    name="role"
+                    value="vendor"
+                    checked={role === 'vendor'}
+                    onChange={() => setRole('vendor')}
+                  />
+                  <span className="ml-2 text-gray-700 dark:text-gray-300">Vendor</span>
+                </label>
+                <label className="inline-flex items-center">
+                  <input
+                    type="radio"
+                    className="form-radio"
+                    name="role"
+                    value="partner"
+                    checked={role === 'partner'}
+                    onChange={() => setRole('partner')}
+                  />
+                  <span className="ml-2 text-gray-700 dark:text-gray-300">Partner</span>
+                </label>
+              </div>
+            </div>
+
             <div className="flex items-center justify-between text-sm">
               <label className="flex items-center space-x-2 cursor-pointer">
                 <input
@@ -121,7 +165,7 @@ export function LoginPage({ onNavigate }: LoginPageProps) {
               type="submit"
               className="w-full py-4 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
             >
-              Sign In
+              Continue
             </button>
           </form>
 
