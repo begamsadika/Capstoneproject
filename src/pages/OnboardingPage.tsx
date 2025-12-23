@@ -33,18 +33,17 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
 
     console.log(`Onboarding for ${role}:`);
     localStorage.setItem(`${role}-onboarding-complete`, 'true');
+    localStorage.setItem(`${role}-admin-approved`, 'false'); // Set pending approval for vendor and partner
 
     if (role === 'user') {
       console.log({ gender, height, weight, healthGoal, dietaryPreferences, allergies });
-      onNavigate('user-dashboard');
+      onNavigate('user-dashboard' as any);
     } else if (role === 'vendor') {
       console.log({ businessName, businessType, foodSafetyCertificate, serviceArea });
-      localStorage.setItem(`${role}-admin-approved`, 'false'); // Simulate pending approval
-      onNavigate('pending-approval');
+      onNavigate('pending-approval' as any);
     } else if (role === 'partner') {
       console.log({ organizationName, partnerType, registrationNumber, uploadLicense });
-      localStorage.setItem(`${role}-admin-approved`, 'false'); // Simulate pending approval
-      onNavigate('pending-approval');
+      onNavigate('pending-approval' as any);
     }
   };
 

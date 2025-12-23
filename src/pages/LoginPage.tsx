@@ -11,16 +11,12 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'user' | 'vendor' | 'partner' | null>(null); // Default role is null
+  const [role, setRole] = useState<'user' | 'vendor' | 'partner'>('user'); // Default role
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (role) {
-      console.log('Login:', { email, password, role });
-      onLoginSuccess(role);
-    } else {
-      alert('Please select a role first.');
-    }
+    console.log('Login:', { email, password, role });
+    onLoginSuccess(role);
   };
 
   return (
@@ -40,7 +36,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
       {/* Right section for the login form */}
       <div className="relative flex items-center justify-center p-6 w-full">
         {/* The existing background pattern is now applied only to the form wrapper */}
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDE2YzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptLTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTE2IDBjMC0yLjIxLTEuNzktNC00LTRsLTQgMS43OS00IDQgMS43OS00IDQgNCA0LTEuNzkgNC00em0tOCA4Yz Pedro-Mi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptLTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTE2IDBjMC0yLjIxLTEuNzktNC00LTRsLTQgMS43OS00IDQgMS43OS00IDQgNCA0LTEuNzkgNC00em0tMTYgOGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTggMGMwLTIuMjEtMS.309LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHoiLz48L2cPjwvZz48L3N2Zz4=')] opacity-40 dark:opacity-20 z-0"></div>
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDE2YzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptLTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTE2IDBjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OS00IDQgNCA0LTEuNzkgNC00em0tOCA4Yz Pedro-Mi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptLTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTE2IDBjMC0yLjIxLTEuNzktNC00LTRsLTQgMS43OS00IDQgMS43OS00IDQgNCA0LTEuNzkgNC00em0tMTYgOGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-40 dark:opacity-20 z-0"></div>
         
         {/* Existing absolute elements for back button and theme toggle */}
         <div className="absolute top-6 left-6 z-30">
@@ -133,7 +129,6 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                     placeholder="your@email.com"
                     className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
                     required
-                    disabled={role === null}
                   />
                 </div>
               </div>
@@ -151,13 +146,11 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                     placeholder="Enter your password"
                     className="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
                     required
-                    disabled={role === null}
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
-                    disabled={role === null}
                   >
                     {showPassword ? (
                       <EyeOff className="w-5 h-5" />
@@ -173,14 +166,12 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                   <input
                     type="checkbox"
                     className="w-4 h-4 rounded border-gray-300 text-green-500 focus:ring-green-500"
-                    disabled={role === null}
                   />
                   <span className="text-gray-600 dark:text-gray-400">Remember me</span>
                 </label>
                 <button
                   type="button"
                   className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium transition-colors"
-                  disabled={role === null}
                 >
                   Forgot password?
                 </button>
@@ -189,7 +180,6 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
               <button
                 type="submit"
                 className="w-full py-4 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
-                disabled={role === null}
               >
                 Continue
               </button>
@@ -201,7 +191,6 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                 <button
                   onClick={() => onNavigate('register')}
                   className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-semibold transition-colors"
-                  disabled={role === null}
                 >
                   Create Account
                 </button>

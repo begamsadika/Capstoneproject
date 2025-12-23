@@ -21,24 +21,12 @@ function App() {
   };
 
   const handleLoginSuccess = (role: 'user' | 'vendor' | 'partner') => {
-    // Simulate onboarding status. In a real app, this would come from an API.
-    const hasCompletedOnboarding = localStorage.getItem(`${role}-onboarding-complete`) === 'true';
-
-    if (!hasCompletedOnboarding) {
-      setCurrentPage(`onboarding-${role}` as Page);
-    } else {
-      if (role === 'user') {
-        setCurrentPage('user-dashboard');
-      } else {
-        // For vendor and partner, simulate admin approval status
-        const isAdminApproved = localStorage.getItem(`${role}-admin-approved`) === 'true';
-        if (isAdminApproved) {
-          setCurrentPage(`${role}-dashboard` as Page);
-        } else {
-          setCurrentPage('pending-approval');
-        }
-      }
-    }
+    // Reset onboarding for fresh login
+    localStorage.removeItem(`${role}-onboarding-complete`);
+    localStorage.removeItem(`${role}-admin-approved`);
+    
+    // Always go to onboarding page first
+    setCurrentPage(`onboarding-${role}` as Page);
   };
 
   return (
@@ -48,10 +36,10 @@ function App() {
         {currentPage === 'login' && <LoginPage onNavigate={setCurrentPage} onLoginSuccess={handleLoginSuccess} />}
         {currentPage === 'register' && <RegisterPage onNavigate={handleNavigate} />}
         {currentPage === 'verification' && <VerificationPage email={verificationEmail} onNavigate={setCurrentPage} />}
-        {currentPage === 'onboarding-user' && <OnboardingPage role="user" onNavigate={handleNavigate} />}
-        {currentPage === 'onboarding-vendor' && <OnboardingPage role="vendor" onNavigate={handleNavigate} />}
-        {currentPage === 'onboarding-partner' && <OnboardingPage role="partner" onNavigate={handleNavigate} />}
-        {currentPage === 'pending-approval' && <PendingApprovalPage onNavigate={handleNavigate} />}
+        {currentPage === 'onboarding-user' && <OnboardingPage role="user" onNavigate={setCurrentPage} />}
+        {currentPage === 'onboarding-vendor' && <OnboardingPage role="vendor" onNavigate={setCurrentPage} />}
+        {currentPage === 'onboarding-partner' && <OnboardingPage role="partner" onNavigate={setCurrentPage} />}
+        {currentPage === 'pending-approval' && <PendingApprovalPage onNavigate={setCurrentPage} />}
         {currentPage === 'user-dashboard' && <div>User Dashboard (Placeholder)</div>}
         {currentPage === 'vendor-dashboard' && <div>Vendor Dashboard (Placeholder)</div>}
         {currentPage === 'partner-dashboard' && <div>Partner Dashboard (Placeholder)</div>}
