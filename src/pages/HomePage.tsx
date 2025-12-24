@@ -44,7 +44,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
               </div>
             </div>
             <span className="text-3xl font-bold bg-gradient-to-r from-green-600 to-blue-600 dark:from-green-400 dark:to-blue-400 bg-clip-text text-transparent">
-              MealMind
+              Wellora
             </span>
           </div>
 
@@ -144,7 +144,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 Choose Your Role
               </h2>
               <p className="text-lg text-gray-600 dark:text-gray-400">
-                Join MealMind as a customer, partner, or vendor
+                Join Wellora as a customer, partner, or vendor
               </p>
             </div>
 
@@ -185,7 +185,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
                       Partner
                     </h3>
                     <p className="text-gray-600 dark:text-gray-300 mb-4 leading-relaxed">
-                      Collaborate with MealMind to expand your reach and grow your customer base.
+                      Collaborate with Wellora to expand your reach and grow your customer base.
                     </p>
                   </div>
                   <button
@@ -229,7 +229,7 @@ export function HomePage({ onNavigate }: HomePageProps) {
           <p className="flex items-center justify-center space-x-2">
             <span>Made with</span>
             <Apple className="w-4 h-4 text-green-500" />
-            <span>by MealMind</span>
+            <span>by Wellora</span>
           </p>
         </footer>
       </div>
