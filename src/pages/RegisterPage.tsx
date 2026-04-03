@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Apple, Mail, Lock, Eye, EyeOff, User, ArrowLeft, Users, Building2, ShoppingBag, Phone } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, User, ArrowLeft, Users, Building2, ShoppingBag, Phone } from 'lucide-react';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { WelloraLogoMark } from '../components/WelloraLogoMark';
 
 type Page = 'home' | 'login' | 'register' | 'verification';
 
@@ -37,9 +38,9 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
   };
 
   return (
-    <div className="h-screen grid grid-cols-1 lg:grid-cols-2 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
+    <div className="h-screen grid grid-cols-1 lg:grid-cols-2 bg-gradient-to-br from-wellora-light via-white to-wellora-soft dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
       {/* Left section for the image - visible on large screens */}
-      <div className="relative hidden lg:flex items-center justify-center p-6 bg-gradient-to-br from-green-300 to-blue-400 dark:from-gray-700 dark:to-gray-900">
+      <div className="relative hidden lg:flex items-center justify-center p-6 bg-gradient-to-br from-wellora/90 to-wellora-dark dark:from-gray-700 dark:to-gray-900">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-70"
           style={{ backgroundImage: 'url("https://via.placeholder.com/1200x800?text=Health+Image")' }} // Placeholder image
@@ -71,17 +72,12 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
         </div>
 
         <div className="w-full max-w-md relative z-10">
-          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-500 rounded-3xl blur-2xl opacity-20"></div>
+          <div className="absolute inset-0 bg-wellora/25 rounded-3xl blur-2xl opacity-40"></div>
 
           <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20 dark:border-gray-700/50">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center space-x-3 mb-4">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl blur-lg opacity-50"></div>
-                  <div className="relative bg-gradient-to-br from-green-400 to-blue-500 p-3 rounded-2xl">
-                    <Apple className="w-8 h-8 text-white" />
-                  </div>
-                </div>
+              <div className="inline-flex items-center justify-center mb-4">
+                <WelloraLogoMark size="xl" />
               </div>
               <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
                 Create Account
@@ -97,11 +93,11 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                   onClick={() => setUserType('general')}
                   className={`w-full p-6 rounded-2xl border-2 transition-all duration-300 flex items-center space-x-4 ${
                     userType === 'general'
-                      ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                      : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/30 hover:border-green-400'
+                      ? 'border-wellora bg-wellora-light dark:bg-wellora/10'
+                      : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/30 hover:border-wellora/40'
                   }`}
                 >
-                  <div className={`p-3 rounded-xl ${userType === 'general' ? 'bg-green-500' : 'bg-gray-400'}`}>
+                  <div className={`p-3 rounded-xl ${userType === 'general' ? 'bg-wellora' : 'bg-gray-400'}`}>
                     <Users className="w-6 h-6 text-white" />
                   </div>
                   <div className="text-left">
@@ -114,11 +110,11 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                   onClick={() => setUserType('partner')}
                   className={`w-full p-6 rounded-2xl border-2 transition-all duration-300 flex items-center space-x-4 ${
                     userType === 'partner'
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                      : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/30 hover:border-blue-400'
+                      ? 'border-wellora-dark bg-wellora-soft dark:bg-wellora/10'
+                      : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/30 hover:border-wellora/40'
                   }`}
                 >
-                  <div className={`p-3 rounded-xl ${userType === 'partner' ? 'bg-blue-500' : 'bg-gray-400'}`}>
+                  <div className={`p-3 rounded-xl ${userType === 'partner' ? 'bg-wellora-dark' : 'bg-gray-400'}`}>
                     <Building2 className="w-6 h-6 text-white" />
                   </div>
                   <div className="text-left">
@@ -131,11 +127,11 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                   onClick={() => setUserType('vendor')}
                   className={`w-full p-6 rounded-2xl border-2 transition-all duration-300 flex items-center space-x-4 ${
                     userType === 'vendor'
-                      ? 'border-purple-500 bg-purple-50 dark:bg-purple-900/20'
-                      : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/30 hover:border-purple-400'
+                      ? 'border-wellora bg-wellora-surface dark:bg-wellora/10'
+                      : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700/30 hover:border-wellora/40'
                   }`}
                 >
-                  <div className={`p-3 rounded-xl ${userType === 'vendor' ? 'bg-purple-500' : 'bg-gray-400'}`}>
+                  <div className={`p-3 rounded-xl ${userType === 'vendor' ? 'bg-wellora' : 'bg-gray-400'}`}>
                     <ShoppingBag className="w-6 h-6 text-white" />
                   </div>
                   <div className="text-left">
@@ -149,7 +145,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                   disabled={!userType}
                   className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 mt-6 ${
                     userType
-                      ? 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white shadow-lg hover:shadow-xl transform hover:scale-[1.02]'
+                      ? 'bg-wellora text-white hover:bg-wellora-hover shadow-lg hover:shadow-xl transform hover:scale-[1.02]'
                       : 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                   }`}
                 >
@@ -161,7 +157,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                     Already have an account?{' '}
                     <button
                       onClick={() => onNavigate('login')}
-                      className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-semibold transition-colors"
+                      className="text-wellora dark:text-wellora hover:text-wellora-dark font-semibold transition-colors"
                     >
                       Login
                     </button>
@@ -181,7 +177,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                     placeholder="John Doe"
-                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
+                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-wellora focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
                     required
                   />
                 </div>
@@ -198,7 +194,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     placeholder="+1 (555) 000-0000"
-                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
+                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-wellora focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
                     required
                   />
                 </div>
@@ -215,7 +211,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     placeholder="your@email.com"
-                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
+                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-wellora focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
                     required
                   />
                 </div>
@@ -232,7 +228,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                     placeholder="Create a password"
-                    className="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
+                    className="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-wellora focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
                     required
                   />
                   <button
@@ -260,7 +256,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                     value={formData.confirmPassword}
                     onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
                     placeholder="Confirm your password"
-                    className="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
+                    className="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-wellora focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
                     required
                   />
                   <button
@@ -280,16 +276,16 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
               <div className="flex items-start space-x-2 text-sm">
                 <input
                   type="checkbox"
-                  className="w-4 h-4 mt-0.5 rounded border-gray-300 text-green-500 focus:ring-green-500"
+                  className="w-4 h-4 mt-0.5 rounded border-gray-300 text-wellora focus:ring-wellora"
                   required
                 />
                 <label className="text-gray-600 dark:text-gray-400">
                   I agree to the{' '}
-                  <button type="button" className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium">
+                  <button type="button" className="text-wellora dark:text-wellora hover:text-wellora-dark font-medium">
                     Terms of Service
                   </button>{' '}
                   and{' '}
-                  <button type="button" className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium">
+                  <button type="button" className="text-wellora dark:text-wellora hover:text-wellora-dark font-medium">
                     Privacy Policy
                   </button>
                 </label>
@@ -297,7 +293,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
 
               <button
                 type="submit"
-                className="w-full py-4 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
+                className="w-full py-4 bg-wellora text-white hover:bg-wellora-hover rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
               >
                 Register
               </button>
@@ -307,7 +303,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                   Already have an account?{' '}
                   <button
                     onClick={() => onNavigate('login')}
-                    className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-semibold transition-colors"
+                    className="text-wellora dark:text-wellora hover:text-wellora-dark font-semibold transition-colors"
                   >
                     Login
                   </button>

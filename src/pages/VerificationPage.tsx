@@ -28,12 +28,12 @@ export function VerificationPage({ email = 'user@email.com', onNavigate }: Verif
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-blue-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-wellora-light to-wellora-soft flex items-center justify-center p-4">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8">
         {/* Success Icon */}
         <div className="flex justify-center mb-6">
-          <div className="bg-green-100 p-4 rounded-full">
-            <CheckCircle className="w-12 h-12 text-green-600" />
+          <div className="bg-wellora-soft p-4 rounded-full">
+            <CheckCircle className="w-12 h-12 text-wellora" />
           </div>
         </div>
 
@@ -54,8 +54,8 @@ export function VerificationPage({ email = 'user@email.com', onNavigate }: Verif
 
         {/* Verification Status */}
         {verificationSent && (
-          <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
-            <p className="text-sm text-green-800 font-medium">
+          <div className="bg-wellora-light border border-wellora/25 rounded-lg p-4 mb-6">
+            <p className="text-sm text-wellora-dark font-medium">
               ✓ Verification link sent successfully! Check your email.
             </p>
           </div>
@@ -69,8 +69,8 @@ export function VerificationPage({ email = 'user@email.com', onNavigate }: Verif
             verificationSent
               ? 'bg-gray-100 text-gray-500 cursor-not-allowed'
               : isResending
-              ? 'bg-blue-400 text-white'
-              : 'bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white'
+              ? 'bg-wellora/80 text-white'
+              : 'bg-wellora text-white hover:bg-wellora-hover'
           }`}
         >
           {isResending && <RotateCw className="w-5 h-5 animate-spin" />}
@@ -81,7 +81,7 @@ export function VerificationPage({ email = 'user@email.com', onNavigate }: Verif
         {verificationSent && (
           <button
             onClick={handleResend}
-            className="w-full py-2 text-blue-600 font-medium hover:text-blue-700 transition-colors"
+            className="w-full py-2 text-wellora font-medium hover:text-wellora-dark transition-colors"
           >
             Resend verification link
           </button>

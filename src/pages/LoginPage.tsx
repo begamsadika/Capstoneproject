@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { Apple, Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { WelloraLogoMark } from '../components/WelloraLogoMark';
 
 interface LoginPageProps {
   onNavigate: (page: 'home' | 'register') => void;
@@ -20,9 +21,9 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
   };
 
   return (
-    <div className="h-screen grid grid-cols-1 lg:grid-cols-2 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
+    <div className="h-screen grid grid-cols-1 lg:grid-cols-2 bg-gradient-to-br from-wellora-light via-white to-wellora-soft dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
       {/* Left section for the image - visible on large screens */}
-      <div className="relative hidden lg:flex items-center justify-center p-6 bg-gradient-to-br from-green-300 to-blue-400 dark:from-gray-700 dark:to-gray-900">
+      <div className="relative hidden lg:flex items-center justify-center p-6 bg-gradient-to-br from-wellora/90 to-wellora-dark dark:from-gray-700 dark:to-gray-900">
         <div
           className="absolute inset-0 bg-cover bg-center opacity-70"
           style={{ backgroundImage: 'url("https://via.placeholder.com/1200x800?text=Health+Image")' }} // Placeholder image
@@ -54,17 +55,12 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
         </div>
 
         <div className="w-full max-w-md relative z-10">
-          <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-500 rounded-3xl blur-2xl opacity-20"></div>
+          <div className="absolute inset-0 bg-wellora/25 rounded-3xl blur-2xl opacity-40"></div>
 
           <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20 dark:border-gray-700/50">
             <div className="text-center mb-8">
-              <div className="inline-flex items-center justify-center space-x-3 mb-4">
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-green-400 to-blue-500 rounded-2xl blur-lg opacity-50"></div>
-                  <div className="relative bg-gradient-to-br from-green-400 to-blue-500 p-3 rounded-2xl">
-                    <Apple className="w-8 h-8 text-white" />
-                  </div>
-                </div>
+              <div className="inline-flex items-center justify-center mb-4">
+                <WelloraLogoMark size="xl" />
               </div>
               <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">
                 Welcome Back
@@ -127,7 +123,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="your@email.com"
-                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
+                    className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-wellora focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
                     required
                   />
                 </div>
@@ -144,7 +140,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="Enter your password"
-                    className="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
+                    className="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-wellora focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
                     required
                   />
                   <button
@@ -165,13 +161,13 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                 <label className="flex items-center space-x-2 cursor-pointer">
                   <input
                     type="checkbox"
-                    className="w-4 h-4 rounded border-gray-300 text-green-500 focus:ring-green-500"
+                    className="w-4 h-4 rounded border-gray-300 text-wellora focus:ring-wellora"
                   />
                   <span className="text-gray-600 dark:text-gray-400">Remember me</span>
                 </label>
                 <button
                   type="button"
-                  className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium transition-colors"
+                  className="text-wellora dark:text-wellora hover:text-wellora-dark dark:hover:text-wellora font-medium transition-colors"
                 >
                   Forgot password?
                 </button>
@@ -179,7 +175,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
 
               <button
                 type="submit"
-                className="w-full py-4 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
+                className="w-full py-4 bg-wellora text-white hover:bg-wellora-hover rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
               >
                 Continue
               </button>
@@ -190,7 +186,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                 Don't have an account?{' '}
                 <button
                   onClick={() => onNavigate('register')}
-                  className="text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-semibold transition-colors"
+                  className="text-wellora dark:text-wellora hover:text-wellora-dark font-semibold transition-colors"
                 >
                   Create Account
                 </button>
