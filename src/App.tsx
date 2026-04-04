@@ -11,6 +11,7 @@ import { MenuOrderPage } from './pages/MenuOrderPage';
 import { MealRecommendationsPage } from './pages/MealRecommendationsPage';
 import { WellnessPage } from './pages/WellnessPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { VendorDashboardPage } from './pages/VendorDashboardPage';
 import type { AppPage } from './types/page';
 
 type Page = AppPage;
@@ -81,9 +82,14 @@ function App() {
       return;
     }
 
-    const approved = getAdminApproved(role);
+    if (role === 'vendor') {
+      persistNavigation('vendor-dashboard', role);
+      return;
+    }
+
+    const approved = getAdminApproved('partner');
     if (approved) {
-      persistNavigation(role === 'vendor' ? 'vendor-dashboard' : 'partner-dashboard', role);
+      persistNavigation('partner-dashboard', role);
     } else {
       persistNavigation('pending-approval', role);
     }
@@ -105,7 +111,7 @@ function App() {
         {currentPage === 'user-meal-recommendations' && <MealRecommendationsPage onNavigate={setCurrentPage} />}
         {currentPage === 'user-wellness' && <WellnessPage onNavigate={setCurrentPage} />}
         {currentPage === 'user-settings' && <SettingsPage onNavigate={setCurrentPage} />}
-        {currentPage === 'vendor-dashboard' && <div>Vendor Dashboard (Placeholder)</div>}
+        {currentPage === 'vendor-dashboard' && <VendorDashboardPage onNavigate={setCurrentPage} />}
         {currentPage === 'partner-dashboard' && <div>Partner Dashboard (Placeholder)</div>}
       </div>
     </ThemeProvider>

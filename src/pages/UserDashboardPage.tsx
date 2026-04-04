@@ -1,4 +1,4 @@
-import { Bell, Flame, Clock3, Upload, CheckCircle2, Home, Star, ShoppingCart, Settings, Heart, Info } from 'lucide-react';
+import { Bell, Flame, Clock3, Upload, CheckCircle2, Home, Star, ShoppingCart, Settings, Flower2, Info } from 'lucide-react';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { WelloraLogoMark } from '../components/WelloraLogoMark';
 import type { AppPage } from '../types/page';
@@ -103,7 +103,7 @@ export function UserDashboardPage({ onNavigate }: UserDashboardPageProps) {
                   onClick={() => onNavigate('user-wellness')}
                   className="flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left text-sm font-medium text-slate-700 transition hover:border-slate-300 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900"
                 >
-                  <Heart className="w-4 h-4" />
+                  <Flower2 className="w-4 h-4" />
                   Wellness
                 </button>
                 <button
