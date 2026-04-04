@@ -4,7 +4,7 @@ import {
   Heart,
   Home,
   LayoutGrid,
-  LogOut,
+  Settings,
   Minus,
   Plus,
   ShoppingCart,
@@ -208,6 +208,7 @@ export function MenuOrderPage({ onNavigate }: MenuOrderPageProps) {
             </button>
             <button
               type="button"
+              onClick={() => onNavigate('user-wellness')}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
             >
               <Leaf className="h-4 w-4 shrink-0" />
@@ -216,11 +217,11 @@ export function MenuOrderPage({ onNavigate }: MenuOrderPageProps) {
           </nav>
           <button
             type="button"
-            onClick={() => onNavigate('login')}
+            onClick={() => onNavigate('user-settings')}
             className="mt-8 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
           >
-            <LogOut className="h-4 w-4 shrink-0" />
-            Log Out
+            <Settings className="h-4 w-4 shrink-0" />
+            Settings
           </button>
         </aside>
 

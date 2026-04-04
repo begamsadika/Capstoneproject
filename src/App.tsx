@@ -9,6 +9,8 @@ import { PendingApprovalPage } from './pages/PendingApprovalPage';
 import { UserDashboardPage } from './pages/UserDashboardPage';
 import { MenuOrderPage } from './pages/MenuOrderPage';
 import { MealRecommendationsPage } from './pages/MealRecommendationsPage';
+import { WellnessPage } from './pages/WellnessPage';
+import { SettingsPage } from './pages/SettingsPage';
 import type { AppPage } from './types/page';
 
 type Page = AppPage;
@@ -27,6 +29,8 @@ const validPages: Page[] = [
   'user-dashboard',
   'user-menu-order',
   'user-meal-recommendations',
+  'user-wellness',
+  'user-settings',
   'vendor-dashboard',
   'partner-dashboard',
 ];
@@ -99,6 +103,8 @@ function App() {
         {currentPage === 'user-dashboard' && <UserDashboardPage onNavigate={setCurrentPage} />}
         {currentPage === 'user-menu-order' && <MenuOrderPage onNavigate={setCurrentPage} />}
         {currentPage === 'user-meal-recommendations' && <MealRecommendationsPage onNavigate={setCurrentPage} />}
+        {currentPage === 'user-wellness' && <WellnessPage onNavigate={setCurrentPage} />}
+        {currentPage === 'user-settings' && <SettingsPage onNavigate={setCurrentPage} />}
         {currentPage === 'vendor-dashboard' && <div>Vendor Dashboard (Placeholder)</div>}
         {currentPage === 'partner-dashboard' && <div>Partner Dashboard (Placeholder)</div>}
       </div>

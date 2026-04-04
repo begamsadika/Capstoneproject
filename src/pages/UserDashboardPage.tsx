@@ -1,4 +1,4 @@
-import { Bell, Flame, Clock3, Upload, CheckCircle2, Home, Star, ShoppingCart, LogOut, Heart, Info } from 'lucide-react';
+import { Bell, Flame, Clock3, Upload, CheckCircle2, Home, Star, ShoppingCart, Settings, Heart, Info } from 'lucide-react';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { WelloraLogoMark } from '../components/WelloraLogoMark';
 import type { AppPage } from '../types/page';
@@ -98,17 +98,21 @@ export function UserDashboardPage({ onNavigate }: UserDashboardPageProps) {
                   <ShoppingCart className="w-4 h-4" />
                   Menu & Order
                 </button>
-                <button className="flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left text-sm font-medium text-slate-700 transition hover:border-slate-300 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900">
+                <button
+                  type="button"
+                  onClick={() => onNavigate('user-wellness')}
+                  className="flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left text-sm font-medium text-slate-700 transition hover:border-slate-300 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900"
+                >
                   <Heart className="w-4 h-4" />
                   Wellness
                 </button>
                 <button
                   type="button"
-                  onClick={() => onNavigate('login')}
+                  onClick={() => onNavigate('user-settings')}
                   className="flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left text-sm font-medium text-slate-700 transition hover:border-slate-300 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900"
                 >
-                  <LogOut className="w-4 h-4" />
-                  Log Out
+                  <Settings className="w-4 h-4" />
+                  Settings
                 </button>
               </nav>
             </div>

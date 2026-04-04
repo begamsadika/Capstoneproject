@@ -10,5 +10,7 @@ export type AppPage =
   | 'user-dashboard'
   | 'user-menu-order'
   | 'user-meal-recommendations'
+  | 'user-wellness'
+  | 'user-settings'
   | 'vendor-dashboard'
   | 'partner-dashboard';
