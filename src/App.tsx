@@ -12,6 +12,7 @@ import { MealRecommendationsPage } from './pages/MealRecommendationsPage';
 import { WellnessPage } from './pages/WellnessPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { VendorDashboardPage } from './pages/VendorDashboardPage';
+import { PartnerDashboardPage } from './pages/PartnerDashboardPage';
 import type { AppPage } from './types/page';
 
 type Page = AppPage;
@@ -65,10 +66,6 @@ function App() {
     return localStorage.getItem(`${role}-onboarding-complete`) === 'true';
   };
 
-  const getAdminApproved = (role: 'vendor' | 'partner') => {
-    return localStorage.getItem(`${role}-admin-approved`) === 'true';
-  };
-
   const handleLoginSuccess = (role: Role) => {
     const completed = getOnboardingComplete(role);
 
@@ -87,12 +84,7 @@ function App() {
       return;
     }
 
-    const approved = getAdminApproved('partner');
-    if (approved) {
-      persistNavigation('partner-dashboard', role);
-    } else {
-      persistNavigation('pending-approval', role);
-    }
+    persistNavigation('partner-dashboard', role);
   };
 
   return (
@@ -112,7 +104,7 @@ function App() {
         {currentPage === 'user-wellness' && <WellnessPage onNavigate={setCurrentPage} />}
         {currentPage === 'user-settings' && <SettingsPage onNavigate={setCurrentPage} />}
         {currentPage === 'vendor-dashboard' && <VendorDashboardPage onNavigate={setCurrentPage} />}
-        {currentPage === 'partner-dashboard' && <div>Partner Dashboard (Placeholder)</div>}
+        {currentPage === 'partner-dashboard' && <PartnerDashboardPage onNavigate={setCurrentPage} />}
       </div>
     </ThemeProvider>
   );

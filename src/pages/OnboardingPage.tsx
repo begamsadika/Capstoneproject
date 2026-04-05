@@ -56,7 +56,7 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
       onNavigate('pending-approval' as any);
     } else if (role === 'partner') {
       console.log({ organizationName, partnerType, registrationNumber, uploadLicense });
-      onNavigate('pending-approval' as any);
+      onNavigate('partner-dashboard' as any);
     }
   };
 
