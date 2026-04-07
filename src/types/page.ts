@@ -6,6 +6,7 @@ export type AppPage =
   | 'onboarding-user'
   | 'onboarding-vendor'
   | 'onboarding-partner'
+  | 'pending'
   | 'pending-approval'
   | 'user-dashboard'
   | 'user-menu-order'

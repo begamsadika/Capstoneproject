@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { submitVendorOnboarding } from '../api/vendor';
 
 type Page =
   | 'home'
@@ -10,6 +11,7 @@ type Page =
   | 'onboarding-user'
   | 'onboarding-vendor'
   | 'onboarding-partner'
+  | 'pending'
   | 'pending-approval'
   | 'user-dashboard'
   | 'vendor-dashboard'
@@ -41,10 +43,12 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
   const [registrationNumber, setRegistrationNumber] = useState('');
   const [uploadLicense, setUploadLicense] = useState<File | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-    console.log(`Onboarding for ${role}:`);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
     localStorage.setItem(`${role}-onboarding-complete`, 'true');
     localStorage.setItem(`${role}-admin-approved`, 'false'); // Set pending approval for vendor and partner
 
@@ -53,11 +57,19 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
       onNavigate('user-dashboard' as any);
     } else if (role === 'vendor') {
       console.log({ businessName, businessType, foodSafetyCertificate, serviceArea });
-      onNavigate('pending-approval' as any);
+      await submitVendorOnboarding({
+        businessName,
+        businessType,
+        serviceArea,
+        certificateName: foodSafetyCertificate?.name ?? 'certificate.pdf',
+      });
+      onNavigate('pending');
     } else if (role === 'partner') {
       console.log({ organizationName, partnerType, registrationNumber, uploadLicense });
       onNavigate('pending-approval' as any);
     }
+
+    setIsSubmitting(false);
   };
 
   return (
@@ -277,9 +289,10 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
 
             <button
               type="submit"
-              className="w-full py-3 bg-wellora text-white hover:bg-wellora-hover rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
+              disabled={isSubmitting}
+              className="w-full py-3 bg-wellora text-white hover:bg-wellora-hover rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              {role === 'user' ? 'Finish & Go to Dashboard' : 'Submit for Approval'}
+              {isSubmitting ? 'Submitting…' : role === 'user' ? 'Finish & Go to Dashboard' : 'Submit for Approval'}
             </button>
           </form>
         </div>

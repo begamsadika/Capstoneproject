@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { WelloraLogoMark } from '../components/WelloraLogoMark';
+import { loginVendor, VendorStatus } from '../api/vendor';
 
 interface LoginPageProps {
   onNavigate: (page: 'home' | 'register') => void;
-  onLoginSuccess: (role: 'user' | 'vendor' | 'partner') => void;
+  onLoginSuccess: (role: 'user' | 'vendor' | 'partner', status?: VendorStatus) => void;
 }
 
 export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
@@ -14,10 +15,21 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
   const [password, setPassword] = useState('');
   const [role, setRole] = useState<'user' | 'vendor' | 'partner'>('user'); // Default role
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login:', { email, password, role });
-    onLoginSuccess(role);
+    setIsLoggingIn(true);
+    try {
+      if (role === 'vendor') {
+        const user = await loginVendor(email, password);
+        onLoginSuccess(role, user.status);
+      } else {
+        onLoginSuccess(role);
+      }
+    } finally {
+      setIsLoggingIn(false);
+    }
   };
 
   return (
@@ -175,9 +187,10 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
 
               <button
                 type="submit"
-                className="w-full py-4 bg-wellora text-white hover:bg-wellora-hover rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300"
+                disabled={isLoggingIn}
+                className="w-full py-4 bg-wellora text-white hover:bg-wellora-hover rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-70"
               >
-                Continue
+                {isLoggingIn ? 'Signing in...' : 'Continue'}
               </button>
             </form>
 

@@ -6,13 +6,16 @@ import { RegisterPage } from './pages/RegisterPage';
 import { VerificationPage } from './pages/VerificationPage';
 import { OnboardingPage } from './pages/OnboardingPage';
 import { PendingApprovalPage } from './pages/PendingApprovalPage';
+import { PendingPage } from './pages/PendingPage';
 import { UserDashboardPage } from './pages/UserDashboardPage';
 import { MenuOrderPage } from './pages/MenuOrderPage';
 import { MealRecommendationsPage } from './pages/MealRecommendationsPage';
 import { WellnessPage } from './pages/WellnessPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { VendorDashboardPage } from './pages/VendorDashboardPage';
+import { getVendorStatus } from './api/vendor';
 import type { AppPage } from './types/page';
+import type { VendorStatus } from './api/vendor';
 
 type Page = AppPage;
 
@@ -26,6 +29,7 @@ const validPages: Page[] = [
   'onboarding-user',
   'onboarding-vendor',
   'onboarding-partner',
+  'pending',
   'pending-approval',
   'user-dashboard',
   'user-menu-order',
@@ -69,7 +73,31 @@ function App() {
     return localStorage.getItem(`${role}-admin-approved`) === 'true';
   };
 
-  const handleLoginSuccess = (role: Role) => {
+  const persistVendorStatus = (status: VendorStatus) => {
+    localStorage.setItem('vendor-status', status);
+  };
+
+  const handleLoginSuccess = async (role: Role, status?: VendorStatus) => {
+    if (role === 'vendor') {
+      const currentStatus = status ?? (await getVendorStatus());
+      persistVendorStatus(currentStatus);
+
+      if (currentStatus === 'NEW') {
+        persistNavigation('onboarding-vendor', role);
+        return;
+      }
+
+      if (currentStatus === 'PENDING') {
+        persistNavigation('pending', role);
+        return;
+      }
+
+      if (currentStatus === 'APPROVED') {
+        persistNavigation('vendor-dashboard', role);
+        return;
+      }
+    }
+
     const completed = getOnboardingComplete(role);
 
     if (!completed) {
@@ -79,11 +107,6 @@ function App() {
 
     if (role === 'user') {
       persistNavigation('user-dashboard', role);
-      return;
-    }
-
-    if (role === 'vendor') {
-      persistNavigation('vendor-dashboard', role);
       return;
     }
 
@@ -105,6 +128,7 @@ function App() {
         {currentPage === 'onboarding-user' && <OnboardingPage role="user" onNavigate={handleNavigate} />}
         {currentPage === 'onboarding-vendor' && <OnboardingPage role="vendor" onNavigate={handleNavigate} />}
         {currentPage === 'onboarding-partner' && <OnboardingPage role="partner" onNavigate={handleNavigate} />}
+        {currentPage === 'pending' && <PendingPage onNavigate={setCurrentPage} />}
         {currentPage === 'pending-approval' && <PendingApprovalPage onNavigate={handleNavigate} />}
         {currentPage === 'user-dashboard' && <UserDashboardPage onNavigate={setCurrentPage} />}
         {currentPage === 'user-menu-order' && <MenuOrderPage onNavigate={setCurrentPage} />}
