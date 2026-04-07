@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   BarChart3,
   Bell,
@@ -174,6 +174,8 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
   const [dietary, setDietary] = useState<DietaryFilter>('All Dietary Types');
   const [page, setPage] = useState(1);
   const pageSize = 5;
+  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement | null>(null);
 
   const [mealFormOpen, setMealFormOpen] = useState(false);
   const [editingMealId, setEditingMealId] = useState<string | null>(null);
@@ -283,6 +285,17 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
     setMeals((prev) => prev.filter((m) => m.id !== id));
   };
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+        setProfileMenuOpen(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const pageSafe = Math.min(page, totalPages);
   const slice = filtered.slice((pageSafe - 1) * pageSize, pageSafe * pageSize);
 
@@ -378,11 +391,37 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
             >
               <Bell className="h-5 w-5" />
             </button>
-            <img
-              src={PROFILE_IMG}
-              alt=""
-              className="h-9 w-9 rounded-full object-cover ring-2 ring-slate-200 dark:ring-slate-700"
-            />
+            <div className="relative" ref={profileMenuRef}>
+              <button
+                type="button"
+                onClick={() => setProfileMenuOpen((open) => !open)}
+                aria-haspopup="menu"
+                aria-expanded={profileMenuOpen}
+                className="rounded-full ring-2 ring-slate-200 transition hover:bg-slate-100 dark:ring-slate-700 dark:hover:bg-slate-800"
+              >
+                <img
+                  src={PROFILE_IMG}
+                  alt="Profile"
+                  className="h-9 w-9 rounded-full object-cover"
+                />
+              </button>
+
+              {profileMenuOpen && (
+                <div className="absolute right-0 z-10 mt-2 w-40 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setProfileMenuOpen(false);
+                      onNavigate('login');
+                    }}
+                    className="flex w-full items-center gap-3 px-4 py-3 text-left text-sm text-slate-700 transition hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
+                  >
+                    <LogOut className="h-4 w-4 shrink-0 text-red-600" />
+                    Log Out
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 

@@ -1,12 +1,12 @@
-import { useState } from "react";
-import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
-import { ThemeToggle } from "../components/ThemeToggle";
-import { WelloraLogoMark } from "../components/WelloraLogoMark";
-import { loginUser } from "../api/auth";
+import { useState } from 'react';
+import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
+import { ThemeToggle } from '../components/ThemeToggle';
+import { WelloraLogoMark } from '../components/WelloraLogoMark';
+import { loginVendor, VendorStatus } from '../api/vendor';
 
 interface LoginPageProps {
-  onNavigate: (page: "home" | "register") => void;
-  onLoginSuccess: (role: "user" | "vendor" | "partner") => void;
+  onNavigate: (page: 'home' | 'register') => void;
+  onLoginSuccess: (role: 'user' | 'vendor' | 'partner', status?: VendorStatus) => void;
 }
 
 export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
@@ -17,36 +17,20 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError("");
-    setIsLoading(true);
-
+    setIsLoggingIn(true);
     try {
-      const data = await loginUser({ email, password });
-
-      // Check if selected role matches actual role in database
-      const actualRole = data.user.user_type;
-      const selectedRole = role === "user" ? "general" : role;
-
-      if (actualRole !== selectedRole) {
-        setError(
-          `This account is registered as a "${actualRole}". Please select the correct role.`,
-        );
-        setIsLoading(false);
-        return;
+      if (role === 'vendor') {
+        const user = await loginVendor(email, password);
+        onLoginSuccess(role, user.status);
+      } else {
+        onLoginSuccess(role);
       }
-
-      // Save token and user info
-      localStorage.setItem("wellora_token", data.access_token);
-      localStorage.setItem("wellora_user", JSON.stringify(data.user));
-
-      // Navigate based on user_type from database
-      onLoginSuccess(data.user.user_type as "user" | "vendor" | "partner");
-    } catch (err: any) {
-      setError(err.response?.data?.detail || "Invalid email or password.");
     } finally {
-      setIsLoading(false);
+      setIsLoggingIn(false);
     }
   };
 
@@ -228,10 +212,10 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
 
               <button
                 type="submit"
-                disabled={isLoading}
-                className="w-full py-4 bg-wellora text-white hover:bg-wellora-hover rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isLoggingIn}
+                className="w-full py-4 bg-wellora text-white hover:bg-wellora-hover rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-70"
               >
-                {isLoading ? "Signing In..." : "Continue"}
+                {isLoggingIn ? 'Signing in...' : 'Continue'}
               </button>
             </form>
 
