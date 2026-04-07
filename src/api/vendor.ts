@@ -30,24 +30,24 @@ export async function loginVendor(email: string, password: string): Promise<Vend
   }
 }
 
-export async function submitVendorOnboarding(data: {
-  businessName: string;
-  businessType: string;
-  serviceArea: string;
-  certificateName: string;
-}): Promise<VendorUser> {
+export async function submitVendorOnboarding(data: FormData): Promise<VendorUser> {
   try {
     const result = await safeFetch<{ status: VendorStatus }>('/api/vendor/onboarding', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: data,
     });
+
     const status = result.status ?? 'PENDING';
     localStorage.setItem(VENDOR_STATUS_KEY, status);
+
     return { status };
-  } catch {
+
+  } catch (error) {
+    console.error("Vendor onboarding submission failed:", error);
+
     const status: VendorStatus = 'PENDING';
     localStorage.setItem(VENDOR_STATUS_KEY, status);
+
     return { status };
   }
 }

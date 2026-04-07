@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, DateTime
 from datetime import datetime
+from sqlalchemy.orm import relationship
 from ..database import Base
 
 
@@ -13,3 +14,6 @@ class User(Base):
     phone = Column(String(20))
     user_type = Column(String(20), default="general")  # general/partner/vendor
     created_at = Column(DateTime, default=datetime.utcnow)
+
+    # One-to-many: user can have many vendors
+    vendors = relationship("Vendor", back_populates="user")

@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.database import engine, Base
 from app.routes.auth import router as auth_router
+from app.routes.vender import router as vendor_router 
+from app.models import user,vender 
 
 # Create all tables in database automatically
 Base.metadata.create_all(bind=engine)
@@ -10,7 +12,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Wellora API",
     description="Backend API for Wellora Health App",
-    version="1.0.0"
+    version="1.0.0",
 )
 
 # Allow React frontend to talk to backend
@@ -23,6 +25,9 @@ app.add_middleware(
 
 # Register routes
 app.include_router(auth_router)
+# Vender routes
+app.include_router(vendor_router)
+
 
 @app.get("/")
 def root():

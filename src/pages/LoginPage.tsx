@@ -1,12 +1,16 @@
-import { useState } from 'react';
-import { Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
-import { ThemeToggle } from '../components/ThemeToggle';
-import { WelloraLogoMark } from '../components/WelloraLogoMark';
-import { loginVendor, VendorStatus } from '../api/vendor';
+import { useState } from "react";
+import { Mail, Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
+import { ThemeToggle } from "../components/ThemeToggle";
+import { WelloraLogoMark } from "../components/WelloraLogoMark";
+import { loginVendor, VendorStatus } from "../api/vendor";
+import { loginUser } from "../api/auth";
 
 interface LoginPageProps {
-  onNavigate: (page: 'home' | 'register') => void;
-  onLoginSuccess: (role: 'user' | 'vendor' | 'partner', status?: VendorStatus) => void;
+  onNavigate: (page: "home" | "register") => void;
+  onLoginSuccess: (
+    role: "user" | "vendor" | "partner",
+    status?: VendorStatus,
+  ) => void;
 }
 
 export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
@@ -21,16 +25,32 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoggingIn(true);
+    e.stopPropagation(); // ← prevents form reset
+    setError("");
+    setIsLoading(true);
+
     try {
-      if (role === 'vendor') {
-        const user = await loginVendor(email, password);
-        onLoginSuccess(role, user.status);
-      } else {
-        onLoginSuccess(role);
+      const data = await loginUser({ email, password });
+
+      const actualRole = data.user.user_type;
+      const selectedRole = role === "user" ? "general" : role;
+
+      if (actualRole !== selectedRole) {
+        setError(
+          `This account is registered as "${actualRole}". Please select the correct role.`,
+        );
+        return;
       }
+
+      localStorage.setItem("wellora_token", data.access_token);
+      localStorage.setItem("wellora_user", JSON.stringify(data.user));
+
+      onLoginSuccess(data.user.user_type as "user" | "vendor" | "partner");
+    } catch (err: any) {
+      setError(err.response?.data?.detail || "Invalid email or password.");
+      // ← NO state reset here, inputs keep their values
     } finally {
-      setIsLoggingIn(false);
+      setIsLoading(false);
     }
   };
 
@@ -215,7 +235,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                 disabled={isLoggingIn}
                 className="w-full py-4 bg-wellora text-white hover:bg-wellora-hover rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 disabled:cursor-not-allowed disabled:opacity-70"
               >
-                {isLoggingIn ? 'Signing in...' : 'Continue'}
+                {isLoggingIn ? "Signing in..." : "Continue"}
               </button>
             </form>
 
