@@ -1,21 +1,25 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from app.database import engine, Base
-from app.routes.auth import router as auth_router
-from app.routes.vender import router as vendor_router 
-from app.models import user,vender 
+import os
 
-# Create all tables in database automatically
+# ⚠️ Import ALL models before create_all
+from app.models.user import User
+from app.models.vendor_profile import VendorProfile
+from app.models.vendor_approval import VendorApproval
+
+from app.routes.auth import router as auth_router
+from app.routes.vender import router as vendor_router
+
 Base.metadata.create_all(bind=engine)
 
-# Create FastAPI app
 app = FastAPI(
     title="Wellora API",
     description="Backend API for Wellora Health App",
-    version="1.0.0",
+    version="1.0.0"
 )
 
-# Allow React frontend to talk to backend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["http://localhost:5173", "http://localhost:3000"],
@@ -23,11 +27,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register routes
-app.include_router(auth_router)
-# Vender routes
-app.include_router(vendor_router)
+os.makedirs("uploads/certificates", exist_ok=True)
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
+app.include_router(auth_router)
+app.include_router(vendor_router)
 
 @app.get("/")
 def root():

@@ -13,7 +13,6 @@ import { MealRecommendationsPage } from "./pages/MealRecommendationsPage";
 import { WellnessPage } from "./pages/WellnessPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { VendorDashboardPage } from "./pages/VendorDashboardPage";
-import { getVendorStatus } from "./api/vendor";
 import type { AppPage } from "./types/page";
 import type { VendorStatus } from "./api/vendor";
 
@@ -78,47 +77,51 @@ function App() {
     localStorage.setItem("vendor-status", status);
   };
 
-  const handleLoginSuccess = async (role: Role, status?: VendorStatus) => {
+  const handleLoginSuccess = (role: Role, status?: VendorStatus) => {
     if (role === "vendor") {
-      const currentStatus = status ?? (await getVendorStatus());
+      const currentStatus = (status ?? "NEW").toUpperCase() as VendorStatus;
       persistVendorStatus(currentStatus);
 
       if (currentStatus === "NEW") {
         persistNavigation("onboarding-vendor", role);
         return;
       }
-
       if (currentStatus === "PENDING") {
         persistNavigation("pending", role);
         return;
       }
-
       if (currentStatus === "APPROVED") {
         persistNavigation("vendor-dashboard", role);
         return;
       }
-    }
-
-    const completed = getOnboardingComplete(role);
-
-    if (!completed) {
-      persistNavigation(`onboarding-${role}` as Page, role);
+      persistNavigation("onboarding-vendor", role);
       return;
     }
 
     if (role === "user") {
+      const completed = getOnboardingComplete("user");
+      if (!completed) {
+        persistNavigation("onboarding-user", role);
+        return;
+      }
       persistNavigation("user-dashboard", role);
       return;
     }
 
-    const approved = getAdminApproved("partner");
-    if (approved) {
-      persistNavigation("partner-dashboard", role);
-    } else {
-      persistNavigation("pending-approval", role);
+    if (role === "partner") {
+      const completed = getOnboardingComplete("partner");
+      if (!completed) {
+        persistNavigation("onboarding-partner", role);
+        return;
+      }
+      const approved = getAdminApproved("partner");
+      if (approved) {
+        persistNavigation("partner-dashboard", role);
+      } else {
+        persistNavigation("pending-approval", role);
+      }
     }
   };
-
   return (
     <ThemeProvider>
       <div className="transition-colors duration-500">

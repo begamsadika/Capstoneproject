@@ -68,6 +68,15 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
           dietaryPreferences,
           allergies,
         });
+
+        const formData = new FormData();
+        formData.append("gender", gender);
+        formData.append("height", height);
+        formData.append("weight", weight);
+        formData.append("healthGoal", healthGoal);
+        formData.append("dietaryPreferences", dietaryPreferences);
+        formData.append("allergies", allergies);
+        
         onNavigate("user-dashboard" as any);
       } else if (role === "vendor") {
         console.log({

@@ -1,64 +1,29 @@
-export type VendorStatus = 'NEW' | 'PENDING' | 'APPROVED';
+import api from './client';
 
-export interface VendorUser {
-  status: VendorStatus;
-}
+export type VendorStatus = 'NEW' | 'PENDING' | 'APPROVED' | 'REJECTED';
 
-const VENDOR_STATUS_KEY = 'vendor-status';
+export const getVendorStatus = async (): Promise<VendorStatus> => {
+  const token = localStorage.getItem('wellora_token');
+  if (!token) return 'NEW';
 
-async function safeFetch<T>(url: string, options?: RequestInit): Promise<T> {
-  const response = await fetch(url, options);
-  if (!response.ok) {
-    throw new Error(`API request failed with status ${response.status}`);
-  }
-  return response.json();
-}
+  const response = await api.get('/api/vendor/status', {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  return response.data.status as VendorStatus;
+};
 
-export async function loginVendor(email: string, password: string): Promise<VendorUser> {
-  try {
-    const result = await safeFetch<{ status: VendorStatus }>('/api/vendor/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
-    });
-    const status = result.status ?? 'NEW';
-    localStorage.setItem(VENDOR_STATUS_KEY, status);
-    return { status };
-  } catch {
-    const persisted = localStorage.getItem(VENDOR_STATUS_KEY) as VendorStatus | null;
-    return { status: persisted ?? 'NEW' };
-  }
-}
+export const submitVendorOnboarding = async (formData: FormData) => {
+  const token = localStorage.getItem('wellora_token');
+  const response = await api.post('/api/vendor/onboarding', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': `Bearer ${token}`
+    }
+  });
+  return response.data;
+};
 
-export async function submitVendorOnboarding(data: FormData): Promise<VendorUser> {
-  try {
-    const result = await safeFetch<{ status: VendorStatus }>('/api/vendor/onboarding', {
-      method: 'POST',
-      body: data,
-    });
-
-    const status = result.status ?? 'PENDING';
-    localStorage.setItem(VENDOR_STATUS_KEY, status);
-
-    return { status };
-
-  } catch (error) {
-    console.error("Vendor onboarding submission failed:", error);
-
-    const status: VendorStatus = 'PENDING';
-    localStorage.setItem(VENDOR_STATUS_KEY, status);
-
-    return { status };
-  }
-}
-
-export async function getVendorStatus(): Promise<VendorStatus> {
-  try {
-    const result = await safeFetch<{ status: VendorStatus }>('/api/vendor/status');
-    const status = result.status ?? 'NEW';
-    localStorage.setItem(VENDOR_STATUS_KEY, status);
-    return status;
-  } catch {
-    return (localStorage.getItem(VENDOR_STATUS_KEY) as VendorStatus) ?? 'NEW';
-  }
-}
+export const getVendorProfile = async () => {
+  const response = await api.get('/api/vendor/profile');
+  return response.data;
+};
