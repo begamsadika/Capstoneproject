@@ -4,8 +4,8 @@ from datetime import datetime
 from ..database import Base
 
 
-class GeneralUserProfile(Base):
-    __tablename__ = "Wellora_GeneralUserProfiles"
+class UserProfile(Base):
+    __tablename__ = "Wellora_UserProfiles"
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(
