@@ -16,4 +16,4 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # One-to-many: user can have many vendors
-    user_profile = relationship("UserProfile", back_populates="user")
+    # user_profile = relationship("UserProfile", back_populates="user")

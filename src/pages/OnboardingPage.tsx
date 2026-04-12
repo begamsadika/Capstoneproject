@@ -79,6 +79,7 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
         formData.append("allergies", allergies || "");
 
         await submitUserOnboarding(formData);
+        localStorage.setItem("user-onboarding-complete", "true");
         onNavigate("user-dashboard" as any);
       } else if (role === "vendor") {
         console.log({
