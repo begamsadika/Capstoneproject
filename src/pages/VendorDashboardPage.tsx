@@ -54,6 +54,8 @@ interface MealFormState {
   dietary: FormDietary;
   price: string;
   available: boolean;
+  description?: string;
+  image_url?: string;
 }
 
 interface VendorStats {
@@ -143,6 +145,8 @@ function emptyMealForm(): MealFormState {
     dietary: "Vegetarian",
     price: "",
     available: true,
+    description: "",
+    image_url: "",
   };
 }
 
@@ -245,6 +249,8 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
         : "Vegetarian",
       price: String(row.price),
       available: row.available,
+      description: (row as any).description ?? "",
+      image_url: (row as any).image_url ?? "",
     });
     setMealNameError(false);
     setCaloriesError(false);
@@ -284,6 +290,8 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
         dietary: mealForm.dietary,
         price: Math.round(priceNum * 100) / 100,
         available: mealForm.available,
+        description: mealForm.description || null,
+        image_url: mealForm.image_url || null,
       };
 
       if (editingMealId) {
@@ -1027,6 +1035,40 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                       Meal name is required.
                     </p>
                   )}
+                </div>
+                {/* Description */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Description (Optional)
+                  </label>
+                  <textarea
+                    placeholder="Brief description of the meal..."
+                    value={mealForm.description ?? ""}
+                    onChange={(e) =>
+                      setMealForm((f) => ({
+                        ...f,
+                        description: e.target.value,
+                      }))
+                    }
+                    rows={2}
+                    className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:border-wellora focus:ring-wellora/20 dark:border-slate-600 dark:bg-slate-950 dark:text-white"
+                  />
+                </div>
+
+                {/* Image URL */}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Image URL (Optional)
+                  </label>
+                  <input
+                    type="url"
+                    placeholder="https://..."
+                    value={mealForm.image_url ?? ""}
+                    onChange={(e) =>
+                      setMealForm((f) => ({ ...f, image_url: e.target.value }))
+                    }
+                    className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:border-wellora focus:ring-wellora/20 dark:border-slate-600 dark:bg-slate-950 dark:text-white"
+                  />
                 </div>
                 {/* Category */}
                 <div>

@@ -4,8 +4,21 @@ from ..database import get_db
 from ..models.user_profile import UserProfile
 from ..models.user import User
 from ..core.auth import get_current_user
+from pydantic import BaseModel
+from typing import Optional
 
 router = APIRouter(prefix="/api/users", tags=["Users"])
+
+
+class UpdateProfileRequest(BaseModel):
+    name: Optional[str] = None
+    phone: Optional[str] = None
+    gender: Optional[str] = None
+    height: Optional[float] = None
+    weight: Optional[float] = None
+    health_goal: Optional[str] = None
+    dietary_preferences: Optional[str] = None
+    allergies: Optional[str] = None
 
 
 # ─── HELPER: calculate BMI ────────────────────────
@@ -144,3 +157,41 @@ def get_me(
         "email": current_user.email,
         "user_type": current_user.user_type,
     }
+
+
+# ─── UPDATE USER PROFILE ──────────────────────────
+@router.put("/profile")
+def update_user_profile(
+    data: UpdateProfileRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    # Update user name/phone
+    if data.name:
+        current_user.name = data.name
+    if data.phone:
+        current_user.phone = data.phone
+    db.commit()
+
+    # Update health profile
+    profile = (
+        db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+    )
+
+    if profile:
+        if data.gender is not None:
+            profile.gender = data.gender
+        if data.height is not None:
+            profile.height = data.height
+        if data.weight is not None:
+            profile.weight = data.weight
+        if data.health_goal is not None:
+            profile.health_goal = data.health_goal
+        if data.dietary_preferences is not None:
+            profile.dietary_preferences = data.dietary_preferences
+        if data.allergies is not None:
+            profile.allergies = data.allergies
+        db.commit()
+        db.refresh(profile)
+
+    return {"message": "Profile updated successfully!"}

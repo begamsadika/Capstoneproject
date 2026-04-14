@@ -1,18 +1,18 @@
 import api from './client';
 
 export interface UserProfile {
-  name:                string;
-  email:               string;
-  onboarding_done:     boolean;
-  gender?:             string;
-  height?:             number;
-  weight?:             number;
-  bmi?:                number;
-  bmi_category?:       string;
-  calorie_goal:        number;
-  health_goal?:        string;
+  name: string;
+  email: string;
+  onboarding_done: boolean;
+  gender?: string;
+  height?: number;
+  weight?: number;
+  bmi?: number;
+  bmi_category?: string;
+  calorie_goal: number;
+  health_goal?: string;
   dietary_preferences?: string;
-  allergies?:          string;
+  allergies?: string;
 }
 
 // Submit user onboarding
@@ -32,5 +32,21 @@ export const getUserProfile = async (): Promise<UserProfile> => {
 // Get current user
 export const getMe = async () => {
   const response = await api.get('/api/users/me');
+  return response.data;
+};
+
+export interface UpdateProfileData {
+  name?: string;
+  phone?: string;
+  gender?: string;
+  height?: number;
+  weight?: number;
+  health_goal?: string;
+  dietary_preferences?: string;
+  allergies?: string;
+}
+
+export const updateUserProfile = async (data: UpdateProfileData) => {
+  const response = await api.put('/api/users/profile', data);
   return response.data;
 };

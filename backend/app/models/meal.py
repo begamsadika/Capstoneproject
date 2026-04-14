@@ -14,4 +14,6 @@ class Meal(Base):
     dietary = Column(String(50))  # Vegetarian/Vegan/etc
     price = Column(Float)
     available = Column(Boolean, default=True)
+    description = Column(String(500), nullable=True)
+    image_url = Column(String(300), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
