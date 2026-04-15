@@ -1,3 +1,4 @@
+# Logs
 logs
 *.log
 npm-debug.log*
@@ -6,18 +7,34 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Node
 node_modules
+frontend/node_modules
+.vite
+frontend/.vite
+
+# Build
 dist
 dist-ssr
 *.local
 
+# IDE
 .vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
+
+# Windows
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Env
 .env
+
+# Python
+__pycache__/
+backend/__pycache__/
+*.pyc
