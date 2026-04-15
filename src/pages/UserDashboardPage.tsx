@@ -355,7 +355,7 @@ export function UserDashboardPage({ onNavigate }: UserDashboardPageProps) {
                 ))}
               </div>
             </section>
-          </main>
+          </main> 
         </div>
       </div>
     </div>
