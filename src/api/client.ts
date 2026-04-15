@@ -16,17 +16,24 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-// Auto logout if token expires
+// // Auto logout if token expires
+// api.interceptors.response.use(
+//     (response) => response,
+//     (error) => {
+//         if (error.response?.status === 401) {
+//             localStorage.removeItem('wellora_token');
+//             localStorage.removeItem('wellora_user');
+//             window.location.href = '/';
+//         }
+//         return Promise.reject(error);
+//     }
+// );
+
+// Don't auto redirect — just reject the error
 api.interceptors.response.use(
     (response) => response,
-    (error) => {
-        if (error.response?.status === 401) {
-            localStorage.removeItem('wellora_token');
-            localStorage.removeItem('wellora_user');
-            window.location.href = '/';
-        }
-        return Promise.reject(error);
-    }
+    (error) => Promise.reject(error)
 );
+
 
 export default api;

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ArrowLeft } from "lucide-react";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { submitVendorOnboarding } from "../api/vendor";
+import { submitUserOnboarding } from "../api/user";
 
 type Page =
   | "home"
@@ -74,9 +75,11 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
         formData.append("height", height);
         formData.append("weight", weight);
         formData.append("healthGoal", healthGoal);
-        formData.append("dietaryPreferences", dietaryPreferences);
-        formData.append("allergies", allergies);
-        
+        formData.append("dietaryPreferences", dietaryPreferences || "");
+        formData.append("allergies", allergies || "");
+
+        await submitUserOnboarding(formData);
+        localStorage.setItem("user-onboarding-complete", "true");
         onNavigate("user-dashboard" as any);
       } else if (role === "vendor") {
         console.log({

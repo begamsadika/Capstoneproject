@@ -1,4 +1,5 @@
-import { useRef, useState } from 'react';
+import { useEffect, useState, useRef } from "react";
+import { getUserProfile, updateUserProfile, UserProfile } from "../api/user";
 import {
   Bell,
   CheckCircle2,
@@ -9,29 +10,42 @@ import {
   ShoppingCart,
   Star,
   Upload,
-} from 'lucide-react';
-import type { AppPage } from '../types/page';
-import { WelloraLogoMark } from '../components/WelloraLogoMark';
+} from "lucide-react";
+import type { AppPage } from "../types/page";
+import { WelloraLogoMark } from "../components/WelloraLogoMark";
 
 interface SettingsPageProps {
   onNavigate: (page: AppPage) => void;
 }
 
 const PROFILE_IMG =
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80';
+  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&h=200&q=80";
 
-type SettingsTab = 'profile' | 'health' | 'partner' | 'logout';
+type SettingsTab = "profile" | "health" | "partner" | "logout";
 
 export function SettingsPage({ onNavigate }: SettingsPageProps) {
-  const [tab, setTab] = useState<SettingsTab>('profile');
+  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveMsg, setSaveMsg] = useState("");
+  const [tab, setTab] = useState<SettingsTab>("profile");
   const [isEditing, setIsEditing] = useState(false);
-  const [fullName, setFullName] = useState('Jane Doe');
-  const [email, setEmail] = useState('jane.doe@example.com');
-  const [mobile, setMobile] = useState('+1 (555) 123-4567');
-  const [dob, setDob] = useState('1990-07-15');
-  const [gender, setGender] = useState<'male' | 'female' | 'other'>('female');
-
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [mobile, setMobile] = useState("");
+  const [dob, setDob] = useState("");
+  const [gender, setGender] = useState<"male" | "female" | "other">("female");
   const photoInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    getUserProfile().then((data) => {
+      if (data) {
+        setProfile(data);
+        setFullName(data.name ?? "");
+        setEmail(data.email ?? "");
+        setGender((data.gender as any) ?? "female");
+      }
+    });
+  }, []);
 
   return (
     <div className="min-h-dvh bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100 lg:flex lg:h-dvh lg:flex-col lg:overflow-hidden">
@@ -40,12 +54,14 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
         <aside className="shrink-0 border-b border-slate-200 bg-white px-4 py-6 dark:border-slate-800 dark:bg-slate-900 lg:flex lg:h-full lg:w-64 lg:min-h-0 lg:flex-col lg:overflow-y-auto lg:border-b-0 lg:border-r">
           <div className="mb-6 flex items-center gap-2 px-2">
             <WelloraLogoMark size="md" />
-            <span className="text-lg font-semibold tracking-tight text-wellora">Wellora</span>
+            <span className="text-lg font-semibold tracking-tight text-wellora">
+              Wellora
+            </span>
           </div>
           <nav className="space-y-1">
             <button
               type="button"
-              onClick={() => onNavigate('user-dashboard')}
+              onClick={() => onNavigate("user-dashboard")}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
             >
               <Home className="h-4 w-4 shrink-0" />
@@ -53,7 +69,7 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
             </button>
             <button
               type="button"
-              onClick={() => onNavigate('user-meal-recommendations')}
+              onClick={() => onNavigate("user-meal-recommendations")}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
             >
               <Star className="h-4 w-4 shrink-0" />
@@ -61,7 +77,7 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
             </button>
             <button
               type="button"
-              onClick={() => onNavigate('user-menu-order')}
+              onClick={() => onNavigate("user-menu-order")}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
             >
               <ShoppingCart className="h-4 w-4 shrink-0" />
@@ -69,7 +85,7 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
             </button>
             <button
               type="button"
-              onClick={() => onNavigate('user-wellness')}
+              onClick={() => onNavigate("user-wellness")}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
             >
               <Flower2 className="h-4 w-4 shrink-0" />
@@ -109,15 +125,17 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
           </header>
 
           <main className="min-h-0 flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
-            <h1 className="text-xl font-bold text-slate-900 dark:text-white sm:text-2xl">Profile Settings</h1>
+            <h1 className="text-xl font-bold text-slate-900 dark:text-white sm:text-2xl">
+              Profile Settings
+            </h1>
 
             <div className="mt-6 flex flex-wrap gap-1 border-b border-slate-200 dark:border-slate-700">
               {(
                 [
-                  { id: 'profile' as const, label: 'Profile Info' },
-                  { id: 'health' as const, label: 'Health Profile' },
-                  { id: 'partner' as const, label: 'Linked Partner' },
-                  { id: 'logout' as const, label: 'Log Out' },
+                  { id: "profile" as const, label: "Profile Info" },
+                  { id: "health" as const, label: "Health Profile" },
+                  { id: "partner" as const, label: "Linked Partner" },
+                  { id: "logout" as const, label: "Log Out" },
                 ] as const
               ).map(({ id, label }) => (
                 <button
@@ -126,8 +144,8 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                   onClick={() => setTab(id)}
                   className={`relative px-4 py-3 text-sm font-semibold transition sm:text-base ${
                     tab === id
-                      ? 'text-wellora after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-wellora'
-                      : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
+                      ? "text-wellora after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-wellora"
+                      : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
                   }`}
                 >
                   {label}
@@ -136,7 +154,7 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
             </div>
 
             <div className="mt-6">
-              {tab === 'profile' && (
+              {tab === "profile" && (
                 <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-8">
                   <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
                     <img
@@ -165,7 +183,9 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
 
                   <div className="mt-8 grid gap-5 sm:grid-cols-2">
                     <label className="block">
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Full Name</span>
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Full Name
+                      </span>
                       <input
                         type="text"
                         value={fullName}
@@ -175,7 +195,9 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                       />
                     </label>
                     <label className="block">
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Email</span>
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Email
+                      </span>
                       <input
                         type="email"
                         value={email}
@@ -185,7 +207,9 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                       />
                     </label>
                     <label className="block">
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Mobile Number</span>
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Mobile Number
+                      </span>
                       <input
                         type="tel"
                         value={mobile}
@@ -195,7 +219,9 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                       />
                     </label>
                     <label className="block">
-                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Date of Birth</span>
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Date of Birth
+                      </span>
                       <input
                         type="date"
                         value={dob}
@@ -207,10 +233,15 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                   </div>
 
                   <fieldset className="mt-8">
-                    <legend className="text-sm font-medium text-slate-700 dark:text-slate-300">Gender</legend>
+                    <legend className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                      Gender
+                    </legend>
                     <div className="mt-3 flex flex-wrap gap-6">
-                      {(['male', 'female', 'other'] as const).map((g) => (
-                        <label key={g} className="flex cursor-pointer items-center gap-2 text-sm text-slate-700 dark:text-slate-300">
+                      {(["male", "female", "other"] as const).map((g) => (
+                        <label
+                          key={g}
+                          className="flex cursor-pointer items-center gap-2 text-sm text-slate-700 dark:text-slate-300"
+                        >
                           <input
                             type="radio"
                             name="gender"
@@ -219,49 +250,80 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                             disabled={!isEditing}
                             className="h-4 w-4 accent-wellora disabled:opacity-60"
                           />
-                          {g === 'male' ? 'Male' : g === 'female' ? 'Female' : 'Other'}
+                          {g === "male"
+                            ? "Male"
+                            : g === "female"
+                              ? "Female"
+                              : "Other"}
                         </label>
                       ))}
                     </div>
                   </fieldset>
 
                   <div className="mt-8 flex justify-end">
+                    {saveMsg && (
+                      <p className="text-sm text-wellora font-medium">
+                        {saveMsg}
+                      </p>
+                    )}
                     <button
                       type="button"
-                      onClick={() => {
-                        if (isEditing) setIsEditing(false);
-                        else setIsEditing(true);
+                      onClick={async () => {
+                        if (isEditing) {
+                          setIsSaving(true);
+                          try {
+                            await updateUserProfile({ name: fullName, gender });
+                            setSaveMsg("Profile saved!");
+                            setTimeout(() => setSaveMsg(""), 3000);
+                          } catch {
+                            setSaveMsg("Failed to save.");
+                          } finally {
+                            setIsSaving(false);
+                            setIsEditing(false);
+                          }
+                        } else {
+                          setIsEditing(true);
+                        }
                       }}
                       className="rounded-xl bg-wellora px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-wellora-hover"
                     >
-                      {isEditing ? 'Save' : 'Edit'}
+                      {isEditing ? "Save" : "Edit"}
                     </button>
                   </div>
                 </div>
               )}
 
-              {tab === 'health' && (
+              {tab === "health" && (
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-8">
-                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Health Profile</h2>
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                    Health Profile
+                  </h2>
                   <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                    Height, weight, activity level, and health goals from onboarding appear here. Connect a device or update
-                    your profile to keep recommendations accurate.
+                    Height, weight, activity level, and health goals from
+                    onboarding appear here. Connect a device or update your
+                    profile to keep recommendations accurate.
                   </p>
                   <p className="mt-4 text-sm text-slate-500 dark:text-slate-500">
-                    This section can be wired to your onboarding data and wearables later.
+                    This section can be wired to your onboarding data and
+                    wearables later.
                   </p>
                 </div>
               )}
 
-              {tab === 'partner' && (
+              {tab === "partner" && (
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-8">
                   <div className="flex items-start justify-between gap-4">
                     <div>
-                      <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Linked Partner</h2>
+                      <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                        Linked Partner
+                      </h2>
                       <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                        You are connected with a wellness partner for personalized guidance.
+                        You are connected with a wellness partner for
+                        personalized guidance.
                       </p>
-                      <p className="mt-4 text-lg font-semibold text-slate-900 dark:text-white">Wellora Fitness</p>
+                      <p className="mt-4 text-lg font-semibold text-slate-900 dark:text-white">
+                        Wellora Fitness
+                      </p>
                     </div>
                     <CheckCircle2 className="h-8 w-8 shrink-0 text-wellora" />
                   </div>
@@ -274,18 +336,24 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                 </div>
               )}
 
-              {tab === 'logout' && (
+              {tab === "logout" && (
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-8">
                   <div className="flex items-center gap-3 text-rose-600 dark:text-rose-400">
                     <LogOut className="h-6 w-6" />
-                    <h2 className="text-lg font-semibold text-slate-900 dark:text-white">Log out</h2>
+                    <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                      Log out
+                    </h2>
                   </div>
                   <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
-                    You will need to sign in again to access your dashboard and orders.
+                    You will need to sign in again to access your dashboard and
+                    orders.
                   </p>
                   <button
                     type="button"
-                    onClick={() => onNavigate('login')}
+                    onClick={() => {
+                      localStorage.clear();
+                      onNavigate("login");
+                    }}
                     className="mt-6 rounded-xl bg-rose-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-rose-700"
                   >
                     Sign out

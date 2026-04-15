@@ -77,7 +77,7 @@ function App() {
     localStorage.setItem("vendor-status", status);
   };
 
-  const handleLoginSuccess = (role: Role, status?: VendorStatus) => {
+  const handleLoginSuccess = async (role: Role, status?: VendorStatus) => {
     if (role === "vendor") {
       const currentStatus = (status ?? "NEW").toUpperCase() as VendorStatus;
       persistVendorStatus(currentStatus);
@@ -99,12 +99,18 @@ function App() {
     }
 
     if (role === "user") {
-      const completed = getOnboardingComplete("user");
-      if (!completed) {
+      // ✅ Check backend if onboarding is done
+      try {
+        const { getUserProfile } = await import("./api/user");
+        const profile = await getUserProfile();
+        if (profile && profile.onboarding_done) {
+          persistNavigation("user-dashboard", role);
+        } else {
+          persistNavigation("onboarding-user", role);
+        }
+      } catch {
         persistNavigation("onboarding-user", role);
-        return;
       }
-      persistNavigation("user-dashboard", role);
       return;
     }
 
