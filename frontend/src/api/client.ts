@@ -1,5 +1,7 @@
 import axios from 'axios';
 
+export const API_BASE_URL = 'http://localhost:8000';
+
 const api = axios.create({
     baseURL: 'http://localhost:8000',
     headers: {
@@ -34,6 +36,14 @@ api.interceptors.response.use(
     (response) => response,
     (error) => Promise.reject(error)
 );
+
+export const resolveImageUrl = (imageUrl?: string | null) => {
+    if (!imageUrl) return '';
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+        return imageUrl;
+    }
+    return `${API_BASE_URL}${imageUrl}`;
+};
 
 
 export default api;

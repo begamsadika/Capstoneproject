@@ -1,3 +1,4 @@
+from datetime import date
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
@@ -103,3 +104,38 @@ def get_my_orders(
         }
         for o in orders
     ]
+    
+
+# ─── GET TODAY'S CALORIE SUMMARY ─────────────────
+@router.get("/today-summary")
+def get_today_summary(
+    current_user: User = Depends(get_current_user),
+    db: Session        = Depends(get_db)
+):
+    today = date.today()
+    orders = db.query(Order).filter(
+        Order.user_id   == current_user.id,
+        Order.created_at >= today
+    ).all()
+
+    total_calories = 0
+    meal_log = []
+
+    for order in orders:
+        meal = db.query(Meal).filter(Meal.id == order.meal_id).first()
+        if meal:
+            calories = meal.calories * order.quantity
+            total_calories += calories
+            meal_log.append({
+                "name":      meal.name,
+                "calories":  calories,
+                "quantity":  order.quantity,
+                "category":  meal.category,
+                "time":      str(order.created_at.strftime("%I:%M %p")),
+            })
+
+    return {
+        "total_calories": total_calories,
+        "meal_log":       meal_log,
+        "order_count":    len(orders),
+    }

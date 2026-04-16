@@ -45,6 +45,8 @@ interface MealRow {
   dietary: string;
   price: number;
   available: boolean;
+  description?: string | null;
+  image_url?: string | null;
 }
 
 interface MealFormState {
@@ -55,7 +57,8 @@ interface MealFormState {
   price: string;
   available: boolean;
   description?: string;
-  image_url?: string;
+  imageFile: File | null;
+  imagePreviewUrl: string;
 }
 
 interface VendorStats {
@@ -146,7 +149,8 @@ function emptyMealForm(): MealFormState {
     price: "",
     available: true,
     description: "",
-    image_url: "",
+    imageFile: null,
+    imagePreviewUrl: "",
   };
 }
 
@@ -249,8 +253,9 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
         : "Vegetarian",
       price: String(row.price),
       available: row.available,
-      description: (row as any).description ?? "",
-      image_url: (row as any).image_url ?? "",
+      description: row.description ?? "",
+      imageFile: null,
+      imagePreviewUrl: row.image_url ?? "",
     });
     setMealNameError(false);
     setCaloriesError(false);
@@ -291,7 +296,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
         price: Math.round(priceNum * 100) / 100,
         available: mealForm.available,
         description: mealForm.description || null,
-        image_url: mealForm.image_url || null,
+        image: mealForm.imageFile,
       };
 
       if (editingMealId) {
@@ -1055,20 +1060,35 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                   />
                 </div>
 
-                {/* Image URL */}
+                                {/* Meal Image */}
                 <div>
                   <label className="block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    Image URL (Optional)
+                    Meal Image (Optional)
                   </label>
                   <input
-                    type="url"
-                    placeholder="https://..."
-                    value={mealForm.image_url ?? ""}
-                    onChange={(e) =>
-                      setMealForm((f) => ({ ...f, image_url: e.target.value }))
-                    }
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0] ?? null;
+                      setMealForm((f) => ({
+                        ...f,
+                        imageFile: file,
+                        imagePreviewUrl: file
+                          ? URL.createObjectURL(file)
+                          : f.imagePreviewUrl,
+                      }));
+                    }}
                     className="mt-1.5 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:border-wellora focus:ring-wellora/20 dark:border-slate-600 dark:bg-slate-950 dark:text-white"
                   />
+                  {mealForm.imagePreviewUrl && (
+                    <div className="mt-3 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
+                      <img
+                        src={mealForm.imagePreviewUrl}
+                        alt="Meal preview"
+                        className="h-40 w-full object-cover"
+                      />
+                    </div>
+                  )}
                 </div>
                 {/* Category */}
                 <div>
@@ -1214,3 +1234,5 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
     </div>
   );
 }
+
+
