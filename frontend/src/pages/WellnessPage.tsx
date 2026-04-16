@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { getUserProfile, UserProfile } from "../api/user";
 import {
   ArrowLeft,
   ArrowRight,
@@ -8,21 +7,26 @@ import {
   Droplets,
   Flower2,
   Heart,
-  Milk,
   Moon,
-  Salad,
   Scale,
   Smile,
-  Soup,
   Sparkles,
   Target,
   UtensilsCrossed,
   Apple,
   Footprints,
+  ShoppingBag,
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import type { AppPage } from "../types/page";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
+import { getUserProfile, UserProfile } from "../api/user";
+import {
+  getTodaySummary,
+  getMyOrders,
+  TodaySummary,
+  MyOrder,
+} from "../api/orders";
 
 interface WellnessPageProps {
   onNavigate: (page: AppPage) => void;
@@ -31,73 +35,25 @@ interface WellnessPageProps {
 const PROFILE_IMG =
   "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&h=120&q=80";
 
-const CALORIES_CONSUMED = 1850;
-const CALORIES_TARGET = 2200;
-const PROGRESS = (CALORIES_CONSUMED / CALORIES_TARGET) * 100;
-
-const MEALS = [
-  {
-    name: "Oatmeal with Berries",
-    time: "08:00 AM",
-    kcal: 350,
-    meal: "Breakfast",
-    Icon: Milk,
-  },
-  {
-    name: "Grilled Chicken Salad",
-    time: "01:00 PM",
-    kcal: 550,
-    meal: "Lunch",
-    Icon: Salad,
-  },
-  {
-    name: "Apple & Almonds",
-    time: "04:30 PM",
-    kcal: 200,
-    meal: "Snack",
-    Icon: Apple,
-  },
-  {
-    name: "Lentil Soup with Whole Grain Bread",
-    time: "07:00 PM",
-    kcal: 750,
-    meal: "Dinner",
-    Icon: Soup,
-  },
-];
-
-type WellnessTab = "overview" | "details";
-
-const WEEK_DAYS: { label: string; status: "good" | "warn" | "bad" }[] = [
-  { label: "Mon", status: "good" },
-  { label: "Tue", status: "warn" },
-  { label: "Wed", status: "good" },
-  { label: "Thu", status: "good" },
-  { label: "Fri", status: "warn" },
-  { label: "Sat", status: "bad" },
-  { label: "Sun", status: "good" },
-];
+type WellnessTab = "overview" | "orders" | "details";
 
 const AI_INSIGHTS: {
   Icon: LucideIcon;
   title: string;
   confidence: "high" | "medium";
-  time: string;
   explore: string;
 }[] = [
   {
     Icon: CircleDot,
     title: "Your consistent hydration habits are improving skin elasticity.",
     confidence: "high",
-    time: "Generated: 2 hours ago",
     explore: "Explore Hydration Tips",
   },
   {
     Icon: Moon,
     title:
-      "Sleep onset has shifted 20 minutes earlier—correlated with better morning energy scores.",
+      "Sleep onset has shifted 20 minutes earlier—correlated with better morning energy.",
     confidence: "medium",
-    time: "Generated: 5 hours ago",
     explore: "View Sleep Guidance",
   },
   {
@@ -105,7 +61,6 @@ const AI_INSIGHTS: {
     title:
       "Fiber intake this week supports stable glucose patterns after meals.",
     confidence: "high",
-    time: "Generated: Yesterday",
     explore: "See Nutrition Ideas",
   },
   {
@@ -113,51 +68,74 @@ const AI_INSIGHTS: {
     title:
       "Mid-day water gaps on weekdays may affect focus—try a timed reminder.",
     confidence: "medium",
-    time: "Generated: Yesterday",
     explore: "Set Hydration Reminders",
   },
 ];
 
-const WELLNESS_TIPS: {
-  Icon: LucideIcon;
-  title: string;
-  body: string;
-}[] = [
+const WELLNESS_TIPS: { Icon: LucideIcon; title: string; body: string }[] = [
   {
     Icon: Moon,
     title: "Prioritize Quality Sleep",
-    body: "Aim for 7–9 hours in a cool, dark room. Consistent wake times strengthen your circadian rhythm more than sleeping in on weekends.",
+    body: "Aim for 7–9 hours in a cool, dark room. Consistent wake times strengthen your circadian rhythm.",
   },
   {
     Icon: Footprints,
     title: "Stay Active Daily",
-    body: "Short walks after meals aid digestion and blood sugar. Even 10-minute movement blocks add up across the week.",
+    body: "Short walks after meals aid digestion and blood sugar. Even 10-minute movement blocks add up.",
   },
   {
     Icon: Apple,
     title: "Balanced Nutrition",
-    body: "Fill half your plate with vegetables, add lean protein, and choose whole grains when possible for steady energy.",
+    body: "Fill half your plate with vegetables, add lean protein, and choose whole grains for steady energy.",
   },
   {
     Icon: Heart,
     title: "Manage Stress Mindfully",
-    body: "Brief breathing exercises or stretching breaks can lower cortisol. Pair them with something you already do daily.",
+    body: "Brief breathing exercises or stretching breaks can lower cortisol. Pair them with daily habits.",
   },
 ];
 
+const CATEGORY_ICONS: Record<string, LucideIcon> = {
+  Breakfast: Apple,
+  Lunch: UtensilsCrossed,
+  Dinner: Moon,
+  Snacks: Apple,
+  default: UtensilsCrossed,
+};
+
 export function WellnessPage({ onNavigate }: WellnessPageProps) {
+  const [tab, setTab] = useState<WellnessTab>("overview");
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [summary, setSummary] = useState<TodaySummary | null>(null);
+  const [orders, setOrders] = useState<MyOrder[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getUserProfile().then((data) => {
-      if (data) setProfile(data);
-    });
+    Promise.all([getUserProfile(), getTodaySummary(), getMyOrders()])
+      .then(([p, s, o]) => {
+        if (p) setProfile(p);
+        setSummary(s);
+        setOrders(o);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
   }, []);
-  const [tab, setTab] = useState<WellnessTab>("overview");
+
+  const calorieGoal = profile?.calorie_goal ?? 2000;
+  const caloriesEaten = summary?.total_calories ?? 0;
+  const progress = Math.min(100, (caloriesEaten / calorieGoal) * 100);
+  const remaining = Math.max(0, calorieGoal - caloriesEaten);
+
+  const tabClass = (t: WellnessTab) =>
+    `relative px-4 py-3 text-sm font-semibold transition sm:px-5 sm:text-base ${
+      tab === t
+        ? "text-wellora after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-wellora"
+        : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+    }`;
 
   return (
     <div className="min-h-dvh bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-      {/* Top header */}
+      {/* Header */}
       <header className="border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
         <div className="mx-auto grid max-w-6xl grid-cols-3 items-center gap-4 px-4 py-4 sm:px-6">
           <div className="flex items-center gap-2 justify-self-start">
@@ -175,46 +153,37 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
           <div className="flex items-center justify-end gap-2 sm:gap-3">
             <button
               type="button"
-              className="rounded-full p-2 text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
-              aria-label="Notifications"
+              className="rounded-full p-2 text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
             >
               <Bell className="h-5 w-5" />
             </button>
-            <div className="relative">
-              <img
-                src={PROFILE_IMG}
-                alt=""
-                className="h-9 w-9 rounded-full object-cover ring-2 ring-slate-100 dark:ring-slate-700"
-              />
-              <span
-                className="absolute bottom-0 right-0 h-2.5 w-2.5 rounded-full border-2 border-white bg-wellora dark:border-slate-900"
-                aria-hidden
-              />
-            </div>
+            <img
+              src={PROFILE_IMG}
+              alt=""
+              className="h-9 w-9 rounded-full object-cover ring-2 ring-slate-100 dark:ring-slate-700"
+            />
           </div>
         </div>
-
-        {/* Sub-tabs */}
+        {/* Tabs */}
         <div className="mx-auto flex max-w-6xl gap-0 border-t border-slate-100 px-4 dark:border-slate-800 sm:px-6">
           <button
             type="button"
             onClick={() => setTab("overview")}
-            className={`relative px-4 py-3 text-sm font-semibold transition sm:px-5 sm:text-base ${
-              tab === "overview"
-                ? "text-wellora after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-wellora"
-                : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-            }`}
+            className={tabClass("overview")}
           >
             Overview
           </button>
           <button
             type="button"
+            onClick={() => setTab("orders")}
+            className={tabClass("orders")}
+          >
+            My Orders
+          </button>
+          <button
+            type="button"
             onClick={() => setTab("details")}
-            className={`relative px-4 py-3 text-sm font-semibold transition sm:px-5 sm:text-base ${
-              tab === "details"
-                ? "text-wellora after:absolute after:bottom-0 after:left-0 after:right-0 after:h-0.5 after:bg-wellora"
-                : "text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-            }`}
+            className={tabClass("details")}
           >
             Details
           </button>
@@ -222,96 +191,99 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
       </header>
 
       <div className="mx-auto max-w-6xl px-4 py-6 sm:px-6 sm:py-8">
-        {tab === "overview" ? (
+        {/* ── OVERVIEW TAB ── */}
+        {tab === "overview" && (
           <>
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <button
                 type="button"
                 onClick={() => onNavigate("user-dashboard")}
-                className="inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
               >
-                <ArrowLeft className="h-4 w-4" />
-                Back to Dashboard
+                <ArrowLeft className="h-4 w-4" /> Back to Dashboard
               </button>
               <h1 className="text-3xl font-light tracking-tight text-slate-400 dark:text-slate-500 sm:text-4xl">
                 Wellness Overview
               </h1>
             </div>
 
+            {/* KPI Cards */}
             <section className="mb-10">
               <h2 className="mb-5 text-lg font-semibold text-slate-800 dark:text-slate-200">
                 Your Wellness at a Glance
               </h2>
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+                {/* BMI */}
                 <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-wellora/10 text-wellora">
                     <Scale className="h-5 w-5" />
                   </div>
                   <p className="mt-4 text-sm font-medium text-slate-500 dark:text-slate-400">
-                    Current BMI Status
+                    Current BMI
                   </p>
                   <p className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
-                    {profile?.bmi ?? "—"}
+                    {loading ? "..." : (profile?.bmi ?? "—")}
                   </p>
                   <span className="mt-3 inline-block rounded-full bg-wellora-soft px-3 py-1 text-xs font-semibold text-wellora-dark dark:bg-wellora/15 dark:text-wellora">
-                    {profile?.bmi_category ?? "—"}
+                    {loading ? "..." : (profile?.bmi_category ?? "—")}
                   </span>
-                  <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">
-                    Last updated: Today, 8:00 AM
-                  </p>
                 </div>
 
+                {/* Calories eaten */}
                 <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-wellora/10 text-wellora">
                     <UtensilsCrossed className="h-5 w-5" />
                   </div>
                   <p className="mt-4 text-sm font-medium text-slate-500 dark:text-slate-400">
-                    Calories Consumed Today
+                    Calories Today
                   </p>
                   <p className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
-                    1850
+                    {loading ? "..." : caloriesEaten}
                   </p>
-                  <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">
-                    Logged meals up to now.
+                  <p className="mt-1 text-xs text-slate-400">
+                    {summary?.order_count ?? 0} orders placed today
                   </p>
                 </div>
 
+                {/* Calorie target */}
                 <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-wellora/10 text-wellora">
                     <Target className="h-5 w-5" />
                   </div>
                   <p className="mt-4 text-sm font-medium text-slate-500 dark:text-slate-400">
-                    Daily Calorie Target
+                    Daily Target
                   </p>
                   <p className="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
-                    {profile?.calorie_goal ?? 2000}
+                    {loading ? "..." : calorieGoal}
                   </p>
-                  <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">
-                    Based on your activity goals.
+                  <p className="mt-1 text-xs text-slate-400">
+                    {remaining} kcal remaining
                   </p>
                 </div>
 
+                {/* Wellness status */}
                 <div className="rounded-2xl border border-slate-200/80 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
                   <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-wellora/10 text-wellora">
                     <Smile className="h-5 w-5" />
                   </div>
                   <p className="mt-4 text-sm font-medium text-slate-500 dark:text-slate-400">
-                    Wellness Status Indicator
+                    Wellness Status
                   </p>
                   <p className="mt-2 text-xl font-bold leading-snug text-wellora sm:text-2xl">
-                    Active & Energized
+                    {progress >= 80
+                      ? "On Track! 🎯"
+                      : progress >= 50
+                        ? "Getting There"
+                        : "Keep Going!"}
                   </p>
-                  <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
-                    Excellent energy levels detected. Keep up the consistent
-                    activity!
-                  </p>
-                  <p className="mt-3 text-xs font-medium text-slate-400 dark:text-slate-500">
+                  <p className="mt-3 text-xs font-medium text-slate-400">
                     AI-powered insight
                   </p>
                 </div>
               </div>
             </section>
 
+            {/* Daily Intake Summary */}
             <section className="mb-12">
               <h2 className="mb-5 text-lg font-semibold text-slate-800 dark:text-slate-200">
                 Daily Intake Summary
@@ -322,62 +294,178 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
                     Total Calories:
                   </span>
                   <span className="text-sm font-semibold tabular-nums text-slate-800 dark:text-slate-200">
-                    {CALORIES_CONSUMED} / {CALORIES_TARGET} kcal
+                    {caloriesEaten} / {calorieGoal} kcal
                   </span>
                 </div>
                 <div className="mt-4 h-4 overflow-hidden rounded-full bg-wellora-light dark:bg-slate-800">
                   <div
                     className="h-full rounded-full bg-wellora transition-all"
-                    style={{ width: `${Math.min(100, PROGRESS)}%` }}
+                    style={{ width: `${progress}%` }}
                   />
                 </div>
+                <p className="mt-2 text-xs text-slate-500">
+                  {Math.round(progress)}% of daily goal reached
+                </p>
               </div>
 
-              <ul className="mt-4 space-y-3">
-                {MEALS.map(({ name, time, kcal, meal, Icon }) => (
-                  <li
-                    key={name}
-                    className="flex flex-wrap items-center gap-4 rounded-2xl border border-slate-200/80 bg-white px-4 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:flex-nowrap sm:px-5"
+              {/* Meal log from real orders */}
+              {summary && summary.meal_log.length > 0 ? (
+                <ul className="mt-4 space-y-3">
+                  {summary.meal_log.map((log, i) => {
+                    const Icon =
+                      CATEGORY_ICONS[log.category] ?? CATEGORY_ICONS.default;
+                    return (
+                      <li
+                        key={i}
+                        className="flex flex-wrap items-center gap-4 rounded-2xl border border-slate-200/80 bg-white px-4 py-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:flex-nowrap sm:px-5"
+                      >
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-wellora/10 text-wellora">
+                          <Icon className="h-5 w-5" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="font-semibold text-slate-900 dark:text-white">
+                            {log.name}
+                          </p>
+                          <p className="text-sm text-slate-500 dark:text-slate-400">
+                            {log.time} · Qty: {log.quantity}
+                          </p>
+                        </div>
+                        <span className="text-base font-bold text-wellora">
+                          {log.calories} kcal
+                        </span>
+                        <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-800 dark:bg-sky-900/40 dark:text-sky-200">
+                          {log.category}
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              ) : (
+                <div className="mt-4 rounded-2xl border border-dashed border-slate-200 bg-white p-8 text-center dark:border-slate-700 dark:bg-slate-900">
+                  <UtensilsCrossed className="mx-auto h-10 w-10 text-slate-300 dark:text-slate-600" />
+                  <p className="mt-3 text-sm text-slate-500">
+                    No meals ordered today yet.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => onNavigate("user-menu-order")}
+                    className="mt-4 rounded-xl bg-wellora px-4 py-2 text-sm font-semibold text-white hover:bg-wellora-hover"
                   >
-                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-wellora/10 text-wellora">
-                      <Icon className="h-5 w-5" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="font-semibold text-slate-900 dark:text-white">
-                        {name}
-                      </p>
-                      <p className="text-sm text-slate-500 dark:text-slate-400">
-                        {time}
-                      </p>
-                    </div>
-                    <span className="text-base font-bold text-wellora">
-                      {kcal} kcal
-                    </span>
-                    <span className="rounded-full bg-sky-100 px-3 py-1 text-xs font-semibold text-sky-800 dark:bg-sky-900/40 dark:text-sky-200">
-                      {meal}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+                    Order Your First Meal
+                  </button>
+                </div>
+              )}
             </section>
           </>
-        ) : (
+        )}
+
+        {/* ── MY ORDERS TAB ── */}
+        {tab === "orders" && (
+          <>
+            <div className="mb-6 flex items-center justify-between">
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+                My Order History
+              </h1>
+              <button
+                type="button"
+                onClick={() => onNavigate("user-menu-order")}
+                className="rounded-xl bg-wellora px-4 py-2.5 text-sm font-semibold text-white hover:bg-wellora-hover"
+              >
+                + New Order
+              </button>
+            </div>
+
+            {loading ? (
+              <p className="text-slate-500">Loading orders...</p>
+            ) : orders.length === 0 ? (
+              <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-12 text-center dark:border-slate-700 dark:bg-slate-900">
+                <ShoppingBag className="mx-auto h-12 w-12 text-slate-300 dark:text-slate-600" />
+                <p className="mt-4 text-slate-500">No orders yet.</p>
+                <button
+                  type="button"
+                  onClick={() => onNavigate("user-menu-order")}
+                  className="mt-4 rounded-xl bg-wellora px-4 py-2.5 text-sm font-semibold text-white hover:bg-wellora-hover"
+                >
+                  Browse Menu
+                </button>
+              </div>
+            ) : (
+              <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+                <table className="w-full text-left text-sm">
+                  <thead>
+                    <tr className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
+                      <th className="px-5 py-3 font-semibold text-slate-600 dark:text-slate-300">
+                        Order ID
+                      </th>
+                      <th className="px-5 py-3 font-semibold text-slate-600 dark:text-slate-300">
+                        Quantity
+                      </th>
+                      <th className="px-5 py-3 font-semibold text-slate-600 dark:text-slate-300">
+                        Total
+                      </th>
+                      <th className="px-5 py-3 font-semibold text-slate-600 dark:text-slate-300">
+                        Status
+                      </th>
+                      <th className="px-5 py-3 font-semibold text-slate-600 dark:text-slate-300">
+                        Date
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
+                    {orders.map((order) => (
+                      <tr
+                        key={order.id}
+                        className="hover:bg-slate-50 dark:hover:bg-slate-800/50"
+                      >
+                        <td className="px-5 py-3 font-mono text-xs font-medium text-slate-900 dark:text-white">
+                          #{order.id}
+                        </td>
+                        <td className="px-5 py-3 text-slate-700 dark:text-slate-300">
+                          {order.quantity}x
+                        </td>
+                        <td className="px-5 py-3 font-semibold text-slate-900 dark:text-white">
+                          ${order.total_price.toFixed(2)}
+                        </td>
+                        <td className="px-5 py-3">
+                          <span
+                            className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                              order.status === "pending"
+                                ? "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
+                                : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200"
+                            }`}
+                          >
+                            {order.status}
+                          </span>
+                        </td>
+                        <td className="px-5 py-3 text-xs text-slate-500">
+                          {new Date(order.created_at).toLocaleDateString()}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </>
+        )}
+
+        {/* ── DETAILS TAB ── */}
+        {tab === "details" && (
           <>
             <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <button
                 type="button"
                 onClick={() => onNavigate("user-dashboard")}
-                className="inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
               >
-                <ArrowLeft className="h-4 w-4" />
-                Back to Dashboard
+                <ArrowLeft className="h-4 w-4" /> Back to Dashboard
               </button>
               <h1 className="text-3xl font-light tracking-tight text-slate-400 dark:text-slate-500 sm:text-4xl">
                 Wellness Details
               </h1>
             </div>
 
-            {/* Weekly Wellness Summary */}
+            {/* Weekly summary */}
             <section className="mb-10">
               <h2 className="mb-4 text-lg font-bold text-slate-900 dark:text-white">
                 Weekly Wellness Summary
@@ -385,63 +473,33 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
                   <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                    Average Daily Calorie Intake
+                    Daily Calorie Target
                   </p>
                   <p className="mt-2 text-3xl font-bold tabular-nums text-slate-900 dark:text-white">
-                    1,980 cal
+                    {calorieGoal} kcal
                   </p>
-                  <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
-                    Target: 2,000 kcal
+                  <p className="mt-3 text-sm text-slate-500">
+                    Goal: {profile?.health_goal ?? "—"}
                   </p>
                 </div>
                 <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
                   <p className="text-sm font-medium text-slate-600 dark:text-slate-400">
-                    BMI Trend
+                    BMI
                   </p>
                   <div className="mt-2 flex items-center justify-between gap-4">
                     <div className="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white">
-                      Stable
-                      <ArrowRight
-                        className="h-5 w-5 text-slate-400"
-                        aria-hidden
-                      />
+                      {profile?.bmi_category ?? "N/A"}
+                      <ArrowRight className="h-5 w-5 text-slate-400" />
                     </div>
                     <span className="text-2xl font-bold tabular-nums text-slate-900 dark:text-white">
-                      24.5
+                      {profile?.bmi ?? "—"}
                     </span>
                   </div>
                 </div>
               </div>
-
-              <div className="mt-6 rounded-2xl border border-slate-200 bg-white px-4 py-5 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:px-6">
-                <div className="flex justify-between gap-2 sm:gap-4">
-                  {WEEK_DAYS.map(({ label, status }) => (
-                    <div
-                      key={label}
-                      className="flex flex-col items-center gap-2"
-                    >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg border border-slate-100 bg-slate-50 dark:border-slate-700 dark:bg-slate-800 sm:h-12 sm:w-12">
-                        <span
-                          className={`h-2.5 w-2.5 rounded-full sm:h-3 sm:w-3 ${
-                            status === "good"
-                              ? "bg-wellora"
-                              : status === "warn"
-                                ? "bg-amber-400"
-                                : "bg-red-500"
-                          }`}
-                          aria-hidden
-                        />
-                      </div>
-                      <span className="text-xs font-medium text-slate-600 dark:text-slate-400">
-                        {label}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
             </section>
 
-            {/* AI Wellness Insights */}
+            {/* AI Insights */}
             <section className="mb-10">
               <div className="mb-1 flex items-center gap-2">
                 <Sparkles className="h-5 w-5 text-wellora" />
@@ -449,48 +507,42 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
                   AI Wellness Insights
                 </h2>
               </div>
-              <p className="mb-5 text-sm text-slate-500 dark:text-slate-400">
+              <p className="mb-5 text-sm text-slate-500">
                 Insights generated by Wellora AI.
               </p>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {AI_INSIGHTS.map(
-                  ({ Icon, title, confidence, time, explore }) => (
-                    <article
-                      key={title}
-                      className="relative rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900"
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-wellora/10 text-wellora">
-                          <Icon className="h-5 w-5" />
-                        </div>
-                        <span
-                          className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${
-                            confidence === "high"
-                              ? "bg-wellora-soft text-wellora-dark dark:bg-wellora/15 dark:text-wellora"
-                              : "bg-teal-100 text-teal-800 dark:bg-teal-900/40 dark:text-teal-200"
-                          }`}
-                        >
-                          {confidence === "high"
-                            ? "High Confidence"
-                            : "Medium Confidence"}
-                        </span>
+                {AI_INSIGHTS.map(({ Icon, title, confidence, explore }) => (
+                  <article
+                    key={title}
+                    className="relative rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900"
+                  >
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-wellora/10 text-wellora">
+                        <Icon className="h-5 w-5" />
                       </div>
-                      <p className="mt-4 text-sm font-semibold leading-snug text-slate-900 dark:text-white">
-                        {title}
-                      </p>
-                      <p className="mt-3 text-xs text-slate-400 dark:text-slate-500">
-                        {time}
-                      </p>
-                      <button
-                        type="button"
-                        className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-wellora transition hover:text-wellora-hover"
+                      <span
+                        className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${
+                          confidence === "high"
+                            ? "bg-wellora-soft text-wellora-dark dark:bg-wellora/15 dark:text-wellora"
+                            : "bg-teal-100 text-teal-800 dark:bg-teal-900/40 dark:text-teal-200"
+                        }`}
                       >
-                        {explore}
-                        <ArrowRight className="h-4 w-4" />
-                      </button>
-                    </article>
-                  ),
-                )}
+                        {confidence === "high"
+                          ? "High Confidence"
+                          : "Medium Confidence"}
+                      </span>
+                    </div>
+                    <p className="mt-4 text-sm font-semibold leading-snug text-slate-900 dark:text-white">
+                      {title}
+                    </p>
+                    <button
+                      type="button"
+                      className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-wellora hover:text-wellora-hover"
+                    >
+                      {explore} <ArrowRight className="h-4 w-4" />
+                    </button>
+                  </article>
+                ))}
               </div>
             </section>
 
@@ -499,9 +551,6 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">
                 Wellness Tips
               </h2>
-              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                General wellness advice.
-              </p>
               <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {WELLNESS_TIPS.map(({ Icon, title, body }) => (
                   <article
@@ -516,9 +565,6 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
                     </div>
                     <p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                       {body}
-                    </p>
-                    <p className="mt-4 text-xs text-slate-400 dark:text-slate-500">
-                      Non-AI Generated Content
                     </p>
                   </article>
                 ))}

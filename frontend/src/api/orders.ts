@@ -17,7 +17,30 @@ export interface OrderItem {
   quantity: number;
 }
 
-// Get all available meals from all vendors
+export interface MealLogItem {
+  name: string;
+  calories: number;
+  quantity: number;
+  category: string;
+  time: string;
+}
+
+export interface TodaySummary {
+  total_calories: number;
+  meal_log: MealLogItem[];
+  order_count: number;
+}
+
+export interface MyOrder {
+  id: number;
+  meal_id: number;
+  quantity: number;
+  total_price: number;
+  status: string;
+  created_at: string;
+}
+
+// Get all available meals from vendors
 export const getPublicMeals = async (): Promise<PublicMeal[]> => {
   const response = await api.get('/api/orders/meals');
   return response.data;
@@ -29,8 +52,14 @@ export const placeOrder = async (items: OrderItem[]) => {
   return response.data;
 };
 
-// Get user's orders
-export const getMyOrders = async () => {
+// Get user's all orders
+export const getMyOrders = async (): Promise<MyOrder[]> => {
   const response = await api.get('/api/orders/my-orders');
+  return response.data;
+};
+
+// Get today's calorie summary + meal log
+export const getTodaySummary = async (): Promise<TodaySummary> => {
+  const response = await api.get('/api/orders/today-summary');
   return response.data;
 };
