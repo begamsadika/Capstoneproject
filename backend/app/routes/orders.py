@@ -7,6 +7,7 @@ from ..database import get_db
 from ..models.order import Order
 from ..models.meal import Meal
 from ..models.user import User
+from ..models.vendor_profile import VendorProfile
 from ..core.auth import get_current_user
 
 router = APIRouter(prefix="/api/orders", tags=["Orders"])
@@ -19,6 +20,18 @@ class OrderItem(BaseModel):
 
 class PlaceOrderRequest(BaseModel):
     items: List[OrderItem]
+
+
+def get_vendor_profile(current_user: User, db: Session) -> VendorProfile:
+    if current_user.user_type != "vendor":
+        raise HTTPException(status_code=403, detail="Not a vendor account")
+
+    profile = (
+        db.query(VendorProfile).filter(VendorProfile.user_id == current_user.id).first()
+    )
+    if not profile:
+        raise HTTPException(status_code=404, detail="Vendor profile not found")
+    return profile
 
 
 # ─── GET ALL PUBLIC MEALS (for menu page) ────────
@@ -104,6 +117,39 @@ def get_my_orders(
         }
         for o in orders
     ]
+
+
+@router.get("/vendor-orders")
+def get_vendor_orders(
+    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
+):
+    profile = get_vendor_profile(current_user, db)
+    orders = (
+        db.query(Order)
+        .filter(Order.vendor_id == profile.id)
+        .order_by(Order.created_at.desc())
+        .all()
+    )
+
+    results = []
+    for order in orders:
+        meal = db.query(Meal).filter(Meal.id == order.meal_id).first()
+        customer = db.query(User).filter(User.id == order.user_id).first()
+        results.append(
+            {
+                "id": order.id,
+                "customer_name": customer.name if customer else "Unknown Customer",
+                "customer_email": customer.email if customer else "",
+                "meal_name": meal.name if meal else "Unknown Meal",
+                "quantity": order.quantity,
+                "unit_price": order.unit_price,
+                "total_price": order.total_price,
+                "status": order.status,
+                "created_at": str(order.created_at),
+            }
+        )
+
+    return results
     
 
 # ─── GET TODAY'S CALORIE SUMMARY ─────────────────

@@ -20,6 +20,8 @@ import {
 } from "lucide-react";
 import type { AppPage } from "../types/page";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
+import { resolveImageUrl } from "../api/client";
+import { getVendorOrders, type VendorOrder } from "../api/orders";
 import {
   getVendorMeals,
   addMeal,
@@ -104,40 +106,7 @@ const WEEKLY_REVENUE = [
   { label: "Sun", value: 3900 },
 ];
 
-const MOCK_ORDERS = [
-  {
-    id: "ORD-1042",
-    customerName: "Alex Morgan",
-    mealName: "Grilled Salmon",
-    status: "Completed" as const,
-  },
-  {
-    id: "ORD-1041",
-    customerName: "Jordan Lee",
-    mealName: "Vegan Buddha Bowl",
-    status: "Pending" as const,
-  },
-  {
-    id: "ORD-1040",
-    customerName: "Sam Rivera",
-    mealName: "Chicken Teriyaki",
-    status: "Completed" as const,
-  },
-  {
-    id: "ORD-1039",
-    customerName: "Casey Kim",
-    mealName: "Greek Yogurt Parfait",
-    status: "Cancelled" as const,
-  },
-  {
-    id: "ORD-1038",
-    customerName: "Riley Chen",
-    mealName: "Zucchini Alfredo",
-    status: "Completed" as const,
-  },
-];
-
-type OrderStatus = "Pending" | "Completed" | "Cancelled";
+type OrderStatus = "pending" | "confirmed" | "delivered" | "cancelled";
 type VendorSection = "dashboard" | "meals" | "orders" | "menu";
 
 function emptyMealForm(): MealFormState {
@@ -158,6 +127,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
   const [vendorSection, setVendorSection] =
     useState<VendorSection>("dashboard");
   const [meals, setMeals] = useState<MealRow[]>([]);
+  const [vendorOrders, setVendorOrders] = useState<VendorOrder[]>([]);
   const [stats, setStats] = useState<VendorStats>({
     total_meals: 0,
     total_orders: 0,
@@ -165,6 +135,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
     rating: 4.8,
   });
   const [isLoadingMeals, setIsLoadingMeals] = useState(true);
+  const [isLoadingOrders, setIsLoadingOrders] = useState(true);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState<CategoryFilter>("All Categories");
   const [dietary, setDietary] = useState<DietaryFilter>("All Dietary Types");
@@ -183,6 +154,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
   // ─── Load meals + stats from backend ───────────
   useEffect(() => {
     loadMeals();
+    loadOrders();
     loadStats();
   }, []);
 
@@ -204,6 +176,18 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
       setStats((prev) => ({ ...prev, ...data }));
     } catch (err) {
       console.error("Failed to load stats:", err);
+    }
+  };
+
+  const loadOrders = async () => {
+    setIsLoadingOrders(true);
+    try {
+      const data = await getVendorOrders();
+      setVendorOrders(data);
+    } catch (err) {
+      console.error("Failed to load vendor orders:", err);
+    } finally {
+      setIsLoadingOrders(false);
     }
   };
 
@@ -312,6 +296,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
       }
 
       closeMealForm();
+      loadOrders();
       loadStats(); // refresh stats
     } catch (err) {
       console.error("Failed to save meal:", err);
@@ -327,6 +312,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
       // ✅ Delete from backend
       await deleteMealApi(id);
       setMeals((prev) => prev.filter((m) => m.id !== id));
+      loadOrders();
       loadStats();
     } catch (err) {
       console.error("Failed to delete meal:", err);
@@ -345,6 +331,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
         available: row.available,
       });
       setMeals((prev) => [...prev, created]);
+      loadOrders();
       loadStats();
     } catch (err) {
       console.error("Failed to duplicate meal:", err);
@@ -366,14 +353,17 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
   }, []);
 
   const chartMax = Math.max(...WEEKLY_REVENUE.map((d) => d.value));
+  const recentOrders = vendorOrders.slice(0, 5);
 
   const orderStatusClass = (s: OrderStatus) => {
     switch (s) {
-      case "Pending":
+      case "pending":
         return "bg-amber-100 text-amber-900 dark:bg-amber-950/50 dark:text-amber-200";
-      case "Completed":
+      case "confirmed":
+        return "bg-sky-100 text-sky-800 dark:bg-sky-950/50 dark:text-sky-200";
+      case "delivered":
         return "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300";
-      case "Cancelled":
+      case "cancelled":
         return "bg-red-100 text-red-800 dark:bg-red-950/50 dark:text-red-300";
       default:
         return "bg-slate-200 text-slate-700";
@@ -596,19 +586,19 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                      {MOCK_ORDERS.map((o) => (
+                      {recentOrders.map((o) => (
                         <tr
                           key={o.id}
                           className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50"
                         >
                           <td className="px-5 py-3 font-mono text-xs font-medium text-slate-900 dark:text-white">
-                            {o.id}
+                            #{o.id}
                           </td>
                           <td className="px-5 py-3 text-slate-700 dark:text-slate-300">
-                            {o.customerName}
+                            {o.customer_name}
                           </td>
                           <td className="px-5 py-3 text-slate-700 dark:text-slate-300">
-                            {o.mealName}
+                            {o.meal_name}
                           </td>
                           <td className="px-5 py-3">
                             <span
@@ -902,39 +892,78 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
               </div>
               <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
                 <div className="overflow-x-auto">
-                  <table className="w-full min-w-[640px] text-left text-sm">
+                  <table className="w-full min-w-[860px] text-left text-sm">
                     <thead>
                       <tr className="border-b border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300">
                         <th className="px-5 py-3 font-semibold">Order ID</th>
                         <th className="px-5 py-3 font-semibold">Customer</th>
                         <th className="px-5 py-3 font-semibold">Meal</th>
+                        <th className="px-5 py-3 font-semibold">Qty</th>
+                        <th className="px-5 py-3 font-semibold">Total</th>
                         <th className="px-5 py-3 font-semibold">Status</th>
+                        <th className="px-5 py-3 font-semibold">Date</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
-                      {MOCK_ORDERS.map((o) => (
+                      {isLoadingOrders ? (
+                        <tr>
+                          <td
+                            colSpan={7}
+                            className="px-5 py-12 text-center text-slate-500"
+                          >
+                            Loading orders...
+                          </td>
+                        </tr>
+                      ) : vendorOrders.length === 0 ? (
+                        <tr>
+                          <td
+                            colSpan={7}
+                            className="px-5 py-12 text-center text-slate-500"
+                          >
+                            No customer orders yet.
+                          </td>
+                        </tr>
+                      ) : (
+                        vendorOrders.map((o) => (
                         <tr
                           key={o.id}
                           className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50"
                         >
                           <td className="px-5 py-3 font-mono text-xs font-medium text-slate-900 dark:text-white">
-                            {o.id}
+                            #{o.id}
                           </td>
                           <td className="px-5 py-3 text-slate-700 dark:text-slate-300">
-                            {o.customerName}
+                            <div>
+                              <p className="font-medium text-slate-900 dark:text-white">
+                                {o.customer_name}
+                              </p>
+                              <p className="text-xs text-slate-500 dark:text-slate-400">
+                                {o.customer_email}
+                              </p>
+                            </div>
                           </td>
                           <td className="px-5 py-3 text-slate-700 dark:text-slate-300">
-                            {o.mealName}
+                            {o.meal_name}
+                          </td>
+                          <td className="px-5 py-3 text-slate-700 dark:text-slate-300">
+                            {o.quantity}
+                          </td>
+                          <td className="px-5 py-3 font-medium text-slate-900 dark:text-white">
+                            ${o.total_price.toFixed(2)}
                           </td>
                           <td className="px-5 py-3">
                             <span
-                              className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${orderStatusClass(o.status)}`}
+                              className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${orderStatusClass(o.status as OrderStatus)}`}
                             >
                               {o.status}
                             </span>
                           </td>
+                          <td className="px-5 py-3 text-xs text-slate-500 dark:text-slate-400">
+                            {new Date(o.created_at).toLocaleString()}
+                          </td>
                         </tr>
-                      ))}
+                      ))
+                      )}
                     </tbody>
                   </table>
                 </div>
@@ -977,6 +1006,15 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                       <p className="mt-2 text-xs text-slate-500">
                         {m.category} · {m.calories} kcal
                       </p>
+                      {m.image_url && (
+                        <div className="mt-3 overflow-hidden rounded-xl">
+                          <img
+                            src={resolveImageUrl(m.image_url) || m.image_url}
+                            alt={m.name}
+                            className="h-36 w-full object-cover"
+                          />
+                        </div>
+                      )}
                       <span className="mt-3 inline-flex rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                         {m.dietary}
                       </span>
@@ -1083,7 +1121,12 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                   {mealForm.imagePreviewUrl && (
                     <div className="mt-3 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
                       <img
-                        src={mealForm.imagePreviewUrl}
+                        src={
+                          mealForm.imageFile
+                            ? mealForm.imagePreviewUrl
+                            : resolveImageUrl(mealForm.imagePreviewUrl) ||
+                              mealForm.imagePreviewUrl
+                        }
                         alt="Meal preview"
                         className="h-40 w-full object-cover"
                       />

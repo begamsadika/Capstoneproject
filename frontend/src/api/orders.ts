@@ -40,6 +40,18 @@ export interface MyOrder {
   created_at: string;
 }
 
+export interface VendorOrder {
+  id: number;
+  customer_name: string;
+  customer_email: string;
+  meal_name: string;
+  quantity: number;
+  unit_price: number;
+  total_price: number;
+  status: string;
+  created_at: string;
+}
+
 // Get all available meals from vendors
 export const getPublicMeals = async (): Promise<PublicMeal[]> => {
   const response = await api.get('/api/orders/meals');
@@ -55,6 +67,11 @@ export const placeOrder = async (items: OrderItem[]) => {
 // Get user's all orders
 export const getMyOrders = async (): Promise<MyOrder[]> => {
   const response = await api.get('/api/orders/my-orders');
+  return response.data;
+};
+
+export const getVendorOrders = async (): Promise<VendorOrder[]> => {
+  const response = await api.get('/api/orders/vendor-orders');
   return response.data;
 };
 

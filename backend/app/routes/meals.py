@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form
 from sqlalchemy.orm import Session
 from ..database import get_db
 from ..models.meal import Meal
+from ..models.order import Order
 from ..models.vendor_profile import VendorProfile
 from ..models.user import User
 from ..core.auth import get_current_user
@@ -195,10 +196,13 @@ def get_stats(
 ):
     profile = get_vendor_profile(current_user, db)
     total_meals = db.query(Meal).filter(Meal.vendor_id == profile.id).count()
+    vendor_orders = db.query(Order).filter(Order.vendor_id == profile.id).all()
+    total_orders = len(vendor_orders)
+    total_revenue = sum(order.total_price for order in vendor_orders)
 
     return {
         "total_meals": total_meals,
-        "total_orders": 0,
-        "total_revenue": 0.0,
+        "total_orders": total_orders,
+        "total_revenue": total_revenue,
         "rating": 0.0
     }
