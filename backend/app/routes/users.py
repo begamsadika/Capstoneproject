@@ -6,6 +6,10 @@ from ..models.user import User
 from ..core.auth import get_current_user
 from pydantic import BaseModel
 from typing import Optional
+from ..models.health_metric import HealthMetric
+from ..models.daily_log import DailyLog
+from ..services.health_calculator import build_health_metrics
+
 
 router = APIRouter(prefix="/api/users", tags=["Users"])
 
@@ -56,33 +60,31 @@ def user_onboarding(
     healthGoal: str = Form(...),
     dietaryPreferences: str = Form(""),
     allergies: str = Form(""),
+    activityLevel: str = Form("moderate"),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     if current_user.user_type != "general":
         raise HTTPException(status_code=403, detail="Not a general user account")
 
-    # Check already submitted
-    existing = (
-        db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
-    )
-
     height_val = float(height)
     weight_val = float(weight)
 
-    if existing:
-        # Update existing profile
-        existing.gender = gender
-        existing.height = height_val
-        existing.weight = weight_val
-        existing.health_goal = healthGoal
-        existing.dietary_preferences = dietaryPreferences
-        existing.allergies = allergies
-        db.commit()
-        db.refresh(existing)
-        profile = existing
+    # Save/update UserProfile
+    from ..models.user_profile import UserProfile
+
+    profile = (
+        db.query(UserProfile).filter(UserProfile.user_id == current_user.id).first()
+    )
+
+    if profile:
+        profile.gender = gender
+        profile.height = height_val
+        profile.weight = weight_val
+        profile.health_goal = healthGoal
+        profile.dietary_preferences = dietaryPreferences
+        profile.allergies = allergies
     else:
-        # Create new profile
         profile = UserProfile(
             user_id=current_user.id,
             gender=gender,
@@ -93,16 +95,44 @@ def user_onboarding(
             allergies=allergies,
         )
         db.add(profile)
-        db.commit()
-        db.refresh(profile)
 
-    bmi = calculate_bmi(height_val, weight_val)
+    db.commit()
+
+    # ✅ Calculate and save health metrics
+    metrics_data = build_health_metrics(
+        user_id=current_user.id,
+        gender=gender,
+        height_cm=height_val,
+        weight_kg=weight_val,
+        health_goal=healthGoal,
+        activity_level=activityLevel,
+        age=30,  # default age
+        dietary_pref=dietaryPreferences,
+        allergies=allergies,
+    )
+
+    existing_metric = (
+        db.query(HealthMetric).filter(HealthMetric.user_id == current_user.id).first()
+    )
+
+    if existing_metric:
+        for key, val in metrics_data.items():
+            setattr(existing_metric, key, val)
+    else:
+        metric = HealthMetric(**metrics_data)
+        db.add(metric)
+
+    db.commit()
 
     return {
-        "message": "Onboarding completed successfully!",
-        "bmi": bmi,
-        "bmi_category": bmi_category(bmi),
-        "calorie_goal": calorie_goal(healthGoal),
+        "message": "Onboarding completed!",
+        "bmi": metrics_data["bmi"],
+        "bmi_category": metrics_data["bmi_category"],
+        "calorie_goal": metrics_data["target_calories"],
+        "maintenance_calories": metrics_data["maintenance_calories"],
+        "protein_target_g": metrics_data["protein_target_g"],
+        "carbs_target_g": metrics_data["carbs_target_g"],
+        "fat_target_g": metrics_data["fat_target_g"],
     }
 
 

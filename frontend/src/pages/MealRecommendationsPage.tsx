@@ -367,7 +367,10 @@ export function MealRecommendationsPage({
                             className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-slate-900"
                           >
                             <img
-                              src={meal.image_url || FALLBACK_IMAGE}
+                              src={
+                                resolveImageUrl(meal.image_url) ||
+                                FALLBACK_IMAGE
+                              }
                               alt={meal.name}
                               className="h-14 w-14 shrink-0 rounded-lg object-cover"
                             />
