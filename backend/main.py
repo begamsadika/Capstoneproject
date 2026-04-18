@@ -11,6 +11,8 @@ from app.models.vendor_profile import VendorProfile
 from app.models.vendor_approval import VendorApproval
 from app.models.meal import Meal
 from app.models.order import Order
+from app.models.health_metric import HealthMetric
+from app.models.daily_log import DailyLog
 
 # Import routes
 from app.routes.auth import router as auth_router
@@ -18,6 +20,7 @@ from app.routes.vender import router as vendor_router
 from app.routes.meals import router as meals_router
 from app.routes.users import router as users_router
 from app.routes.orders import router as orders_router
+from app.routes.health import router as health_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -42,6 +45,7 @@ app.include_router(vendor_router)
 app.include_router(meals_router)
 app.include_router(users_router)
 app.include_router(orders_router)
+app.include_router(health_router)
 
 
 @app.get("/")

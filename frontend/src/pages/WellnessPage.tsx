@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
 import {
+  getMyOrders,
+  getTodaySummary,
+  cancelOrder,
+  TodaySummary,
+  MyOrder,
+} from "../api/orders";
+import {
   ArrowLeft,
   ArrowRight,
   Bell,
@@ -21,12 +28,6 @@ import type { LucideIcon } from "lucide-react";
 import type { AppPage } from "../types/page";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import { getUserProfile, UserProfile } from "../api/user";
-import {
-  getTodaySummary,
-  getMyOrders,
-  TodaySummary,
-  MyOrder,
-} from "../api/orders";
 
 interface WellnessPageProps {
   onNavigate: (page: AppPage) => void;
@@ -376,10 +377,12 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
             </div>
 
             {loading ? (
-              <p className="text-slate-500">Loading orders...</p>
+              <div className="flex justify-center py-12">
+                <div className="h-8 w-8 animate-spin rounded-full border-4 border-wellora border-t-transparent" />
+              </div>
             ) : orders.length === 0 ? (
               <div className="rounded-2xl border border-dashed border-slate-200 bg-white p-12 text-center dark:border-slate-700 dark:bg-slate-900">
-                <ShoppingBag className="mx-auto h-12 w-12 text-slate-300 dark:text-slate-600" />
+                <ShoppingBag className="mx-auto h-12 w-12 text-slate-300" />
                 <p className="mt-4 text-slate-500">No orders yet.</p>
                 <button
                   type="button"
@@ -395,10 +398,10 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
                   <thead>
                     <tr className="border-b border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800">
                       <th className="px-5 py-3 font-semibold text-slate-600 dark:text-slate-300">
-                        Order ID
+                        Meal
                       </th>
                       <th className="px-5 py-3 font-semibold text-slate-600 dark:text-slate-300">
-                        Quantity
+                        Qty
                       </th>
                       <th className="px-5 py-3 font-semibold text-slate-600 dark:text-slate-300">
                         Total
@@ -409,6 +412,9 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
                       <th className="px-5 py-3 font-semibold text-slate-600 dark:text-slate-300">
                         Date
                       </th>
+                      <th className="px-5 py-3 font-semibold text-slate-600 dark:text-slate-300">
+                        Action
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
@@ -417,21 +423,36 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
                         key={order.id}
                         className="hover:bg-slate-50 dark:hover:bg-slate-800/50"
                       >
-                        <td className="px-5 py-3 font-mono text-xs font-medium text-slate-900 dark:text-white">
-                          #{order.id}
+                        <td className="px-5 py-3">
+                          <div className="flex items-center gap-3">
+                            {order.meal_image && (
+                              <img
+                                src={order.meal_image}
+                                alt=""
+                                className="h-9 w-9 rounded-lg object-cover shrink-0"
+                              />
+                            )}
+                            <span className="font-medium text-slate-900 dark:text-white">
+                              {order.meal_name}
+                            </span>
+                          </div>
                         </td>
                         <td className="px-5 py-3 text-slate-700 dark:text-slate-300">
-                          {order.quantity}x
+                          ×{order.quantity}
                         </td>
                         <td className="px-5 py-3 font-semibold text-slate-900 dark:text-white">
                           ${order.total_price.toFixed(2)}
                         </td>
                         <td className="px-5 py-3">
                           <span
-                            className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                            className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${
                               order.status === "pending"
                                 ? "bg-amber-100 text-amber-800 dark:bg-amber-950/40 dark:text-amber-200"
-                                : "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200"
+                                : order.status === "confirmed"
+                                  ? "bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-200"
+                                  : order.status === "delivered"
+                                    ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200"
+                                    : "bg-red-100 text-red-800 dark:bg-red-950/40 dark:text-red-200"
                             }`}
                           >
                             {order.status}
@@ -439,6 +460,30 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
                         </td>
                         <td className="px-5 py-3 text-xs text-slate-500">
                           {new Date(order.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="px-5 py-3">
+                          {order.status === "pending" && (
+                            <button
+                              type="button"
+                              onClick={async () => {
+                                try {
+                                  await cancelOrder(order.id);
+                                  setOrders((prev) =>
+                                    prev.map((o) =>
+                                      o.id === order.id
+                                        ? { ...o, status: "cancelled" }
+                                        : o,
+                                    ),
+                                  );
+                                } catch {
+                                  alert("Failed to cancel order");
+                                }
+                              }}
+                              className="rounded-lg px-3 py-1.5 text-xs font-medium text-red-600 ring-1 ring-red-200 hover:bg-red-50"
+                            >
+                              Cancel
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))}

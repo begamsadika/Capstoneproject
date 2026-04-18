@@ -1,8 +1,8 @@
-from datetime import date
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
+from datetime import date, datetime
 from ..database import get_db
 from ..models.order import Order
 from ..models.meal import Meal
@@ -13,6 +13,7 @@ from ..core.auth import get_current_user
 router = APIRouter(prefix="/api/orders", tags=["Orders"])
 
 
+# ─── SCHEMAS ─────────────────────────────────────
 class OrderItem(BaseModel):
     meal_id: int
     quantity: int
@@ -22,19 +23,11 @@ class PlaceOrderRequest(BaseModel):
     items: List[OrderItem]
 
 
-def get_vendor_profile(current_user: User, db: Session) -> VendorProfile:
-    if current_user.user_type != "vendor":
-        raise HTTPException(status_code=403, detail="Not a vendor account")
-
-    profile = (
-        db.query(VendorProfile).filter(VendorProfile.user_id == current_user.id).first()
-    )
-    if not profile:
-        raise HTTPException(status_code=404, detail="Vendor profile not found")
-    return profile
+class UpdateOrderStatus(BaseModel):
+    status: str  # pending / confirmed / delivered / cancelled
 
 
-# ─── GET ALL PUBLIC MEALS (for menu page) ────────
+# ─── GET ALL PUBLIC MEALS ─────────────────────────
 @router.get("/meals")
 def get_public_meals(db: Session = Depends(get_db)):
     meals = db.query(Meal).filter(Meal.available == True).all()
@@ -47,8 +40,8 @@ def get_public_meals(db: Session = Depends(get_db)):
             "dietary": m.dietary,
             "price": m.price,
             "vendor_id": m.vendor_id,
-            "description": getattr(m, "description", ""),
-            "image_url": getattr(m, "image_url", ""),
+            "description": getattr(m, "description", "") or "",
+            "image_url": getattr(m, "image_url", "") or "",
         }
         for m in meals
     ]
@@ -94,7 +87,7 @@ def place_order(
     }
 
 
-# ─── GET USER ORDERS ──────────────────────────────
+# ─── GET USER ORDERS (with meal name) ────────────
 @router.get("/my-orders")
 def get_my_orders(
     current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
@@ -106,82 +99,204 @@ def get_my_orders(
         .all()
     )
 
-    return [
-        {
-            "id": o.id,
-            "meal_id": o.meal_id,
-            "quantity": o.quantity,
-            "total_price": o.total_price,
-            "status": o.status,
-            "created_at": str(o.created_at),
-        }
-        for o in orders
-    ]
-
-
-@router.get("/vendor-orders")
-def get_vendor_orders(
-    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
-):
-    profile = get_vendor_profile(current_user, db)
-    orders = (
-        db.query(Order)
-        .filter(Order.vendor_id == profile.id)
-        .order_by(Order.created_at.desc())
-        .all()
-    )
-
-    results = []
-    for order in orders:
-        meal = db.query(Meal).filter(Meal.id == order.meal_id).first()
-        customer = db.query(User).filter(User.id == order.user_id).first()
-        results.append(
+    result = []
+    for o in orders:
+        meal = db.query(Meal).filter(Meal.id == o.meal_id).first()
+        result.append(
             {
-                "id": order.id,
-                "customer_name": customer.name if customer else "Unknown Customer",
-                "customer_email": customer.email if customer else "",
-                "meal_name": meal.name if meal else "Unknown Meal",
-                "quantity": order.quantity,
-                "unit_price": order.unit_price,
-                "total_price": order.total_price,
-                "status": order.status,
-                "created_at": str(order.created_at),
+                "id": o.id,
+                "meal_id": o.meal_id,
+                "meal_name": meal.name if meal else "Unknown",
+                "meal_image": getattr(meal, "image_url", "") if meal else "",
+                "quantity": o.quantity,
+                "unit_price": o.unit_price,
+                "total_price": o.total_price,
+                "status": o.status,
+                "created_at": str(o.created_at),
             }
         )
+    return result
 
-    return results
-    
 
-# ─── GET TODAY'S CALORIE SUMMARY ─────────────────
+# ─── CANCEL ORDER (user) ─────────────────────────
+@router.put("/{order_id}/cancel")
+def cancel_order(
+    order_id: int,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    order = (
+        db.query(Order)
+        .filter(Order.id == order_id, Order.user_id == current_user.id)
+        .first()
+    )
+
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    if order.status != "pending":
+        raise HTTPException(
+            status_code=400, detail="Only pending orders can be cancelled"
+        )
+
+    order.status = "cancelled"
+    db.commit()
+    return {"message": "Order cancelled successfully"}
+
+
+# ─── TODAY SUMMARY (for wellness page) ───────────
 @router.get("/today-summary")
 def get_today_summary(
-    current_user: User = Depends(get_current_user),
-    db: Session        = Depends(get_db)
+    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
 ):
     today = date.today()
-    orders = db.query(Order).filter(
-        Order.user_id   == current_user.id,
-        Order.created_at >= today
-    ).all()
+    orders = (
+        db.query(Order)
+        .filter(
+            Order.user_id == current_user.id,
+            Order.created_at >= datetime.combine(today, datetime.min.time()),
+            Order.status != "cancelled",
+        )
+        .all()
+    )
 
     total_calories = 0
     meal_log = []
 
-    for order in orders:
-        meal = db.query(Meal).filter(Meal.id == order.meal_id).first()
+    for o in orders:
+        meal = db.query(Meal).filter(Meal.id == o.meal_id).first()
         if meal:
-            calories = meal.calories * order.quantity
+            calories = meal.calories * o.quantity
             total_calories += calories
-            meal_log.append({
-                "name":      meal.name,
-                "calories":  calories,
-                "quantity":  order.quantity,
-                "category":  meal.category,
-                "time":      str(order.created_at.strftime("%I:%M %p")),
-            })
+            meal_log.append(
+                {
+                    "name": meal.name,
+                    "calories": calories,
+                    "quantity": o.quantity,
+                    "category": meal.category,
+                    "time": o.created_at.strftime("%I:%M %p"),
+                    "image_url": getattr(meal, "image_url", "") or "",
+                }
+            )
 
     return {
         "total_calories": total_calories,
-        "meal_log":       meal_log,
-        "order_count":    len(orders),
+        "meal_log": meal_log,
+        "order_count": len(orders),
+    }
+
+
+# ════════════════════════════════════════════════
+# VENDOR ORDER MANAGEMENT
+# ════════════════════════════════════════════════
+
+
+# ─── GET VENDOR ORDERS ────────────────────────────
+@router.get("/vendor/all")
+def get_vendor_orders(
+    status: Optional[str] = None,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if current_user.user_type != "vendor":
+        raise HTTPException(status_code=403, detail="Not a vendor account")
+
+    profile = (
+        db.query(VendorProfile).filter(VendorProfile.user_id == current_user.id).first()
+    )
+    if not profile:
+        raise HTTPException(status_code=404, detail="Vendor profile not found")
+
+    query = db.query(Order).filter(Order.vendor_id == profile.id)
+    if status:
+        query = query.filter(Order.status == status)
+
+    orders = query.order_by(Order.created_at.desc()).all()
+
+    result = []
+    for o in orders:
+        meal = db.query(Meal).filter(Meal.id == o.meal_id).first()
+        user = db.query(User).filter(User.id == o.user_id).first()
+        result.append(
+            {
+                "id": o.id,
+                "meal_id": o.meal_id,
+                "meal_name": meal.name if meal else "Unknown",
+                "meal_image": getattr(meal, "image_url", "") if meal else "",
+                "customer_name": user.name if user else "Unknown",
+                "customer_email": user.email if user else "",
+                "quantity": o.quantity,
+                "unit_price": o.unit_price,
+                "total_price": o.total_price,
+                "status": o.status,
+                "created_at": str(o.created_at),
+            }
+        )
+    return result
+
+
+# ─── UPDATE ORDER STATUS (vendor) ────────────────
+@router.put("/vendor/{order_id}/status")
+def update_order_status(
+    order_id: int,
+    data: UpdateOrderStatus,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if current_user.user_type != "vendor":
+        raise HTTPException(status_code=403, detail="Not a vendor account")
+
+    allowed = ["pending", "confirmed", "delivered", "cancelled"]
+    if data.status not in allowed:
+        raise HTTPException(status_code=400, detail=f"Status must be one of: {allowed}")
+
+    profile = (
+        db.query(VendorProfile).filter(VendorProfile.user_id == current_user.id).first()
+    )
+
+    order = (
+        db.query(Order)
+        .filter(Order.id == order_id, Order.vendor_id == profile.id)
+        .first()
+    )
+
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+
+    order.status = data.status
+    db.commit()
+
+    return {"message": f"Order status updated to {data.status}"}
+
+
+# ─── VENDOR ORDER STATS ───────────────────────────
+@router.get("/vendor/stats")
+def get_vendor_order_stats(
+    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
+):
+    if current_user.user_type != "vendor":
+        raise HTTPException(status_code=403, detail="Not a vendor account")
+
+    profile = (
+        db.query(VendorProfile).filter(VendorProfile.user_id == current_user.id).first()
+    )
+    if not profile:
+        return {"total_orders": 0, "total_revenue": 0, "pending": 0, "delivered": 0}
+
+    orders = (
+        db.query(Order)
+        .filter(Order.vendor_id == profile.id, Order.status != "cancelled")
+        .all()
+    )
+
+    total_revenue = sum(o.total_price for o in orders)
+    pending = sum(1 for o in orders if o.status == "pending")
+    confirmed = sum(1 for o in orders if o.status == "confirmed")
+    delivered = sum(1 for o in orders if o.status == "delivered")
+
+    return {
+        "total_orders": len(orders),
+        "total_revenue": round(total_revenue, 2),
+        "pending": pending,
+        "confirmed": confirmed,
+        "delivered": delivered,
     }

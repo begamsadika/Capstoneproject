@@ -18,6 +18,7 @@ import type { AppPage } from "../types/page";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import { getPublicMeals, placeOrder, PublicMeal } from "../api/orders";
 import { resolveImageUrl } from "../api/client";
+import { syncDailyLog } from "../api/health";
 
 interface MenuOrderPageProps {
   onNavigate: (page: AppPage) => void;
@@ -163,6 +164,7 @@ export function MenuOrderPage({ onNavigate }: MenuOrderPageProps) {
           quantity: l.qty,
         })),
       );
+      await syncDailyLog();
       setOrderSuccess(true);
       emptyCart();
       setTimeout(() => setOrderSuccess(false), 5000);
