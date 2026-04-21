@@ -110,3 +110,12 @@ export const getVendorOrderStats = async (): Promise<VendorOrderStats> => {
   const res = await api.get('/api/orders/vendor/stats');
   return res.data;
 };
+
+export const submitRating = async (orderId: number, rating: number, review?: string) => {
+  const res = await api.post('/api/orders/rate', {
+    order_id: orderId,
+    rating,
+    review: review ?? '',
+  });
+  return res.data;
+};
