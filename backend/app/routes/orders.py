@@ -8,6 +8,7 @@ from ..models.order import Order
 from ..models.meal import Meal
 from ..models.user import User
 from ..models.vendor_profile import VendorProfile
+from ..models.meal_rating import MealRating
 from ..core.auth import get_current_user
 
 router = APIRouter(prefix="/api/orders", tags=["Orders"])
@@ -299,4 +300,91 @@ def get_vendor_order_stats(
         "pending": pending,
         "confirmed": confirmed,
         "delivered": delivered,
+    }
+
+
+class SubmitRatingRequest(BaseModel):
+    order_id: int
+    rating: int  # 1-5
+    review: Optional[str] = None
+
+
+# ─── SUBMIT RATING (user) ────────────────────────
+@router.post("/rate")
+def submit_rating(
+    data: SubmitRatingRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if not 1 <= data.rating <= 5:
+        raise HTTPException(status_code=400, detail="Rating must be 1-5")
+
+    order = (
+        db.query(Order)
+        .filter(Order.id == data.order_id, Order.user_id == current_user.id)
+        .first()
+    )
+
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    if order.status != "delivered":
+        raise HTTPException(status_code=400, detail="Can only rate delivered orders")
+
+    existing = db.query(MealRating).filter(MealRating.order_id == data.order_id).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Already rated this order")
+
+    rating = MealRating(
+        order_id=data.order_id,
+        meal_id=order.meal_id,
+        user_id=current_user.id,
+        vendor_id=order.vendor_id,
+        rating=data.rating,
+        review=data.review,
+    )
+    db.add(rating)
+    db.commit()
+
+    return {"message": "Rating submitted! Thank you."}
+
+
+# ─── GET VENDOR RATINGS ───────────────────────────
+@router.get("/vendor/ratings")
+def get_vendor_ratings(
+    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
+):
+    if current_user.user_type != "vendor":
+        raise HTTPException(status_code=403, detail="Not a vendor account")
+
+    profile = (
+        db.query(VendorProfile).filter(VendorProfile.user_id == current_user.id).first()
+    )
+
+    ratings = (
+        db.query(MealRating)
+        .filter(MealRating.vendor_id == profile.id)
+        .order_by(MealRating.created_at.desc())
+        .all()
+    )
+
+    result = []
+    for r in ratings:
+        meal = db.query(Meal).filter(Meal.id == r.meal_id).first()
+        user = db.query(User).filter(User.id == r.user_id).first()
+        result.append(
+            {
+                "id": r.id,
+                "meal_name": meal.name if meal else "Unknown",
+                "customer_name": user.name if user else "Unknown",
+                "rating": r.rating,
+                "review": r.review or "",
+                "created_at": str(r.created_at),
+            }
+        )
+
+    avg = sum(r["rating"] for r in result) / max(len(result), 1)
+    return {
+        "ratings": result,
+        "avg_rating": round(avg, 1),
+        "total": len(result),
     }
