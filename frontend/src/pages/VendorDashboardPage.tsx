@@ -218,7 +218,7 @@ function VendorOrdersSection() {
             },
             {
               label: "Total Revenue",
-              value: `$${stats.total_revenue.toFixed(2)}`,
+              value: `Rs ${stats.total_revenue.toFixed(2)}`,
               color: "text-wellora",
             },
             { label: "Pending", value: stats.pending, color: "text-amber-600" },
@@ -782,8 +782,8 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                   },
                   {
                     label: "Total Revenue",
-                    value: `$${stats.total_revenue.toLocaleString()}`,
-                    icon: <DollarSign className="h-5 w-5" />,
+                    value: `Rs ${stats.total_revenue.toLocaleString()}`,
+                    // icon: <DollarSign className="h-5 w-5" />,
                   },
                   {
                     label: "Customer Rating",

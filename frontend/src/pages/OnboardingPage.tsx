@@ -160,12 +160,12 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
       <div className="w-full max-w-md relative">
         <div className="absolute inset-0 bg-wellora/25 rounded-3xl blur-2xl opacity-40"></div>
         <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20 dark:border-gray-700/50">
-          <h2 className="text-3xl font-bold text-gray-800 dark:text-white mb-2 text-center">
+          <h2 className="text-4xl font-bold text-gray-800 dark:text-white mb-2 text-center">
             {role === "user"
               ? "User Onboarding"
               : `${role.charAt(0).toUpperCase() + role.slice(1)} Onboarding`}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-8 text-center">
+          <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 text-center">
             Please provide some initial details to personalize your experience.
           </p>
 
@@ -173,7 +173,7 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
             {role === "user" && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                     Gender
                   </label>
                   <select
@@ -192,27 +192,27 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
 
                 <div className="flex space-x-4">
                   <div className="flex-1">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                       Height (cm)
                     </label>
                     <input
                       type="number"
                       value={height}
                       onChange={(e) => setHeight(e.target.value)}
-                      className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white py-3 pl-3"
+                      className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white py-3 pl-3 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       placeholder="e.g., 175"
                       required
                     />
                   </div>
                   <div className="flex-1">
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                    <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                       Weight (kg)
                     </label>
                     <input
                       type="number"
                       value={weight}
                       onChange={(e) => setWeight(e.target.value)}
-                      className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white py-3 pl-3"
+                      className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white py-3 pl-3 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                       placeholder="e.g., 70"
                       required
                     />
@@ -220,7 +220,7 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                     Health Goal
                   </label>
                   <select
@@ -241,28 +241,28 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                     Dietary Preferences (Optional)
                   </label>
-                  <input
-                    type="text"
+                  <textarea
                     value={dietaryPreferences}
                     onChange={(e) => setDietaryPreferences(e.target.value)}
-                    className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
+                    className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white py-3 pl-3 min-h-[80px] resize-none"
                     placeholder="e.g., Vegetarian, Vegan"
+                    rows={3}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                     Allergies (Optional)
                   </label>
-                  <input
-                    type="text"
+                  <textarea
                     value={allergies}
                     onChange={(e) => setAllergies(e.target.value)}
-                    className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white"
+                    className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white py-3 pl-3 min-h-[80px] resize-none"
                     placeholder="e.g., Peanuts, Gluten"
+                    rows={3}
                   />
                 </div>
               </>
@@ -271,7 +271,7 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
             {role === "vendor" && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                     Business Name
                   </label>
                   <input
@@ -284,7 +284,7 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                     Business Type
                   </label>
                   <input
@@ -297,7 +297,7 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                     Food Safety Certificate
                   </label>
                   <input
@@ -317,7 +317,7 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                     Service Area
                   </label>
                   <input
@@ -335,7 +335,7 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
             {role === "partner" && (
               <>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                     Organization Name
                   </label>
                   <input
@@ -348,7 +348,7 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                     Partner Type
                   </label>
                   <select
@@ -365,7 +365,7 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                     Registration Number
                   </label>
                   <input
@@ -378,7 +378,7 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
                     Upload License
                   </label>
                   <input
