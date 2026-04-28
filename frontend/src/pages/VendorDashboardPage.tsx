@@ -337,7 +337,7 @@ function VendorOrdersSection() {
                       ×{order.quantity}
                     </td>
                     <td className="px-5 py-3 font-semibold tabular-nums text-slate-900 dark:text-white">
-                      ${order.total_price.toFixed(2)}
+                      Rs {order.total_price.toFixed(2)}
                     </td>
                     <td className="px-5 py-3">
                       <span
@@ -942,7 +942,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                         className="flex h-full min-w-0 flex-1 flex-col items-center justify-end gap-2"
                       >
                         <span className="text-[10px] font-medium tabular-nums text-slate-500">
-                          ${(d.value / 1000).toFixed(1)}k
+                          Rs {(d.value / 1000).toFixed(1)}k
                         </span>
                         <div
                           className="w-full max-w-[52px] rounded-t-md bg-gradient-to-t from-wellora to-emerald-400/90 shadow-sm"
@@ -1076,7 +1076,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                                 {row.dietary}
                               </td>
                               <td className="px-4 py-3 font-medium tabular-nums text-slate-900 dark:text-white">
-                                ${row.price.toFixed(2)}
+                                Rs {row.price.toFixed(2)}
                               </td>
                               <td className="px-4 py-3">
                                 <span
@@ -1187,7 +1187,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                           {m.name}
                         </h3>
                         <span className="shrink-0 text-lg font-bold text-wellora">
-                          ${m.price.toFixed(2)}
+                          Rs {m.price.toFixed(2)}
                         </span>
                       </div>
                       <p className="mt-2 text-xs text-slate-500">
