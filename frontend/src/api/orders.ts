@@ -51,6 +51,12 @@ export interface VendorOrderStats {
   delivered: number;
 }
 
+export interface ManualVendorOrderPayload {
+  customer_email: string;
+  meal_id: number;
+  quantity: number;
+}
+
 export interface MealLogItem {
   name: string;
   calories: number;
@@ -108,5 +114,12 @@ export const updateOrderStatus = async (orderId: number, status: string) => {
 
 export const getVendorOrderStats = async (): Promise<VendorOrderStats> => {
   const res = await api.get('/api/orders/vendor/stats');
+  return res.data;
+};
+
+export const createVendorManualOrder = async (
+  payload: ManualVendorOrderPayload
+) => {
+  const res = await api.post('/api/orders/vendor/manual', payload);
   return res.data;
 };

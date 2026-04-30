@@ -449,8 +449,8 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
           </button>
           <button
             type="button"
-            onClick={() => setVendorSection("orders")}
-            className={navItemClass(vendorSection === "orders")}
+            onClick={() => onNavigate("vendor-order-management")}
+            className={navItemClass(false)}
           >
             <Store className="h-4 w-4 shrink-0" /> Orders
           </button>

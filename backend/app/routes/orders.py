@@ -27,6 +27,12 @@ class UpdateOrderStatus(BaseModel):
     status: str  # pending / confirmed / delivered / cancelled
 
 
+class ManualOrderRequest(BaseModel):
+    customer_email: str
+    meal_id: int
+    quantity: int = 1
+
+
 # ─── GET ALL PUBLIC MEALS ─────────────────────────
 @router.get("/meals")
 def get_public_meals(db: Session = Depends(get_db)):
@@ -299,4 +305,67 @@ def get_vendor_order_stats(
         "pending": pending,
         "confirmed": confirmed,
         "delivered": delivered,
+    }
+
+
+# ─── CREATE MANUAL ORDER (vendor) ─────────────────
+@router.post("/vendor/manual")
+def create_manual_vendor_order(
+    data: ManualOrderRequest,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    if current_user.user_type != "vendor":
+        raise HTTPException(status_code=403, detail="Not a vendor account")
+
+    if data.quantity <= 0:
+        raise HTTPException(status_code=400, detail="Quantity must be greater than zero")
+
+    profile = (
+        db.query(VendorProfile).filter(VendorProfile.user_id == current_user.id).first()
+    )
+    if not profile:
+        raise HTTPException(status_code=404, detail="Vendor profile not found")
+
+    customer = db.query(User).filter(User.email == data.customer_email).first()
+    if not customer:
+        raise HTTPException(
+            status_code=404,
+            detail="Customer email not found. Customer must register first.",
+        )
+
+    meal = (
+        db.query(Meal)
+        .filter(Meal.id == data.meal_id, Meal.vendor_id == profile.id, Meal.available == True)
+        .first()
+    )
+    if not meal:
+        raise HTTPException(
+            status_code=404,
+            detail="Meal not found for this vendor or unavailable.",
+        )
+
+    order = Order(
+        user_id=customer.id,
+        meal_id=meal.id,
+        vendor_id=profile.id,
+        quantity=data.quantity,
+        unit_price=meal.price,
+        total_price=meal.price * data.quantity,
+        status="pending",
+    )
+    db.add(order)
+    db.commit()
+    db.refresh(order)
+
+    return {
+        "message": "Manual order created successfully",
+        "order_id": order.id,
+        "customer_name": customer.name,
+        "customer_email": customer.email,
+        "meal_name": meal.name,
+        "quantity": order.quantity,
+        "total_price": order.total_price,
+        "status": order.status,
+        "created_at": str(order.created_at),
     }

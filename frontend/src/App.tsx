@@ -13,6 +13,7 @@ import { MealRecommendationsPage } from "./pages/MealRecommendationsPage";
 import { WellnessPage } from "./pages/WellnessPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { VendorDashboardPage } from "./pages/VendorDashboardPage";
+import { VendorOrdermanagement } from "./pages/VendorOrdermanagement";
 import type { AppPage } from "./types/page";
 import type { VendorStatus } from "./api/vendor";
 
@@ -36,6 +37,7 @@ const validPages: Page[] = [
   "user-wellness",
   "user-settings",
   "vendor-dashboard",
+  "vendor-order-management",
   "partner-dashboard",
 ];
 
@@ -179,6 +181,9 @@ function App() {
         )}
         {currentPage === "vendor-dashboard" && (
           <VendorDashboardPage onNavigate={setCurrentPage} />
+        )}
+        {currentPage === "vendor-order-management" && (
+          <VendorOrdermanagement onNavigate={setCurrentPage} />
         )}
         {currentPage === "partner-dashboard" && (
           <div>Partner Dashboard (Placeholder)</div>
