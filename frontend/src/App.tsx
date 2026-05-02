@@ -13,7 +13,6 @@ import { MealRecommendationsPage } from "./pages/MealRecommendationsPage";
 import { WellnessPage } from "./pages/WellnessPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { VendorDashboardPage } from "./pages/VendorDashboardPage";
-import { VendorOrdermanagement } from "./pages/VendorOrdermanagement";
 import type { AppPage } from "./types/page";
 import type { VendorStatus } from "./api/vendor";
 
@@ -183,7 +182,10 @@ function App() {
           <VendorDashboardPage onNavigate={setCurrentPage} />
         )}
         {currentPage === "vendor-order-management" && (
-          <VendorOrdermanagement onNavigate={setCurrentPage} />
+          <VendorDashboardPage
+            onNavigate={setCurrentPage}
+            initialSection="orders"
+          />
         )}
         {currentPage === "partner-dashboard" && (
           <div>Partner Dashboard (Placeholder)</div>

@@ -1,21 +1,11 @@
 import {
-  Bell,
-  CheckCircle2,
   ChevronLeft,
-  ChevronRight,
-  Clock3,
   Filter,
-  Grid3x3,
-  HelpCircle,
-  MoreHorizontal,
   Printer,
   Search,
-  ShoppingBag,
-  Truck,
   X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import type { ReactNode } from "react";
 import {
   getVendorOrders,
   getVendorOrderStats,
@@ -210,95 +200,61 @@ export function VendorOrdermanagement({ onNavigate }: VendorOrdermanagementProps
   }, [orders]);
 
   return (
-    <div className="min-h-dvh bg-[#f4f7fb] text-slate-800 dark:bg-slate-950 dark:text-slate-100">
-      <div className="mx-auto flex max-w-[1380px] gap-5 p-4 md:p-6">
-        <section className="min-w-0 flex-1 rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
-          <header className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-200 px-5 py-4 dark:border-slate-800">
-            <div className="flex items-center gap-2">
-              <span className="rounded-full bg-cyan-50 p-2 text-cyan-600 dark:bg-cyan-900/40">
-                <ShoppingBag className="h-5 w-5" />
-              </span>
-              <div>
-                <h1 className="text-lg font-semibold text-cyan-600">
-                  Wellora - Vendor Order Management
-                </h1>
-              </div>
-            </div>
+    <div>
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            Orders
+          </h1>
+          <p className="mt-1 text-sm text-slate-500">
+            Manage and track your customer fulfillments in real-time.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={() => onNavigate("vendor-dashboard")}
+            className="inline-flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+          >
+            <ChevronLeft className="h-4 w-4" />
+            Back
+          </button>
+          <button
+            type="button"
+            onClick={loadOrdersAndStats}
+            className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+          >
+            <Filter className="h-4 w-4" />
+            Refresh
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              setManualOrderOpen(true);
+              setManualMessage(null);
+            }}
+            className="inline-flex shrink-0 items-center justify-center rounded-xl bg-wellora px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-wellora-hover"
+          >
+            + Add Manual Order
+          </button>
+        </div>
+      </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <label className="flex min-w-[260px] items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-sm text-slate-500 focus-within:border-cyan-300 dark:border-slate-700 dark:bg-slate-800">
-                <Search className="h-4 w-4" />
-                <input
-                  type="text"
-                  placeholder="Search orders, user, or ID..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-transparent text-sm outline-none placeholder:text-slate-400"
-                />
-              </label>
-              <button
-                type="button"
-                className="rounded-xl border border-slate-200 p-2 text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
-              >
-                <MoreHorizontal className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                className="rounded-xl border border-slate-200 p-2 text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
-              >
-                <Bell className="h-4 w-4" />
-              </button>
-              <button
-                type="button"
-                className="rounded-xl border border-slate-200 p-2 text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
-              >
-                <HelpCircle className="h-4 w-4" />
-              </button>
-            </div>
-          </header>
+      <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center">
+        <div className="relative min-w-0 flex-1">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+          <input
+            type="search"
+            placeholder="Search orders, user, or ID..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 focus:border-wellora focus:outline-none focus:ring-2 focus:ring-wellora/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+          />
+        </div>
+      </div>
 
-          <div className="p-5">
-            <div className="mb-5 flex flex-wrap items-start justify-between gap-4">
-              <div>
-                <button
-                  type="button"
-                  onClick={() => onNavigate("vendor-dashboard")}
-                  className="mb-3 inline-flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-                >
-                  <ChevronLeft className="h-3.5 w-3.5" />
-                  Back to Dashboard
-                </button>
-                <h2 className="text-3xl font-bold text-slate-900 dark:text-white">
-                  Orders
-                </h2>
-                <p className="mt-1 text-sm text-slate-500">
-                  Manage and track your customer fulfillments in real-time.
-                </p>
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={loadOrdersAndStats}
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-                >
-                  <Filter className="h-4 w-4" />
-                  Refresh
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setManualOrderOpen(true);
-                    setManualMessage(null);
-                  }}
-                  className="rounded-xl bg-wellora px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-wellora-hover"
-                >
-                  + Add Manual Order
-                </button>
-              </div>
-            </div>
-
-            <div className="mb-4 flex flex-wrap gap-5 border-b border-slate-200 pb-2 text-sm dark:border-slate-800">
-              {tabs.map((tab, idx) => (
+      <div className="mb-4 flex flex-wrap gap-5 border-b border-slate-200 pb-2 text-sm dark:border-slate-800">
+              {tabs.map((tab) => (
                 <button
                   key={tab.label}
                   type="button"
@@ -312,43 +268,23 @@ export function VendorOrdermanagement({ onNavigate }: VendorOrdermanagementProps
                   {tab.label}
                 </button>
               ))}
-            </div>
+      </div>
 
-            <div className="overflow-hidden rounded-2xl border border-slate-200 dark:border-slate-800">
-              <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-cyan-50 px-4 py-3 dark:border-slate-800 dark:bg-cyan-950/20">
-                <div className="flex items-center gap-3">
-                  <button
-                    type="button"
-                    className="rounded border border-slate-300 px-2.5 py-1 text-xs font-medium text-slate-700 hover:bg-white dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
-                  >
-                    Select All
-                  </button>
-                  <span className="text-xs text-slate-500">0 orders selected</span>
-                </div>
-                <div className="flex items-center gap-3 text-xs">
-                  <button
-                    type="button"
-                    className="font-medium text-slate-600 hover:text-slate-800 dark:text-slate-300"
-                  >
-                    Bulk Update Status
-                  </button>
-                  <button
-                    type="button"
-                    className="inline-flex items-center gap-1 font-medium text-slate-600 hover:text-slate-800 dark:text-slate-300"
-                  >
-                    <Printer className="h-3.5 w-3.5" />
-                    Print Manifest
-                  </button>
-                </div>
-              </div>
+      <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex flex-wrap items-center justify-end gap-3 border-b border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-800/60">
+          <button
+            type="button"
+            className="inline-flex items-center gap-1 text-xs font-medium text-slate-600 hover:text-slate-800 dark:text-slate-300"
+          >
+            <Printer className="h-3.5 w-3.5" />
+            Print Manifest
+          </button>
+        </div>
 
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[900px] text-left text-sm">
-                  <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:bg-slate-800/70">
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[900px] text-left text-sm">
+            <thead className="border-b border-slate-200 bg-slate-50 text-xs uppercase tracking-wide text-slate-500 dark:border-slate-800 dark:bg-slate-800/70">
                     <tr>
-                      <th className="px-4 py-3">
-                        <input type="checkbox" />
-                      </th>
                       <th className="px-4 py-3">Order ID</th>
                       <th className="px-4 py-3">Customer</th>
                       <th className="px-4 py-3">Items</th>
@@ -357,23 +293,23 @@ export function VendorOrdermanagement({ onNavigate }: VendorOrdermanagementProps
                       <th className="px-4 py-3">ETA / Time</th>
                       <th className="px-4 py-3">Actions</th>
                     </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
+            </thead>
+            <tbody className="divide-y divide-slate-200 dark:divide-slate-800">
                     {isLoading ? (
                       <tr>
-                        <td colSpan={8} className="px-4 py-10 text-center text-slate-500">
+                        <td colSpan={7} className="px-4 py-10 text-center text-slate-500">
                           Loading orders...
                         </td>
                       </tr>
                     ) : error ? (
                       <tr>
-                        <td colSpan={8} className="px-4 py-10 text-center text-rose-500">
+                        <td colSpan={7} className="px-4 py-10 text-center text-rose-500">
                           {error}
                         </td>
                       </tr>
                     ) : filteredOrders.length === 0 ? (
                       <tr>
-                        <td colSpan={8} className="px-4 py-10 text-center text-slate-500">
+                        <td colSpan={7} className="px-4 py-10 text-center text-slate-500">
                           No orders found for this filter.
                         </td>
                       </tr>
@@ -383,9 +319,6 @@ export function VendorOrdermanagement({ onNavigate }: VendorOrdermanagementProps
                           key={order.id}
                           className="hover:bg-slate-50 dark:hover:bg-slate-800/40"
                         >
-                          <td className="px-4 py-3">
-                            <input type="checkbox" />
-                          </td>
                           <td className="px-4 py-3 text-xs font-semibold text-cyan-600">
                             #ORD-{order.id}
                           </td>
@@ -455,123 +388,17 @@ export function VendorOrdermanagement({ onNavigate }: VendorOrdermanagementProps
                         </tr>
                       ))
                     )}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            </tbody>
+          </table>
+        </div>
 
-            <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm text-slate-500">
-              <p>
-                Showing 1-{filteredOrders.length} of {filteredOrders.length} orders
-              </p>
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
-                >
-                  <ChevronLeft className="h-4 w-4" />
-                  Previous
-                </button>
-                <button
-                  type="button"
-                  className="h-8 w-8 rounded-lg bg-wellora text-xs font-semibold text-white"
-                >
-                  1
-                </button>
-                <button type="button" className="h-8 w-8 rounded-lg text-xs">
-                  2
-                </button>
-                <button type="button" className="h-8 w-8 rounded-lg text-xs">
-                  3
-                </button>
-                <span className="px-1">...</span>
-                <button type="button" className="h-8 w-8 rounded-lg text-xs">
-                  5
-                </button>
-                <button
-                  type="button"
-                  className="inline-flex items-center gap-1 rounded-lg border border-slate-200 px-3 py-1.5 text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
-                >
-                  Next
-                  <ChevronRight className="h-4 w-4" />
-                </button>
-              </div>
-            </div>
+        <div className="flex items-center justify-center gap-2 border-t border-slate-200 px-4 py-4 dark:border-slate-700">
+          <div className="text-sm text-slate-500">
+            Total orders: <span className="font-semibold">{stats?.total_orders ?? filteredOrders.length}</span>
+            {" · "}
+            Completed today: <span className="font-semibold">{completedToday}</span>
           </div>
-        </section>
-
-        <aside className="w-full max-w-[290px] shrink-0 space-y-4">
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-              Quick Stats Today
-            </h3>
-            <div className="mt-3 space-y-3">
-              <StatRow
-                icon={<ShoppingBag className="h-4 w-4 text-cyan-600" />}
-                title="Total Orders"
-                value={String(stats?.total_orders ?? 0)}
-                note="+12%"
-              />
-              <StatRow
-                icon={<Truck className="h-4 w-4 text-violet-600" />}
-                title="Active Fulfilling"
-                value={String(stats?.confirmed ?? 0)}
-              />
-              <StatRow
-                icon={<Clock3 className="h-4 w-4 text-amber-600" />}
-                title="Awaiting Action"
-                value={String(stats?.pending ?? 0)}
-              />
-              <StatRow
-                icon={<CheckCircle2 className="h-4 w-4 text-emerald-600" />}
-                title="Completed Today"
-                value={String(completedToday)}
-              />
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div className="mb-3 flex items-center justify-between">
-              <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                Recent Alerts
-              </h3>
-              <span className="rounded bg-rose-100 px-2 py-0.5 text-[10px] font-semibold text-rose-700 dark:bg-rose-900/40 dark:text-rose-200">
-                3 Urgent
-              </span>
-            </div>
-            <div className="space-y-2.5 text-xs">
-              <AlertCard text="Order #ORD-9284 is exceeding ETA threshold." />
-              <AlertCard text="Customer requested cancellation for #ORD-9261." />
-              <AlertCard text="New pickup scheduled for 2:00 PM." />
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div className="mb-2 flex items-center justify-between">
-              <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                Vendor Performance
-              </h3>
-              <span className="text-xs font-semibold text-cyan-600">98.2%</span>
-            </div>
-            <p className="mb-2 text-xs text-slate-500">Accuracy Score</p>
-            <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800">
-              <div className="h-2 w-[98.2%] rounded-full bg-cyan-500" />
-            </div>
-            <p className="mt-3 text-[11px] text-slate-500">
-              You are in the top 5% of vendors this week. Keep it up!
-            </p>
-          </div>
-
-          <div className="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-xs text-slate-400 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <div className="mb-2 flex items-center justify-between">
-              <span>Privacy Policy</span>
-              <span>Terms</span>
-              <span>Support</span>
-              <Grid3x3 className="h-3.5 w-3.5" />
-            </div>
-            <p>© 2026 Wellora. All rights reserved.</p>
-          </div>
-        </aside>
+        </div>
       </div>
 
       {manualOrderOpen && (
@@ -668,38 +495,6 @@ export function VendorOrdermanagement({ onNavigate }: VendorOrdermanagementProps
           </div>
         </div>
       )}
-    </div>
-  );
-}
-
-interface StatRowProps {
-  icon: ReactNode;
-  title: string;
-  value: string;
-  note?: string;
-}
-
-function StatRow({ icon, title, value, note }: StatRowProps) {
-  return (
-    <div className="flex items-center gap-3 rounded-xl border border-slate-200 p-3 dark:border-slate-800">
-      <div className="rounded-lg bg-slate-100 p-2 dark:bg-slate-800">{icon}</div>
-      <div>
-        <p className="text-[11px] uppercase tracking-wide text-slate-500">{title}</p>
-        <p className="text-lg font-semibold text-slate-800 dark:text-slate-200">
-          {value}
-          {note && (
-            <span className="ml-1 text-xs font-medium text-emerald-600">{note}</span>
-          )}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function AlertCard({ text }: { text: string }) {
-  return (
-    <div className="rounded-xl border border-slate-200 bg-slate-50 px-3 py-2 text-slate-600 dark:border-slate-800 dark:bg-slate-800/40 dark:text-slate-300">
-      {text}
     </div>
   );
 }
