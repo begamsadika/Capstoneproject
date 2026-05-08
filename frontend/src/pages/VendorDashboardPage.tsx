@@ -4,13 +4,21 @@ import {
   Bell,
   CheckCircle2,
   Circle,
+  Clock,
+  FileText,
+  Filter,
   LayoutGrid,
+  Layers,
+  Lightbulb,
   LogOut,
   MapPin,
+  MessageSquare,
+  Moon,
   Package,
   Phone,
   Plus,
   ShoppingCart,
+  Sun,
   Star,
   Store,
   Search,
@@ -77,6 +85,34 @@ function VendorOrdersSection() {
   const [cancelModalOrder, setCancelModalOrder] = useState<VendorOrder | null>(null);
   const [cancelReason, setCancelReason] = useState("");
   const [cancelNotes, setCancelNotes] = useState("");
+  const [etaModal, setEtaModal] = useState<{
+    order: VendorOrder;
+    nextStatus: "preparing" | "ready";
+  } | null>(null);
+  const [etaMinutes, setEtaMinutes] = useState(20);
+  const [publicEtaMessage, setPublicEtaMessage] = useState("");
+  const [internalTeamNote, setInternalTeamNote] = useState("");
+  const [notifyCustomerSms, setNotifyCustomerSms] = useState(true);
+  const [bulkSelectedIds, setBulkSelectedIds] = useState<number[]>([]);
+  const [bulkUpdateOpen, setBulkUpdateOpen] = useState(false);
+  const [bulkNewStatus, setBulkNewStatus] = useState("confirmed");
+  const [bulkUpdating, setBulkUpdating] = useState(false);
+  const [bulkFulfillmentNote, setBulkFulfillmentNote] = useState("");
+  const [filtersOpen, setFiltersOpen] = useState(false);
+  const [appliedStatusFilters, setAppliedStatusFilters] = useState<string[]>([]);
+  const [draftStatusFilters, setDraftStatusFilters] = useState<string[]>([]);
+  const [appliedDeliveryOnly, setAppliedDeliveryOnly] = useState(false);
+  const [draftDeliveryOnly, setDraftDeliveryOnly] = useState(false);
+
+  const ETA_INCREMENTS = [10, 20, 30, 45, 60] as const;
+
+  /** Values must match `PUT /vendor/{id}/status` allowed list in the API. */
+  const BULK_STATUS_OPTIONS = [
+    { value: "pending", label: "Pending" },
+    { value: "confirmed", label: "Confirmed" },
+    { value: "delivered", label: "Ready for Pickup" },
+    { value: "cancelled", label: "Cancelled" },
+  ];
 
   const STATUS_TABS: Array<{ label: string; apiStatus?: string }> = [
     { label: "All" },
@@ -88,6 +124,17 @@ function VendorOrdersSection() {
     { label: "Completed", apiStatus: "delivered" },
     { label: "Cancelled", apiStatus: "cancelled" },
     { label: "Refunded", apiStatus: "cancelled" },
+  ];
+
+  const ORDER_STATUS_FILTER_OPTIONS = [
+    "pending",
+    "accepted",
+    "preparing",
+    "ready",
+    "out_for_delivery",
+    "delivered",
+    "cancelled",
+    "refunded",
   ];
 
   const STATUS_COLORS: Record<string, string> = {
@@ -126,11 +173,45 @@ function VendorOrdersSection() {
     return normalized.charAt(0).toUpperCase() + normalized.slice(1);
   };
 
+  const openFiltersPanel = () => {
+    setDraftStatusFilters(appliedStatusFilters);
+    setDraftDeliveryOnly(appliedDeliveryOnly);
+    setFiltersOpen(true);
+  };
+
+  const closeFiltersPanel = () => {
+    setFiltersOpen(false);
+  };
+
+  const clearDraftFilters = () => {
+    setDraftStatusFilters([]);
+    setDraftDeliveryOnly(false);
+  };
+
+  const toggleDraftStatusFilter = (status: string) => {
+    setDraftStatusFilters((prev) =>
+      prev.includes(status) ? prev.filter((s) => s !== status) : [...prev, status],
+    );
+  };
+
+  const applyFilters = () => {
+    setAppliedStatusFilters(draftStatusFilters);
+    setAppliedDeliveryOnly(draftDeliveryOnly);
+    setFiltersOpen(false);
+  };
+  const appliedFilterCount =
+    appliedStatusFilters.length + (appliedDeliveryOnly ? 1 : 0);
+  const draftFilterCount = draftStatusFilters.length + (draftDeliveryOnly ? 1 : 0);
+
   const selectedTab = STATUS_TABS.find((tab) => tab.label === activeTab) ?? STATUS_TABS[0];
 
   useEffect(() => {
     loadData();
   }, [selectedTab.apiStatus]);
+
+  useEffect(() => {
+    setBulkSelectedIds([]);
+  }, [activeTab]);
 
   useEffect(() => {
     if (!manualOrderOpen) return;
@@ -188,6 +269,49 @@ function VendorOrdersSection() {
     }
   };
 
+  const openEtaModal = (order: VendorOrder, nextStatus: "preparing" | "ready") => {
+    setEtaModal({ order, nextStatus });
+    setEtaMinutes(20);
+    setPublicEtaMessage("");
+    setInternalTeamNote("");
+    setNotifyCustomerSms(true);
+  };
+
+  const closeEtaModal = () => setEtaModal(null);
+
+  const saveEtaModal = async () => {
+    if (!etaModal) return;
+    setUpdatingId(etaModal.order.id);
+    try {
+      await updateOrderStatus(etaModal.order.id, etaModal.nextStatus);
+      await loadData();
+      closeEtaModal();
+    } catch (err) {
+      console.error("Failed to update status from ETA modal:", err);
+    } finally {
+      setUpdatingId(null);
+    }
+  };
+
+  const appendPublicEtaTag = (tag: string) => {
+    setPublicEtaMessage((prev) => (prev ? `${prev} ${tag}` : tag));
+  };
+
+  const etaTimes = useMemo(() => {
+    if (!etaModal) {
+      return { currentEta: null as Date | null, newEta: null as Date | null };
+    }
+    const bumpMinutes = (d: Date, minutes: number) => {
+      const x = new Date(d);
+      x.setMinutes(x.getMinutes() + minutes);
+      return x;
+    };
+    const placed = new Date(etaModal.order.created_at);
+    const currentEta = bumpMinutes(placed, 45);
+    const newEta = bumpMinutes(currentEta, etaMinutes);
+    return { currentEta, newEta };
+  }, [etaModal, etaMinutes]);
+
   const loadManualMeals = async () => {
     try {
       const meals = await getVendorMeals();
@@ -224,16 +348,62 @@ function VendorOrdersSection() {
 
   const filteredOrders = useMemo(() => {
     const query = searchTerm.trim().toLowerCase();
-    if (!query) return orders;
     return orders.filter((order) => {
-      return (
+      const statusMatch =
+        appliedStatusFilters.length === 0 ||
+        appliedStatusFilters.includes(order.status.toLowerCase());
+      const fulfillmentMatch =
+        !appliedDeliveryOnly || order.status.toLowerCase() === "out_for_delivery";
+      const searchMatch =
+        !query ||
         `#${order.id}`.toLowerCase().includes(query) ||
         order.customer_name.toLowerCase().includes(query) ||
         order.customer_email.toLowerCase().includes(query) ||
-        order.meal_name.toLowerCase().includes(query)
-      );
+        order.meal_name.toLowerCase().includes(query);
+
+      return statusMatch && fulfillmentMatch && searchMatch;
     });
-  }, [orders, searchTerm]);
+  }, [orders, searchTerm, appliedStatusFilters, appliedDeliveryOnly]);
+
+  const toggleBulkSelect = (orderId: number) => {
+    setBulkSelectedIds((prev) =>
+      prev.includes(orderId) ? prev.filter((id) => id !== orderId) : [...prev, orderId],
+    );
+  };
+
+  const toggleSelectAllFiltered = () => {
+    const ids = filteredOrders.map((o) => o.id);
+    const allSelected = ids.length > 0 && ids.every((id) => bulkSelectedIds.includes(id));
+    if (allSelected) {
+      setBulkSelectedIds([]);
+    } else {
+      setBulkSelectedIds(ids);
+    }
+  };
+
+  const closeBulkModal = () => {
+    if (bulkUpdating) return;
+    setBulkUpdateOpen(false);
+    setBulkFulfillmentNote("");
+  };
+
+  const applyBulkStatusUpdate = async () => {
+    if (bulkSelectedIds.length === 0) return;
+    setBulkUpdating(true);
+    try {
+      await Promise.all(
+        bulkSelectedIds.map((id) => updateOrderStatus(id, bulkNewStatus)),
+      );
+      await loadData();
+      setBulkSelectedIds([]);
+      setBulkUpdateOpen(false);
+      setBulkFulfillmentNote("");
+    } catch (err) {
+      console.error("Bulk status update failed:", err);
+    } finally {
+      setBulkUpdating(false);
+    }
+  };
 
   const recentAlerts = useMemo(() => {
     const now = Date.now();
@@ -320,13 +490,28 @@ function VendorOrdersSection() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-          Orders
-        </h1>
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Manage all customer orders
-        </p>
+      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-200 pb-4 dark:border-slate-800">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+            Orders
+          </h1>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            Manage all customer orders
+          </p>
+        </div>
+        <button
+          type="button"
+          onClick={openFiltersPanel}
+          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+        >
+          <Filter className="h-4 w-4" />
+          Filters
+          {appliedFilterCount > 0 && (
+            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-cyan-500 px-1.5 text-[11px] font-bold text-white">
+              {appliedFilterCount}
+            </span>
+          )}
+        </button>
       </div>
 
       <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
@@ -425,6 +610,32 @@ function VendorOrdersSection() {
         }`}
       >
         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          {!isLoading && orders.length > 0 && bulkSelectedIds.length > 0 && (
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-emerald-50/60 px-4 py-3 dark:border-slate-800 dark:bg-emerald-950/20">
+              <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
+                {bulkSelectedIds.length} order{bulkSelectedIds.length === 1 ? "" : "s"} selected
+              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setBulkSelectedIds([])}
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+                >
+                  Clear selection
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setBulkFulfillmentNote("");
+                    setBulkUpdateOpen(true);
+                  }}
+                  className="rounded-lg bg-wellora px-3 py-1.5 text-xs font-semibold text-white hover:bg-wellora-hover"
+                >
+                  Bulk Update Status
+                </button>
+              </div>
+            </div>
+          )}
           {isLoading ? (
             <div className="flex items-center justify-center py-16">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-wellora border-t-transparent" />
@@ -444,9 +655,21 @@ function VendorOrdersSection() {
             </div>
           ) : (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[800px] text-left text-sm">
+              <table className="w-full min-w-[860px] text-left text-sm">
                 <thead>
                   <tr className="border-b border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300">
+                    <th className="w-12 px-3 py-3 font-semibold">
+                      <input
+                        type="checkbox"
+                        checked={
+                          filteredOrders.length > 0 &&
+                          filteredOrders.every((o) => bulkSelectedIds.includes(o.id))
+                        }
+                        onChange={toggleSelectAllFiltered}
+                        className="h-4 w-4 rounded border-slate-300 text-wellora focus:ring-wellora"
+                        aria-label="Select all orders"
+                      />
+                    </th>
                     <th className="px-5 py-3 font-semibold">Order ID</th>
                     <th className="px-5 py-3 font-semibold">Meal</th>
                     <th className="px-5 py-3 font-semibold">Customer</th>
@@ -468,6 +691,18 @@ function VendorOrdersSection() {
                           : ""
                       }`}
                     >
+                      <td
+                        className="px-3 py-3"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        <input
+                          type="checkbox"
+                          checked={bulkSelectedIds.includes(order.id)}
+                          onChange={() => toggleBulkSelect(order.id)}
+                          className="h-4 w-4 rounded border-slate-300 text-wellora focus:ring-wellora"
+                          aria-label={`Select order ${order.id}`}
+                        />
+                      </td>
                       <td className="px-5 py-3 font-mono text-xs font-medium text-slate-900 dark:text-white">
                         #{order.id}
                       </td>
@@ -518,7 +753,7 @@ function VendorOrdersSection() {
                       {(() => {
                         const normalizedStatus = order.status.toLowerCase();
 
-                        if (normalizedStatus === "pending" || normalizedStatus === "accepted") {
+                        if (normalizedStatus === "pending") {
                           return (
                             <div className="flex flex-wrap items-center gap-2">
                               <button
@@ -526,16 +761,9 @@ function VendorOrdersSection() {
                                 disabled={updatingId === order.id}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  handleStatusUpdate(
-                                    order.id,
-                                    NEXT_STATUS[normalizedStatus],
-                                  );
+                                  handleStatusUpdate(order.id, NEXT_STATUS[normalizedStatus]);
                                 }}
-                                className={`rounded-lg px-3 py-1.5 text-xs font-semibold text-white transition ${
-                                  normalizedStatus === "pending"
-                                    ? "bg-blue-500 hover:bg-blue-600"
-                                    : "bg-violet-500 hover:bg-violet-600"
-                                } disabled:opacity-50`}
+                                className="rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-blue-600 disabled:opacity-50"
                               >
                                 {updatingId === order.id
                                   ? "..."
@@ -556,23 +784,61 @@ function VendorOrdersSection() {
                           );
                         }
 
-                        if (normalizedStatus === "preparing" || normalizedStatus === "ready") {
+                        if (normalizedStatus === "accepted") {
+                          return (
+                            <div className="flex flex-wrap items-center gap-2">
+                              <button
+                                type="button"
+                                disabled={updatingId === order.id}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  openEtaModal(order, "preparing");
+                                }}
+                                className="rounded-lg bg-violet-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-violet-600 disabled:opacity-50"
+                              >
+                                Start Preparing
+                              </button>
+                              <button
+                                type="button"
+                                disabled={updatingId === order.id}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleStatusUpdate(order.id, "cancelled");
+                                }}
+                                className="rounded-lg px-3 py-1.5 text-xs font-semibold text-red-600 ring-1 ring-red-200 hover:bg-red-50 disabled:opacity-50"
+                              >
+                                Cancel Order
+                              </button>
+                            </div>
+                          );
+                        }
+
+                        if (normalizedStatus === "preparing") {
                           return (
                             <button
                               type="button"
                               disabled={updatingId === order.id}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                handleStatusUpdate(
-                                  order.id,
-                                  NEXT_STATUS[normalizedStatus],
-                                );
+                                openEtaModal(order, "ready");
                               }}
-                              className={`rounded-lg px-3 py-1.5 text-xs font-semibold text-white transition ${
-                                normalizedStatus === "preparing"
-                                  ? "bg-cyan-500 hover:bg-cyan-600"
-                                  : "bg-emerald-500 hover:bg-emerald-600"
-                              } disabled:opacity-50`}
+                              className="rounded-lg bg-cyan-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-cyan-600 disabled:opacity-50"
+                            >
+                              Mark as Ready
+                            </button>
+                          );
+                        }
+
+                        if (normalizedStatus === "ready") {
+                          return (
+                            <button
+                              type="button"
+                              disabled={updatingId === order.id}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleStatusUpdate(order.id, NEXT_STATUS[normalizedStatus]);
+                              }}
+                              className="rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-emerald-600 disabled:opacity-50"
                             >
                               {updatingId === order.id
                                 ? "..."
@@ -1101,6 +1367,128 @@ function VendorOrdersSection() {
         )}
       </div>
 
+      {filtersOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-slate-900/40"
+            onClick={closeFiltersPanel}
+          />
+          <aside className="fixed right-0 top-0 z-50 flex h-full w-full max-w-sm flex-col border-l border-slate-200 bg-white shadow-2xl dark:border-slate-700 dark:bg-slate-900">
+            <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-slate-700">
+              <div className="flex items-center gap-2">
+                <Filter className="h-4 w-4 text-cyan-500" />
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Filters</h3>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={clearDraftFilters}
+                  className="rounded-lg px-2 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                >
+                  Clear All
+                </button>
+                <button
+                  type="button"
+                  onClick={closeFiltersPanel}
+                  className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                  aria-label="Close filters panel"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-1 space-y-5 overflow-y-auto p-4">
+              <section>
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                  Time Period
+                </p>
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  {["Today", "Last 24h", "This Week", "Custom Range"].map((label, idx) => (
+                    <button
+                      key={label}
+                      type="button"
+                      className={`rounded-xl border px-3 py-2 text-left text-xs font-medium ${
+                        idx === 0
+                          ? "border-cyan-200 bg-cyan-50 text-cyan-700 dark:border-cyan-700/70 dark:bg-cyan-950/40 dark:text-cyan-300"
+                          : "border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </section>
+
+              <section className="rounded-xl border border-violet-300 p-3 dark:border-violet-700">
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    Order Status
+                  </p>
+                  <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[11px] font-semibold text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">
+                    {draftStatusFilters.length}
+                  </span>
+                </div>
+                <div className="space-y-2">
+                  {ORDER_STATUS_FILTER_OPTIONS.map((status) => (
+                    <label
+                      key={status}
+                      className="flex cursor-pointer items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800"
+                    >
+                      <span className="text-sm text-slate-700 dark:text-slate-200">
+                        {displayStatus(status)}
+                      </span>
+                      <input
+                        type="checkbox"
+                        checked={draftStatusFilters.includes(status)}
+                        onChange={() => toggleDraftStatusFilter(status)}
+                        className="h-4 w-4 rounded border-slate-300 text-cyan-500 focus:ring-cyan-500"
+                      />
+                    </label>
+                  ))}
+                </div>
+              </section>
+
+              <section>
+                <div className="mb-3 flex items-center justify-between">
+                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    Fulfillment
+                  </p>
+                  <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[11px] font-semibold text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">
+                    {draftDeliveryOnly ? 1 : 0}
+                  </span>
+                </div>
+                <label className="flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 px-3 py-2 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">
+                  <span className="text-sm text-slate-700 dark:text-slate-200">Delivery</span>
+                  <input
+                    type="checkbox"
+                    checked={draftDeliveryOnly}
+                    onChange={(e) => setDraftDeliveryOnly(e.target.checked)}
+                    className="h-4 w-4 rounded border-slate-300 text-cyan-500 focus:ring-cyan-500"
+                  />
+                </label>
+              </section>
+            </div>
+
+            <div className="space-y-2 border-t border-slate-200 p-4 dark:border-slate-700">
+              <button
+                type="button"
+                onClick={applyFilters}
+                className="w-full rounded-xl bg-cyan-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-cyan-600"
+              >
+                Apply {draftFilterCount} Filter{draftFilterCount === 1 ? "" : "s"}
+              </button>
+              <button
+                type="button"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+              >
+                Save Filter Set
+              </button>
+            </div>
+          </aside>
+        </>
+      )}
+
       {manualOrderOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
           <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-5 shadow-xl dark:border-slate-700 dark:bg-slate-900">
@@ -1268,6 +1656,317 @@ function VendorOrdersSection() {
           </div>
         </div>
       )}
+
+      {etaModal && etaTimes.currentEta && etaTimes.newEta && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4">
+          <div className="max-h-[min(100dvh,720px)] w-full max-w-lg overflow-y-auto rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900">
+            <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-slate-700">
+              <div className="flex items-center gap-2">
+                <span className="rounded-lg bg-cyan-50 p-2 text-cyan-600 dark:bg-cyan-900/40">
+                  <Clock className="h-5 w-5" />
+                </span>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                  Update ETA &amp; Notes
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={closeEtaModal}
+                className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-3 gap-2 border-b border-slate-200 bg-slate-50 px-4 py-3 text-xs dark:border-slate-700 dark:bg-slate-800/50">
+              <div>
+                <p className="font-semibold uppercase tracking-wide text-slate-500">Order ID</p>
+                <p className="mt-0.5 font-mono font-medium text-slate-900 dark:text-white">
+                  #{etaModal.order.id}
+                </p>
+              </div>
+              <div className="min-w-0">
+                <p className="font-semibold uppercase tracking-wide text-slate-500">Customer</p>
+                <p className="mt-0.5 truncate font-medium text-slate-900 dark:text-white">
+                  {etaModal.order.customer_name}
+                </p>
+              </div>
+              <div>
+                <p className="font-semibold uppercase tracking-wide text-slate-500">Current ETA</p>
+                <p className="mt-0.5 flex items-center gap-1 font-medium text-slate-900 dark:text-white">
+                  <Clock className="h-3.5 w-3.5 text-slate-400" />
+                  {etaTimes.currentEta.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-5 px-5 py-4">
+              <div>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4 text-slate-500" />
+                  <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                    Set New Preparation Time
+                  </p>
+                </div>
+                <p className="mt-0.5 text-xs text-slate-500">Adjust based on kitchen capacity</p>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {ETA_INCREMENTS.map((m) => (
+                    <button
+                      key={m}
+                      type="button"
+                      onClick={() => setEtaMinutes(m)}
+                      className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+                        etaMinutes === m
+                          ? "bg-cyan-500 text-white"
+                          : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+                      }`}
+                    >
+                      +{m === 60 ? "1 hour" : `${m} min`}
+                    </button>
+                  ))}
+                </div>
+                <div className="mt-3 flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 dark:border-slate-700">
+                  <Clock className="h-4 w-4 text-slate-400" />
+                  <span className="text-sm font-semibold tabular-nums text-slate-900 dark:text-white">
+                    {etaTimes.newEta.toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
+                </div>
+              </div>
+
+              <div>
+                <div className="mb-1 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <MessageSquare className="h-4 w-4 text-slate-500" />
+                    <label className="text-sm font-semibold text-slate-900 dark:text-white">
+                      Public ETA Message
+                    </label>
+                  </div>
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                    Visible to Customer
+                  </span>
+                </div>
+                <textarea
+                  rows={3}
+                  value={publicEtaMessage}
+                  onChange={(e) => setPublicEtaMessage(e.target.value)}
+                  placeholder="E.g., We are experiencing high order volume. Your healthy meal is being prepared with extra care!"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-wellora dark:border-slate-600 dark:bg-slate-950 dark:text-white"
+                />
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {["Busy kitchen", "Rainy weather", "Ingredient prep", "Quality check"].map((t) => (
+                    <button
+                      key={t}
+                      type="button"
+                      onClick={() => appendPublicEtaTag(t)}
+                      className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300"
+                    >
+                      + {t}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <div className="mb-1 flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <FileText className="h-4 w-4 text-slate-500" />
+                    <label className="text-sm font-semibold text-slate-900 dark:text-white">
+                      Internal Team Note
+                    </label>
+                  </div>
+                  <span className="rounded-full bg-slate-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-slate-700">
+                    STAFF ONLY
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  value={internalTeamNote}
+                  onChange={(e) => setInternalTeamNote(e.target.value)}
+                  placeholder="Add a private note for staff (e.g., Sarah requested extra sauce)"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-wellora dark:border-slate-600 dark:bg-slate-950 dark:text-white"
+                />
+              </div>
+
+              <label className="flex cursor-pointer items-start gap-3 rounded-xl border border-cyan-100 bg-cyan-50/80 p-3 dark:border-cyan-900/40 dark:bg-cyan-950/20">
+                <input
+                  type="checkbox"
+                  checked={notifyCustomerSms}
+                  onChange={(e) => setNotifyCustomerSms(e.target.checked)}
+                  className="mt-0.5 h-4 w-4 rounded border-slate-300 text-wellora focus:ring-wellora"
+                />
+                <div>
+                  <div className="flex items-center gap-1.5 text-sm font-medium text-slate-900 dark:text-white">
+                    <Bell className="h-4 w-4 text-cyan-600" />
+                    Notify customer via SMS
+                  </div>
+                  <p className="mt-0.5 text-xs text-slate-500">
+                    Sending a real-time update improves customer satisfaction scores.
+                  </p>
+                </div>
+              </label>
+            </div>
+
+            <div className="flex justify-end gap-3 border-t border-slate-200 px-5 py-4 dark:border-slate-700">
+              <button
+                type="button"
+                onClick={closeEtaModal}
+                className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={saveEtaModal}
+                disabled={updatingId === etaModal.order.id}
+                className="rounded-xl bg-cyan-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-cyan-600 disabled:opacity-60"
+              >
+                {updatingId === etaModal.order.id ? "Saving..." : "Save Changes"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {bulkUpdateOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 p-4"
+          onClick={closeBulkModal}
+        >
+          <div
+            className="w-full max-w-lg overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-xl dark:border-slate-700 dark:bg-slate-900"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="bulk-update-title"
+          >
+            <div className="border-b border-slate-200 px-5 py-4 dark:border-slate-700">
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex min-w-0 items-start gap-3">
+                  <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-cyan-100 text-cyan-600 dark:bg-cyan-950/60 dark:text-cyan-400">
+                    <Layers className="h-5 w-5" strokeWidth={1.75} aria-hidden />
+                  </div>
+                  <div className="min-w-0">
+                    <h2
+                      id="bulk-update-title"
+                      className="text-lg font-bold tracking-tight text-slate-900 dark:text-white"
+                    >
+                      Bulk Update Status
+                    </h2>
+                    <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
+                      Modify multiple orders simultaneously
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={closeBulkModal}
+                  disabled={bulkUpdating}
+                  className="rounded-lg p-1.5 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 disabled:opacity-50 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                  aria-label="Close"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-5 px-5 py-5">
+              <div>
+                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                  Selected orders ({bulkSelectedIds.length})
+                </p>
+                <div className="mt-2 flex max-h-28 flex-wrap gap-2 overflow-y-auto pr-1">
+                  {[...bulkSelectedIds]
+                    .sort((a, b) => a - b)
+                    .map((id) => (
+                      <span
+                        key={id}
+                        className="inline-flex items-center rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 font-mono text-xs font-medium text-slate-600 dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-300"
+                      >
+                        #WL-{id}
+                      </span>
+                    ))}
+                </div>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="bulk-target-status"
+                  className="mb-1.5 block text-sm font-semibold text-slate-900 dark:text-white"
+                >
+                  Target Status
+                </label>
+                <select
+                  id="bulk-target-status"
+                  value={bulkNewStatus}
+                  onChange={(e) => setBulkNewStatus(e.target.value)}
+                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+                >
+                  {BULK_STATUS_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-2 flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
+                  <Lightbulb
+                    className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500"
+                    aria-hidden
+                  />
+                  <span>
+                    This will update the fulfillment stage for all{" "}
+                    {bulkSelectedIds.length} selected item
+                    {bulkSelectedIds.length === 1 ? "" : "s"}.
+                  </span>
+                </p>
+              </div>
+
+              <div>
+                <label
+                  htmlFor="bulk-fulfillment-note"
+                  className="mb-1.5 block text-sm font-semibold text-slate-900 dark:text-white"
+                >
+                  Fulfillment Note (Optional)
+                </label>
+                <textarea
+                  id="bulk-fulfillment-note"
+                  rows={4}
+                  value={bulkFulfillmentNote}
+                  onChange={(e) => setBulkFulfillmentNote(e.target.value)}
+                  placeholder="Add a note to be appended to all selected orders..."
+                  className="w-full resize-y rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
+                />
+              </div>
+            </div>
+
+            <div className="flex justify-end gap-3 border-t border-slate-200 px-5 py-4 dark:border-slate-700">
+              <button
+                type="button"
+                onClick={closeBulkModal}
+                disabled={bulkUpdating}
+                className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={applyBulkStatusUpdate}
+                disabled={bulkUpdating || bulkSelectedIds.length === 0}
+                className="rounded-xl bg-cyan-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-cyan-600 disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {bulkUpdating
+                  ? "Applying…"
+                  : `Apply to ${bulkSelectedIds.length} Order${bulkSelectedIds.length === 1 ? "" : "s"}`}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -1286,7 +1985,23 @@ export function VendorDashboardPage({
     rating: 4.8,
   });
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
   const profileMenuRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const saved = localStorage.getItem("wellora-theme");
+    if (saved === "light" || saved === "dark") {
+      setThemeMode(saved);
+      return;
+    }
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    setThemeMode(prefersDark ? "dark" : "light");
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", themeMode === "dark");
+    localStorage.setItem("wellora-theme", themeMode);
+  }, [themeMode]);
 
   // ─── Load meals + stats from backend ───────────
   useEffect(() => {
@@ -1430,6 +2145,23 @@ export function VendorDashboardPage({
             <span className="font-semibold text-wellora">Wellora</span>
           </div>
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() =>
+                setThemeMode((prev) => (prev === "dark" ? "light" : "dark"))
+              }
+              className="rounded-full p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+              aria-label={
+                themeMode === "dark" ? "Switch to light mode" : "Switch to dark mode"
+              }
+              title={themeMode === "dark" ? "Light mode" : "Dark mode"}
+            >
+              {themeMode === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </button>
             <button
               type="button"
               className="rounded-full p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
