@@ -414,7 +414,7 @@ export function MenuOrderPage({ onNavigate }: MenuOrderPageProps) {
                               </span>
                             </div>
                             <span className="text-lg font-bold text-wellora">
-                              ${meal.price.toFixed(2)}
+                              Rs {meal.price.toFixed(2)}
                             </span>
                           </div>
 
@@ -545,7 +545,7 @@ export function MenuOrderPage({ onNavigate }: MenuOrderPageProps) {
                               </button>
                             </div>
                             <span className="text-sm font-semibold tabular-nums text-slate-900 dark:text-white">
-                              ${(line.unitPrice * line.qty).toFixed(2)}
+                              Rs {(line.unitPrice * line.qty).toFixed(2)}
                             </span>
                           </div>
                         </li>
@@ -568,15 +568,15 @@ export function MenuOrderPage({ onNavigate }: MenuOrderPageProps) {
                 <div className="mt-4 shrink-0 space-y-2 border-t border-slate-200 pt-4 dark:border-slate-700">
                   <div className="flex justify-between text-sm text-slate-600 dark:text-slate-400">
                     <span>Subtotal</span>
-                    <span className="tabular-nums">${subtotal.toFixed(2)}</span>
+                    <span className="tabular-nums">Rs {subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm text-slate-600 dark:text-slate-400">
                     <span>Tax (8%)</span>
-                    <span className="tabular-nums">${tax.toFixed(2)}</span>
+                    <span className="tabular-nums">Rs {tax.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between border-t border-slate-200 pt-2 text-base font-bold text-slate-900 dark:border-slate-700 dark:text-white">
                     <span>Total</span>
-                    <span className="tabular-nums">${total.toFixed(2)}</span>
+                    <span className="tabular-nums">Rs {total.toFixed(2)}</span>
                   </div>
                 </div>
 
@@ -602,7 +602,7 @@ export function MenuOrderPage({ onNavigate }: MenuOrderPageProps) {
                       Placing Order...
                     </span>
                   ) : (
-                    `Place Order · $${total.toFixed(2)}`
+                    `Place Order · Rs ${total.toFixed(2)}`
                   )}
                 </button>
 

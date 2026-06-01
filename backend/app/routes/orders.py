@@ -28,6 +28,12 @@ class UpdateOrderStatus(BaseModel):
     status: str  # pending / confirmed / delivered / cancelled
 
 
+class ManualOrderRequest(BaseModel):
+    customer_email: str
+    meal_id: int
+    quantity: int = 1
+
+
 # ─── GET ALL PUBLIC MEALS ─────────────────────────
 @router.get("/meals")
 def get_public_meals(db: Session = Depends(get_db)):

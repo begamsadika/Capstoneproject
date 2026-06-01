@@ -13,6 +13,8 @@ import { MealRecommendationsPage } from "./pages/MealRecommendationsPage";
 import { WellnessPage } from "./pages/WellnessPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { VendorDashboardPage } from "./pages/VendorDashboardPage";
+import { PartnerDashboardPage } from "./pages/PartnerDashboardPage";
+import { PartnerGuidance } from "./pages/PartnerGuidance";
 import type { AppPage } from "./types/page";
 import type { VendorStatus } from "./api/vendor";
 
@@ -36,7 +38,9 @@ const validPages: Page[] = [
   "user-wellness",
   "user-settings",
   "vendor-dashboard",
+  "vendor-order-management",
   "partner-dashboard",
+  "partner-guidance",
 ];
 
 function App() {
@@ -115,17 +119,8 @@ function App() {
     }
 
     if (role === "partner") {
-      const completed = getOnboardingComplete("partner");
-      if (!completed) {
-        persistNavigation("onboarding-partner", role);
-        return;
-      }
-      const approved = getAdminApproved("partner");
-      if (approved) {
-        persistNavigation("partner-dashboard", role);
-      } else {
-        persistNavigation("pending-approval", role);
-      }
+      persistNavigation("partner-dashboard", role);
+      return;
     }
   };
   return (
@@ -180,8 +175,17 @@ function App() {
         {currentPage === "vendor-dashboard" && (
           <VendorDashboardPage onNavigate={setCurrentPage} />
         )}
+        {currentPage === "vendor-order-management" && (
+          <VendorDashboardPage
+            onNavigate={setCurrentPage}
+            initialSection="orders"
+          />
+        )}
         {currentPage === "partner-dashboard" && (
-          <div>Partner Dashboard (Placeholder)</div>
+          <PartnerDashboardPage onNavigate={setCurrentPage} />
+        )}
+        {currentPage === "partner-guidance" && (
+          <PartnerGuidance onNavigate={setCurrentPage} />
         )}
       </div>
     </ThemeProvider>

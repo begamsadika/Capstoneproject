@@ -441,7 +441,7 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
                           ×{order.quantity}
                         </td>
                         <td className="px-5 py-3 font-semibold text-slate-900 dark:text-white">
-                          ${order.total_price.toFixed(2)}
+                          Rs {order.total_price.toFixed(2)}
                         </td>
                         <td className="px-5 py-3">
                           <span

@@ -383,7 +383,7 @@ export function MealRecommendationsPage({
                               </p>
                             </div>
                             <span className="shrink-0 text-sm font-bold text-wellora">
-                              ${meal.price.toFixed(2)}
+                              Rs {meal.price.toFixed(2)}
                             </span>
                           </div>
                         ))}
