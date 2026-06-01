@@ -66,28 +66,17 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
     }
   };
   return (
-    <div className="h-screen grid grid-cols-1 lg:grid-cols-2 bg-gradient-to-br from-wellora-light via-white to-wellora-soft dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
-      {/* Left section for the image - visible on large screens */}
-      <div className="relative hidden lg:flex items-center justify-center p-6 bg-gradient-to-br from-wellora/90 to-wellora-dark dark:from-gray-700 dark:to-gray-900">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-70"
-          style={{
-            backgroundImage:
-              'url("https://via.placeholder.com/1200x800?text=Health+Image")',
-          }} // Placeholder image
-        ></div>
-        <div className="relative z-10 text-white text-center">
-          <h1 className="text-5xl font-extrabold mb-4 leading-tight">
-            Start Your <br /> Healthy Journey
-          </h1>
-          <p className="text-xl font-medium">
-            Personalized plans, expert guidance, and a supportive community.
-          </p>
-        </div>
-      </div>
+    <div className="relative min-h-screen overflow-hidden bg-slate-950">
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{
+          backgroundImage:
+            'url("https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1400&q=80")',
+        }}
+      ></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-black/55 via-black/45 to-emerald-900/45 dark:from-black/70 dark:via-black/60 dark:to-black/60"></div>
 
-      {/* Right section for the login form */}
-      <div className="relative flex items-center justify-center p-6 w-full">
+      <div className="relative flex min-h-screen w-full items-center justify-center p-6">
         {/* The existing background pattern is now applied only to the form wrapper */}
         <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDE2YzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptLTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTE2IDBjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OS00IDQgNCA0LTEuNzkgNC00em0tOCA4Yz Pedro-Mi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptLTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTE2IDBjMC0yLjIxLTEuNzktNC00LTRsLTQgMS43OS00IDQgMS43OS00IDQgNCA0LTEuNzkgNC00em0tMTYgOGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-40 dark:opacity-20 z-0"></div>
 
@@ -95,7 +84,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
         <div className="absolute top-6 left-6 z-30">
           <button
             onClick={() => onNavigate("home")}
-            className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
+            className="flex items-center space-x-2 text-white/90 hover:text-white transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
             <span className="font-medium">Back to Home</span>
@@ -106,7 +95,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
           <ThemeToggle />
         </div>
 
-        <div className="w-full max-w-md relative z-10">
+        <div className="relative z-10 w-full max-w-md animate-fade-in">
           <div className="absolute inset-0 bg-wellora/25 rounded-3xl blur-2xl opacity-40"></div>
 
           <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl shadow-2xl p-8 border border-white/20 dark:border-gray-700/50">

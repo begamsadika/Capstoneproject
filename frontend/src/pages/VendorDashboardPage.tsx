@@ -2,16 +2,23 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import {
   BarChart3,
   Bell,
-  ChevronLeft,
-  ChevronRight,
-  DollarSign,
+  CheckCircle2,
+  Circle,
+  Clock,
+  FileText,
+  Filter,
   LayoutGrid,
+  Layers,
+  Lightbulb,
   LogOut,
+  MapPin,
+  MessageSquare,
+  Moon,
   Package,
-  Pencil,
+  Phone,
   Plus,
-  Search,
   ShoppingCart,
+  Sun,
   Star,
   Store,
   Trash2,
@@ -358,11 +365,12 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
       <aside className="flex w-56 shrink-0 flex-col border-r border-slate-200 bg-white px-4 py-6 dark:border-slate-800 dark:bg-slate-900">
         <div className="mb-8 flex items-center gap-2 px-1">
           <WelloraLogoMark size="md" />
-          <span className="text-lg font-semibold tracking-tight text-wellora">
-            Wellora
-          </span>
+          <span className="text-lg font-semibold tracking-tight text-wellora">Wellora</span>
         </div>
-        <nav className="flex flex-1 flex-col gap-1">
+        <p className="text-sm font-semibold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
+          Navigation
+        </p>
+        <nav className="mt-5 flex flex-1 flex-col gap-2">
           <button
             type="button"
             onClick={() => setSection("dashboard")}
@@ -400,7 +408,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
           }}
           className="mt-auto flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-950/40"
         >
-          <LogOut className="h-4 w-4 shrink-0" /> Log Out
+          Log Out
         </button>
       </aside>
 
@@ -411,12 +419,24 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
             <WelloraLogoMark size="sm" />
             <span className="font-semibold text-wellora">Wellora Vendor</span>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2 text-left">
+              <p className="text-sm font-medium text-slate-900 dark:text-white">
+                Total Orders
+              </p>
+              <p className="text-2xl font-bold leading-none text-slate-900 dark:text-white">
+                {stats.total_orders.toLocaleString()}
+              </p>
+            </div>
             <button
               type="button"
               className="rounded-full p-2 text-slate-500 hover:bg-slate-100 dark:text-slate-400"
             >
-              <Bell className="h-5 w-5" />
+              {themeMode === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
             </button>
             <div className="relative" ref={profileRef}>
               <button
@@ -455,7 +475,35 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                 <p className="mt-1 text-sm text-slate-500">
                   Welcome back — here's your store performance.
                 </p>
-              </div>
+              </div> */}
+
+              <section className="overflow-hidden rounded-3xl border border-wellora/20 bg-wellora-light shadow-sm dark:border-wellora-dark/40 dark:bg-gradient-to-br dark:from-wellora-dark/30 dark:via-[#0a1620] dark:to-[#050a0f]">
+                <div className="flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
+                  <div className="max-w-xl shrink-0">
+                    <h2 className="text-2xl font-bold tracking-tight text-wellora sm:text-3xl dark:text-wellora">
+                      Eat Smart. Live Well.
+                    </h2>
+                    <p className="mt-3 text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-200">
+                      Your personalized journey to healthy eating starts here.
+                      Discover meals tailored to your health goals.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => setVendorSection("menu")}
+                      className="mt-6 inline-flex items-center justify-center rounded-full bg-wellora px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-wellora-hover focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-wellora"
+                    >
+                      Order Healthy Meals
+                    </button>
+                  </div>
+                  <div className="relative w-full max-w-md shrink-0 overflow-hidden rounded-2xl shadow-lg ring-1 ring-black/5 lg:max-w-lg dark:ring-white/10">
+                    <img
+                      src={VENDOR_HERO_IMAGE}
+                      alt="Healthy meal bowl with vegetables and grains"
+                      className="h-52 w-full object-cover sm:h-56 lg:h-[220px]"
+                    />
+                  </div>
+                </div>
+              </section>
 
               {/* KPI Cards */}
               <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -1178,7 +1226,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                             {new Date(r.created_at).toLocaleDateString()}
                           </td>
                         </tr>
-                      ))}
+                    ))}
                     </tbody>
                   </table>
                 </div>

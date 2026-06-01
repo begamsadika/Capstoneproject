@@ -424,6 +424,34 @@ export function MealRecommendationsPage({
                       <h3 className="font-semibold text-wellora">
                         Today's Wellness Tip
                       </h3>
+                      <div className="grid gap-3 sm:grid-cols-2">
+                        {recommended.slice(1, 5).map((meal) => (
+                          <div
+                            key={meal.id}
+                            className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 shadow-sm dark:border-slate-700 dark:bg-slate-900"
+                          >
+                            <img
+                              src={
+                                resolveImageUrl(meal.image_url) ||
+                                FALLBACK_IMAGE
+                              }
+                              alt={meal.name}
+                              className="h-14 w-14 shrink-0 rounded-lg object-cover"
+                            />
+                            <div className="min-w-0 flex-1">
+                              <p className="truncate text-sm font-semibold text-slate-900 dark:text-white">
+                                {meal.name}
+                              </p>
+                              <p className="text-xs text-slate-500">
+                                {meal.calories} kcal · {meal.dietary}
+                              </p>
+                            </div>
+                            <span className="shrink-0 text-sm font-bold text-wellora">
+                              Rs {meal.price.toFixed(2)}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                     <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
                       {result.daily_tip}

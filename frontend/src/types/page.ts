@@ -14,4 +14,6 @@ export type AppPage =
   | 'user-wellness'
   | 'user-settings'
   | 'vendor-dashboard'
-  | 'partner-dashboard';
+  | 'vendor-order-management'
+  | 'partner-dashboard'
+  | 'partner-guidance';

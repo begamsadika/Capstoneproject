@@ -51,6 +51,12 @@ export interface VendorOrderStats {
   delivered: number;
 }
 
+export interface ManualVendorOrderPayload {
+  customer_email: string;
+  meal_id: number;
+  quantity: number;
+}
+
 export interface MealLogItem {
   name: string;
   calories: number;

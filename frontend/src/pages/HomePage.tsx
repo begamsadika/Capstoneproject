@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Apple, TrendingUp, Award, ChevronRight, Sparkles } from 'lucide-react';
 import { ThemeToggle } from '../components/ThemeToggle';
 import { WelloraLogoMark } from '../components/WelloraLogoMark';
@@ -7,8 +7,18 @@ interface HomePageProps {
   onNavigate: (page: 'login' | 'register') => void;
 }
 
+const HOME_HERO_MEAL_IMAGE =
+  'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1400&q=80';
+const HOME_HERO_MEAL_IMAGES = [
+  HOME_HERO_MEAL_IMAGE,
+  'https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1400&q=80',
+  'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1400&q=80',
+  'https://images.unsplash.com/photo-1515003197210-e0cd71810b5f?auto=format&fit=crop&w=1400&q=80',
+];
+
 export function HomePage({ onNavigate }: HomePageProps) {
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null);
+  const [currentHeroImageIndex, setCurrentHeroImageIndex] = useState(0);
 
   const features = [
     {
@@ -28,22 +38,39 @@ export function HomePage({ onNavigate }: HomePageProps) {
     },
   ];
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-wellora-light via-white to-wellora-soft dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500">
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiMwMDAiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PHBhdGggZD0iTTM2IDE2YzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptLTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTE2IDBjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0tOCA4YzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptLTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTE2IDBjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0tMTYgOGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-40 dark:opacity-20"></div>
+  useEffect(() => {
+    const interval = window.setInterval(() => {
+      setCurrentHeroImageIndex(
+        (prev) => (prev + 1) % HOME_HERO_MEAL_IMAGES.length,
+      );
+    }, 5000);
 
-      <div className="relative">
+    return () => window.clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="relative min-h-screen overflow-hidden bg-slate-950 transition-colors duration-500">
+      <div
+        className="absolute inset-0 bg-cover bg-center transition-all duration-1000"
+        style={{
+          backgroundImage: `url("${HOME_HERO_MEAL_IMAGES[currentHeroImageIndex]}")`,
+        }}
+      ></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-black/55 via-black/45 to-emerald-900/45 dark:from-black/70 dark:via-black/60 dark:to-black/60"></div>
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNiI+PHBhdGggZD0iTTM2IDE2YzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptLTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTE2IDBjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0tOCA4YzAtMi4yMS0xLjc5LTQtNC00cy00IDEuNzktNCA0IDEuNzkgNCA0IDQgNC0xLjc5IDQtNHptLTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTE2IDBjMC0yLjIxLTEuNzktNC00LTRzLTQgMS43OS00IDQgMS43OSA0IDQgNCA0LTEuNzkgNC00em0tMTYgOGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6bTggMGMwLTIuMjEtMS43OS00LTQtNHMtNCAxLjc5LTQgNCAxLjc5IDQgNCA0IDQtMS43OSA0LTR6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-25 dark:opacity-15"></div>
+
+      <div className="relative z-10">
         <nav className="container mx-auto px-6 py-6 flex justify-between items-center">
           <div className="flex items-center space-x-3">
             <WelloraLogoMark size="lg" />
-            <span className="text-3xl font-bold text-wellora dark:text-wellora">Wellora</span>
+            <span className="text-3xl font-bold text-white">Wellora</span>
           </div>
 
           <div className="flex items-center space-x-4">
             <ThemeToggle />
             <button
               onClick={() => onNavigate('login')}
-              className="px-6 py-2.5 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white font-medium transition-colors"
+              className="px-6 py-2.5 text-white/90 hover:text-white font-medium transition-colors"
             >
               Login
             </button>
@@ -58,9 +85,9 @@ export function HomePage({ onNavigate }: HomePageProps) {
 
         <main className="container mx-auto px-6 pt-20 pb-32">
           <div className="max-w-4xl mx-auto text-center space-y-8">
-            <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/60 dark:bg-gray-800/60 backdrop-blur-sm rounded-full border border-wellora/25 dark:border-wellora/30 mb-6 animate-fade-in">
+            <div className="inline-flex items-center space-x-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full border border-white/30 mb-6 animate-fade-in">
               <Sparkles className="w-4 h-4 text-wellora dark:text-wellora" />
-              <span className="text-sm font-medium text-wellora dark:text-wellora">
+              <span className="text-sm font-medium text-white">
                 AI-Powered Nutrition Platform
               </span>
             </div>
@@ -70,12 +97,12 @@ export function HomePage({ onNavigate }: HomePageProps) {
                 Order Smart Meals
               </span>
               <br />
-              <span className="text-gray-800 dark:text-white">
+              <span className="text-white">
                 Live Healthier
               </span>
             </h1>
 
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-white/90 max-w-2xl mx-auto leading-relaxed">
               Track your nutrition, receive expert-backed recommendations, and transform your eating habits—all in one intelligent platform.
             </p>
 
@@ -89,11 +116,12 @@ export function HomePage({ onNavigate }: HomePageProps) {
               </button>
               <button
                 onClick={() => onNavigate('login')}
-                className="px-8 py-4 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm text-gray-800 dark:text-white rounded-full font-semibold border-2 border-gray-200 dark:border-gray-700 hover:border-wellora dark:hover:border-wellora shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
+                className="px-8 py-4 bg-white/20 backdrop-blur-sm text-white rounded-full font-semibold border-2 border-white/40 hover:border-white shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
               >
                 Login
               </button>
             </div>
+
           </div>
 
           {/* <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mt-32">
