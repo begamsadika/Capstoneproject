@@ -1,6 +1,6 @@
 import api from './client';
 
-export interface Meal {
+export interface VendorMeal {
   id: number;
   name: string;
   category: string;
@@ -8,74 +8,108 @@ export interface Meal {
   dietary: string;
   price: number;
   available: boolean;
-  description?: string | null;
-  image_url?: string | null;
+  description?: string;
+  image_url?: string;  // returned by backend as full URL
 }
 
-export interface MealPayload {
+export interface TopMeal {
+  id: number;
   name: string;
   category: string;
-  calories: number;
-  dietary: string;
   price: number;
-  available: boolean;
-  description?: string | null;
-  image?: File | null;
+  total_sold: number;
+  revenue: number;
 }
 
-const toMealFormData = (data: MealPayload) => {
-  const formData = new FormData();
-  formData.append('name', data.name);
-  formData.append('category', data.category);
-  formData.append('calories', String(data.calories));
-  formData.append('dietary', data.dietary);
-  formData.append('price', String(data.price));
-  formData.append('available', String(data.available));
-  formData.append('description', data.description ?? '');
-  if (data.image) {
-    formData.append('image', data.image);
-  }
-  return formData;
+export interface WeeklyDay {
+  label: string;
+  date: string;
+  revenue: number;
+  orders: number;
+}
+
+export interface VendorStats {
+  total_meals: number;
+  total_orders: number;
+  total_revenue: number;
+  avg_rating: number;
+  top_meals: TopMeal[];
+  weekly_revenue: WeeklyDay[];
+}
+
+export interface RatingItem {
+  id: number;
+  meal_name: string;
+  customer_name: string;
+  rating: number;
+  review: string;
+  created_at: string;
+}
+
+export interface VendorRatings {
+  ratings: RatingItem[];
+  avg_rating: number;
+  total: number;
+}
+
+export const getVendorMeals = async (): Promise<VendorMeal[]> => {
+  const res = await api.get('/api/vendor/meals/');
+  return res.data;
 };
 
-export const getVendorMeals = async (): Promise<Meal[]> => {
-  const response = await api.get('/api/vendor/meals/');
-  return response.data;
-};
+// ✅ Sends FormData with optional image file
+export const addMeal = async (
+  data: Omit<VendorMeal, 'id'>,
+  imageFile?: File | null
+): Promise<VendorMeal> => {
+  const form = new FormData();
+  form.append('name', data.name);
+  form.append('category', data.category);
+  form.append('calories', String(data.calories));
+  form.append('dietary', data.dietary);
+  form.append('price', String(data.price));
+  form.append('available', String(data.available));
+  form.append('description', data.description ?? '');
+  if (imageFile) form.append('image', imageFile);
 
-export const addMeal = async (data: MealPayload): Promise<Meal> => {
-  const response = await api.post('/api/vendor/meals/', toMealFormData(data), {
-    headers: { 'Content-Type': 'multipart/form-data' }
+  const res = await api.post('/api/vendor/meals/', form, {
+    headers: { 'Content-Type': 'multipart/form-data' },
   });
-  return response.data.meal;
+  return res.data;
 };
 
+// ✅ Sends FormData with optional new image file
 export const updateMeal = async (
   id: number,
-  data: Partial<MealPayload>
-): Promise<Meal> => {
-  const formData = new FormData();
+  data: Partial<VendorMeal>,
+  imageFile?: File | null
+): Promise<VendorMeal> => {
+  const form = new FormData();
+  if (data.name !== undefined) form.append('name', data.name);
+  if (data.category !== undefined) form.append('category', data.category);
+  if (data.calories !== undefined) form.append('calories', String(data.calories));
+  if (data.dietary !== undefined) form.append('dietary', data.dietary);
+  if (data.price !== undefined) form.append('price', String(data.price));
+  if (data.available !== undefined) form.append('available', String(data.available));
+  if (data.description !== undefined) form.append('description', data.description);
+  if (imageFile) form.append('image', imageFile);
 
-  if (data.name !== undefined) formData.append('name', data.name);
-  if (data.category !== undefined) formData.append('category', data.category);
-  if (data.calories !== undefined) formData.append('calories', String(data.calories));
-  if (data.dietary !== undefined) formData.append('dietary', data.dietary);
-  if (data.price !== undefined) formData.append('price', String(data.price));
-  if (data.available !== undefined) formData.append('available', String(data.available));
-  if (data.description !== undefined) formData.append('description', data.description ?? '');
-  if (data.image) formData.append('image', data.image);
-
-  const response = await api.put(`/api/vendor/meals/${id}`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' }
+  const res = await api.put(`/api/vendor/meals/${id}`, form, {
+    headers: { 'Content-Type': 'multipart/form-data' },
   });
-  return response.data.meal;
+  return res.data;
 };
 
 export const deleteMealApi = async (id: number): Promise<void> => {
   await api.delete(`/api/vendor/meals/${id}`);
 };
 
-export const getVendorStats = async () => {
-  const response = await api.get('/api/vendor/meals/stats');
-  return response.data;
+export const getVendorStats = async (): Promise<VendorStats> => {
+  const res = await api.get('/api/vendor/meals/stats');
+  return res.data;
+};
+
+export const getVendorRatings = async (): Promise<VendorRatings> => {
+  const res = await api.get('/api/orders/vendor/ratings');
+  return res.data;
 };

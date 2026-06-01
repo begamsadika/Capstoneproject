@@ -117,9 +117,11 @@ export const getVendorOrderStats = async (): Promise<VendorOrderStats> => {
   return res.data;
 };
 
-export const createVendorManualOrder = async (
-  payload: ManualVendorOrderPayload
-) => {
-  const res = await api.post('/api/orders/vendor/manual', payload);
+export const submitRating = async (orderId: number, rating: number, review?: string) => {
+  const res = await api.post('/api/orders/rate', {
+    order_id: orderId,
+    rating,
+    review: review ?? '',
+  });
   return res.data;
 };
