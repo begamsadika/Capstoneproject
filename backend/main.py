@@ -22,6 +22,7 @@ from app.routes.vender import router as vendor_router
 from app.routes.meals import router as meals_router
 from app.routes.orders import router as orders_router
 from app.routes.health import router as health_router
+from app.routes.ai import router as ai_router
 
 # ─── Create all tables ────────────────────────────
 Base.metadata.create_all(bind=engine)
@@ -49,6 +50,7 @@ app.include_router(vendor_router)
 app.include_router(meals_router)
 app.include_router(orders_router)
 app.include_router(health_router)
+app.include_router(ai_router)
 
 
 @app.get("/")
