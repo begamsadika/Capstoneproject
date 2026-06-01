@@ -1,364 +1,428 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Bell,
+  Flower2,
   LayoutGrid,
+  Loader2,
+  Send,
   Settings,
   ShoppingCart,
+  Sparkles,
   Star,
-  Flower2,
+  TrendingUp,
+  Zap,
 } from "lucide-react";
 import type { AppPage } from "../types/page";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
-import { getPublicMeals, PublicMeal } from "../api/orders";
-import { getUserProfile, UserProfile } from "../api/user";
-import { resolveImageUrl } from "../api/client";
+import {
+  getAIRecommendations,
+  askAI,
+  AIRecommendation,
+  AIRecommendationResult,
+} from "../api/ai";
 
 interface MealRecommendationsPageProps {
   onNavigate: (page: AppPage) => void;
 }
 
-type FitnessGoal = "loss" | "gain" | "maintain";
-type Dietary =
-  | "vegetarian"
-  | "vegan"
-  | "gluten-free"
-  | "keto"
-  | "paleo"
-  | "all";
-
-const FITNESS_OPTIONS: { value: FitnessGoal; label: string }[] = [
-  { value: "loss", label: "Weight Loss" },
-  { value: "gain", label: "Muscle Gain" },
-  { value: "maintain", label: "Maintenance" },
-];
-
-const DIETARY_OPTIONS: { value: Dietary; label: string }[] = [
-  { value: "all", label: "All Types" },
-  { value: "vegetarian", label: "Vegetarian" },
-  { value: "vegan", label: "Vegan" },
-  { value: "gluten-free", label: "Gluten-Free" },
-  { value: "keto", label: "Keto" },
-  { value: "paleo", label: "Paleo" },
-];
-
-const GOAL_CALORIE_RANGE: Record<FitnessGoal, [number, number]> = {
-  loss: [200, 500],
-  gain: [400, 700],
-  maintain: [300, 600],
+const PRIORITY_CONFIG = {
+  high: { label: "Best Match", cls: "bg-wellora text-white" },
+  medium: {
+    label: "Good Match",
+    cls: "bg-blue-100 text-blue-800 dark:bg-blue-950/40 dark:text-blue-200",
+  },
+  low: {
+    label: "Suggested",
+    cls: "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
+  },
 };
 
-const FALLBACK_IMAGE =
-  "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=900&q=85";
+const FALLBACK_IMG =
+  "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=600&q=80";
 
-const PROFILE_IMG =
-  "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=120&h=120&q=80";
-
-function getAiMessage(meal: PublicMeal, goal: FitnessGoal): string {
-  if (goal === "loss")
-    return `At ${meal.calories} kcal, this is a smart low-calorie choice to support your weight loss journey.`;
-  if (goal === "gain")
-    return `Rich in nutrients and calories — ideal for muscle building and maintaining energy levels.`;
-  return `A well-balanced meal that keeps you on track with your daily maintenance goals.`;
-}
+const QUICK_ASKS = [
+  "What should I eat for breakfast?",
+  "I want something light and low calorie",
+  "Suggest a high protein meal",
+  "What fits my remaining calories today?",
+  "I want a vegetarian option",
+];
 
 export function MealRecommendationsPage({
   onNavigate,
 }: MealRecommendationsPageProps) {
-  const [meals, setMeals] = useState<PublicMeal[]>([]);
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [result, setResult] = useState<AIRecommendationResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [fitnessGoal, setFitnessGoal] = useState<FitnessGoal>("maintain");
-  const [dietary, setDietary] = useState<Dietary>("all");
+  const [isAsking, setIsAsking] = useState(false);
+  const [error, setError] = useState("");
+  const [input, setInput] = useState("");
+  const [selected, setSelected] = useState<AIRecommendation | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    // Load meals and user profile together
-    Promise.all([getPublicMeals(), getUserProfile()])
-      .then(([mealsData, profileData]) => {
-        setMeals(mealsData);
-        if (profileData) {
-          setProfile(profileData);
-          // Auto set fitness goal from user profile
-          const goal = profileData.health_goal;
-          if (goal === "lose") setFitnessGoal("loss");
-          if (goal === "gain") setFitnessGoal("gain");
-          if (goal === "maintain") setFitnessGoal("maintain");
-          // Auto set dietary from user profile
-          const pref = (profileData.dietary_preferences ?? "").toLowerCase();
-          if (pref.includes("vegan")) setDietary("vegan");
-          else if (pref.includes("vegeta")) setDietary("vegetarian");
-          else if (pref.includes("keto")) setDietary("keto");
-          else if (pref.includes("paleo")) setDietary("paleo");
-          else if (pref.includes("gluten")) setDietary("gluten-free");
-        }
-      })
-      .catch(console.error)
-      .finally(() => setIsLoading(false));
+    loadRecommendations();
   }, []);
 
-  // Filter meals by dietary + goal calorie range
-  const recommended = useMemo(() => {
-    const [minCal, maxCal] = GOAL_CALORIE_RANGE[fitnessGoal];
-    return meals.filter((m) => {
-      const calOk = m.calories >= minCal && m.calories <= maxCal;
-      const dietOk =
-        dietary === "all" ||
-        m.dietary.toLowerCase().includes(dietary.toLowerCase());
-      return calOk && dietOk;
-    });
-  }, [meals, fitnessGoal, dietary]);
+  const loadRecommendations = async () => {
+    setIsLoading(true);
+    setError("");
+    try {
+      const data = await getAIRecommendations();
+      setResult(data);
+      if (data.recommendations.length > 0) setSelected(data.recommendations[0]);
+    } catch (e: any) {
+      setError(e.response?.data?.detail ?? "Failed to load recommendations.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  // Pick best match for featured card
-  const featured = recommended[0] ?? meals[0] ?? null;
+  const handleAsk = async (msg?: string) => {
+    const question = msg ?? input.trim();
+    if (!question) return;
+    setIsAsking(true);
+    setError("");
+    setInput("");
+    try {
+      const data = await askAI(question);
+      setResult(data);
+      if (data.recommendations.length > 0) setSelected(data.recommendations[0]);
+    } catch (e: any) {
+      setError(e.response?.data?.detail ?? "Failed to get AI response.");
+    } finally {
+      setIsAsking(false);
+    }
+  };
+
+  const navCls = (active: boolean) =>
+    active
+      ? "flex w-full items-center gap-3 rounded-xl bg-slate-100 px-3 py-2.5 text-left text-sm font-semibold text-slate-900 dark:bg-slate-800 dark:text-white"
+      : "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800";
 
   return (
-    <div className="flex min-h-dvh flex-col bg-slate-200/80 py-3 pl-5 pr-3 dark:bg-slate-950 sm:py-4 sm:pl-8 sm:pr-4 lg:h-dvh lg:max-h-dvh lg:overflow-hidden lg:pl-10 lg:pr-6 xl:pl-12">
-      <div className="mr-auto flex min-h-0 w-full max-w-7xl flex-1 flex-col gap-4 sm:flex-row sm:gap-5 lg:gap-6">
-        {/* ── Sidebar ── */}
-        <aside className="hidden w-64 shrink-0 flex-col rounded-2xl border border-slate-200/90 bg-white py-6 pl-5 pr-4 shadow-lg dark:border-slate-700 dark:bg-slate-900 sm:flex sm:min-h-0 sm:overflow-y-auto lg:w-72 lg:pl-6 lg:pr-5">
-          <div className="mb-8 flex items-center gap-2 border-b border-violet-200/60 pb-6 pl-0.5 dark:border-violet-900/40">
-            <WelloraLogoMark size="md" />
-            <span className="text-lg font-semibold tracking-tight text-wellora">
-              Wellora
-            </span>
-          </div>
-          <nav className="flex flex-1 flex-col space-y-1">
-            <button
-              type="button"
-              onClick={() => onNavigate("user-dashboard")}
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
-              <LayoutGrid className="h-4 w-4 shrink-0 text-slate-500" />{" "}
-              Dashboard
-            </button>
-            <button
-              type="button"
-              className="flex w-full items-center gap-3 rounded-xl bg-slate-100 px-3 py-2.5 text-left text-sm font-semibold text-slate-900 dark:bg-slate-800 dark:text-white"
-            >
-              <Star className="h-4 w-4 shrink-0" /> Meal Recommendations
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate("user-menu-order")}
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
-              <ShoppingCart className="h-4 w-4 shrink-0 text-slate-500" /> Menu
-              & Order
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate("user-wellness")}
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
-            >
-              <Flower2 className="h-4 w-4 shrink-0 text-slate-500" /> Wellness
-            </button>
-          </nav>
+    <div className="flex min-h-dvh bg-slate-100 dark:bg-slate-950 lg:h-dvh lg:overflow-hidden">
+      {/* ── Sidebar ── */}
+      <aside className="hidden w-64 shrink-0 flex-col border-r border-slate-200 bg-white px-4 py-6 dark:border-slate-800 dark:bg-slate-900 lg:flex">
+        <div className="mb-8 flex items-center gap-2 px-1">
+          <WelloraLogoMark size="md" />
+          <span className="text-lg font-semibold tracking-tight text-wellora">
+            Wellora
+          </span>
+        </div>
+        <nav className="flex flex-1 flex-col gap-1">
           <button
             type="button"
-            onClick={() => onNavigate("user-settings")}
-            className="mt-6 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+            onClick={() => onNavigate("user-dashboard")}
+            className={navCls(false)}
           >
-            <Settings className="h-4 w-4 shrink-0" /> Settings
+            <LayoutGrid className="h-4 w-4 shrink-0" /> Dashboard
           </button>
-        </aside>
+          <button type="button" className={navCls(true)}>
+            <Star className="h-4 w-4 shrink-0" /> Meal Recommendations
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigate("user-menu-order")}
+            className={navCls(false)}
+          >
+            <ShoppingCart className="h-4 w-4 shrink-0" /> Menu & Order
+          </button>
+          <button
+            type="button"
+            onClick={() => onNavigate("user-wellness")}
+            className={navCls(false)}
+          >
+            <Flower2 className="h-4 w-4 shrink-0" /> Wellness
+          </button>
+        </nav>
+        <button
+          type="button"
+          onClick={() => onNavigate("user-settings")}
+          className={navCls(false)}
+        >
+          <Settings className="h-4 w-4 shrink-0" /> Settings
+        </button>
+      </aside>
 
-        {/* ── Main ── */}
-        <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-lg dark:border-slate-700 dark:bg-slate-900">
-          <header className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-900 sm:rounded-t-2xl sm:px-6">
-            <div className="flex items-center gap-2">
-              <WelloraLogoMark size="sm" />
-              <span className="font-semibold text-wellora">Wellora</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <button
-                type="button"
-                className="rounded-full p-2 text-slate-500 transition hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
-              >
-                <Bell className="h-5 w-5" />
-              </button>
-              <img
-                src={PROFILE_IMG}
-                alt=""
-                className="h-9 w-9 rounded-full object-cover ring-2 ring-slate-100 dark:ring-slate-700"
-              />
-            </div>
-          </header>
-
-          {/* Mobile nav */}
-          <div className="flex shrink-0 gap-1 overflow-x-auto border-b border-slate-200 bg-white px-3 py-2 sm:hidden dark:border-slate-800 dark:bg-slate-900">
-            <button
-              type="button"
-              onClick={() => onNavigate("user-dashboard")}
-              className="shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-slate-600"
-            >
-              Dashboard
-            </button>
-            <span className="shrink-0 rounded-lg bg-slate-100 px-3 py-2 text-xs font-semibold text-slate-900 dark:bg-slate-800 dark:text-white">
-              Meals
-            </span>
-            <button
-              type="button"
-              onClick={() => onNavigate("user-menu-order")}
-              className="shrink-0 rounded-lg px-3 py-2 text-xs font-medium text-slate-600"
-            >
-              Menu
-            </button>
+      {/* ── Main ── */}
+      <div className="flex min-w-0 flex-1 flex-col">
+        {/* Header */}
+        <header className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-900 sm:px-6">
+          <div className="flex items-center gap-2">
+            <WelloraLogoMark size="sm" />
+            <span className="font-semibold text-wellora">Wellora</span>
           </div>
+          <button
+            type="button"
+            className="rounded-full p-2 text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800"
+          >
+            <Bell className="h-5 w-5" />
+          </button>
+        </header>
 
-          <main className="min-h-0 flex-1 overflow-y-auto overscroll-contain bg-slate-50/80 p-5 dark:bg-slate-950/40 sm:p-6 lg:p-8">
-            <div className="flex items-center justify-between gap-4">
-              <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl">
-                Recommended for You
-              </h1>
-              {profile && (
-                <span className="rounded-full bg-wellora/10 px-3 py-1 text-xs font-semibold text-wellora">
-                  Goal:{" "}
-                  {fitnessGoal === "loss"
-                    ? "Weight Loss"
-                    : fitnessGoal === "gain"
-                      ? "Muscle Gain"
-                      : "Maintenance"}
+        <div className="flex min-h-0 flex-1 overflow-hidden">
+          {/* ── Left: Recommendations list ── */}
+          <main className="flex min-h-0 w-full flex-col overflow-hidden lg:w-[420px] lg:shrink-0 lg:border-r lg:border-slate-200 lg:dark:border-slate-800">
+            {/* Page title + AI badge */}
+            <div className="shrink-0 border-b border-slate-200 bg-white px-5 py-4 dark:border-slate-800 dark:bg-slate-900">
+              <div className="flex items-center gap-2">
+                <Sparkles className="h-5 w-5 text-wellora" />
+                <h1 className="text-xl font-bold text-slate-900 dark:text-white">
+                  AI Recommendations
+                </h1>
+                <span className="rounded-full bg-wellora/10 px-2 py-0.5 text-xs font-semibold text-wellora">
+                  Powered by Claude
                 </span>
+              </div>
+              <p className="mt-1 text-sm text-slate-500">
+                Personalized to your health profile and today's intake
+              </p>
+            </div>
+
+            {/* Ask AI input */}
+            <div className="shrink-0 border-b border-slate-200 bg-white px-5 py-3 dark:border-slate-800 dark:bg-slate-900">
+              <div className="flex gap-2">
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  onKeyDown={(e) => e.key === "Enter" && handleAsk()}
+                  placeholder="Ask AI anything... e.g. 'I want something light'"
+                  className="flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-wellora focus:outline-none focus:ring-2 focus:ring-wellora/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+                />
+                <button
+                  type="button"
+                  onClick={() => handleAsk()}
+                  disabled={!input.trim() || isAsking}
+                  className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-wellora text-white transition hover:bg-wellora-hover disabled:opacity-50"
+                >
+                  {isAsking ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Send className="h-4 w-4" />
+                  )}
+                </button>
+              </div>
+
+              {/* Quick ask chips */}
+              <div className="mt-2 flex flex-wrap gap-1.5">
+                {QUICK_ASKS.map((q) => (
+                  <button
+                    key={q}
+                    type="button"
+                    onClick={() => handleAsk(q)}
+                    disabled={isAsking || isLoading}
+                    className="rounded-full border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-600 transition hover:border-wellora hover:text-wellora disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+                  >
+                    {q}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Recommendations list */}
+            <div className="min-h-0 flex-1 overflow-y-auto bg-slate-50/80 dark:bg-slate-950/40">
+              {isLoading || isAsking ? (
+                <div className="flex flex-col items-center justify-center gap-4 py-16">
+                  <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-wellora/10">
+                    <Sparkles className="h-7 w-7 animate-pulse text-wellora" />
+                  </div>
+                  <div className="text-center">
+                    <p className="font-semibold text-slate-700 dark:text-slate-300">
+                      {isAsking
+                        ? "Thinking..."
+                        : "Analyzing your health profile..."}
+                    </p>
+                    <p className="mt-1 text-sm text-slate-500">
+                      Claude is reviewing your data
+                    </p>
+                  </div>
+                </div>
+              ) : error ? (
+                <div className="p-5">
+                  <div className="rounded-2xl border border-red-200 bg-red-50 p-5 dark:border-red-900/40 dark:bg-red-950/20">
+                    <p className="font-semibold text-red-700 dark:text-red-400">
+                      Unable to load recommendations
+                    </p>
+                    <p className="mt-1 text-sm text-red-600 dark:text-red-500">
+                      {error}
+                    </p>
+                    <button
+                      type="button"
+                      onClick={loadRecommendations}
+                      className="mt-3 rounded-xl bg-wellora px-4 py-2 text-sm font-semibold text-white hover:bg-wellora-hover"
+                    >
+                      Try Again
+                    </button>
+                  </div>
+                </div>
+              ) : !result?.recommendations?.length ? (
+                <div className="flex flex-col items-center justify-center gap-3 py-16 text-center">
+                  <ShoppingCart className="h-10 w-10 text-slate-300" />
+                  <p className="text-slate-500">
+                    No recommendations available yet.
+                  </p>
+                </div>
+              ) : (
+                <div className="space-y-3 p-4">
+                  {result.recommendations.map((rec, i) => {
+                    const cfg =
+                      PRIORITY_CONFIG[rec.priority] ?? PRIORITY_CONFIG.low;
+                    const isActive = selected?.meal_id === rec.meal_id;
+                    return (
+                      <button
+                        key={rec.meal_id}
+                        type="button"
+                        onClick={() => setSelected(rec)}
+                        className={`w-full overflow-hidden rounded-2xl border text-left transition ${
+                          isActive
+                            ? "border-wellora bg-white shadow-md ring-2 ring-wellora/20 dark:bg-slate-900"
+                            : "border-slate-200 bg-white hover:border-slate-300 hover:shadow-sm dark:border-slate-700 dark:bg-slate-900"
+                        }`}
+                      >
+                        <div className="flex gap-3 p-3">
+                          <img
+                            src={rec.image_url || FALLBACK_IMG}
+                            alt={rec.meal_name}
+                            className="h-16 w-16 shrink-0 rounded-xl object-cover"
+                          />
+                          <div className="min-w-0 flex-1">
+                            <div className="flex items-start justify-between gap-2">
+                              <p className="font-semibold leading-snug text-slate-900 dark:text-white">
+                                {rec.meal_name}
+                              </p>
+                              <span
+                                className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold ${cfg.cls}`}
+                              >
+                                {cfg.label}
+                              </span>
+                            </div>
+                            <div className="mt-1 flex flex-wrap items-center gap-2">
+                              <span className="text-xs text-slate-500">
+                                {rec.calories} kcal
+                              </span>
+                              <span className="text-xs text-slate-400">·</span>
+                              <span className="text-xs text-slate-500">
+                                {rec.dietary}
+                              </span>
+                              <span className="text-xs text-slate-400">·</span>
+                              <span className="text-xs font-semibold text-wellora">
+                                ${rec.price.toFixed(2)}
+                              </span>
+                            </div>
+                            <p className="mt-1 line-clamp-2 text-xs text-slate-500 dark:text-slate-400">
+                              {rec.reason}
+                            </p>
+                          </div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
               )}
             </div>
+          </main>
 
-            {isLoading ? (
-              <div className="mt-16 flex items-center justify-center">
-                <p className="text-slate-500">Loading recommendations...</p>
-              </div>
-            ) : (
-              <div className="mt-6 grid gap-5 sm:mt-8 sm:gap-6 lg:min-h-0 lg:grid-cols-[minmax(220px,260px)_minmax(0,1fr)] lg:items-stretch xl:gap-8">
-                {/* ── Filters ── */}
-                <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-md dark:border-slate-700 dark:bg-slate-900 sm:p-6 lg:max-h-full lg:overflow-y-auto">
-                  <div className="space-y-6 sm:space-y-8">
-                    <fieldset>
-                      <legend className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                        Fitness Goal
-                      </legend>
-                      <div className="mt-3 space-y-2.5">
-                        {FITNESS_OPTIONS.map(({ value, label }) => (
-                          <label
-                            key={value}
-                            className="flex cursor-pointer items-center gap-3 rounded-lg px-1 py-1 text-sm text-slate-700 transition hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                          >
-                            <input
-                              type="radio"
-                              name="fitness-goal"
-                              value={value}
-                              checked={fitnessGoal === value}
-                              onChange={() => setFitnessGoal(value)}
-                              className="h-4 w-4 border-slate-300 text-wellora accent-wellora focus:ring-wellora"
-                            />
-                            {label}
-                          </label>
-                        ))}
+          {/* ── Right: Selected meal detail + AI insights ── */}
+          <div className="hidden min-h-0 flex-1 flex-col overflow-y-auto lg:flex">
+            {result && selected ? (
+              <div className="p-6 space-y-6">
+                {/* Selected meal card */}
+                <div className="overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
+                  <div className="aspect-[16/7] overflow-hidden bg-slate-100 dark:bg-slate-800">
+                    <img
+                      src={selected.image_url || FALLBACK_IMG}
+                      alt={selected.meal_name}
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                  <div className="p-6">
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
+                          {selected.meal_name}
+                        </h2>
+                        <div className="mt-2 flex flex-wrap items-center gap-2">
+                          <span className="rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                            {selected.category}
+                          </span>
+                          <span className="rounded-full bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                            {selected.dietary}
+                          </span>
+                          <span className="text-sm text-slate-500">
+                            {selected.calories} kcal
+                          </span>
+                        </div>
                       </div>
-                    </fieldset>
+                      <span className="text-2xl font-bold text-wellora">
+                        ${selected.price.toFixed(2)}
+                      </span>
+                    </div>
 
-                    <fieldset>
-                      <legend className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                        Dietary Type
-                      </legend>
-                      <div className="mt-3 space-y-2.5">
-                        {DIETARY_OPTIONS.map(({ value, label }) => (
-                          <label
-                            key={value}
-                            className="flex cursor-pointer items-center gap-3 rounded-lg px-1 py-1 text-sm text-slate-700 transition hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                          >
-                            <input
-                              type="radio"
-                              name="dietary"
-                              value={value}
-                              checked={dietary === value}
-                              onChange={() => setDietary(value)}
-                              className="h-4 w-4 border-slate-300 text-wellora accent-wellora focus:ring-wellora"
-                            />
-                            {label}
-                          </label>
-                        ))}
+                    {/* AI reason */}
+                    <div className="mt-5 rounded-2xl bg-wellora/5 p-4 dark:bg-wellora/10">
+                      <div className="flex items-center gap-2 mb-2">
+                        <Sparkles className="h-4 w-4 text-wellora" />
+                        <span className="text-sm font-semibold text-wellora">
+                          Why Claude recommends this
+                        </span>
                       </div>
-                    </fieldset>
-
-                    {/* Stats */}
-                    <div className="rounded-xl bg-slate-50 p-3 dark:bg-slate-800">
-                      <p className="text-xs font-semibold text-slate-500 dark:text-slate-400">
-                        Matches found
-                      </p>
-                      <p className="mt-1 text-2xl font-bold text-wellora">
-                        {recommended.length}
-                      </p>
-                      <p className="text-xs text-slate-500">
-                        out of {meals.length} total meals
+                      <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                        {selected.reason}
                       </p>
                     </div>
+
+                    {/* Calorie info */}
+                    {result.calories_remaining > 0 && (
+                      <div className="mt-4 flex items-center gap-3 rounded-xl bg-slate-50 p-3 dark:bg-slate-800">
+                        <Zap className="h-4 w-4 shrink-0 text-amber-500" />
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          You have{" "}
+                          <span className="font-bold text-slate-900 dark:text-white">
+                            {result.calories_remaining} kcal
+                          </span>{" "}
+                          remaining today. This meal uses{" "}
+                          <span className="font-bold text-wellora">
+                            {selected.calories} kcal
+                          </span>
+                          .
+                        </p>
+                      </div>
+                    )}
+
+                    <button
+                      type="button"
+                      onClick={() => onNavigate("user-menu-order")}
+                      className="mt-5 w-full rounded-xl bg-wellora py-3 text-sm font-semibold text-white transition hover:bg-wellora-hover"
+                    >
+                      Order This Meal →
+                    </button>
                   </div>
                 </div>
 
-                {/* ── Recommendation content ── */}
-                <div className="flex min-h-0 flex-col gap-5 lg:overflow-y-auto">
-                  {/* Featured meal */}
-                  {featured ? (
-                    <article className="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-md dark:border-slate-700 dark:bg-slate-900">
-                      <div className="aspect-[16/9] max-h-[280px] shrink-0 overflow-hidden bg-slate-100 dark:bg-slate-800">
-                        <img
-                          src={
-                            resolveImageUrl(featured.image_url) ||
-                            FALLBACK_IMAGE
-                          }
-                          alt={featured.name}
-                          className="h-full w-full object-cover"
-                        />
-                      </div>
-                      <div className="p-5 sm:p-6">
-                        <div className="flex flex-wrap items-center gap-3">
-                          <h2 className="text-xl font-bold text-slate-900 dark:text-white">
-                            {featured.name}
-                          </h2>
-                          <span className="rounded-full bg-wellora/10 px-2.5 py-1 text-xs font-semibold text-wellora">
-                            ⭐ Best Match
-                          </span>
-                        </div>
-                        <div className="mt-3 flex flex-wrap items-center gap-3">
-                          <span className="text-sm text-slate-500 dark:text-slate-400">
-                            {featured.calories} kcal
-                          </span>
-                          <span className="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                            {featured.dietary}
-                          </span>
-                          <span className="rounded-md bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                            {featured.category}
-                          </span>
-                        </div>
-                        <p className="mt-4 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                          <span className="font-medium text-slate-700 dark:text-slate-300">
-                            AI Says:{" "}
-                          </span>
-                          {getAiMessage(featured, fitnessGoal)}
-                        </p>
-                        <button
-                          type="button"
-                          onClick={() => onNavigate("user-menu-order")}
-                          className="mt-6 w-full rounded-xl bg-wellora py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-wellora-hover"
-                        >
-                          Order This Meal →
-                        </button>
-                      </div>
-                    </article>
-                  ) : (
-                    <div className="flex flex-1 flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 bg-white p-12 text-center dark:border-slate-700 dark:bg-slate-900">
-                      <p className="text-slate-500">
-                        No meals match your current filters.
-                      </p>
-                      <p className="mt-2 text-sm text-slate-400">
-                        Try changing dietary type or fitness goal.
-                      </p>
+                {/* AI Summary */}
+                {result.ai_summary && (
+                  <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
+                    <div className="flex items-center gap-2 mb-3">
+                      <TrendingUp className="h-5 w-5 text-wellora" />
+                      <h3 className="font-semibold text-slate-900 dark:text-white">
+                        Nutrition Summary
+                      </h3>
                     </div>
-                  )}
+                    <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                      {result.ai_summary}
+                    </p>
+                  </div>
+                )}
 
-                  {/* Other recommendations */}
-                  {recommended.length > 1 && (
-                    <div>
-                      <h3 className="mb-3 text-sm font-semibold text-slate-600 dark:text-slate-400">
-                        More Recommendations ({recommended.length - 1})
+                {/* Daily Tip */}
+                {result.daily_tip && (
+                  <div className="rounded-2xl border border-wellora/20 bg-wellora/5 p-5 dark:bg-wellora/10">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Sparkles className="h-4 w-4 text-wellora" />
+                      <h3 className="font-semibold text-wellora">
+                        Today's Wellness Tip
                       </h3>
                       <div className="grid gap-3 sm:grid-cols-2">
                         {recommended.slice(1, 5).map((meal) => (
@@ -389,11 +453,43 @@ export function MealRecommendationsPage({
                         ))}
                       </div>
                     </div>
-                  )}
-                </div>
+                    <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
+                      {result.daily_tip}
+                    </p>
+                  </div>
+                )}
+
+                {/* Refresh */}
+                <button
+                  type="button"
+                  onClick={loadRecommendations}
+                  disabled={isLoading}
+                  className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white py-3 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+                >
+                  <Sparkles className="h-4 w-4" />
+                  Refresh Recommendations
+                </button>
               </div>
+            ) : (
+              !isLoading &&
+              !error && (
+                <div className="flex flex-1 flex-col items-center justify-center gap-4 p-8 text-center">
+                  <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-wellora/10">
+                    <Sparkles className="h-8 w-8 text-wellora" />
+                  </div>
+                  <div>
+                    <p className="text-lg font-semibold text-slate-700 dark:text-slate-300">
+                      Your AI nutritionist is ready
+                    </p>
+                    <p className="mt-2 text-sm text-slate-500">
+                      Select a meal from the list or ask a question to get
+                      started.
+                    </p>
+                  </div>
+                </div>
+              )
             )}
-          </main>
+          </div>
         </div>
       </div>
     </div>
