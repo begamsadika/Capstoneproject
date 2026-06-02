@@ -24,11 +24,11 @@ import {
   Trash2,
   UtensilsCrossed,
   TrendingUp,
-  MessageSquare,
   Upload,
 } from "lucide-react";
 import type { AppPage } from "../types/page";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
+import { useTheme } from "../contexts/ThemeContext";
 import {
   getVendorMeals,
   addMeal,
@@ -126,6 +126,7 @@ function StarDisplay({ value }: { value: number }) {
 }
 
 export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
+  const { theme, toggleTheme } = useTheme();
   const [section, setSection] = useState<VendorSection>("dashboard");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
@@ -425,14 +426,15 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                 Total Orders
               </p>
               <p className="text-2xl font-bold leading-none text-slate-900 dark:text-white">
-                {stats.total_orders.toLocaleString()}
+                {stats?.total_orders?.toLocaleString() ?? "—"}
               </p>
             </div>
             <button
               type="button"
+              onClick={toggleTheme}
               className="rounded-full p-2 text-slate-500 hover:bg-slate-100 dark:text-slate-400"
             >
-              {themeMode === "dark" ? (
+              {theme === "dark" ? (
                 <Sun className="h-5 w-5" />
               ) : (
                 <Moon className="h-5 w-5" />
@@ -475,7 +477,7 @@ export function VendorDashboardPage({ onNavigate }: VendorDashboardPageProps) {
                 <p className="mt-1 text-sm text-slate-500">
                   Welcome back — here's your store performance.
                 </p>
-              </div> */}
+              </div>
 
               <section className="overflow-hidden rounded-3xl border border-wellora/20 bg-wellora-light shadow-sm dark:border-wellora-dark/40 dark:bg-gradient-to-br dark:from-wellora-dark/30 dark:via-[#0a1620] dark:to-[#050a0f]">
                 <div className="flex flex-col gap-6 p-6 sm:p-8 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
