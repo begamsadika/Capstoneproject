@@ -13,6 +13,8 @@ import { MealRecommendationsPage } from "./pages/MealRecommendationsPage";
 import { WellnessPage } from "./pages/WellnessPage";
 import { SettingsPage } from "./pages/SettingsPage";
 import { VendorDashboardPage } from "./pages/VendorDashboardPage";
+import { PartnerDashboardPage } from "./pages/PartnerDashboardPage";
+import { PartnerGuidance } from "./pages/PartnerGuidance";
 import type { AppPage } from "./types/page";
 import type { VendorStatus } from "./api/vendor";
 
@@ -38,6 +40,7 @@ const validPages: Page[] = [
   "vendor-dashboard",
   "vendor-order-management",
   "partner-dashboard",
+  "partner-guidance",
 ];
 
 function App() {
@@ -188,7 +191,10 @@ function App() {
           />
         )}
         {currentPage === "partner-dashboard" && (
-          <div>Partner Dashboard (Placeholder)</div>
+          <PartnerDashboardPage onNavigate={setCurrentPage} />
+        )}
+        {currentPage === "partner-guidance" && (
+          <PartnerGuidance onNavigate={setCurrentPage} />
         )}
       </div>
     </ThemeProvider>

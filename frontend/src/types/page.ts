@@ -15,4 +15,5 @@ export type AppPage =
   | 'user-settings'
   | 'vendor-dashboard'
   | 'vendor-order-management'
-  | 'partner-dashboard';
+  | 'partner-dashboard'
+  | 'partner-guidance';

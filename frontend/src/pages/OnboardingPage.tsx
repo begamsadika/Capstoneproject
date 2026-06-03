@@ -129,7 +129,8 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
           registrationNumber,
           uploadLicense,
         });
-        onNavigate("pending-approval" as any);
+        localStorage.setItem("partner-organization-name", organizationName);
+        onNavigate("partner-dashboard" as any);
       }
     } catch (error) {
       console.error("Onboarding failed:", error);
