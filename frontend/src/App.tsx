@@ -143,7 +143,10 @@ function App() {
           />
         )}
         {currentPage === "register" && (
-          <RegisterPage onNavigate={handleNavigate} />
+          <RegisterPage
+            onNavigate={handleNavigate}
+            onRegisterSuccess={handleLoginSuccess}
+          />
         )}
         {currentPage === "verification" && (
           <VerificationPage
