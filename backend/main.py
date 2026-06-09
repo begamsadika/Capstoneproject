@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.database import engine, Base
+from app.db_migrations import ensure_meal_image_filename_column
 import os
 
 # ─── Import ALL models (so tables are created) ───
@@ -24,7 +25,8 @@ from app.routes.orders import router as orders_router
 from app.routes.health import router as health_router
 from app.routes.ai import router as ai_router
 
-# ─── Create all tables ────────────────────────────
+# ─── Create all tables + apply lightweight schema patches ─
+ensure_meal_image_filename_column()
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(

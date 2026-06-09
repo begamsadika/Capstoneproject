@@ -8,7 +8,6 @@ from ..models.order import Order
 from ..models.meal import Meal
 from ..models.user import User
 from ..models.vendor_profile import VendorProfile
-from ..models.meal_rating import MealRating
 from ..core.auth import get_current_user
 
 router = APIRouter(prefix="/api/orders", tags=["Orders"])
@@ -309,88 +308,64 @@ def get_vendor_order_stats(
     }
 
 
-class SubmitRatingRequest(BaseModel):
-    order_id: int
-    rating: int  # 1-5
-    review: Optional[str] = None
-
-
-# ─── SUBMIT RATING (user) ────────────────────────
-@router.post("/rate")
-def submit_rating(
-    data: SubmitRatingRequest,
+# ─── CREATE MANUAL ORDER (vendor) ─────────────────
+@router.post("/vendor/manual")
+def create_manual_vendor_order(
+    data: ManualOrderRequest,
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
-):
-    if not 1 <= data.rating <= 5:
-        raise HTTPException(status_code=400, detail="Rating must be 1-5")
-
-    order = (
-        db.query(Order)
-        .filter(Order.id == data.order_id, Order.user_id == current_user.id)
-        .first()
-    )
-
-    if not order:
-        raise HTTPException(status_code=404, detail="Order not found")
-    if order.status != "delivered":
-        raise HTTPException(status_code=400, detail="Can only rate delivered orders")
-
-    existing = db.query(MealRating).filter(MealRating.order_id == data.order_id).first()
-    if existing:
-        raise HTTPException(status_code=400, detail="Already rated this order")
-
-    rating = MealRating(
-        order_id=data.order_id,
-        meal_id=order.meal_id,
-        user_id=current_user.id,
-        vendor_id=order.vendor_id,
-        rating=data.rating,
-        review=data.review,
-    )
-    db.add(rating)
-    db.commit()
-
-    return {"message": "Rating submitted! Thank you."}
-
-
-# ─── GET VENDOR RATINGS ───────────────────────────
-@router.get("/vendor/ratings")
-def get_vendor_ratings(
-    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
 ):
     if current_user.user_type != "vendor":
         raise HTTPException(status_code=403, detail="Not a vendor account")
 
+    if data.quantity <= 0:
+        raise HTTPException(status_code=400, detail="Quantity must be greater than zero")
+
     profile = (
         db.query(VendorProfile).filter(VendorProfile.user_id == current_user.id).first()
     )
+    if not profile:
+        raise HTTPException(status_code=404, detail="Vendor profile not found")
 
-    ratings = (
-        db.query(MealRating)
-        .filter(MealRating.vendor_id == profile.id)
-        .order_by(MealRating.created_at.desc())
-        .all()
-    )
-
-    result = []
-    for r in ratings:
-        meal = db.query(Meal).filter(Meal.id == r.meal_id).first()
-        user = db.query(User).filter(User.id == r.user_id).first()
-        result.append(
-            {
-                "id": r.id,
-                "meal_name": meal.name if meal else "Unknown",
-                "customer_name": user.name if user else "Unknown",
-                "rating": r.rating,
-                "review": r.review or "",
-                "created_at": str(r.created_at),
-            }
+    customer = db.query(User).filter(User.email == data.customer_email).first()
+    if not customer:
+        raise HTTPException(
+            status_code=404,
+            detail="Customer email not found. Customer must register first.",
         )
 
-    avg = sum(r["rating"] for r in result) / max(len(result), 1)
+    meal = (
+        db.query(Meal)
+        .filter(Meal.id == data.meal_id, Meal.vendor_id == profile.id, Meal.available == True)
+        .first()
+    )
+    if not meal:
+        raise HTTPException(
+            status_code=404,
+            detail="Meal not found for this vendor or unavailable.",
+        )
+
+    order = Order(
+        user_id=customer.id,
+        meal_id=meal.id,
+        vendor_id=profile.id,
+        quantity=data.quantity,
+        unit_price=meal.price,
+        total_price=meal.price * data.quantity,
+        status="pending",
+    )
+    db.add(order)
+    db.commit()
+    db.refresh(order)
+
     return {
-        "ratings": result,
-        "avg_rating": round(avg, 1),
-        "total": len(result),
+        "message": "Manual order created successfully",
+        "order_id": order.id,
+        "customer_name": customer.name,
+        "customer_email": customer.email,
+        "meal_name": meal.name,
+        "quantity": order.quantity,
+        "total_price": order.total_price,
+        "status": order.status,
+        "created_at": str(order.created_at),
     }
