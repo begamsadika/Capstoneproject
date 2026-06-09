@@ -704,7 +704,7 @@ function VendorOrdersSection() {
                         />
                       </td>
                       <td className="px-5 py-3 font-mono text-xs font-medium text-slate-900 dark:text-white">
-                        #{order.id}
+                      {order.id}
                       </td>
                       <td className="px-5 py-3">
                         <div className="flex items-center gap-3">
@@ -2310,7 +2310,7 @@ export function VendorDashboardPage({
                           className="hover:bg-slate-50/80 dark:hover:bg-slate-800/50"
                         >
                           <td className="px-5 py-3 font-mono text-xs font-medium text-slate-900 dark:text-white">
-                            #{o.id}
+                            {o.id}
                           </td>
                           <td className="px-5 py-3 text-slate-700 dark:text-slate-300">
                             {o.customer_name}
@@ -2350,7 +2350,7 @@ export function VendorDashboardPage({
                         >
                           <div className="min-w-0">
                             <span className="text-xs font-semibold text-wellora">
-                              #{item.rank}
+                              {item.rank}
                             </span>
                             <p className="truncate text-sm font-medium text-slate-900 dark:text-white">
                               {item.mealName}
