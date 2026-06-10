@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+﻿import { useEffect, useMemo, useRef, useState } from "react";
 import {
   BarChart3,
   Bell,
@@ -489,32 +489,32 @@ function VendorOrdersSection() {
   };
 
   return (
-    <div className="mx-auto max-w-7xl space-y-6">
-      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-200 pb-4 dark:border-slate-800">
+    <div className="flex h-full min-h-0 w-full flex-col gap-4">
+      <div className="flex shrink-0 flex-wrap items-start justify-between gap-3 border-b border-slate-200 pb-4 dark:border-slate-800">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+          <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
             Orders
           </h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-base text-slate-500 dark:text-slate-400">
             Manage all customer orders
           </p>
         </div>
         <button
           type="button"
           onClick={openFiltersPanel}
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-base font-semibold text-slate-700 shadow-sm hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
         >
           <Filter className="h-4 w-4" />
           Filters
           {appliedFilterCount > 0 && (
-            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-cyan-500 px-1.5 text-[11px] font-bold text-white">
+            <span className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-cyan-500 px-1.5 text-base font-bold text-white">
               {appliedFilterCount}
             </span>
           )}
         </button>
       </div>
 
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+      <div className="flex shrink-0 flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
         <div className="relative min-w-0 flex-1">
           <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
           <input
@@ -522,7 +522,7 @@ function VendorOrdersSection() {
             placeholder="Search orders, user, meal..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 focus:border-wellora focus:outline-none focus:ring-2 focus:ring-wellora/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+            className="w-full rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-base text-slate-900 focus:border-wellora focus:outline-none focus:ring-2 focus:ring-wellora/20 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
           />
         </div>
         <button
@@ -531,7 +531,7 @@ function VendorOrdersSection() {
             setManualOrderOpen(true);
             setManualMessage(null);
           }}
-          className="inline-flex shrink-0 items-center justify-center rounded-xl bg-wellora px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-wellora-hover"
+          className="inline-flex shrink-0 items-center justify-center rounded-xl bg-wellora px-4 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-wellora-hover"
         >
           + Add Manual Order
         </button>
@@ -539,7 +539,7 @@ function VendorOrdersSection() {
 
       {/* Stats */}
       {stats && (
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid shrink-0 gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {[
             {
               label: "Total Orders",
@@ -562,10 +562,10 @@ function VendorOrdersSection() {
               key={s.label}
               className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm dark:border-slate-800 dark:bg-slate-900"
             >
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
+              <p className="text-base font-medium text-slate-500 dark:text-slate-400">
                 {s.label}
               </p>
-              <p className={`mt-2 text-2xl font-bold tabular-nums ${s.color}`}>
+              <p className={`mt-2 text-3xl font-bold tabular-nums ${s.color}`}>
                 {s.value}
               </p>
             </div>
@@ -574,13 +574,13 @@ function VendorOrdersSection() {
       )}
 
       {/* Filter tabs */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex shrink-0 flex-wrap gap-2">
         {STATUS_TABS.map((tab) => (
           <button
             key={tab.label}
             type="button"
             onClick={() => setActiveTab(tab.label)}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition ${
+            className={`rounded-full px-4 py-2 text-base font-medium transition ${
               activeTab === tab.label
                 ? "bg-wellora text-white shadow-sm"
                 : "bg-white text-slate-600 ring-1 ring-slate-200 hover:bg-slate-50 dark:bg-slate-900 dark:text-slate-300 dark:ring-slate-700"
@@ -592,7 +592,7 @@ function VendorOrdersSection() {
         <button
           type="button"
           onClick={loadData}
-          className="ml-auto rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
+          className="ml-auto rounded-full bg-slate-100 px-4 py-2 text-base font-medium text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300"
         >
           ↻ Refresh
         </button>
@@ -600,7 +600,7 @@ function VendorOrdersSection() {
 
       {/* Orders table + right details panel */}
       <div
-        className={`grid gap-5 ${
+        className={`grid min-h-0 flex-1 gap-5 ${
           activeTab === "Pending" ||
           activeTab === "Preparing" ||
           activeTab === "Completed" ||
@@ -609,17 +609,17 @@ function VendorOrdersSection() {
             : ""
         }`}
       >
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex min-h-0 flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
           {!isLoading && orders.length > 0 && bulkSelectedIds.length > 0 && (
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-emerald-50/60 px-4 py-3 dark:border-slate-800 dark:bg-emerald-950/20">
-              <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
+              <p className="text-base font-medium text-slate-800 dark:text-slate-200">
                 {bulkSelectedIds.length} order{bulkSelectedIds.length === 1 ? "" : "s"} selected
               </p>
               <div className="flex flex-wrap items-center gap-2">
                 <button
                   type="button"
                   onClick={() => setBulkSelectedIds([])}
-                  className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+                  className="rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-base font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
                 >
                   Clear selection
                 </button>
@@ -629,7 +629,7 @@ function VendorOrdersSection() {
                     setBulkFulfillmentNote("");
                     setBulkUpdateOpen(true);
                   }}
-                  className="rounded-lg bg-wellora px-3 py-1.5 text-xs font-semibold text-white hover:bg-wellora-hover"
+                  className="rounded-lg bg-wellora px-3 py-1.5 text-base font-semibold text-white hover:bg-wellora-hover"
                 >
                   Bulk Update Status
                 </button>
@@ -637,26 +637,26 @@ function VendorOrdersSection() {
             </div>
           )}
           {isLoading ? (
-            <div className="flex items-center justify-center py-16">
+            <div className="flex flex-1 items-center justify-center py-16">
               <div className="h-8 w-8 animate-spin rounded-full border-4 border-wellora border-t-transparent" />
             </div>
           ) : orders.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-16 text-center">
+            <div className="flex flex-1 flex-col items-center justify-center py-16 text-center">
               <p className="text-slate-500">No orders found.</p>
             {activeTab !== "All" && (
                 <button
                   type="button"
                 onClick={() => setActiveTab("All")}
-                  className="mt-3 text-sm text-wellora hover:underline"
+                  className="mt-3 text-base text-wellora hover:underline"
                 >
                   View all orders
                 </button>
               )}
             </div>
           ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[860px] text-left text-sm">
-                <thead>
+            <div className="min-h-0 flex-1 overflow-auto">
+              <table className="w-full min-w-[860px] text-left text-base">
+                <thead className="sticky top-0 z-10">
                   <tr className="border-b border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300">
                     <th className="w-12 px-3 py-3 font-semibold">
                       <input
@@ -703,7 +703,7 @@ function VendorOrdersSection() {
                           aria-label={`Select order ${order.id}`}
                         />
                       </td>
-                      <td className="px-5 py-3 font-mono text-xs font-medium text-slate-900 dark:text-white">
+                      <td className="px-5 py-3 font-mono text-base font-medium text-slate-900 dark:text-white">
                       {order.id}
                       </td>
                       <td className="px-5 py-3">
@@ -724,7 +724,7 @@ function VendorOrdersSection() {
                         <p className="font-medium text-slate-900 dark:text-white">
                           {order.customer_name}
                         </p>
-                        <p className="text-xs text-slate-500">
+                        <p className="text-base text-slate-500">
                           {order.customer_email}
                         </p>
                       </td>
@@ -736,12 +736,12 @@ function VendorOrdersSection() {
                       </td>
                       <td className="px-5 py-3">
                         <span
-                          className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium capitalize ${STATUS_COLORS[order.status] ?? "bg-slate-100 text-slate-700"}`}
+                          className={`inline-flex rounded-full px-2.5 py-0.5 text-base font-medium capitalize ${STATUS_COLORS[order.status] ?? "bg-slate-100 text-slate-700"}`}
                         >
                           {order.status}
                         </span>
                       </td>
-                      <td className="px-5 py-3 text-xs text-slate-500">
+                      <td className="px-5 py-3 text-base text-slate-500">
                         {new Date(order.created_at).toLocaleDateString()}
                         <br />
                         {new Date(order.created_at).toLocaleTimeString([], {
@@ -763,7 +763,7 @@ function VendorOrdersSection() {
                                   e.stopPropagation();
                                   handleStatusUpdate(order.id, NEXT_STATUS[normalizedStatus]);
                                 }}
-                                className="rounded-lg bg-blue-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-blue-600 disabled:opacity-50"
+                                className="rounded-lg bg-blue-500 px-3 py-1.5 text-base font-semibold text-white transition hover:bg-blue-600 disabled:opacity-50"
                               >
                                 {updatingId === order.id
                                   ? "..."
@@ -776,7 +776,7 @@ function VendorOrdersSection() {
                                   e.stopPropagation();
                                   handleStatusUpdate(order.id, "cancelled");
                                 }}
-                                className="rounded-lg px-3 py-1.5 text-xs font-semibold text-red-600 ring-1 ring-red-200 hover:bg-red-50 disabled:opacity-50"
+                                className="rounded-lg px-3 py-1.5 text-base font-semibold text-red-600 ring-1 ring-red-200 hover:bg-red-50 disabled:opacity-50"
                               >
                                 Cancel Order
                               </button>
@@ -794,7 +794,7 @@ function VendorOrdersSection() {
                                   e.stopPropagation();
                                   openEtaModal(order, "preparing");
                                 }}
-                                className="rounded-lg bg-violet-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-violet-600 disabled:opacity-50"
+                                className="rounded-lg bg-violet-500 px-3 py-1.5 text-base font-semibold text-white transition hover:bg-violet-600 disabled:opacity-50"
                               >
                                 Start Preparing
                               </button>
@@ -805,7 +805,7 @@ function VendorOrdersSection() {
                                   e.stopPropagation();
                                   handleStatusUpdate(order.id, "cancelled");
                                 }}
-                                className="rounded-lg px-3 py-1.5 text-xs font-semibold text-red-600 ring-1 ring-red-200 hover:bg-red-50 disabled:opacity-50"
+                                className="rounded-lg px-3 py-1.5 text-base font-semibold text-red-600 ring-1 ring-red-200 hover:bg-red-50 disabled:opacity-50"
                               >
                                 Cancel Order
                               </button>
@@ -822,7 +822,7 @@ function VendorOrdersSection() {
                                 e.stopPropagation();
                                 openEtaModal(order, "ready");
                               }}
-                              className="rounded-lg bg-cyan-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-cyan-600 disabled:opacity-50"
+                              className="rounded-lg bg-cyan-500 px-3 py-1.5 text-base font-semibold text-white transition hover:bg-cyan-600 disabled:opacity-50"
                             >
                               Mark as Ready
                             </button>
@@ -838,7 +838,7 @@ function VendorOrdersSection() {
                                 e.stopPropagation();
                                 handleStatusUpdate(order.id, NEXT_STATUS[normalizedStatus]);
                               }}
-                              className="rounded-lg bg-emerald-500 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-emerald-600 disabled:opacity-50"
+                              className="rounded-lg bg-emerald-500 px-3 py-1.5 text-base font-semibold text-white transition hover:bg-emerald-600 disabled:opacity-50"
                             >
                               {updatingId === order.id
                                 ? "..."
@@ -859,14 +859,14 @@ function VendorOrdersSection() {
                                   e.stopPropagation();
                                   setSelectedOrderId(order.id);
                                 }}
-                                className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                                className="rounded-lg border border-slate-200 px-3 py-1.5 text-base font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                               >
                                 View Details
                               </button>
                               <button
                                 type="button"
                                 onClick={(e) => e.stopPropagation()}
-                                className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                                className="rounded-lg border border-slate-200 px-3 py-1.5 text-base font-semibold text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
                               >
                                 Download Invoice
                               </button>
@@ -885,14 +885,14 @@ function VendorOrdersSection() {
                                 e.stopPropagation();
                                 setSelectedOrderId(order.id);
                               }}
-                              className="rounded-lg border border-slate-200 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                              className="rounded-lg border border-slate-200 px-3 py-1.5 text-base font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                             >
                               View Details
                             </button>
                           );
                         }
 
-                        return <span className="text-xs text-slate-400">—</span>;
+                        return <span className="text-base text-slate-400">—</span>;
                       })()}
                     </td>
                     </tr>
@@ -904,64 +904,64 @@ function VendorOrdersSection() {
         </div>
 
         {activeTab === "Pending" && (
-          <aside className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <aside className="min-h-0 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
             {selectedOrder ? (
               <div className="space-y-4">
                 <div className="border-b border-slate-200 pb-3 dark:border-slate-700">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="text-base font-semibold uppercase tracking-wide text-slate-500">
                     Order Details
                   </p>
                   <h3 className="mt-1 text-lg font-semibold text-slate-900 dark:text-white">
                     Order #WL-{selectedOrder.id}
                   </h3>
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-base text-slate-500">
                     Placed {new Date(selectedOrder.created_at).toLocaleString()}
                   </p>
                 </div>
 
                 <div className="space-y-3">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="text-base font-semibold uppercase tracking-wide text-slate-500">
                     Customer
                   </p>
                   <div className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
                     <p className="font-medium text-slate-900 dark:text-white">
                       {selectedOrder.customer_name}
                     </p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-base text-slate-500">
                       {selectedOrder.customer_email}
                     </p>
-                    <div className="mt-2 flex items-center gap-2 text-xs text-slate-500">
+                    <div className="mt-2 flex items-center gap-2 text-base text-slate-500">
                       <Phone className="h-3.5 w-3.5" /> +94 77 123 4567
                     </div>
-                    <div className="mt-1 flex items-center gap-2 text-xs text-slate-500">
+                    <div className="mt-1 flex items-center gap-2 text-base text-slate-500">
                       <MapPin className="h-3.5 w-3.5" /> Delivery address pending
                     </div>
                   </div>
                 </div>
 
                 <div className="space-y-2 rounded-xl bg-slate-50 p-3 dark:bg-slate-800/60">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="text-base font-semibold uppercase tracking-wide text-slate-500">
                     Order Summary
                   </p>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-base">
                     <span className="text-slate-500">Meal</span>
                     <span className="font-medium text-slate-800 dark:text-slate-100">
                       {selectedOrder.meal_name}
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-base">
                     <span className="text-slate-500">Quantity</span>
                     <span className="font-medium text-slate-800 dark:text-slate-100">
                       ×{selectedOrder.quantity}
                     </span>
                   </div>
-                  <div className="flex justify-between text-sm">
+                  <div className="flex justify-between text-base">
                     <span className="text-slate-500">Unit Price</span>
                     <span className="font-medium text-slate-800 dark:text-slate-100">
                       Rs {selectedOrder.unit_price.toFixed(2)}
                     </span>
                   </div>
-                  <div className="flex justify-between border-t border-slate-200 pt-2 text-sm dark:border-slate-700">
+                  <div className="flex justify-between border-t border-slate-200 pt-2 text-base dark:border-slate-700">
                     <span className="font-medium text-slate-600 dark:text-slate-200">
                       Total
                     </span>
@@ -972,12 +972,12 @@ function VendorOrdersSection() {
                 </div>
 
                 <div>
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="mb-2 text-base font-semibold uppercase tracking-wide text-slate-500">
                     Order Timeline
                   </p>
                   <ul className="space-y-2.5">
                     {timelineSteps(selectedOrder.status).map((step) => (
-                      <li key={step.key} className="flex items-center gap-2 text-sm">
+                      <li key={step.key} className="flex items-center gap-2 text-base">
                         {step.done ? (
                           <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                         ) : step.active ? (
@@ -1000,7 +1000,7 @@ function VendorOrdersSection() {
                 </div>
               </div>
             ) : (
-              <div className="flex h-full items-center justify-center text-sm text-slate-500">
+              <div className="flex h-full items-center justify-center text-base text-slate-500">
                 Select an order to view details.
               </div>
             )}
@@ -1008,7 +1008,7 @@ function VendorOrdersSection() {
         )}
 
         {activeTab === "Preparing" && (
-          <aside className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <aside className="min-h-0 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
             {selectedOrder ? (
               <div className="space-y-4">
                 <div className="border-b border-slate-200 pb-3 dark:border-slate-700">
@@ -1016,17 +1016,17 @@ function VendorOrdersSection() {
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                       ORD-{selectedOrder.id}
                     </h3>
-                    <span className="inline-flex rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-semibold text-violet-700 dark:bg-violet-900/40 dark:text-violet-200">
+                    <span className="inline-flex rounded-full bg-violet-100 px-2 py-0.5 text-base font-semibold text-violet-700 dark:bg-violet-900/40 dark:text-violet-200">
                       Preparing
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-base text-slate-500">
                     Placed {new Date(selectedOrder.created_at).toLocaleString()}
                   </p>
                 </div>
 
                 <div>
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="mb-2 text-base font-semibold uppercase tracking-wide text-slate-500">
                     Order Progress
                   </p>
                   <ul className="space-y-2.5">
@@ -1036,7 +1036,7 @@ function VendorOrdersSection() {
                       { key: "pickup", label: "Ready for Pickup", done: false },
                       { key: "delivery", label: "Out for Delivery", done: false },
                     ].map((step) => (
-                      <li key={step.key} className="flex items-center gap-2 text-sm">
+                      <li key={step.key} className="flex items-center gap-2 text-base">
                         {step.done ? (
                           <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                         ) : step.active ? (
@@ -1059,10 +1059,10 @@ function VendorOrdersSection() {
                 </div>
 
                 <div className="space-y-2 rounded-xl border border-slate-200 p-3 dark:border-slate-700">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="text-base font-semibold uppercase tracking-wide text-slate-500">
                     Order Items
                   </p>
-                  <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center justify-between text-base">
                     <span className="text-slate-600 dark:text-slate-300">
                       {selectedOrder.quantity}x {selectedOrder.meal_name}
                     </span>
@@ -1070,7 +1070,7 @@ function VendorOrdersSection() {
                       Rs {selectedOrder.total_price.toFixed(2)}
                     </span>
                   </div>
-                  <div className="border-t border-slate-200 pt-2 text-xs text-slate-500 dark:border-slate-700">
+                  <div className="border-t border-slate-200 pt-2 text-base text-slate-500 dark:border-slate-700">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
                       <span>Rs {selectedOrder.total_price.toFixed(2)}</span>
@@ -1079,7 +1079,7 @@ function VendorOrdersSection() {
                       <span>Delivery Fee</span>
                       <span>Rs 0.00</span>
                     </div>
-                    <div className="mt-2 flex justify-between text-sm font-semibold text-wellora">
+                    <div className="mt-2 flex justify-between text-base font-semibold text-wellora">
                       <span>Grand Total</span>
                       <span>Rs {selectedOrder.total_price.toFixed(2)}</span>
                     </div>
@@ -1087,17 +1087,17 @@ function VendorOrdersSection() {
                 </div>
 
                 <div className="space-y-2 rounded-xl border border-slate-200 p-3 dark:border-slate-700">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="text-base font-semibold uppercase tracking-wide text-slate-500">
                     Customer & Delivery
                   </p>
-                  <p className="text-sm font-medium text-slate-900 dark:text-white">
+                  <p className="text-base font-medium text-slate-900 dark:text-white">
                     {selectedOrder.customer_name}
                   </p>
-                  <p className="text-xs text-slate-500">{selectedOrder.customer_email}</p>
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <p className="text-base text-slate-500">{selectedOrder.customer_email}</p>
+                  <div className="flex items-center gap-2 text-base text-slate-500">
                     <Phone className="h-3.5 w-3.5" /> +94 77 123 4567
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-slate-500">
+                  <div className="flex items-center gap-2 text-base text-slate-500">
                     <MapPin className="h-3.5 w-3.5" /> Delivery address pending
                   </div>
                 </div>
@@ -1107,7 +1107,7 @@ function VendorOrdersSection() {
                     type="button"
                     onClick={() => handleStatusUpdate(selectedOrder.id, "delivered")}
                     disabled={updatingId === selectedOrder.id}
-                    className="rounded-xl bg-emerald-500 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-600 disabled:opacity-60"
+                    className="rounded-xl bg-emerald-500 px-4 py-2 text-base font-semibold text-white hover:bg-emerald-600 disabled:opacity-60"
                   >
                     {updatingId === selectedOrder.id ? "Updating..." : "Ready for Pickup"}
                   </button>
@@ -1115,14 +1115,14 @@ function VendorOrdersSection() {
                     type="button"
                     onClick={() => setCancelModalOrder(selectedOrder)}
                     disabled={updatingId === selectedOrder.id}
-                    className="rounded-xl border border-rose-200 px-4 py-2 text-sm font-semibold text-rose-600 hover:bg-rose-50 disabled:opacity-60 dark:border-rose-900/60 dark:hover:bg-rose-900/20"
+                    className="rounded-xl border border-rose-200 px-4 py-2 text-base font-semibold text-rose-600 hover:bg-rose-50 disabled:opacity-60 dark:border-rose-900/60 dark:hover:bg-rose-900/20"
                   >
                     Cancel Order
                   </button>
                 </div>
               </div>
             ) : (
-              <div className="flex h-full items-center justify-center text-sm text-slate-500">
+              <div className="flex h-full items-center justify-center text-base text-slate-500">
                 Select an order to view details.
               </div>
             )}
@@ -1130,9 +1130,9 @@ function VendorOrdersSection() {
         )}
 
         {activeTab === "All" && (
-          <aside className="space-y-4">
+          <aside className="min-h-0 space-y-4 overflow-y-auto">
             <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+              <h3 className="text-base font-semibold uppercase tracking-wide text-slate-500">
                 Quick Stats Today
               </h3>
               <div className="mt-3 space-y-3">
@@ -1141,7 +1141,7 @@ function VendorOrdersSection() {
                     <Package className="h-4 w-4" />
                   </div>
                   <div>
-                    <p className="text-[11px] uppercase tracking-wide text-slate-500">
+                    <p className="text-base uppercase tracking-wide text-slate-500">
                       Total Orders
                     </p>
                     <p className="text-lg font-semibold text-slate-900 dark:text-white">
@@ -1154,7 +1154,7 @@ function VendorOrdersSection() {
                     <Store className="h-4 w-4" />
                   </div>
                   <div>
-                    <p className="text-[11px] uppercase tracking-wide text-slate-500">
+                    <p className="text-base uppercase tracking-wide text-slate-500">
                       Active Fulfilling
                     </p>
                     <p className="text-lg font-semibold text-slate-900 dark:text-white">
@@ -1167,7 +1167,7 @@ function VendorOrdersSection() {
                     <Circle className="h-4 w-4" />
                   </div>
                   <div>
-                    <p className="text-[11px] uppercase tracking-wide text-slate-500">
+                    <p className="text-base uppercase tracking-wide text-slate-500">
                       Awaiting Action
                     </p>
                     <p className="text-lg font-semibold text-slate-900 dark:text-white">
@@ -1180,7 +1180,7 @@ function VendorOrdersSection() {
                     <CheckCircle2 className="h-4 w-4" />
                   </div>
                   <div>
-                    <p className="text-[11px] uppercase tracking-wide text-slate-500">
+                    <p className="text-base uppercase tracking-wide text-slate-500">
                       Completed Today
                     </p>
                     <p className="text-lg font-semibold text-slate-900 dark:text-white">
@@ -1193,16 +1193,16 @@ function VendorOrdersSection() {
 
             <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <div className="mb-3 flex items-center justify-between">
-                <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <h3 className="text-base font-semibold uppercase tracking-wide text-slate-500">
                   Recent Alerts
                 </h3>
                 {urgentAlertCount > 0 && (
-                  <span className="rounded bg-rose-100 px-2 py-0.5 text-[10px] font-semibold text-rose-700 dark:bg-rose-900/40 dark:text-rose-200">
+                  <span className="rounded bg-rose-100 px-2 py-0.5 text-base font-semibold text-rose-700 dark:bg-rose-900/40 dark:text-rose-200">
                     {urgentAlertCount} Urgent
                   </span>
                 )}
               </div>
-              <div className="space-y-2.5 text-xs">
+              <div className="space-y-2.5 text-base">
                 {recentAlerts.map((alert) => (
                   <div
                     key={alert.id}
@@ -1220,16 +1220,16 @@ function VendorOrdersSection() {
 
             <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <div className="mb-2 flex items-center justify-between">
-                <h3 className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                <h3 className="text-base font-semibold text-slate-700 dark:text-slate-200">
                   Vendor Performance
                 </h3>
-                <span className="text-xs font-semibold text-cyan-600">98.2%</span>
+                <span className="text-base font-semibold text-cyan-600">98.2%</span>
               </div>
-              <p className="mb-2 text-xs text-slate-500">Accuracy Score</p>
+              <p className="mb-2 text-base text-slate-500">Accuracy Score</p>
               <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800">
                 <div className="h-2 w-[98.2%] rounded-full bg-cyan-500" />
               </div>
-              <p className="mt-3 text-[11px] text-slate-500">
+              <p className="mt-3 text-base text-slate-500">
                 You are in the top 5% of vendors this week. Keep it up!
               </p>
             </div>
@@ -1237,7 +1237,7 @@ function VendorOrdersSection() {
         )}
 
         {activeTab === "Completed" && (
-          <aside className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <aside className="min-h-0 overflow-y-auto rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
             {selectedOrder ? (
               <div className="space-y-4">
                 <div className="border-b border-slate-200 pb-3 dark:border-slate-700">
@@ -1245,11 +1245,11 @@ function VendorOrdersSection() {
                     <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
                       ORD-{selectedOrder.id}
                     </h3>
-                    <span className="inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200">
+                    <span className="inline-flex rounded-full bg-emerald-100 px-2 py-0.5 text-base font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200">
                       Completed
                     </span>
                   </div>
-                  <p className="mt-1 text-xs text-slate-500">
+                  <p className="mt-1 text-base text-slate-500">
                     Delivered on{" "}
                     {new Date(selectedOrder.created_at).toLocaleDateString()} at{" "}
                     {new Date(selectedOrder.created_at).toLocaleTimeString([], {
@@ -1263,8 +1263,8 @@ function VendorOrdersSection() {
                   <p className="font-semibold text-slate-900 dark:text-white">
                     {selectedOrder.customer_name}
                   </p>
-                  <p className="text-xs text-slate-500">Regular Customer · 12 Orders</p>
-                  <div className="mt-3 space-y-2 border-t border-slate-200 pt-3 text-xs dark:border-slate-700">
+                  <p className="text-base text-slate-500">Regular Customer Â· 12 Orders</p>
+                  <div className="mt-3 space-y-2 border-t border-slate-200 pt-3 text-base dark:border-slate-700">
                     <p className="font-semibold uppercase tracking-wide text-slate-500">
                       Contact Information
                     </p>
@@ -1273,7 +1273,7 @@ function VendorOrdersSection() {
                       {selectedOrder.customer_email}
                     </p>
                   </div>
-                  <div className="mt-3 border-t border-slate-200 pt-3 text-xs dark:border-slate-700">
+                  <div className="mt-3 border-t border-slate-200 pt-3 text-base dark:border-slate-700">
                     <p className="font-semibold uppercase tracking-wide text-slate-500">
                       Delivery Address
                     </p>
@@ -1284,7 +1284,7 @@ function VendorOrdersSection() {
                 </div>
 
                 <div>
-                  <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="mb-2 text-base font-semibold uppercase tracking-wide text-slate-500">
                     Order Journey
                   </p>
                   <ul className="space-y-2.5">
@@ -1295,7 +1295,7 @@ function VendorOrdersSection() {
                       "Out for Delivery",
                       "Completed",
                     ].map((step) => (
-                      <li key={step} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-300">
+                      <li key={step} className="flex items-center gap-2 text-base text-slate-600 dark:text-slate-300">
                         <CheckCircle2 className="h-4 w-4 text-emerald-500" />
                         {step}
                       </li>
@@ -1304,20 +1304,20 @@ function VendorOrdersSection() {
                 </div>
 
                 <div className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="text-base font-semibold uppercase tracking-wide text-slate-500">
                     Vendor Internal Notes
                   </p>
-                  <div className="mt-2 rounded-lg bg-cyan-50 p-3 text-xs text-slate-600 dark:bg-cyan-950/20 dark:text-slate-300">
+                  <div className="mt-2 rounded-lg bg-cyan-50 p-3 text-base text-slate-600 dark:bg-cyan-950/20 dark:text-slate-300">
                     Customer requested extra dressing on the side. Included 2 packets as
                     requested. Driver confirmed hand-off at front door.
                   </div>
                 </div>
 
                 <div className="rounded-xl border border-slate-200 p-3 dark:border-slate-700">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  <p className="text-base font-semibold uppercase tracking-wide text-slate-500">
                     Final Invoice
                   </p>
-                  <div className="mt-2 space-y-1.5 text-xs text-slate-600 dark:text-slate-300">
+                  <div className="mt-2 space-y-1.5 text-base text-slate-600 dark:text-slate-300">
                     <div className="flex justify-between">
                       <span>Subtotal</span>
                       <span>Rs {selectedOrder.total_price.toFixed(2)}</span>
@@ -1330,7 +1330,7 @@ function VendorOrdersSection() {
                       <span>Delivery Fee</span>
                       <span>Rs 0.00</span>
                     </div>
-                    <div className="mt-2 flex justify-between border-t border-slate-200 pt-2 text-sm font-semibold text-slate-900 dark:border-slate-700 dark:text-white">
+                    <div className="mt-2 flex justify-between border-t border-slate-200 pt-2 text-base font-semibold text-slate-900 dark:border-slate-700 dark:text-white">
                       <span>Total Paid</span>
                       <span>Rs {selectedOrder.total_price.toFixed(2)}</span>
                     </div>
@@ -1340,26 +1340,26 @@ function VendorOrdersSection() {
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
-                    className="rounded-xl border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                    className="rounded-xl border border-slate-200 px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                   >
                     Print
                   </button>
                   <button
                     type="button"
-                    className="rounded-xl border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                    className="rounded-xl border border-slate-200 px-3 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
                   >
                     Export PDF
                   </button>
                 </div>
                 <button
                   type="button"
-                  className="w-full rounded-xl bg-cyan-500 px-4 py-2 text-sm font-semibold text-white hover:bg-cyan-600"
+                  className="w-full rounded-xl bg-cyan-500 px-4 py-2 text-base font-semibold text-white hover:bg-cyan-600"
                 >
                   Close Details
                 </button>
               </div>
             ) : (
-              <div className="flex h-full items-center justify-center text-sm text-slate-500">
+              <div className="flex h-full items-center justify-center text-base text-slate-500">
                 Select a completed order to view details.
               </div>
             )}
@@ -1383,7 +1383,7 @@ function VendorOrdersSection() {
                 <button
                   type="button"
                   onClick={clearDraftFilters}
-                  className="rounded-lg px-2 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
+                  className="rounded-lg px-2 py-1 text-base font-semibold text-slate-500 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
                 >
                   Clear All
                 </button>
@@ -1400,7 +1400,7 @@ function VendorOrdersSection() {
 
             <div className="flex-1 space-y-5 overflow-y-auto p-4">
               <section>
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                <p className="text-base font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
                   Time Period
                 </p>
                 <div className="mt-3 grid grid-cols-2 gap-2">
@@ -1408,7 +1408,7 @@ function VendorOrdersSection() {
                     <button
                       key={label}
                       type="button"
-                      className={`rounded-xl border px-3 py-2 text-left text-xs font-medium ${
+                      className={`rounded-xl border px-3 py-2 text-left text-base font-medium ${
                         idx === 0
                           ? "border-cyan-200 bg-cyan-50 text-cyan-700 dark:border-cyan-700/70 dark:bg-cyan-950/40 dark:text-cyan-300"
                           : "border-slate-200 text-slate-600 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
@@ -1422,10 +1422,10 @@ function VendorOrdersSection() {
 
               <section className="rounded-xl border border-violet-300 p-3 dark:border-violet-700">
                 <div className="mb-3 flex items-center justify-between">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  <p className="text-base font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                     Order Status
                   </p>
-                  <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[11px] font-semibold text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">
+                  <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-base font-semibold text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">
                     {draftStatusFilters.length}
                   </span>
                 </div>
@@ -1435,7 +1435,7 @@ function VendorOrdersSection() {
                       key={status}
                       className="flex cursor-pointer items-center justify-between rounded-lg px-2 py-1.5 hover:bg-slate-50 dark:hover:bg-slate-800"
                     >
-                      <span className="text-sm text-slate-700 dark:text-slate-200">
+                      <span className="text-base text-slate-700 dark:text-slate-200">
                         {displayStatus(status)}
                       </span>
                       <input
@@ -1451,15 +1451,15 @@ function VendorOrdersSection() {
 
               <section>
                 <div className="mb-3 flex items-center justify-between">
-                  <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                  <p className="text-base font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                     Fulfillment
                   </p>
-                  <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-[11px] font-semibold text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">
+                  <span className="rounded-full bg-cyan-100 px-2 py-0.5 text-base font-semibold text-cyan-700 dark:bg-cyan-900/40 dark:text-cyan-300">
                     {draftDeliveryOnly ? 1 : 0}
                   </span>
                 </div>
                 <label className="flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 px-3 py-2 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800">
-                  <span className="text-sm text-slate-700 dark:text-slate-200">Delivery</span>
+                  <span className="text-base text-slate-700 dark:text-slate-200">Delivery</span>
                   <input
                     type="checkbox"
                     checked={draftDeliveryOnly}
@@ -1474,13 +1474,13 @@ function VendorOrdersSection() {
               <button
                 type="button"
                 onClick={applyFilters}
-                className="w-full rounded-xl bg-cyan-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-cyan-600"
+                className="w-full rounded-xl bg-cyan-500 px-4 py-2.5 text-base font-semibold text-white hover:bg-cyan-600"
               >
                 Apply {draftFilterCount} Filter{draftFilterCount === 1 ? "" : "s"}
               </button>
               <button
                 type="button"
-                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="w-full rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-base font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 Save Filter Set
               </button>
@@ -1510,14 +1510,14 @@ function VendorOrdersSection() {
 
             <form onSubmit={handleManualOrderSubmit} className="space-y-4">
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                <label className="mb-1 block text-base font-medium text-slate-700 dark:text-slate-200">
                   Meal
                 </label>
                 <select
                   required
                   value={manualMealId}
                   onChange={(e) => setManualMealId(e.target.value)}
-                  className="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:border-wellora dark:border-slate-700 dark:bg-slate-800"
+                  className="w-full rounded-xl border border-slate-300 px-3 py-2 text-base outline-none focus:border-wellora dark:border-slate-700 dark:bg-slate-800"
                 >
                   <option value="">Select meal</option>
                   {manualMeals.map((meal) => (
@@ -1529,7 +1529,7 @@ function VendorOrdersSection() {
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                <label className="mb-1 block text-base font-medium text-slate-700 dark:text-slate-200">
                   Quantity
                 </label>
                 <input
@@ -1537,12 +1537,12 @@ function VendorOrdersSection() {
                   min={1}
                   value={manualQty}
                   onChange={(e) => setManualQty(Number(e.target.value))}
-                  className="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm outline-none focus:border-wellora dark:border-slate-700 dark:bg-slate-800"
+                  className="w-full rounded-xl border border-slate-300 px-3 py-2 text-base outline-none focus:border-wellora dark:border-slate-700 dark:bg-slate-800"
                 />
               </div>
 
               {manualMessage && (
-                <p className="text-sm text-slate-600 dark:text-slate-300">
+                <p className="text-base text-slate-600 dark:text-slate-300">
                   {manualMessage}
                 </p>
               )}
@@ -1551,14 +1551,14 @@ function VendorOrdersSection() {
                 <button
                   type="button"
                   onClick={() => setManualOrderOpen(false)}
-                  className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-base font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={manualSubmitting}
-                  className="rounded-xl bg-wellora px-4 py-2 text-sm font-semibold text-white hover:bg-wellora-hover disabled:opacity-60"
+                  className="rounded-xl bg-wellora px-4 py-2 text-base font-semibold text-white hover:bg-wellora-hover disabled:opacity-60"
                 >
                   {manualSubmitting ? "Creating..." : "Create Order"}
                 </button>
@@ -1578,7 +1578,7 @@ function VendorOrdersSection() {
                   <h3 className="text-lg font-semibold text-red-500">
                     Confirm cancel order
                   </h3>
-                  <p className="mt-1 text-sm text-slate-500">
+                  <p className="mt-1 text-base text-slate-500">
                     You are about to cancel order `#WL-{cancelModalOrder.id}`. This action
                     notifies the customer and triggers a refund.
                   </p>
@@ -1592,23 +1592,23 @@ function VendorOrdersSection() {
                   <p className="font-medium text-slate-900 dark:text-white">
                     {cancelModalOrder.customer_name}
                   </p>
-                  <p className="text-xs text-slate-500">
-                    {cancelModalOrder.quantity} items · Rs {cancelModalOrder.total_price.toFixed(2)}
+                  <p className="text-base text-slate-500">
+                    {cancelModalOrder.quantity} items Â· Rs {cancelModalOrder.total_price.toFixed(2)}
                   </p>
                 </div>
-                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-base font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                   {displayStatus(cancelModalOrder.status)}
                 </span>
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                <label className="mb-1 block text-base font-medium text-slate-700 dark:text-slate-200">
                   Reason for Cancellation
                 </label>
                 <select
                   value={cancelReason}
                   onChange={(e) => setCancelReason(e.target.value)}
-                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-wellora dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 outline-none focus:border-wellora dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                 >
                   <option value="">Select a reason...</option>
                   <option value="customer_request">Customer requested cancellation</option>
@@ -1620,7 +1620,7 @@ function VendorOrdersSection() {
               </div>
 
               <div>
-                <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-200">
+                <label className="mb-1 block text-base font-medium text-slate-700 dark:text-slate-200">
                   Additional internal notes (optional)
                 </label>
                 <textarea
@@ -1628,9 +1628,9 @@ function VendorOrdersSection() {
                   value={cancelNotes}
                   onChange={(e) => setCancelNotes(e.target.value)}
                   placeholder="e.g. Spoke with customer, they requested cancellation due to long wait time..."
-                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-wellora dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 outline-none focus:border-wellora dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                 />
-                <p className="mt-1 text-xs italic text-slate-400">
+                <p className="mt-1 text-base italic text-slate-400">
                   These notes are only visible to your team.
                 </p>
               </div>
@@ -1640,7 +1640,7 @@ function VendorOrdersSection() {
               <button
                 type="button"
                 onClick={closeCancelModal}
-                className="rounded-xl px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="rounded-xl px-4 py-2.5 text-base font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-200 dark:hover:bg-slate-800"
               >
                 Go Back
               </button>
@@ -1648,7 +1648,7 @@ function VendorOrdersSection() {
                 type="button"
                 onClick={confirmCancelOrder}
                 disabled={!cancelReason || updatingId === cancelModalOrder.id}
-                className="rounded-xl bg-red-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-60"
+                className="rounded-xl bg-red-500 px-4 py-2.5 text-base font-semibold text-white hover:bg-red-600 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {updatingId === cancelModalOrder.id ? "Cancelling..." : "Confirm Cancellation"}
               </button>
@@ -1678,7 +1678,7 @@ function VendorOrdersSection() {
               </button>
             </div>
 
-            <div className="grid grid-cols-3 gap-2 border-b border-slate-200 bg-slate-50 px-4 py-3 text-xs dark:border-slate-700 dark:bg-slate-800/50">
+            <div className="grid grid-cols-3 gap-2 border-b border-slate-200 bg-slate-50 px-4 py-3 text-base dark:border-slate-700 dark:bg-slate-800/50">
               <div>
                 <p className="font-semibold uppercase tracking-wide text-slate-500">Order ID</p>
                 <p className="mt-0.5 font-mono font-medium text-slate-900 dark:text-white">
@@ -1707,18 +1707,18 @@ function VendorOrdersSection() {
               <div>
                 <div className="flex items-center gap-2">
                   <Clock className="h-4 w-4 text-slate-500" />
-                  <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                  <p className="text-base font-semibold text-slate-900 dark:text-white">
                     Set New Preparation Time
                   </p>
                 </div>
-                <p className="mt-0.5 text-xs text-slate-500">Adjust based on kitchen capacity</p>
+                <p className="mt-0.5 text-base text-slate-500">Adjust based on kitchen capacity</p>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {ETA_INCREMENTS.map((m) => (
                     <button
                       key={m}
                       type="button"
                       onClick={() => setEtaMinutes(m)}
-                      className={`rounded-full px-3 py-1.5 text-xs font-semibold transition ${
+                      className={`rounded-full px-3 py-1.5 text-base font-semibold transition ${
                         etaMinutes === m
                           ? "bg-cyan-500 text-white"
                           : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
@@ -1730,7 +1730,7 @@ function VendorOrdersSection() {
                 </div>
                 <div className="mt-3 flex items-center gap-2 rounded-xl border border-slate-200 px-3 py-2.5 dark:border-slate-700">
                   <Clock className="h-4 w-4 text-slate-400" />
-                  <span className="text-sm font-semibold tabular-nums text-slate-900 dark:text-white">
+                  <span className="text-base font-semibold tabular-nums text-slate-900 dark:text-white">
                     {etaTimes.newEta.toLocaleTimeString([], {
                       hour: "2-digit",
                       minute: "2-digit",
@@ -1743,11 +1743,11 @@ function VendorOrdersSection() {
                 <div className="mb-1 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <MessageSquare className="h-4 w-4 text-slate-500" />
-                    <label className="text-sm font-semibold text-slate-900 dark:text-white">
+                    <label className="text-base font-semibold text-slate-900 dark:text-white">
                       Public ETA Message
                     </label>
                   </div>
-                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                  <span className="rounded-full bg-slate-100 px-2 py-0.5 text-base font-semibold text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                     Visible to Customer
                   </span>
                 </div>
@@ -1756,7 +1756,7 @@ function VendorOrdersSection() {
                   value={publicEtaMessage}
                   onChange={(e) => setPublicEtaMessage(e.target.value)}
                   placeholder="E.g., We are experiencing high order volume. Your healthy meal is being prepared with extra care!"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-wellora dark:border-slate-600 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 outline-none focus:border-wellora dark:border-slate-600 dark:bg-slate-950 dark:text-white"
                 />
                 <div className="mt-2 flex flex-wrap gap-2">
                   {["Busy kitchen", "Rainy weather", "Ingredient prep", "Quality check"].map((t) => (
@@ -1764,7 +1764,7 @@ function VendorOrdersSection() {
                       key={t}
                       type="button"
                       onClick={() => appendPublicEtaTag(t)}
-                      className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300"
+                      className="rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-base font-medium text-slate-600 hover:bg-slate-100 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300"
                     >
                       + {t}
                     </button>
@@ -1776,11 +1776,11 @@ function VendorOrdersSection() {
                 <div className="mb-1 flex items-center justify-between gap-2">
                   <div className="flex items-center gap-2">
                     <FileText className="h-4 w-4 text-slate-500" />
-                    <label className="text-sm font-semibold text-slate-900 dark:text-white">
+                    <label className="text-base font-semibold text-slate-900 dark:text-white">
                       Internal Team Note
                     </label>
                   </div>
-                  <span className="rounded-full bg-slate-900 px-2 py-0.5 text-[10px] font-semibold text-white dark:bg-slate-700">
+                  <span className="rounded-full bg-slate-900 px-2 py-0.5 text-base font-semibold text-white dark:bg-slate-700">
                     STAFF ONLY
                   </span>
                 </div>
@@ -1789,7 +1789,7 @@ function VendorOrdersSection() {
                   value={internalTeamNote}
                   onChange={(e) => setInternalTeamNote(e.target.value)}
                   placeholder="Add a private note for staff (e.g., Sarah requested extra sauce)"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-wellora dark:border-slate-600 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 outline-none focus:border-wellora dark:border-slate-600 dark:bg-slate-950 dark:text-white"
                 />
               </div>
 
@@ -1801,11 +1801,11 @@ function VendorOrdersSection() {
                   className="mt-0.5 h-4 w-4 rounded border-slate-300 text-wellora focus:ring-wellora"
                 />
                 <div>
-                  <div className="flex items-center gap-1.5 text-sm font-medium text-slate-900 dark:text-white">
+                  <div className="flex items-center gap-1.5 text-base font-medium text-slate-900 dark:text-white">
                     <Bell className="h-4 w-4 text-cyan-600" />
                     Notify customer via SMS
                   </div>
-                  <p className="mt-0.5 text-xs text-slate-500">
+                  <p className="mt-0.5 text-base text-slate-500">
                     Sending a real-time update improves customer satisfaction scores.
                   </p>
                 </div>
@@ -1816,7 +1816,7 @@ function VendorOrdersSection() {
               <button
                 type="button"
                 onClick={closeEtaModal}
-                className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
+                className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-base font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-200"
               >
                 Cancel
               </button>
@@ -1824,7 +1824,7 @@ function VendorOrdersSection() {
                 type="button"
                 onClick={saveEtaModal}
                 disabled={updatingId === etaModal.order.id}
-                className="rounded-xl bg-cyan-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-cyan-600 disabled:opacity-60"
+                className="rounded-xl bg-cyan-500 px-4 py-2.5 text-base font-semibold text-white hover:bg-cyan-600 disabled:opacity-60"
               >
                 {updatingId === etaModal.order.id ? "Saving..." : "Save Changes"}
               </button>
@@ -1858,7 +1858,7 @@ function VendorOrdersSection() {
                     >
                       Bulk Update Status
                     </h2>
-                    <p className="mt-0.5 text-sm text-slate-500 dark:text-slate-400">
+                    <p className="mt-0.5 text-base text-slate-500 dark:text-slate-400">
                       Modify multiple orders simultaneously
                     </p>
                   </div>
@@ -1877,7 +1877,7 @@ function VendorOrdersSection() {
 
             <div className="space-y-5 px-5 py-5">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                <p className="text-base font-semibold uppercase tracking-wide text-slate-400 dark:text-slate-500">
                   Selected orders ({bulkSelectedIds.length})
                 </p>
                 <div className="mt-2 flex max-h-28 flex-wrap gap-2 overflow-y-auto pr-1">
@@ -1886,7 +1886,7 @@ function VendorOrdersSection() {
                     .map((id) => (
                       <span
                         key={id}
-                        className="inline-flex items-center rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 font-mono text-xs font-medium text-slate-600 dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-300"
+                        className="inline-flex items-center rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1 font-mono text-base font-medium text-slate-600 dark:border-slate-600 dark:bg-slate-800/80 dark:text-slate-300"
                       >
                         #WL-{id}
                       </span>
@@ -1897,7 +1897,7 @@ function VendorOrdersSection() {
               <div>
                 <label
                   htmlFor="bulk-target-status"
-                  className="mb-1.5 block text-sm font-semibold text-slate-900 dark:text-white"
+                  className="mb-1.5 block text-base font-semibold text-slate-900 dark:text-white"
                 >
                   Target Status
                 </label>
@@ -1905,7 +1905,7 @@ function VendorOrdersSection() {
                   id="bulk-target-status"
                   value={bulkNewStatus}
                   onChange={(e) => setBulkNewStatus(e.target.value)}
-                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+                  className="w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white"
                 >
                   {BULK_STATUS_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value}>
@@ -1913,7 +1913,7 @@ function VendorOrdersSection() {
                     </option>
                   ))}
                 </select>
-                <p className="mt-2 flex items-start gap-2 text-xs text-slate-500 dark:text-slate-400">
+                <p className="mt-2 flex items-start gap-2 text-base text-slate-500 dark:text-slate-400">
                   <Lightbulb
                     className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500"
                     aria-hidden
@@ -1929,7 +1929,7 @@ function VendorOrdersSection() {
               <div>
                 <label
                   htmlFor="bulk-fulfillment-note"
-                  className="mb-1.5 block text-sm font-semibold text-slate-900 dark:text-white"
+                  className="mb-1.5 block text-base font-semibold text-slate-900 dark:text-white"
                 >
                   Fulfillment Note (Optional)
                 </label>
@@ -1939,7 +1939,7 @@ function VendorOrdersSection() {
                   value={bulkFulfillmentNote}
                   onChange={(e) => setBulkFulfillmentNote(e.target.value)}
                   placeholder="Add a note to be appended to all selected orders..."
-                  className="w-full resize-y rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none placeholder:text-slate-400 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
+                  className="w-full resize-y rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-base text-slate-900 outline-none placeholder:text-slate-400 focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
                 />
               </div>
             </div>
@@ -1949,7 +1949,7 @@ function VendorOrdersSection() {
                 type="button"
                 onClick={closeBulkModal}
                 disabled={bulkUpdating}
-                className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-800 shadow-sm hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
+                className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-base font-semibold text-slate-800 shadow-sm hover:bg-slate-50 disabled:opacity-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:hover:bg-slate-700"
               >
                 Cancel
               </button>
@@ -1957,7 +1957,7 @@ function VendorOrdersSection() {
                 type="button"
                 onClick={applyBulkStatusUpdate}
                 disabled={bulkUpdating || bulkSelectedIds.length === 0}
-                className="rounded-xl bg-cyan-500 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-cyan-600 disabled:cursor-not-allowed disabled:opacity-60"
+                className="rounded-xl bg-cyan-500 px-4 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-cyan-600 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {bulkUpdating
                   ? "Applying…"
@@ -2003,7 +2003,7 @@ export function VendorDashboardPage({
     localStorage.setItem("wellora-theme", themeMode);
   }, [themeMode]);
 
-  // ─── Load meals + stats from backend ───────────
+  // ─── Load meals + stats from backend ──────────────
   useEffect(() => {
     loadMeals();
     loadOrders();
@@ -2039,7 +2039,7 @@ export function VendorDashboardPage({
 
 
 
-  // ─── Click outside profile menu ────────────────
+  // ─── Click outside profile menu ─────────────────
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
       if (
@@ -2089,7 +2089,7 @@ export function VendorDashboardPage({
   };
 
   return (
-    <div className="flex min-h-dvh bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
+    <div className="flex h-dvh overflow-hidden bg-slate-100 text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       {/* Sidebar */}
       <aside className="flex w-56 shrink-0 flex-col border-r border-slate-200 bg-white px-4 py-6 dark:border-slate-800 dark:bg-slate-900">
         <div className="mb-8 flex items-center gap-2 px-1">
@@ -2137,7 +2137,7 @@ export function VendorDashboardPage({
         </button>
       </aside>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         {/* Header */}
         <header className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6 py-4 dark:border-slate-800 dark:bg-slate-900">
           <div className="flex items-center gap-2">
@@ -2195,7 +2195,13 @@ export function VendorDashboardPage({
           </div>
         </header>
 
-        <main className="min-w-0 flex-1 overflow-auto p-6">
+        <main
+          className={`min-h-0 min-w-0 flex-1 ${
+            vendorSection === "orders"
+              ? "flex flex-col overflow-hidden p-4 lg:p-5"
+              : "overflow-auto p-6"
+          }`}
+        >
           {/* ── DASHBOARD ── */}
           {vendorSection === "dashboard" && (
             <div className="mx-auto max-w-7xl space-y-8">
@@ -2440,7 +2446,7 @@ export function VendorDashboardPage({
                         </span>
                       </div>
                       <p className="mt-2 text-xs text-slate-500">
-                        {m.category} · {m.calories} kcal
+                        {m.category} Â· {m.calories} kcal
                       </p>
                       {m.image_url && (
                         <div className="mt-3 overflow-hidden rounded-xl">
