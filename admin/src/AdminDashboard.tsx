@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  Activity,
-  Ban,
   Bell,
-  Eye,
   Heart,
   LayoutGrid,
   LogOut,
+  Loader2,
   ShoppingCart,
   Store,
   User,
@@ -14,112 +12,15 @@ import {
 } from "lucide-react";
 import { WelloraLogoMark } from "./components/WelloraLogoMark";
 import type { AdminPage } from "./layout/AdminLayout";
+import { getAdminStats, type AdminStats } from "./api/admin";
 
 type AdminNav = "dashboard" | "users" | "vendors" | "partners" | "profile";
-type ManagementTab = "users" | "vendors" | "partners";
 
-interface PlatformUser {
-  id: string;
-  name: string;
-  email: string;
-  status: "Active" | "Inactive";
-}
-
-interface PlatformVendor {
-  id: string;
-  name: string;
-  email: string;
-  status: "Active" | "Inactive";
-}
-
-interface PlatformPartner {
-  id: string;
-  name: string;
-  email: string;
-  status: "Active" | "Inactive";
-}
-
-const MOCK_USERS: PlatformUser[] = [
-  {
-    id: "USR001",
-    name: "Alice Johnson",
-    email: "alice.johnson@example.com",
-    status: "Active",
-  },
-  {
-    id: "USR002",
-    name: "Bob Williams",
-    email: "bob.williams@example.com",
-    status: "Inactive",
-  },
-  {
-    id: "USR003",
-    name: "Charlie Brown",
-    email: "charlie.brown@example.com",
-    status: "Active",
-  },
-  {
-    id: "USR004",
-    name: "Diana Miller",
-    email: "diana.miller@example.com",
-    status: "Active",
-  },
-  {
-    id: "USR005",
-    name: "Eve Davis",
-    email: "eve.davis@example.com",
-    status: "Inactive",
-  },
-];
-
-const MOCK_VENDORS: PlatformVendor[] = [
-  {
-    id: "VND001",
-    name: "Green Bowl Kitchen",
-    email: "contact@greenbowl.com",
-    status: "Active",
-  },
-  {
-    id: "VND002",
-    name: "Fresh Harvest Cafe",
-    email: "hello@freshharvest.com",
-    status: "Active",
-  },
-  {
-    id: "VND003",
-    name: "NutriBox Meals",
-    email: "support@nutribox.com",
-    status: "Inactive",
-  },
-];
-
-const MOCK_PARTNERS: PlatformPartner[] = [
-  {
-    id: "PTR001",
-    name: "City Hospital",
-    email: "wellness@cityhospital.org",
-    status: "Active",
-  },
-  {
-    id: "PTR002",
-    name: "Metro Fitness Club",
-    email: "partners@metrofitness.com",
-    status: "Active",
-  },
-  {
-    id: "PTR003",
-    name: "Wellness Center East",
-    email: "admin@wellnesseast.com",
-    status: "Inactive",
-  },
-];
-
-const STATS = [
-  { label: "Total Users", value: "1,250", icon: Users },
-  { label: "Total Vendors", value: "48", icon: Store },
-  { label: "Total Partners", value: "15", icon: Heart },
-  { label: "Active Sessions", value: "236", icon: Activity },
-  { label: "Orders Today", value: "87", icon: ShoppingCart },
+const STAT_DEFS = [
+  { label: "Total Users", key: "total_users" as keyof AdminStats, icon: Users },
+  { label: "Total Vendors", key: "total_vendors" as keyof AdminStats, icon: Store },
+  { label: "Total Partners", key: "total_partners" as keyof AdminStats, icon: Heart },
+  { label: "Orders Today", key: "orders_today" as keyof AdminStats, icon: ShoppingCart },
 ];
 
 const navItemClass = (active: boolean) =>
@@ -127,16 +28,6 @@ const navItemClass = (active: boolean) =>
     ? "flex w-full items-center gap-3 rounded-xl bg-slate-100 px-3 py-2.5 text-left text-base font-semibold text-slate-900"
     : "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-base font-medium text-slate-600 transition hover:bg-slate-100";
 
-function StatusBadge({ status }: { status: "Active" | "Inactive" }) {
-  if (status === "Active") {
-    return <span className="text-base font-medium text-wellora">Active</span>;
-  }
-  return (
-    <span className="inline-flex rounded-full bg-red-50 px-2.5 py-0.5 text-sm font-medium text-red-600">
-      Inactive
-    </span>
-  );
-}
 
 interface AdminDashboardProps {
   onNavigate?: (page: AdminPage) => void;
@@ -145,9 +36,19 @@ interface AdminDashboardProps {
 
 export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps) {
   const [activeNav, setActiveNav] = useState<AdminNav>("dashboard");
-  const [managementTab, setManagementTab] = useState<ManagementTab>("users");
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef<HTMLDivElement | null>(null);
+
+  // ── Real stats from backend ──
+  const [stats, setStats] = useState<AdminStats | null>(null);
+  const [statsLoading, setStatsLoading] = useState(true);
+
+  useEffect(() => {
+    getAdminStats()
+      .then(setStats)
+      .catch(() => { /* silently fall back to showing "–" */ })
+      .finally(() => setStatsLoading(false));
+  }, []);
 
   useEffect(() => {
     function handleClickOutside(e: MouseEvent) {
@@ -162,9 +63,8 @@ export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleNavClick = (nav: AdminNav, tab?: ManagementTab) => {
+  const handleNavClick = (nav: AdminNav, tab?: string) => {
     setActiveNav(nav);
-    if (tab) setManagementTab(tab);
   };
 
   const handleLogout = () => {
@@ -175,42 +75,6 @@ export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps) {
     localStorage.clear();
     window.location.reload();
   };
-
-  const managementTabs: { id: ManagementTab; label: string }[] = [
-    { id: "users", label: "Manage Users" },
-    { id: "vendors", label: "Manage Vendors" },
-    { id: "partners", label: "Manage Partners" },
-  ];
-
-  const tableConfig = {
-    users: {
-      title: "Manage Users",
-      columns: ["User ID", "Name", "Email", "Status", "Actions"],
-      rows: MOCK_USERS.map((user) => ({
-        id: user.id,
-        cells: [user.id, user.name, user.email],
-        status: user.status,
-      })),
-    },
-    vendors: {
-      title: "Manage Vendors",
-      columns: ["Vendor ID", "Name", "Email", "Status", "Actions"],
-      rows: MOCK_VENDORS.map((vendor) => ({
-        id: vendor.id,
-        cells: [vendor.id, vendor.name, vendor.email],
-        status: vendor.status,
-      })),
-    },
-    partners: {
-      title: "Manage Partners",
-      columns: ["Partner ID", "Name", "Email", "Status", "Actions"],
-      rows: MOCK_PARTNERS.map((partner) => ({
-        id: partner.id,
-        cells: [partner.id, partner.name, partner.email],
-        status: partner.status,
-      })),
-    },
-  }[managementTab];
 
   return (
     <div className="flex h-dvh overflow-hidden bg-slate-100 text-slate-900">
@@ -362,9 +226,10 @@ export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps) {
                 <h2 className="mb-4 text-base font-semibold text-slate-700">
                   System Overview
                 </h2>
-                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
-                  {STATS.map((stat) => {
+                <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                  {STAT_DEFS.map((stat) => {
                     const Icon = stat.icon;
+                    const value = stats ? stats[stat.key].toLocaleString() : "–";
                     return (
                       <div
                         key={stat.label}
@@ -374,7 +239,11 @@ export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps) {
                           <div>
                             <p className="text-base text-slate-500">{stat.label}</p>
                             <p className="mt-2 text-3xl font-bold text-slate-900">
-                              {stat.value}
+                              {statsLoading ? (
+                                <Loader2 className="h-6 w-6 animate-spin text-slate-300" />
+                              ) : (
+                                value
+                              )}
                             </p>
                           </div>
                           <div className="rounded-lg bg-slate-100 p-2 text-slate-500">
@@ -388,97 +257,34 @@ export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps) {
               </section>
 
               <section>
-                <h2 className="mb-4 text-xl font-bold text-slate-900">
-                  Management
-                </h2>
-                <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-                  <div className="flex gap-1 border-b border-slate-200 bg-slate-50 p-2">
-                    {managementTabs.map((tab) => (
-                      <button
-                        key={tab.id}
-                        type="button"
-                        onClick={() => {
-                          setManagementTab(tab.id);
-                          setActiveNav(
-                            tab.id === "users"
-                              ? "users"
-                              : tab.id === "vendors"
-                                ? "vendors"
-                                : "partners",
-                          );
-                        }}
-                        className={`rounded-lg px-4 py-2 text-base font-medium transition ${
-                          managementTab === tab.id
-                            ? "bg-white text-slate-900 shadow-sm"
-                            : "text-slate-600 hover:bg-slate-100"
-                        }`}
-                      >
-                        {tab.label}
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="p-5">
-                    <h3 className="mb-4 text-lg font-semibold text-slate-900">
-                      {tableConfig.title}
-                    </h3>
-                    <div className="overflow-x-auto">
-                      <table className="w-full min-w-[640px] text-left text-base">
-                        <thead>
-                          <tr className="border-b border-slate-200 text-slate-500">
-                            {tableConfig.columns.map((column) => (
-                              <th
-                                key={column}
-                                className="px-4 py-3 font-medium first:pl-0 last:pr-0"
-                              >
-                                {column}
-                              </th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {tableConfig.rows.map((row, index) => (
-                            <tr
-                              key={row.id}
-                              className={
-                                index % 2 === 0 ? "bg-white" : "bg-slate-50/80"
-                              }
-                            >
-                              {row.cells.map((cell, cellIndex) => (
-                                <td
-                                  key={`${row.id}-${cellIndex}`}
-                                  className="px-4 py-3.5 text-slate-700 first:pl-0"
-                                >
-                                  {cell}
-                                </td>
-                              ))}
-                              <td className="px-4 py-3.5">
-                                <StatusBadge status={row.status} />
-                              </td>
-                              <td className="px-4 py-3.5 last:pr-0">
-                                <div className="flex items-center gap-2">
-                                  <button
-                                    type="button"
-                                    className="rounded-lg border border-slate-200 p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700"
-                                    aria-label={`View ${row.id}`}
-                                  >
-                                    <Eye className="h-4 w-4" />
-                                  </button>
-                                  <button
-                                    type="button"
-                                    className="rounded-lg bg-red-600 p-2 text-white transition hover:bg-red-700"
-                                    aria-label={`Block ${row.id}`}
-                                  >
-                                    <Ban className="h-4 w-4" />
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                <h2 className="mb-4 text-xl font-bold text-slate-900">Quick Access</h2>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <button
+                    type="button"
+                    onClick={() => onNavigate ? onNavigate("manage-users") : handleNavClick("users", "users")}
+                    className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-wellora/40 hover:shadow-md text-left"
+                  >
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
+                      <Users className="h-6 w-6" />
                     </div>
-                  </div>
+                    <div>
+                      <p className="font-semibold text-slate-900">Manage Users</p>
+                      <p className="mt-0.5 text-sm text-slate-500">View, enable, or disable user accounts</p>
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => onNavigate ? onNavigate("manage-vendors") : handleNavClick("vendors", "vendors")}
+                    className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-wellora/40 hover:shadow-md text-left"
+                  >
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-wellora-soft text-wellora-dark">
+                      <Store className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <p className="font-semibold text-slate-900">Manage Vendors</p>
+                      <p className="mt-0.5 text-sm text-slate-500">Approve, suspend, or review vendor applications</p>
+                    </div>
+                  </button>
                 </div>
               </section>
             </div>

@@ -14,3 +14,17 @@ def ensure_meal_image_filename_column() -> None:
                 """
             )
         )
+
+
+def ensure_user_is_active_column() -> None:
+    """Add is_active to Wellora_Users if the table predates that column."""
+    with engine.begin() as conn:
+        conn.execute(
+            text(
+                """
+                IF OBJECT_ID('Wellora_Users', 'U') IS NOT NULL
+                AND COL_LENGTH('Wellora_Users', 'is_active') IS NULL
+                ALTER TABLE Wellora_Users ADD is_active BIT NOT NULL DEFAULT 1;
+                """
+            )
+        )

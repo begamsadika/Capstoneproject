@@ -251,7 +251,11 @@ def update_order_status(
     if current_user.user_type != "vendor":
         raise HTTPException(status_code=403, detail="Not a vendor account")
 
-    allowed = ["pending", "confirmed", "delivered", "cancelled"]
+    allowed = [
+        "pending", "accepted", "confirmed",
+        "preparing", "ready", "out_for_delivery",
+        "delivered", "cancelled", "refunded",
+    ]
     if data.status not in allowed:
         raise HTTPException(status_code=400, detail=f"Status must be one of: {allowed}")
 
@@ -286,24 +290,32 @@ def get_vendor_order_stats(
         db.query(VendorProfile).filter(VendorProfile.user_id == current_user.id).first()
     )
     if not profile:
-        return {"total_orders": 0, "total_revenue": 0, "pending": 0, "delivered": 0}
+        return {
+            "total_orders": 0, "total_revenue": 0,
+            "pending": 0, "accepted": 0, "confirmed": 0,
+            "preparing": 0, "ready": 0, "delivered": 0,
+        }
 
     orders = (
         db.query(Order)
-        .filter(Order.vendor_id == profile.id, Order.status != "cancelled")
+        .filter(Order.vendor_id == profile.id, Order.status.notin_(["cancelled", "refunded"]))
         .all()
     )
 
+    # "in progress" = all non-terminal, non-pending statuses
+    in_progress_statuses = {"accepted", "confirmed", "preparing", "ready", "out_for_delivery"}
+
     total_revenue = sum(o.total_price for o in orders)
     pending = sum(1 for o in orders if o.status == "pending")
-    confirmed = sum(1 for o in orders if o.status == "confirmed")
+    accepted = sum(1 for o in orders if o.status in in_progress_statuses)
     delivered = sum(1 for o in orders if o.status == "delivered")
 
     return {
         "total_orders": len(orders),
         "total_revenue": round(total_revenue, 2),
         "pending": pending,
-        "confirmed": confirmed,
+        "accepted": accepted,
+        "confirmed": accepted,   # kept for backward compat
         "delivered": delivered,
     }
 

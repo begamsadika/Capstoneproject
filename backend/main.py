@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.database import engine, Base
-from app.db_migrations import ensure_meal_image_filename_column
+from app.db_migrations import ensure_meal_image_filename_column, ensure_user_is_active_column
 import os
 
 # ─── Import ALL models (so tables are created) ───
@@ -24,9 +24,11 @@ from app.routes.meals import router as meals_router
 from app.routes.orders import router as orders_router
 from app.routes.health import router as health_router
 from app.routes.ai import router as ai_router
+from app.routes.admin import router as admin_router
 
 # ─── Create all tables + apply lightweight schema patches ─
 ensure_meal_image_filename_column()
+ensure_user_is_active_column()
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -37,7 +39,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:3000"],
+    allow_origins=["http://localhost:5173", "http://localhost:5174", "http://localhost:3000"],
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -53,6 +55,7 @@ app.include_router(meals_router)
 app.include_router(orders_router)
 app.include_router(health_router)
 app.include_router(ai_router)
+app.include_router(admin_router)
 
 
 @app.get("/")

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from datetime import datetime
 from sqlalchemy.orm import relationship
 from ..database import Base
@@ -12,7 +12,8 @@ class User(Base):
     email = Column(String(150), unique=True, nullable=False, index=True)
     password_hash = Column(String(256), nullable=False)
     phone = Column(String(20))
-    user_type = Column(String(20), default="general")  # general/vendor/partner
+    user_type = Column(String(20), default="general")  # general/vendor/partner/admin
+    is_active = Column(Boolean, default=True, nullable=False, server_default="1")
     created_at = Column(DateTime, default=datetime.utcnow)
 
     # One-to-many: user can have many vendors

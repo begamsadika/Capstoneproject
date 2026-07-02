@@ -47,7 +47,8 @@ export interface VendorOrderStats {
   total_orders: number;
   total_revenue: number;
   pending: number;
-  confirmed: number;
+  accepted: number;   // in-progress orders (accepted + preparing + ready)
+  confirmed: number;  // alias for accepted (backward compat)
   delivered: number;
 }
 

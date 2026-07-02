@@ -109,8 +109,10 @@ function VendorOrdersSection() {
   /** Values must match `PUT /vendor/{id}/status` allowed list in the API. */
   const BULK_STATUS_OPTIONS = [
     { value: "pending", label: "Pending" },
-    { value: "confirmed", label: "Confirmed" },
-    { value: "delivered", label: "Ready for Pickup" },
+    { value: "accepted", label: "Accepted" },
+    { value: "preparing", label: "Preparing" },
+    { value: "ready", label: "Ready for Pickup" },
+    { value: "delivered", label: "Delivered" },
     { value: "cancelled", label: "Cancelled" },
   ];
 
@@ -221,11 +223,29 @@ function VendorOrdersSection() {
   const loadData = async () => {
     setIsLoading(true);
     try {
-      const [ordersData, statsData] = await Promise.all([
+      // Always fetch ALL orders alongside tab-filtered results so the detail
+      // panel can find the selected order even after it changes status/tab.
+      const [ordersData, allOrdersData, statsData] = await Promise.all([
         getVendorOrders(selectedTab.apiStatus),
+        selectedOrderId != null ? getVendorOrders() : Promise.resolve(null),
         getVendorOrderStats(),
       ]);
-      setOrders(ordersData);
+      // Merge: tabOrders as base, but ensure the selected order is always present
+      if (allOrdersData && selectedOrderId != null) {
+        const selectedInTab = ordersData.find((o) => o.id === selectedOrderId);
+        if (!selectedInTab) {
+          const selectedFromAll = allOrdersData.find((o) => o.id === selectedOrderId);
+          if (selectedFromAll) {
+            setOrders([...ordersData, selectedFromAll]);
+          } else {
+            setOrders(ordersData);
+          }
+        } else {
+          setOrders(ordersData);
+        }
+      } else {
+        setOrders(ordersData);
+      }
       setStats(statsData);
     } catch (err) {
       console.error("Failed to load orders:", err);
@@ -431,9 +451,9 @@ function VendorOrdersSection() {
         });
       }
 
-      if (order.status === "confirmed" && ageMinutes >= 20) {
+      if ((order.status === "confirmed" || order.status === "accepted" || order.status === "preparing") && ageMinutes >= 20) {
         alerts.push({
-          id: `confirmed-${order.id}`,
+          id: `active-${order.id}`,
           text: `Order #ORD-${order.id} is active and nearing dispatch.`,
           urgent: false,
           createdAt,
@@ -460,31 +480,38 @@ function VendorOrdersSection() {
 
   const urgentAlertCount = recentAlerts.filter((a) => a.urgent).length;
 
+  // Derive selectedOrder from ALL orders (not just filtered), so the detail
+  // panel stays visible even after a status change moves the order to a different tab.
   const selectedOrder =
-    filteredOrders.find((order) => order.id === selectedOrderId) ??
+    orders.find((order) => order.id === selectedOrderId) ??
     filteredOrders[0] ??
     null;
 
   const timelineSteps = (status: string) => {
     const rank: Record<string, number> = {
-      pending: 1,
-      confirmed: 2,
-      delivered: 4,
-      cancelled: 0,
+      pending: 0,
+      accepted: 1,
+      confirmed: 1,  // legacy alias for accepted
+      preparing: 2,
+      ready: 3,
+      out_for_delivery: 4,
+      delivered: 5,
+      cancelled: -1,
+      refunded: -1,
     };
-    const currentRank = rank[status] ?? 1;
+    const currentRank = rank[status] ?? 0;
+    const isCancelled = status === "cancelled" || status === "refunded";
     const steps = [
       { key: "pending", label: "Order Placed" },
-      { key: "confirmed", label: "Awaiting Vendor Acceptance" },
-      { key: "packed", label: "Food Preparation" },
-      { key: "delivered", label: "Delivery In-Progress" },
+      { key: "accepted", label: "Order Accepted" },
+      { key: "preparing", label: "Preparing Food" },
+      { key: "ready", label: "Ready for Pickup" },
+      { key: "delivered", label: "Delivered" },
     ];
     return steps.map((step, idx) => ({
       ...step,
-      done: idx < currentRank,
-      active:
-        (status === "cancelled" && idx === 0) ||
-        (status !== "cancelled" && idx === Math.max(0, currentRank - 1)),
+      done: !isCancelled && idx < currentRank,
+      active: !isCancelled && idx === currentRank,
     }));
   };
 

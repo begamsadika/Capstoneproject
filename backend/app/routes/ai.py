@@ -9,6 +9,7 @@ from ..models.health_metric import HealthMetric
 from ..models.daily_log import DailyLog
 from ..models.order import Order
 from ..models.meal import Meal
+from ..models.meal_rating import MealRating
 from ..models.user import User
 from ..core.auth import get_current_user
 from ..services.ai_recommender import get_ai_recommendations
@@ -67,7 +68,7 @@ def _get_today_log(user_id: int, db: Session) -> dict:
 
 
 def _get_recent_orders(user_id: int, db: Session) -> list:
-    week_ago = datetime.utcnow() - timedelta(days=7)
+    week_ago = datetime.utcnow() - timedelta(days=30)
     orders = (
         db.query(Order)
         .filter(
@@ -76,7 +77,7 @@ def _get_recent_orders(user_id: int, db: Session) -> list:
             Order.status != "cancelled",
         )
         .order_by(Order.created_at.desc())
-        .limit(10)
+        .limit(20)
         .all()
     )
 
@@ -84,12 +85,21 @@ def _get_recent_orders(user_id: int, db: Session) -> list:
     for o in orders:
         meal = db.query(Meal).filter(Meal.id == o.meal_id).first()
         if meal:
+            # Fetch rating for this specific order if it exists
+            rating_row = (
+                db.query(MealRating)
+                .filter(MealRating.order_id == o.id)
+                .first()
+            )
             result.append(
                 {
                     "meal_id": meal.id,
                     "meal_name": meal.name,
                     "calories": meal.calories,
                     "dietary": meal.dietary,
+                    "rating": rating_row.rating if rating_row else None,
+                    "review": rating_row.review if rating_row else None,
+                    "ordered_at": o.created_at.strftime("%Y-%m-%d"),
                 }
             )
     return result

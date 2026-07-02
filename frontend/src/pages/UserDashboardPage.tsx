@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getUserProfile, UserProfile } from "../api/user";
+import { getAIRecommendations, AIRecommendation, AIRecommendationResult } from "../api/ai";
 import {
   Bell,
   Flame,
@@ -12,9 +13,13 @@ import {
   Settings,
   Flower2,
   Info,
+  Sparkles,
+  Lightbulb,
+  RefreshCw,
 } from "lucide-react";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
+import { DietChatBot } from "../components/DietChatBot";
 import type { AppPage } from "../types/page";
 
 interface UserDashboardPageProps {
@@ -24,42 +29,42 @@ interface UserDashboardPageProps {
 const HERO_MEAL_IMAGE =
   "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=960&q=85";
 
+const PRIORITY_COLORS: Record<string, string> = {
+  high: "bg-rose-500 text-white",
+  medium: "bg-amber-500 text-white",
+  low: "bg-slate-400 text-white",
+};
+
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=800&q=80";
+
 export function UserDashboardPage({ onNavigate }: UserDashboardPageProps) {
   // ─── Real data from backend ───────────────────
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [aiData, setAiData] = useState<AIRecommendationResult | null>(null);
+  const [aiLoading, setAiLoading] = useState(true);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   useEffect(() => {
     getUserProfile().then(setProfile).catch(console.error);
   }, []);
-  const meals = [
-    {
-      title: "Mediterranean Grilled Salmon",
-      calories: 450,
-      badge: "Pescatarian",
-      description:
-        "Rich in Omega-3 for heart health and anti-inflammatory benefits.",
-      image:
-        "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      title: "Quinoa & Black Bean Buddha Bowl",
-      calories: 380,
-      badge: "Vegan",
-      description:
-        "High in plant-based protein and fiber, great for sustained energy.",
-      image:
-        "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80",
-    },
-    {
-      title: "Chicken & Veggie Stir-fry",
-      calories: 320,
-      badge: "Gluten-Free",
-      description:
-        "Lean protein with a variety of colorful vegetables for essential nutrients.",
-      image:
-        "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80",
-    },
-  ];
+
+  const fetchRecommendations = () => {
+    setAiLoading(true);
+    setAiError(null);
+    getAIRecommendations()
+      .then(setAiData)
+      .catch((err) => {
+        setAiError(
+          err?.response?.data?.detail ?? "Could not load AI recommendations."
+        );
+      })
+      .finally(() => setAiLoading(false));
+  };
+
+  useEffect(() => {
+    fetchRecommendations();
+  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 transition-colors duration-500">
@@ -127,7 +132,7 @@ export function UserDashboardPage({ onNavigate }: UserDashboardPageProps) {
                   className="flex w-full items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50 px-4 py-3 text-left text-sm font-medium text-slate-700 transition hover:border-slate-300 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200 dark:hover:bg-slate-900"
                 >
                   <Star className="w-4 h-4" />
-                  Meal Recommendations
+                  AI Diet Chat
                 </button>
                 <button
                   type="button"
@@ -308,56 +313,156 @@ export function UserDashboardPage({ onNavigate }: UserDashboardPageProps) {
             </section>
 
             <section className="rounded-[2rem] border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/85 p-8 shadow-sm">
-              <div>
-                <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
-                  Top AI-Recommended Meals
-                </h2>
-                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                  Your personalized meal suggestions for today.
-                </p>
+              {/* Header */}
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-5 h-5 text-wellora" />
+                    <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
+                      Top AI-Recommended Meals
+                    </h2>
+                  </div>
+                  <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                    Personalized for you based on your order history and ratings.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={fetchRecommendations}
+                  disabled={aiLoading}
+                  className="flex items-center gap-2 rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700 transition hover:border-slate-300 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-200"
+                >
+                  <RefreshCw className={`w-4 h-4 ${aiLoading ? "animate-spin" : ""}`} />
+                  Refresh
+                </button>
               </div>
 
-              <div className="mt-8 grid gap-6 md:grid-cols-3">
-                {meals.map((meal) => (
-                  <article
-                    key={meal.title}
-                    className="group overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+              {/* AI Summary + Daily Tip */}
+              {aiData && !aiLoading && (
+                <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                  <div className="flex gap-3 rounded-2xl border border-wellora/20 bg-wellora-light p-4 dark:border-wellora/30 dark:bg-wellora/10">
+                    <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-wellora" />
+                    <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-200">
+                      {aiData.ai_summary}
+                    </p>
+                  </div>
+                  <div className="flex gap-3 rounded-2xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-500/20 dark:bg-amber-500/10">
+                    <Lightbulb className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" />
+                    <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-200">
+                      {aiData.daily_tip}
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* Calories Remaining Badge */}
+              {aiData && !aiLoading && (
+                <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                  <Flame className="w-4 h-4 text-rose-500" />
+                  {aiData.calories_remaining} kcal remaining today
+                </div>
+              )}
+
+              {/* Loading State */}
+              {aiLoading && (
+                <div className="mt-8 grid gap-6 md:grid-cols-3">
+                  {[1, 2, 3].map((i) => (
+                    <div
+                      key={i}
+                      className="animate-pulse overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950"
+                    >
+                      <div className="h-44 bg-slate-200 dark:bg-slate-800" />
+                      <div className="p-5 space-y-3">
+                        <div className="h-4 w-3/4 rounded bg-slate-200 dark:bg-slate-800" />
+                        <div className="h-3 w-full rounded bg-slate-200 dark:bg-slate-800" />
+                        <div className="h-3 w-2/3 rounded bg-slate-200 dark:bg-slate-800" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Error State */}
+              {aiError && !aiLoading && (
+                <div className="mt-8 rounded-2xl border border-rose-200 bg-rose-50 p-6 text-center dark:border-rose-500/20 dark:bg-rose-500/10">
+                  <p className="text-sm font-medium text-rose-700 dark:text-rose-300">
+                    {aiError}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={fetchRecommendations}
+                    className="mt-4 rounded-full bg-wellora px-5 py-2 text-sm font-semibold text-white transition hover:bg-wellora-hover"
                   >
-                    <div className="h-44 overflow-hidden bg-slate-200">
-                      <img
-                        src={meal.image}
-                        alt={meal.title}
-                        className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="p-5">
-                      <div className="flex items-center justify-between gap-3">
-                        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-                          {meal.title}
-                        </h3>
-                        <span className="rounded-full bg-wellora px-3 py-1 text-xs font-semibold text-white">
-                          {meal.calories} kcal
+                    Try Again
+                  </button>
+                </div>
+              )}
+
+              {/* Meal Cards */}
+              {!aiLoading && !aiError && aiData && (
+                <div className="mt-8 grid gap-6 md:grid-cols-3">
+                  {aiData.recommendations.map((rec: AIRecommendation) => (
+                    <article
+                      key={rec.meal_id}
+                      className="group overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"
+                    >
+                      <div className="relative h-44 overflow-hidden bg-slate-200">
+                        <img
+                          src={rec.image_url || FALLBACK_IMAGE}
+                          alt={rec.meal_name}
+                          className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                          onError={(e) => {
+                            (e.target as HTMLImageElement).src = FALLBACK_IMAGE;
+                          }}
+                        />
+                        {/* Priority badge */}
+                        <span
+                          className={`absolute top-3 right-3 rounded-full px-2.5 py-1 text-xs font-bold capitalize ${PRIORITY_COLORS[rec.priority] ?? "bg-slate-400 text-white"}`}
+                        >
+                          {rec.priority}
                         </span>
                       </div>
-                      <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
-                        {meal.description}
-                      </p>
-                      <div className="mt-4 flex items-center justify-between gap-3">
-                        <span className="rounded-full bg-wellora-soft px-3 py-1 text-xs font-semibold text-wellora-dark">
-                          {meal.badge}
-                        </span>
-                        <button className="rounded-full bg-wellora px-4 py-2 text-xs font-semibold text-white transition hover:bg-wellora-hover">
-                          Add to Plan
-                        </button>
+                      <div className="p-5">
+                        <div className="flex items-start justify-between gap-2">
+                          <h3 className="text-base font-semibold leading-snug text-slate-900 dark:text-white">
+                            {rec.meal_name}
+                          </h3>
+                          <span className="shrink-0 rounded-full bg-wellora px-2.5 py-1 text-xs font-semibold text-white">
+                            {rec.calories} kcal
+                          </span>
+                        </div>
+                        <p className="mt-2 text-sm text-slate-500 dark:text-slate-400 line-clamp-2">
+                          {rec.reason}
+                        </p>
+                        <div className="mt-4 flex items-center justify-between gap-3">
+                          <div className="flex flex-col gap-1">
+                            <span className="rounded-full bg-wellora-soft px-3 py-1 text-xs font-semibold text-wellora-dark dark:bg-wellora/15 dark:text-wellora">
+                              {rec.dietary}
+                            </span>
+                            <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+                              ${rec.price?.toFixed(2)}
+                            </span>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => onNavigate("user-menu-order")}
+                            className="rounded-full bg-wellora px-4 py-2 text-xs font-semibold text-white transition hover:bg-wellora-hover"
+                          >
+                            Order Now
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))}
-              </div>
+                    </article>
+                  ))}
+                </div>
+              )}
             </section>
-          </main> 
+          </main>
         </div>
       </div>
+
+      {/* ── Diet AI floating chatbot ── */}
+      <DietChatBot />
     </div>
   );
 }

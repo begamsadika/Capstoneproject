@@ -22,16 +22,31 @@ def build_user_context(
         "gain": "Muscle/Weight Gain",
     }
     goal_label = goal_map.get(health_metric.get("health_goal", ""), "General Health")
-    recent_meals = (
-        ", ".join([o["meal_name"] for o in recent_orders[:5]])
-        if recent_orders
-        else "None"
-    )
     calories_today = today_log.get("calories_consumed", 0)
     calorie_target = today_log.get(
         "calorie_target", health_metric.get("target_calories", 2000)
     )
     calories_left = max(0, calorie_target - calories_today)
+
+    # Build order history with ratings
+    order_history_lines = []
+    liked_meals = []
+    disliked_meals = []
+    for o in recent_orders[:10]:
+        name = o["meal_name"]
+        rating = o.get("rating")
+        if rating is not None:
+            order_history_lines.append(f"  - {name} (rated {rating}/5)")
+            if rating >= 4:
+                liked_meals.append(name)
+            elif rating <= 2:
+                disliked_meals.append(name)
+        else:
+            order_history_lines.append(f"  - {name} (not yet rated)")
+
+    order_history = "\n".join(order_history_lines) if order_history_lines else "  None"
+    liked_str = ", ".join(liked_meals) if liked_meals else "None"
+    disliked_str = ", ".join(disliked_meals) if disliked_meals else "None"
 
     return f"""USER HEALTH PROFILE:
 - BMI: {health_metric.get('bmi', 'N/A')} ({health_metric.get('bmi_category', 'N/A')})
@@ -45,7 +60,13 @@ def build_user_context(
 - Dietary Preference: {health_metric.get('dietary_preference') or 'None'}
 - Allergies: {health_metric.get('allergies') or 'None'}
 - Activity Level: {health_metric.get('activity_level', 'moderate')}
-- Recently Ordered: {recent_meals}"""
+
+ORDER HISTORY (last 30 days):
+{order_history}
+
+USER TASTE PREFERENCES (from ratings):
+- Highly Rated Meals (loved): {liked_str}
+- Low Rated Meals (disliked): {disliked_str}"""
 
 
 def build_meals_context(meals: List[dict]) -> str:
@@ -90,9 +111,11 @@ def get_ai_recommendations(
 
 Select TOP 3-5 meals that best match:
 1. The user's health goal and calorie budget ({calories_left} kcal remaining today)
-2. Their dietary preferences and allergies
+2. Their dietary preferences and allergies (NEVER recommend meals with allergens)
 3. Nutritional balance
-4. Variety from recently ordered meals
+4. Prioritize meals similar to their highly-rated (4-5 star) meals
+5. AVOID recommending meals rated 1-2 stars by the user
+6. Provide variety — avoid repeating meals ordered very recently
 
 Respond ONLY in this exact JSON format, no extra text, no markdown:
 {{
