@@ -1,0 +1,363 @@
+{
+  "summary": {
+    "total_queries": 20,
+    "passed": 10,
+    "overall_accuracy": "50.8%",
+    "drug_accuracy": "45.0%",
+    "condition_accuracy": "56.7%"
+  },
+  "results": [
+    {
+      "id": 1,
+      "type": "drug",
+      "query": "What foods should I avoid while taking Warfarin?",
+      "keyword": "warfarin",
+      "answer": "While you should avoid drastic dietary changes, it\u2019s important to limit foods rich in vitamin K, particularly leafy vegetables, as they can reduce the effectiveness of warfarin. Additionally, avoid grapefruit products, as they may interfere with warfarin metabolism and increase your INR.  Consistently consuming Vitamin K is also crucial, and some herbs and supplements should be avoided due to potential interactions with warfarin.",
+      "expected_keywords": [
+        "spinach",
+        "kale",
+        "vitamin k",
+        "alcohol"
+      ],
+      "matched_keywords": [
+        "vitamin k"
+      ],
+      "score": 0.25,
+      "status": "FAIL"
+    },
+    {
+      "id": 2,
+      "type": "drug",
+      "query": "I am on Aspirin. What should I not eat?",
+      "keyword": "aspirin",
+      "answer": "As a patient on aspirin, it\u2019s best to limit foods that can interfere with its blood-thinning effects. Avoid high-fat foods, greasy foods, and certain dairy products, as these can increase the risk of stomach upset.  Generally, sticking to a bland diet is advisable to minimize potential complications.",
+      "expected_keywords": [
+        "garlic",
+        "ginger",
+        "alcohol",
+        "green tea"
+      ],
+      "matched_keywords": [],
+      "score": 0.0,
+      "status": "FAIL"
+    },
+    {
+      "id": 3,
+      "type": "drug",
+      "query": "Diet restrictions for Metformin users",
+      "keyword": "metformin",
+      "answer": "For Metformin users, it\u2019s recommended to avoid alcohol as it may interact with the medication. Food can help reduce irritation, so consuming nutrient-rich foods with meals is beneficial. Generally, avoid foods high in fat and simple sugars, as these may increase blood sugar levels.",
+      "expected_keywords": [
+        "alcohol",
+        "carbohydrate",
+        "sugar"
+      ],
+      "matched_keywords": [
+        "alcohol",
+        "sugar"
+      ],
+      "score": 0.67,
+      "status": "PASS"
+    },
+    {
+      "id": 4,
+      "type": "drug",
+      "query": "Foods to avoid when taking Atorvastatin",
+      "keyword": "atorvastatin",
+      "answer": "Based on the provided context, it's recommended to avoid grapefruit products while taking Atorvastatin. Grapefruit can increase the risk of myopathy and rhabdomyolysis, a potential side effect of this medication.  Consuming foods with grapefruit may decrease absorption, but this effect is generally not clinically significant.",
+      "expected_keywords": [
+        "grapefruit",
+        "alcohol",
+        "fatty"
+      ],
+      "matched_keywords": [
+        "grapefruit"
+      ],
+      "score": 0.33,
+      "status": "FAIL"
+    },
+    {
+      "id": 5,
+      "type": "drug",
+      "query": "What can I eat while on Lisinopril?",
+      "keyword": "lisinopril",
+      "answer": "While Lisinopril affects potassium levels, it\u2019s generally recommended to avoid potassium-containing foods and drinks. Stick to low-sodium foods and be mindful of your salt intake, as salt may reduce the medication\u2019s effectiveness.  You can enjoy fruits and vegetables, but avoid those that are high in potassium.",
+      "expected_keywords": [
+        "potassium",
+        "salt",
+        "sodium"
+      ],
+      "matched_keywords": [
+        "potassium",
+        "salt",
+        "sodium"
+      ],
+      "score": 1.0,
+      "status": "PASS"
+    },
+    {
+      "id": 6,
+      "type": "drug",
+      "query": "Diet advice for someone on Ibuprofen",
+      "keyword": "ibuprofen",
+      "answer": "Due to the context indicating Ibuprofen relates to alcohol avoidance, it\u2019s best to avoid alcohol while taking this medication.  Food can help reduce irritation, so consuming foods with meals might be beneficial.  Generally, it\u2019s recommended to take Ibuprofen with food to minimize potential side effects.",
+      "expected_keywords": [
+        "alcohol",
+        "food",
+        "stomach"
+      ],
+      "matched_keywords": [
+        "alcohol",
+        "food"
+      ],
+      "score": 0.67,
+      "status": "PASS"
+    },
+    {
+      "id": 7,
+      "type": "drug",
+      "query": "Foods to avoid with Amoxicillin",
+      "keyword": "amoxicillin",
+      "answer": "Based on the provided context, Amoxicillin is best taken with food to aid in its absorption and effectiveness. Avoid consuming foods that may interfere with the drug's absorption, such as fatty or highly acidic foods.  Generally, taking it with meals is recommended for optimal results.",
+      "expected_keywords": [
+        "alcohol",
+        "dairy",
+        "acidic"
+      ],
+      "matched_keywords": [
+        "acidic"
+      ],
+      "score": 0.33,
+      "status": "FAIL"
+    },
+    {
+      "id": 8,
+      "type": "drug",
+      "query": "What foods interact with Digoxin?",
+      "keyword": "digoxin",
+      "answer": "Based on the provided context, foods to avoid interacting with Digoxin include bran and high-fiber foods. Digoxin is more predictable when taken separately from these foods, as they can potentially affect its absorption.",
+      "expected_keywords": [
+        "fiber",
+        "bran",
+        "licorice"
+      ],
+      "matched_keywords": [
+        "fiber",
+        "bran"
+      ],
+      "score": 0.67,
+      "status": "PASS"
+    },
+    {
+      "id": 9,
+      "type": "drug",
+      "query": "Diet for someone taking Levothyroxine",
+      "keyword": "levothyroxine",
+      "answer": "For optimal levothyroxine absorption, avoid calcium supplements and calcium-rich foods, as they may interfere with the drug\u2019s absorption. Limit iron supplements and multivalent ions like iron, as they can also cause problems. It\u2019s recommended to take levothyroxine on an empty stomach for 30-60 minutes before breakfast.",
+      "expected_keywords": [
+        "calcium",
+        "soy",
+        "fiber",
+        "coffee"
+      ],
+      "matched_keywords": [
+        "calcium"
+      ],
+      "score": 0.25,
+      "status": "FAIL"
+    },
+    {
+      "id": 10,
+      "type": "drug",
+      "query": "Foods to avoid with blood thinners",
+      "keyword": "warfarin",
+      "answer": "To manage your warfarin dosage, avoid foods rich in vitamin K, such as leafy vegetables and grapefruit, as they can reduce its effectiveness.  It\u2019s also important to limit foods that may increase the serum levels of R-warfarin, including garlic and St. John's Wort, as these can also interfere with warfarin metabolism.  Consistently intake of Vitamin K is crucial for maintaining proper dosage.",
+      "expected_keywords": [
+        "vitamin k",
+        "spinach",
+        "broccoli"
+      ],
+      "matched_keywords": [
+        "vitamin k"
+      ],
+      "score": 0.33,
+      "status": "FAIL"
+    },
+    {
+      "id": 11,
+      "type": "condition",
+      "query": "What diet is recommended for diabetes?",
+      "keyword": "diabetes",
+      "answer": "For patients with diabetes, a balanced diet with a focus on low-carbohydrate intake is generally recommended.  It\u2019s advised to limit high-carb foods and prioritize nutrient-rich options like lean proteins, healthy fats, and non-starchy vegetables.  This dietary approach can help manage blood sugar levels effectively.",
+      "expected_keywords": [
+        "sugar",
+        "carbohydrate",
+        "fiber"
+      ],
+      "matched_keywords": [
+        "sugar",
+        "carbohydrate"
+      ],
+      "score": 0.67,
+      "status": "PASS"
+    },
+    {
+      "id": 12,
+      "type": "condition",
+      "query": "Diet plan for hypertension patient",
+      "keyword": "hypertension",
+      "answer": "A low-fat diet and a balanced diet are recommended for hypertension patients. Avoid high-sodium and refined carbohydrates, as these can contribute to elevated blood pressure. Focus on lean protein sources, fruits, and vegetables to support overall health.",
+      "expected_keywords": [
+        "sodium",
+        "salt",
+        "potassium"
+      ],
+      "matched_keywords": [
+        "sodium"
+      ],
+      "score": 0.33,
+      "status": "FAIL"
+    },
+    {
+      "id": 13,
+      "type": "condition",
+      "query": "What should a heart disease patient eat?",
+      "keyword": "heart",
+      "answer": "A heart disease patient should focus on a balanced diet rich in fruits, vegetables, and whole grains. Limiting saturated and trans fats is crucial, and reducing sodium intake is recommended.  While specific food recommendations are not available, a low-fat diet is generally advised to help manage heart health.",
+      "expected_keywords": [
+        "fat",
+        "fiber",
+        "cholesterol"
+      ],
+      "matched_keywords": [
+        "fat"
+      ],
+      "score": 0.33,
+      "status": "FAIL"
+    },
+    {
+      "id": 14,
+      "type": "condition",
+      "query": "Diet recommendation for kidney disease",
+      "keyword": "kidney",
+      "answer": "Given the context, a kidney-friendly diet is crucial, focusing on low-protein, low-phosphorus, and low-sodium foods. Avoid processed foods, red meat, and excessive salt. While specific recommendations are limited, prioritizing fruits, vegetables, and whole grains is generally beneficial for kidney health.",
+      "expected_keywords": [
+        "protein",
+        "potassium",
+        "phosphorus"
+      ],
+      "matched_keywords": [
+        "protein",
+        "phosphorus"
+      ],
+      "score": 0.67,
+      "status": "PASS"
+    },
+    {
+      "id": 15,
+      "type": "condition",
+      "query": "Foods good for cholesterol management",
+      "keyword": "cholesterol",
+      "answer": "Based on the knowledge graph, foods that support cholesterol management typically include foods rich in soluble fiber, like oats, fruits, and vegetables.  Limit consumption of saturated fats and trans fats, as these can negatively impact cholesterol levels.  While the graph doesn\u2019t provide specific food recommendations, prioritizing these dietary changes can be beneficial.",
+      "expected_keywords": [
+        "fat",
+        "fiber",
+        "oat"
+      ],
+      "matched_keywords": [
+        "fat",
+        "fiber",
+        "oat"
+      ],
+      "score": 1.0,
+      "status": "PASS"
+    },
+    {
+      "id": 16,
+      "type": "condition",
+      "query": "What to eat if I have obesity?",
+      "keyword": "obesity",
+      "answer": "Based on the knowledge graph, a low-carbohydrate diet or a high-protein diet might be beneficial for addressing obesity. Avoid sugary foods and processed carbohydrates, and focus on lean protein sources and healthy fats. Remember, a balanced diet with adequate fiber is crucial for weight management.",
+      "expected_keywords": [
+        "calorie",
+        "fiber",
+        "protein"
+      ],
+      "matched_keywords": [
+        "fiber",
+        "protein"
+      ],
+      "score": 0.67,
+      "status": "PASS"
+    },
+    {
+      "id": 17,
+      "type": "condition",
+      "query": "Diet for liver disease patients",
+      "keyword": "liver",
+      "answer": "Given the context, diet recommendations for liver disease patients should focus on minimizing alcohol intake, processed foods, and high-fat meals, as these can worsen liver function.  Foods to avoid include red meat, shellfish, and excessive sugar.  Prioritize lean proteins, fruits, and vegetables, and consider low-fat dairy options.",
+      "expected_keywords": [
+        "alcohol",
+        "fat",
+        "protein"
+      ],
+      "matched_keywords": [
+        "alcohol",
+        "fat",
+        "protein"
+      ],
+      "score": 1.0,
+      "status": "PASS"
+    },
+    {
+      "id": 18,
+      "type": "condition",
+      "query": "Dietary advice for anemia",
+      "keyword": "anemia",
+      "answer": "Based on the provided context, dietary advice for anemia focuses on iron-rich foods and avoiding those that contribute to iron deficiency.  Specifically, consume foods like red meat, poultry, and shellfish, but be mindful of consuming them in large quantities.  The context doesn\u2019t provide specific food recommendations, but it does highlight the importance of prioritizing iron-containing foods for managing anemia.",
+      "expected_keywords": [
+        "iron",
+        "vitamin c",
+        "protein"
+      ],
+      "matched_keywords": [
+        "iron"
+      ],
+      "score": 0.33,
+      "status": "FAIL"
+    },
+    {
+      "id": 19,
+      "type": "condition",
+      "query": "What diet helps with gastric issues?",
+      "keyword": "gastric",
+      "answer": "Based on the knowledge graph, dietary changes can be beneficial for gastric issues.  Avoiding trigger foods like dairy, spicy foods, and acidic ingredients is often recommended.  Generally, a diet rich in fruits, vegetables, and lean protein can help support stomach health.",
+      "expected_keywords": [
+        "spice",
+        "meal",
+        "bland"
+      ],
+      "matched_keywords": [],
+      "score": 0.0,
+      "status": "FAIL"
+    },
+    {
+      "id": 20,
+      "type": "condition",
+      "query": "Nutrition advice for cancer patients",
+      "keyword": "cancer",
+      "answer": "Okay, here\u2019s some nutrition advice for cancer patients, based solely on the provided context:\n\nIt\u2019s important to focus on nutrient-dense foods that support overall health, minimizing processed foods and excessive sugar.  Avoid sugary drinks and heavily processed meals, as these can impact immune function. Generally, prioritize lean protein, fruits, and vegetables to maintain energy levels and support recovery.",
+      "expected_keywords": [
+        "protein",
+        "calorie",
+        "fruit"
+      ],
+      "matched_keywords": [
+        "protein",
+        "fruit"
+      ],
+      "score": 0.67,
+      "status": "PASS"
+    }
+  ]
+}

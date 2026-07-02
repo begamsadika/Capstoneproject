@@ -1,0 +1,67 @@
+{
+  "total_nodes": 559,
+  "total_edges": 627,
+  "node_types": {
+    "ingredient": 349,
+    "food": 199,
+    "chronic_disease": 4,
+    "meal_plan": 4,
+    "allergy": 3
+  },
+  "edge_types": {
+    "contains": 616,
+    "recommends": 11
+  },
+  "sample_edges": [
+    {
+      "source": "Kiribath",
+      "target": "White rice",
+      "relationship": "contains"
+    },
+    {
+      "source": "Kiribath",
+      "target": "coconut milk",
+      "relationship": "contains"
+    },
+    {
+      "source": "Kiribath",
+      "target": "salt",
+      "relationship": "contains"
+    },
+    {
+      "source": "String Hoppers",
+      "target": "Rice flour",
+      "relationship": "contains"
+    },
+    {
+      "source": "String Hoppers",
+      "target": "water",
+      "relationship": "contains"
+    },
+    {
+      "source": "String Hoppers",
+      "target": "salt",
+      "relationship": "contains"
+    },
+    {
+      "source": "Hoppers Appa",
+      "target": "Rice flour",
+      "relationship": "contains"
+    },
+    {
+      "source": "Hoppers Appa",
+      "target": "coconut milk",
+      "relationship": "contains"
+    },
+    {
+      "source": "Hoppers Appa",
+      "target": "yeast",
+      "relationship": "contains"
+    },
+    {
+      "source": "Hoppers Appa",
+      "target": "sugar",
+      "relationship": "contains"
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+Illness__Diet_Recommendations	- https://www.kaggle.com/datasets/ziya07/personalized-medical-diet-recommendations-dataset?resource=download
+
+Drug to Food interactions Dataset - https://www.kaggle.com/datasets/shayanhusain/drug-food-interactions-dataset

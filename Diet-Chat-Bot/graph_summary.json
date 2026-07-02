@@ -1,0 +1,92 @@
+{
+  "total_nodes": 548,
+  "total_edges": 616,
+  "food_items": 199,
+  "ingredients": 349,
+  "sample_food_items": [
+    "Kiribath",
+    "String Hoppers",
+    "Hoppers Appa",
+    "Egg Hoppers",
+    "Pittu"
+  ],
+  "sample_ingredients": [
+    "White rice",
+    "Red rice",
+    "Brown rice",
+    "Keeri samba rice",
+    "Samba rice"
+  ],
+  "sample_edges": [
+    {
+      "source": "Kiribath",
+      "target": "White rice",
+      "attributes": {
+        "relationship": "contains"
+      }
+    },
+    {
+      "source": "Kiribath",
+      "target": "coconut milk",
+      "attributes": {
+        "relationship": "contains"
+      }
+    },
+    {
+      "source": "Kiribath",
+      "target": "salt",
+      "attributes": {
+        "relationship": "contains"
+      }
+    },
+    {
+      "source": "String Hoppers",
+      "target": "Rice flour",
+      "attributes": {
+        "relationship": "contains"
+      }
+    },
+    {
+      "source": "String Hoppers",
+      "target": "water",
+      "attributes": {
+        "relationship": "contains"
+      }
+    },
+    {
+      "source": "String Hoppers",
+      "target": "salt",
+      "attributes": {
+        "relationship": "contains"
+      }
+    },
+    {
+      "source": "Hoppers Appa",
+      "target": "Rice flour",
+      "attributes": {
+        "relationship": "contains"
+      }
+    },
+    {
+      "source": "Hoppers Appa",
+      "target": "coconut milk",
+      "attributes": {
+        "relationship": "contains"
+      }
+    },
+    {
+      "source": "Hoppers Appa",
+      "target": "yeast",
+      "attributes": {
+        "relationship": "contains"
+      }
+    },
+    {
+      "source": "Hoppers Appa",
+      "target": "sugar",
+      "attributes": {
+        "relationship": "contains"
+      }
+    }
+  ]
+}
