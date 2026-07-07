@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import type { AppPage } from "../types/page";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
+import { BackButton } from "../components/BackButton";
 
 interface SettingsPageProps {
   onNavigate: (page: AppPage) => void;
@@ -104,7 +105,13 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
 
         <div className="flex min-h-0 min-w-0 flex-1 flex-col bg-slate-50 dark:bg-slate-950">
           <header className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-900 sm:px-6">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
+              <BackButton
+                label="Dashboard"
+                to="user-dashboard"
+                onNavigate={onNavigate}
+                className="lg:hidden"
+              />
               <WelloraLogoMark size="sm" />
               <span className="font-semibold text-wellora">Wellora</span>
             </div>

@@ -3,6 +3,7 @@ import { Bell, LogOut, Menu, Users, UserCog, AlertCircle, Search, Settings } fro
 import { ThemeToggle } from "../components/ThemeToggle";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import type { AppPage } from "../types/page";
+import { BackButton } from "../components/BackButton";
 
 interface PartnerGuidanceProps {
   onNavigate: (page: AppPage) => void;
@@ -212,7 +213,13 @@ export function PartnerGuidance({ onNavigate }: PartnerGuidanceProps) {
 
       <div className="flex min-h-0 min-w-0 flex-1 flex-col bg-white dark:bg-slate-900">
         <header className="flex shrink-0 items-center justify-between border-b border-slate-200 px-5 py-3 dark:border-slate-800">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            <BackButton
+              label="Dashboard"
+              to="partner-dashboard"
+              onNavigate={onNavigate}
+              className="md:hidden"
+            />
             <WelloraLogoMark size="sm" />
             <span className="font-semibold text-wellora">Wellora</span>
           </div>

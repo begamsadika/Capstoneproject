@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import type { AppPage } from "../types/page";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
+import { BackButton } from "../components/BackButton";
 import { resolveImageUrl } from "../api/client";
 import {
   getVendorOrders,
@@ -2167,7 +2168,15 @@ export function VendorDashboardPage({
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         {/* Header */}
         <header className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-6 py-4 dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
+            {vendorSection !== "dashboard" && (
+              <BackButton
+                label="Dashboard"
+                to="vendor-dashboard"
+                onNavigate={onNavigate}
+                className="md:hidden"
+              />
+            )}
             <WelloraLogoMark size="sm" />
             <span className="font-semibold text-wellora">Wellora</span>
           </div>
