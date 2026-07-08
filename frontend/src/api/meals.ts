@@ -9,7 +9,20 @@ export interface VendorMeal {
   price: number;
   available: boolean;
   description?: string;
+  ingredients?: MealIngredient[];
   image_url?: string;  // returned by backend as full URL
+}
+
+export interface MealIngredient {
+  ingredientId: string;
+  name: string;
+  weight: number;
+  nutrition: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fats: number;
+  };
 }
 
 export interface TopMeal {
@@ -70,6 +83,9 @@ export const addMeal = async (
   form.append('price', String(data.price));
   form.append('available', String(data.available));
   form.append('description', data.description ?? '');
+  if (data.ingredients !== undefined) {
+    form.append('ingredients', JSON.stringify(data.ingredients));
+  }
   if (imageFile) form.append('image', imageFile);
 
   const res = await api.post('/api/vendor/meals/', form, {
@@ -92,6 +108,9 @@ export const updateMeal = async (
   if (data.price !== undefined) form.append('price', String(data.price));
   if (data.available !== undefined) form.append('available', String(data.available));
   if (data.description !== undefined) form.append('description', data.description);
+  if (data.ingredients !== undefined) {
+    form.append('ingredients', JSON.stringify(data.ingredients));
+  }
   if (imageFile) form.append('image', imageFile);
 
   const res = await api.put(`/api/vendor/meals/${id}`, form, {

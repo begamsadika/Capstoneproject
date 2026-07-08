@@ -16,6 +16,20 @@ def ensure_meal_image_filename_column() -> None:
         )
 
 
+def ensure_meal_ingredients_column() -> None:
+    """Add ingredients JSON text to Wellora_Meals if the table predates it."""
+    with engine.begin() as conn:
+        conn.execute(
+            text(
+                """
+                IF OBJECT_ID('Wellora_Meals', 'U') IS NOT NULL
+                AND COL_LENGTH('Wellora_Meals', 'ingredients') IS NULL
+                ALTER TABLE Wellora_Meals ADD ingredients NVARCHAR(MAX) NULL;
+                """
+            )
+        )
+
+
 def ensure_user_is_active_column() -> None:
     """Add is_active to Wellora_Users if the table predates that column."""
     with engine.begin() as conn:

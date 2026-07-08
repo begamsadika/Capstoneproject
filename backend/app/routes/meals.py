@@ -3,7 +3,8 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import Optional
-import os, shutil, uuid
+import json
+import os, uuid
 from ..database import get_db
 from ..models.meal import Meal
 from ..models.order import Order
@@ -35,6 +36,11 @@ def meal_to_dict(m: Meal, base_url: str = "http://localhost:8000") -> dict:
     image_url = (
         f"{base_url}/uploads/meals/{m.image_filename}" if m.image_filename else ""
     )
+    try:
+        ingredients = json.loads(m.ingredients) if m.ingredients else []
+    except json.JSONDecodeError:
+        ingredients = []
+
     return {
         "id": m.id,
         "name": m.name,
@@ -44,6 +50,7 @@ def meal_to_dict(m: Meal, base_url: str = "http://localhost:8000") -> dict:
         "price": m.price,
         "available": m.available,
         "description": m.description or "",
+        "ingredients": ingredients,
         "image_url": image_url,
     }
 
@@ -75,6 +82,60 @@ def delete_image(filename: Optional[str]):
             os.remove(path)
 
 
+def validate_unique_meal_name(
+    db: Session, vendor_id: int, name: str, exclude_meal_id: Optional[int] = None
+) -> None:
+    query = db.query(Meal).filter(
+        Meal.vendor_id == vendor_id,
+        func.lower(Meal.name) == name.strip().lower(),
+    )
+    if exclude_meal_id is not None:
+        query = query.filter(Meal.id != exclude_meal_id)
+    if query.first():
+        raise HTTPException(status_code=400, detail="Meal name already exists")
+
+
+def normalize_ingredients(raw_ingredients: Optional[str]) -> Optional[str]:
+    if raw_ingredients in (None, ""):
+        return None
+
+    try:
+        ingredients = json.loads(raw_ingredients)
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=400, detail="Invalid ingredients payload")
+
+    if not isinstance(ingredients, list):
+        raise HTTPException(status_code=400, detail="Ingredients must be a list")
+
+    normalized = []
+    for item in ingredients:
+        if not isinstance(item, dict):
+            raise HTTPException(status_code=400, detail="Invalid ingredient item")
+
+        weight = float(item.get("weight", 0))
+        if weight <= 0:
+            raise HTTPException(
+                status_code=400, detail="Ingredient weight must be greater than 0"
+            )
+
+        nutrition = item.get("nutrition") or {}
+        normalized.append(
+            {
+                "ingredientId": str(item.get("ingredientId", "")).strip(),
+                "name": str(item.get("name", "")).strip(),
+                "weight": round(weight, 2),
+                "nutrition": {
+                    "calories": round(float(nutrition.get("calories", 0)), 2),
+                    "protein": round(float(nutrition.get("protein", 0)), 2),
+                    "carbs": round(float(nutrition.get("carbs", 0)), 2),
+                    "fats": round(float(nutrition.get("fats", 0)), 2),
+                },
+            }
+        )
+
+    return json.dumps(normalized)
+
+
 # ─── GET ALL MEALS ────────────────────────────────
 @router.get("/")
 def get_meals(
@@ -100,11 +161,14 @@ def add_meal(
     price: float = Form(...),
     available: bool = Form(True),
     description: str = Form(""),
+    ingredients: Optional[str] = Form(None),
     image: Optional[UploadFile] = File(None),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
     profile = get_vendor_profile(current_user, db)
+    validate_unique_meal_name(db, profile.id, name)
+    normalized_ingredients = normalize_ingredients(ingredients)
     filename = save_image(image) if (image and image.filename) else None
 
     meal = Meal(
@@ -116,6 +180,7 @@ def add_meal(
         price=price,
         available=available,
         description=description,
+        ingredients=normalized_ingredients,
         image_filename=filename,
     )
     db.add(meal)
@@ -135,6 +200,7 @@ def update_meal(
     price: Optional[float] = Form(None),
     available: Optional[bool] = Form(None),
     description: Optional[str] = Form(None),
+    ingredients: Optional[str] = Form(None),
     image: Optional[UploadFile] = File(None),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -147,6 +213,7 @@ def update_meal(
         raise HTTPException(status_code=404, detail="Meal not found")
 
     if name is not None:
+        validate_unique_meal_name(db, profile.id, name, exclude_meal_id=meal.id)
         meal.name = name
     if category is not None:
         meal.category = category
@@ -160,6 +227,8 @@ def update_meal(
         meal.available = available
     if description is not None:
         meal.description = description
+    if ingredients is not None:
+        meal.ingredients = normalize_ingredients(ingredients)
 
     # Replace image if new one uploaded
     if image and image.filename:

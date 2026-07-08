@@ -4,7 +4,6 @@ import {
   CheckCircle2,
   Heart,
   Home,
-  LayoutGrid,
   Minus,
   Plus,
   Settings,
@@ -19,6 +18,7 @@ import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import { getPublicMeals, placeOrder, PublicMeal } from "../api/orders";
 import { resolveImageUrl } from "../api/client";
 import { syncDailyLog } from "../api/health";
+import { BackButton } from "../components/BackButton";
 
 interface MenuOrderPageProps {
   onNavigate: (page: AppPage) => void;
@@ -231,12 +231,12 @@ export function MenuOrderPage({ onNavigate }: MenuOrderPageProps) {
           {/* ── Header ── */}
           <header className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-4 dark:border-slate-800 dark:bg-slate-900 sm:px-6">
             <div className="flex items-center gap-3">
-              <button
-                type="button"
-                className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 lg:hidden dark:text-slate-300"
-              >
-                <LayoutGrid className="h-5 w-5" />
-              </button>
+              <BackButton
+                label="Dashboard"
+                to="user-dashboard"
+                onNavigate={onNavigate}
+                className="lg:hidden"
+              />
               <span className="font-semibold text-wellora">Wellora</span>
             </div>
             <div className="flex items-center gap-3">
