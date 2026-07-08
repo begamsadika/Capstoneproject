@@ -38,13 +38,4 @@ dist-ssr
 __pycache__/
 backend/__pycache__/
 backend/app/__pycache__/
-Diet-Chat-Bot/__pycache__/
 *.pyc
-
-# ChromaDB auto-generated vector index (rebuilds on startup, never commit)
-Diet-Chat-Bot/DataSets/.chroma_food_index/
-
-# Meal plan / log / preference caches (user session data, not source code)
-Diet-Chat-Bot/DataSets/.meal_plan_cache.json
-Diet-Chat-Bot/DataSets/.disliked_foods.json
-Diet-Chat-Bot/DataSets/.meal_log.json
