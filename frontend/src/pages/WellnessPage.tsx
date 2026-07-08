@@ -28,6 +28,7 @@ import type { LucideIcon } from "lucide-react";
 import type { AppPage } from "../types/page";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import { getUserProfile, UserProfile } from "../api/user";
+import { BackButton } from "../components/BackButton";
 
 interface WellnessPageProps {
   onNavigate: (page: AppPage) => void;
@@ -139,9 +140,19 @@ export function WellnessPage({ onNavigate }: WellnessPageProps) {
       {/* Header */}
       <header className="border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
         <div className="mx-auto grid max-w-6xl grid-cols-3 items-center gap-4 px-4 py-4 sm:px-6">
-          <div className="flex items-center gap-2 justify-self-start">
-            <WelloraLogoMark size="sm" />
-            <span className="text-lg font-semibold text-wellora">Wellora</span>
+          <div className="flex items-center gap-3 justify-self-start">
+            <BackButton
+              label="Dashboard"
+              to="user-dashboard"
+              onNavigate={onNavigate}
+              className="hidden sm:inline-flex"
+            />
+            <div className="flex items-center gap-2">
+              <WelloraLogoMark size="sm" />
+              <span className="hidden text-lg font-semibold text-wellora sm:inline">
+                Wellora
+              </span>
+            </div>
           </div>
           <div className="flex flex-col items-center justify-center justify-self-center">
             <div className="flex items-center gap-2 border-b-2 border-wellora pb-2 text-wellora">

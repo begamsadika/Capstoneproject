@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { getUserProfile, updateUserProfile, UserProfile } from "../api/user";
+import { getUserProfile, updateUserProfile } from "../api/user";
 import {
   Bell,
   CheckCircle2,
@@ -25,7 +25,6 @@ const PROFILE_IMG =
 type SettingsTab = "profile" | "health" | "partner" | "logout";
 
 export function SettingsPage({ onNavigate }: SettingsPageProps) {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState("");
   const [tab, setTab] = useState<SettingsTab>("profile");
@@ -40,7 +39,6 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
   useEffect(() => {
     getUserProfile().then((data) => {
       if (data) {
-        setProfile(data);
         setFullName(data.name ?? "");
         setEmail(data.email ?? "");
         setGender((data.gender as any) ?? "female");
@@ -292,9 +290,10 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                           setIsEditing(true);
                         }
                       }}
+                      disabled={isSaving}
                       className="rounded-xl bg-wellora px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-wellora-hover"
                     >
-                      {isEditing ? "Save" : "Edit"}
+                      {isSaving ? "Saving..." : isEditing ? "Save" : "Edit"}
                     </button>
                   </div>
                 </div>

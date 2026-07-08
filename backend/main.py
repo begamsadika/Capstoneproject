@@ -5,6 +5,9 @@ from app.database import engine, Base
 from app.db_migrations import (
     ensure_meal_image_filename_column,
     ensure_meal_ingredients_column,
+    ensure_partner_portal_tables,
+    ensure_user_registration_review_columns,
+    ensure_user_partner_type_column,
     ensure_user_is_active_column,
 )
 import os
@@ -19,6 +22,8 @@ from app.models.meal_rating import MealRating
 from app.models.order import Order
 from app.models.health_metric import HealthMetric
 from app.models.daily_log import DailyLog
+from app.models.partner_client import PartnerClient
+from app.models.partner_meal_recommendation import PartnerMealRecommendation
 
 # ─── Import ALL routes ────────────────────────────
 from app.routes.auth import router as auth_router
@@ -30,11 +35,15 @@ from app.routes.health import router as health_router
 from app.routes.ai import router as ai_router
 from app.routes.admin import router as admin_router
 from app.routes.ingredients import router as ingredients_router
+from app.routes.partner import router as partner_router
 
 # ─── Create all tables + apply lightweight schema patches ─
 ensure_meal_image_filename_column()
 ensure_meal_ingredients_column()
 ensure_user_is_active_column()
+ensure_user_partner_type_column()
+ensure_user_registration_review_columns()
+ensure_partner_portal_tables()
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
@@ -63,6 +72,7 @@ app.include_router(health_router)
 app.include_router(ai_router)
 app.include_router(admin_router)
 app.include_router(ingredients_router)
+app.include_router(partner_router)
 
 
 @app.get("/")

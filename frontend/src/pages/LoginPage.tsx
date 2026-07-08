@@ -14,9 +14,10 @@ import { ThemeToggle } from "../components/ThemeToggle";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import { VendorStatus } from "../api/vendor";
 import { loginUser } from "../api/auth";
+import type { AppPage } from "../types/page";
 
 interface LoginPageProps {
-  onNavigate: (page: "home" | "register") => void;
+  onNavigate: (page: AppPage) => void;
   onLoginSuccess: (
     role: "user" | "vendor" | "partner",
     status?: VendorStatus,
@@ -85,6 +86,28 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
 
       localStorage.setItem("wellora_token", data.access_token);
       localStorage.setItem("wellora_user", JSON.stringify(data.user));
+
+      if ((role === "vendor" || role === "partner") && data.user.is_active === false) {
+        const applicationType = role === "partner" ? "Partner" : "Vendor";
+        localStorage.setItem(
+          "pending-approval-application",
+          JSON.stringify({
+            applicationType,
+            partnerType: data.user.partner_type ?? "",
+            organizationName: data.user.organization_name || data.user.name,
+            email: data.user.email,
+            status: "Pending Approval",
+            submittedDate: new Date(data.user.created_at || Date.now()).toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            }),
+            applicationId: `${applicationType.slice(0, 3).toUpperCase()}-${data.user.id}`,
+          }),
+        );
+        onNavigate("pending-approval");
+        return;
+      }
 
       if (rememberMe) {
         localStorage.setItem("wellora_remember", "true");

@@ -15,6 +15,7 @@ import { SettingsPage } from "./pages/SettingsPage";
 import { VendorDashboardPage } from "./pages/VendorDashboardPage";
 import { PartnerDashboardPage } from "./pages/PartnerDashboardPage";
 import { PartnerGuidance } from "./pages/PartnerGuidance";
+import { InvitationSetupPage } from "./pages/InvitationSetupPage";
 import type { AppPage } from "./types/page";
 import type { VendorStatus } from "./api/vendor";
 
@@ -41,17 +42,63 @@ const validPages: Page[] = [
   "vendor-order-management",
   "partner-dashboard",
   "partner-guidance",
+  "invitation-setup",
+];
+
+const restrictedPendingPages: Page[] = [
+  "vendor-dashboard",
+  "vendor-order-management",
+  "partner-dashboard",
+  "partner-guidance",
 ];
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>(() => {
+    const inviteToken = new URLSearchParams(window.location.search).get("invite");
+    if (inviteToken) return "invitation-setup";
     const savedPage = localStorage.getItem("current-page") as Page | null;
-    return savedPage && validPages.includes(savedPage) ? savedPage : "home";
+    if (savedPage && validPages.includes(savedPage)) {
+      try {
+        const user = JSON.parse(localStorage.getItem("wellora_user") || "{}") as {
+          user_type?: string;
+          is_active?: boolean;
+        };
+        if (
+          user.is_active === false &&
+          (user.user_type === "partner" || user.user_type === "vendor") &&
+          restrictedPendingPages.includes(savedPage)
+        ) {
+          return "pending-approval";
+        }
+      } catch {
+        return savedPage;
+      }
+      return savedPage;
+    }
+    return "home";
   });
+  const [invitationToken] = useState(
+    () => new URLSearchParams(window.location.search).get("invite") ?? "",
+  );
   const [verificationEmail, setVerificationEmail] =
     useState<string>("user@email.com");
 
   const persistNavigation = (page: Page, role: Role | null = null) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("wellora_user") || "{}") as {
+        user_type?: string;
+        is_active?: boolean;
+      };
+      if (
+        user.is_active === false &&
+        (user.user_type === "partner" || user.user_type === "vendor") &&
+        restrictedPendingPages.includes(page)
+      ) {
+        page = "pending-approval";
+      }
+    } catch {
+      // keep requested page if local storage has malformed user data
+    }
     setCurrentPage(page);
     localStorage.setItem("current-page", page);
 
@@ -67,14 +114,6 @@ function App() {
       setVerificationEmail(email);
     }
     persistNavigation(page);
-  };
-
-  const getOnboardingComplete = (role: Role) => {
-    return localStorage.getItem(`${role}-onboarding-complete`) === "true";
-  };
-
-  const getAdminApproved = (role: "vendor" | "partner") => {
-    return localStorage.getItem(`${role}-admin-approved`) === "true";
   };
 
   const persistVendorStatus = (status: VendorStatus) => {
@@ -129,7 +168,7 @@ function App() {
         {currentPage === "home" && <HomePage onNavigate={setCurrentPage} />}
         {currentPage === "login" && (
           <LoginPage
-            onNavigate={setCurrentPage}
+            onNavigate={handleNavigate}
             onLoginSuccess={handleLoginSuccess}
           />
         )}
@@ -186,6 +225,12 @@ function App() {
         )}
         {currentPage === "partner-guidance" && (
           <PartnerGuidance onNavigate={setCurrentPage} />
+        )}
+        {currentPage === "invitation-setup" && (
+          <InvitationSetupPage
+            token={invitationToken}
+            onNavigate={setCurrentPage}
+          />
         )}
       </div>
     </ThemeProvider>

@@ -18,6 +18,15 @@ interface HistoryItem {
   content: string;
 }
 
+function isHistoryItem(item: unknown): item is HistoryItem {
+  if (!item || typeof item !== "object") return false;
+  const candidate = item as Partial<HistoryItem>;
+  return (
+    (candidate.role === "user" || candidate.role === "assistant") &&
+    typeof candidate.content === "string"
+  );
+}
+
 function getTimeGreeting(): string {
   const hour = new Date().getHours();
   if (hour >= 5  && hour < 12) return "Good morning";
@@ -102,7 +111,9 @@ export function DietChatBot() {
         const { messages: savedMsgs, history: savedHistory, metricsSnapshot } = JSON.parse(saved);
         if (savedMsgs?.length > 1) {
           setMessages(savedMsgs.map((m: Message) => ({ ...m, streaming: false })));
-          historyRef.current = savedHistory || [];
+          historyRef.current = Array.isArray(savedHistory)
+            ? savedHistory.filter(isHistoryItem)
+            : [];
           if (metricsSnapshot) setMetrics(metricsSnapshot);
           return;
         }
@@ -155,7 +166,7 @@ export function DietChatBot() {
     // Track in history
     historyRef.current = [
       ...historyRef.current,
-      { role: "user", content: text },
+      { role: "user", content: text } satisfies HistoryItem,
     ].slice(-MAX_HISTORY);
 
     // Add streaming placeholder
@@ -230,7 +241,7 @@ export function DietChatBot() {
       // Save bot reply to history
       historyRef.current = [
         ...historyRef.current,
-        { role: "assistant", content: botReply },
+        { role: "assistant", content: botReply } satisfies HistoryItem,
       ].slice(-MAX_HISTORY);
 
       // If the bot reply contains a calculated calorie target, store it
@@ -311,7 +322,7 @@ export function DietChatBot() {
                 <span className="text-sm font-semibold text-white">Diet AI</span>
                 {metrics && (
                   <p className="text-[10px] text-white/70">
-                    {metrics.health_goal?.replace(/_/g, " ")} · {metrics.target_calories} kcal/day
+                    {metrics.health_goal?.replace(/_/g, " ")} · {calorieOverride ?? metrics.target_calories} kcal/day
                   </p>
                 )}
               </div>

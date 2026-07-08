@@ -63,7 +63,7 @@ export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps) {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleNavClick = (nav: AdminNav, tab?: string) => {
+  const handleNavClick = (nav: AdminNav) => {
     setActiveNav(nav);
   };
 
@@ -100,7 +100,7 @@ export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps) {
             onClick={() =>
               onNavigate
                 ? onNavigate("manage-users")
-                : handleNavClick("users", "users")
+                : handleNavClick("users")
             }
             className={navItemClass(activeNav === "users")}
           >
@@ -112,7 +112,7 @@ export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps) {
             onClick={() =>
               onNavigate
                 ? onNavigate("manage-vendors")
-                : handleNavClick("vendors", "vendors")
+                : handleNavClick("vendors")
             }
             className={navItemClass(activeNav === "vendors")}
           >
@@ -121,7 +121,11 @@ export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps) {
           </button>
           <button
             type="button"
-            onClick={() => handleNavClick("partners", "partners")}
+            onClick={() =>
+              onNavigate
+                ? onNavigate("manage-partners")
+                : handleNavClick("partners")
+            }
             className={navItemClass(activeNav === "partners")}
           >
             <Heart className="h-4 w-4 shrink-0" />
@@ -261,7 +265,7 @@ export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps) {
                 <div className="grid gap-4 sm:grid-cols-2">
                   <button
                     type="button"
-                    onClick={() => onNavigate ? onNavigate("manage-users") : handleNavClick("users", "users")}
+                    onClick={() => onNavigate ? onNavigate("manage-users") : handleNavClick("users")}
                     className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-wellora/40 hover:shadow-md text-left"
                   >
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-sky-50 text-sky-600">
@@ -274,7 +278,7 @@ export function AdminDashboard({ onNavigate, onLogout }: AdminDashboardProps) {
                   </button>
                   <button
                     type="button"
-                    onClick={() => onNavigate ? onNavigate("manage-vendors") : handleNavClick("vendors", "vendors")}
+                    onClick={() => onNavigate ? onNavigate("manage-vendors") : handleNavClick("vendors")}
                     className="flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:border-wellora/40 hover:shadow-md text-left"
                   >
                     <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-wellora-soft text-wellora-dark">

@@ -185,7 +185,17 @@ def get_me(
         "id": current_user.id,
         "name": current_user.name,
         "email": current_user.email,
+        "phone": current_user.phone,
         "user_type": current_user.user_type,
+        "partner_type": current_user.partner_type,
+        "organization_name": current_user.organization_name,
+        "tin_number": current_user.tin_number,
+        "company_registration_number": current_user.company_registration_number,
+        "address": current_user.address,
+        "registration_status": current_user.registration_status,
+        "approval_date": str(current_user.approval_date) if current_user.approval_date else None,
+        "is_active": current_user.is_active,
+        "created_at": str(current_user.created_at),
     }
 
 

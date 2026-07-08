@@ -25,7 +25,7 @@ class ChatRequest(BaseModel):
 def query_ollama(prompt: str) -> str:
     url = "http://localhost:11434/api/generate"
     response = requests.post(url, json={
-        "model": "gemma3:1b",
+        "model": "llama3.2:3b",
         "prompt": prompt,
         "stream": False
     })

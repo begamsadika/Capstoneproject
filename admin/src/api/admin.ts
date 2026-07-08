@@ -51,6 +51,13 @@ export interface ManagedUser {
   email: string;
   phone: string | null;
   user_type: string;
+  partner_type?: string | null;
+  organization_name?: string | null;
+  tin_number?: string | null;
+  company_registration_number?: string | null;
+  address?: string | null;
+  registration_status?: string | null;
+  approval_date?: string | null;
   is_active: boolean;
   created_at: string;
 }
@@ -89,6 +96,9 @@ export interface ManagedVendor {
   business_name: string;
   business_type: string;
   service_area: string;
+  tin_number: string | null;
+  company_registration_number: string | null;
+  address: string | null;
   email: string;
   owner_name: string;
   is_approved: number;       // -1 | 0 | 1
@@ -123,4 +133,49 @@ export async function approveVendor(vendorId: number): Promise<void> {
 
 export async function suspendVendor(vendorId: number): Promise<void> {
   await api.put(`/api/admin/vendors/${vendorId}/suspend`);
+}
+
+// PARTNERS
+export interface ManagedPartner {
+  id: number;
+  organization_name: string;
+  partner_type: 'hospital' | 'gym' | null;
+  partner_type_label: string | null;
+  email: string;
+  phone: string | null;
+  address: string | null;
+  tin_number: string | null;
+  company_registration_number: string | null;
+  status: 'Approved' | 'Pending' | 'Rejected';
+  is_active: boolean;
+  submitted_at: string;
+  approval_date: string | null;
+}
+
+export interface PartnersResponse {
+  total: number;
+  page: number;
+  page_size: number;
+  partners: ManagedPartner[];
+}
+
+export async function getAdminPartners(
+  page = 1,
+  pageSize = 20,
+  search?: string,
+  statusFilter?: string,
+): Promise<PartnersResponse> {
+  const params: Record<string, string | number> = { page, page_size: pageSize };
+  if (search) params.search = search;
+  if (statusFilter && statusFilter !== 'All Statuses') params.status_filter = statusFilter;
+  const res = await api.get('/api/admin/partners', { params });
+  return res.data;
+}
+
+export async function approvePartner(partnerId: number): Promise<void> {
+  await api.put(`/api/admin/partners/${partnerId}/approve`);
+}
+
+export async function rejectPartner(partnerId: number): Promise<void> {
+  await api.put(`/api/admin/partners/${partnerId}/reject`);
 }
