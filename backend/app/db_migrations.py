@@ -195,3 +195,30 @@ def ensure_partner_portal_tables() -> None:
                 """
             )
         )
+
+
+def ensure_order_checkout_columns() -> None:
+    """Add checkout/payment fields to existing order rows without replacing old data."""
+    columns = [
+        ("payment_status", "NVARCHAR(20) NOT NULL DEFAULT 'paid'"),
+        ("order_status", "NVARCHAR(30) NOT NULL DEFAULT 'placed'"),
+        ("stripe_session_id", "NVARCHAR(255) NULL"),
+        ("checkout_reference", "NVARCHAR(80) NULL"),
+        ("recipient_name", "NVARCHAR(100) NULL"),
+        ("recipient_phone", "NVARCHAR(30) NULL"),
+        ("delivery_address", "NVARCHAR(500) NULL"),
+        ("delivery_city", "NVARCHAR(100) NULL"),
+        ("delivery_postal_code", "NVARCHAR(30) NULL"),
+        ("delivery_notes", "NVARCHAR(500) NULL"),
+    ]
+    with engine.begin() as conn:
+        for name, definition in columns:
+            conn.execute(
+                text(
+                    f"""
+                    IF OBJECT_ID('Wellora_Orders', 'U') IS NOT NULL
+                    AND COL_LENGTH('Wellora_Orders', '{name}') IS NULL
+                    ALTER TABLE Wellora_Orders ADD {name} {definition};
+                    """
+                )
+            )

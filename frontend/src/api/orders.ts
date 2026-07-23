@@ -8,7 +8,10 @@ export interface PublicMeal {
   dietary: string;
   price: number;
   vendor_id: number;
+  vendor_name?: string;
+  available?: boolean;
   description?: string;
+  ingredients?: string;
   image_url?: string;
 }
 
@@ -26,6 +29,17 @@ export interface MyOrder {
   unit_price: number;
   total_price: number;
   status: string;
+  order_status?: string;
+  payment_status?: string;
+  checkout_reference?: string;
+  vendor_id?: number;
+  vendor_name?: string;
+  recipient_name?: string;
+  recipient_phone?: string;
+  delivery_address?: string;
+  delivery_city?: string;
+  delivery_postal_code?: string;
+  delivery_notes?: string;
   created_at: string;
 }
 
@@ -40,6 +54,15 @@ export interface VendorOrder {
   unit_price: number;
   total_price: number;
   status: string;
+  order_status?: string;
+  payment_status?: string;
+  checkout_reference?: string;
+  recipient_name?: string;
+  recipient_phone?: string;
+  delivery_address?: string;
+  delivery_city?: string;
+  delivery_postal_code?: string;
+  delivery_notes?: string;
   created_at: string;
 }
 
@@ -73,14 +96,64 @@ export interface TodaySummary {
   order_count: number;
 }
 
+export interface CheckoutDeliveryDetails {
+  recipient_name: string;
+  phone: string;
+  address: string;
+  city: string;
+  postal_code?: string;
+  notes?: string;
+}
+
+export interface CheckoutSessionResponse {
+  checkout_url: string;
+  session_id: string;
+  checkout_reference: string;
+  total: number;
+  vendor_name: string;
+}
+
+export interface CheckoutOrderSummary {
+  order_number: string;
+  vendor_id: number;
+  vendor_name: string;
+  amount_paid: number;
+  payment_status: string;
+  order_status: string;
+  status: string;
+  items: MyOrder[];
+  created_at: string;
+}
+
 // ─── USER FUNCTIONS ───────────────────────────────
 export const getPublicMeals = async (): Promise<PublicMeal[]> => {
   const res = await api.get('/api/orders/meals');
   return res.data;
 };
 
-export const placeOrder = async (items: OrderItem[]) => {
-  const res = await api.post('/api/orders/', { items });
+export const placeOrder = async (
+  items: OrderItem[],
+  delivery?: CheckoutDeliveryDetails,
+) => {
+  const res = await api.post('/api/orders/', { items, delivery });
+  return res.data;
+};
+
+export const createCheckoutSession = async (
+  items: OrderItem[],
+  delivery: CheckoutDeliveryDetails,
+): Promise<CheckoutSessionResponse> => {
+  const res = await api.post('/api/orders/checkout/create-session', {
+    items,
+    delivery,
+  });
+  return res.data;
+};
+
+export const getCheckoutOrder = async (
+  sessionId: string,
+): Promise<CheckoutOrderSummary> => {
+  const res = await api.get(`/api/orders/checkout/session/${sessionId}`);
   return res.data;
 };
 

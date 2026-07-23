@@ -12,6 +12,7 @@ import { MenuOrderPage } from "./pages/MenuOrderPage";
 import { MealRecommendationsPage } from "./pages/MealRecommendationsPage";
 import { WellnessPage } from "./pages/WellnessPage";
 import { SettingsPage } from "./pages/SettingsPage";
+import { CheckoutResultPage } from "./pages/CheckoutResultPage";
 import { VendorDashboardPage } from "./pages/VendorDashboardPage";
 import { PartnerDashboardPage } from "./pages/PartnerDashboardPage";
 import { PartnerGuidance } from "./pages/PartnerGuidance";
@@ -26,7 +27,6 @@ import {
 } from "./auth/session";
 
 type Page = AppPage;
-
 type Role = "user" | "vendor" | "partner";
 
 const validPages: Page[] = [
@@ -49,6 +49,8 @@ const validPages: Page[] = [
   "partner-dashboard",
   "partner-guidance",
   "invitation-setup",
+  "checkout-success",
+  "checkout-cancel",
 ];
 
 const restrictedPendingPages: Page[] = [
@@ -63,11 +65,61 @@ const publicPages = new Set<Page>([
   "login",
   "register",
   "verification",
+  "invitation-setup",
+  "pending-approval",
+  "checkout-success",
+  "checkout-cancel",
 ]);
 
+const pagePaths: Partial<Record<Page, string>> = {
+  home: "/",
+  login: "/login",
+  register: "/register",
+  "pending-approval": "/register/pending-approval",
+  "checkout-success": "/checkout/success",
+  "checkout-cancel": "/checkout/cancel",
+};
+
+const pageFromPath = (pathname: string): Page | null => {
+  if (pathname === "/" || pathname === "") return "home";
+  const match = Object.entries(pagePaths).find(([, path]) => path === pathname);
+  return (match?.[0] as Page | undefined) ?? null;
+};
+
+const pathForPage = (page: Page) => pagePaths[page] ?? null;
+
+const readStoredUser = () => {
+  try {
+    return JSON.parse(localStorage.getItem("wellora_user") || "{}") as {
+      user_type?: string;
+      is_active?: boolean;
+      registration_status?: string;
+    };
+  } catch {
+    return {};
+  }
+};
+
+const redirectPendingProtectedPage = (page: Page): Page => {
+  const user = readStoredUser();
+  if (
+    (user.user_type === "partner" || user.user_type === "vendor") &&
+    (user.is_active === false || user.registration_status === "pending") &&
+    restrictedPendingPages.includes(page)
+  ) {
+    return "pending-approval";
+  }
+  return page;
+};
+
 function resolveInitialPage(): Page {
+  const inviteToken = new URLSearchParams(window.location.search).get("invite");
+  if (inviteToken) return "invitation-setup";
+
+  const pathPage = pageFromPath(window.location.pathname);
   const savedPage = localStorage.getItem("current-page") as Page | null;
-  const initialPage = savedPage && validPages.includes(savedPage) ? savedPage : "home";
+  const initialPage =
+    pathPage ?? (savedPage && validPages.includes(savedPage) ? savedPage : "home");
 
   if (publicPages.has(initialPage)) return initialPage;
 
@@ -78,40 +130,25 @@ function resolveInitialPage(): Page {
     return "login";
   }
 
-  return initialPage;
+  return redirectPendingProtectedPage(initialPage);
 }
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<Page>(() => {
-    const inviteToken = new URLSearchParams(window.location.search).get("invite");
-    if (inviteToken) return "invitation-setup";
-    const savedPage = localStorage.getItem("current-page") as Page | null;
-    if (savedPage && validPages.includes(savedPage)) {
-      try {
-        const user = JSON.parse(localStorage.getItem("wellora_user") || "{}") as {
-          user_type?: string;
-          is_active?: boolean;
-        };
-        if (
-          user.is_active === false &&
-          (user.user_type === "partner" || user.user_type === "vendor") &&
-          restrictedPendingPages.includes(savedPage)
-        ) {
-          return "pending-approval";
-        }
-      } catch {
-        return savedPage;
-      }
-      return savedPage;
-    }
-    return "home";
-  });
+  const [currentPage, setCurrentPage] = useState<Page>(resolveInitialPage);
   const [invitationToken] = useState(
     () => new URLSearchParams(window.location.search).get("invite") ?? "",
   );
-  const [currentPage, setCurrentPage] = useState<Page>(resolveInitialPage);
   const [verificationEmail, setVerificationEmail] =
     useState<string>("user@email.com");
+
+  useEffect(() => {
+    const handlePopState = () => {
+      const page = pageFromPath(window.location.pathname);
+      if (page) setCurrentPage(page);
+    };
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
 
   useEffect(() => {
     const handleSessionExpired = () => setCurrentPage("login");
@@ -146,24 +183,15 @@ function App() {
     return () => window.clearTimeout(expiryTimer);
   }, [currentPage]);
 
-  const persistNavigation = (page: Page, role: Role | null = null) => {
-    try {
-      const user = JSON.parse(localStorage.getItem("wellora_user") || "{}") as {
-        user_type?: string;
-        is_active?: boolean;
-      };
-      if (
-        user.is_active === false &&
-        (user.user_type === "partner" || user.user_type === "vendor") &&
-        restrictedPendingPages.includes(page)
-      ) {
-        page = "pending-approval";
-      }
-    } catch {
-      // keep requested page if local storage has malformed user data
-    }
+  const persistNavigation = (requestedPage: Page, role: Role | null = null) => {
+    const page = redirectPendingProtectedPage(requestedPage);
     setCurrentPage(page);
     localStorage.setItem("current-page", page);
+
+    const nextPath = pathForPage(page);
+    if (nextPath && window.location.pathname !== nextPath) {
+      window.history.pushState({}, "", nextPath);
+    }
 
     if (role) {
       localStorage.setItem("current-role", role);
@@ -217,15 +245,13 @@ function App() {
         return;
       }
 
-      // ✅ Check backend if onboarding is done
       try {
         const { getUserProfile } = await import("./api/user");
         const profile = await getUserProfile();
-        if (profile && profile.onboarding_done) {
-          persistNavigation("user-dashboard", role);
-        } else {
-          persistNavigation("onboarding-user", role);
-        }
+        persistNavigation(
+          profile && profile.onboarding_done ? "user-dashboard" : "onboarding-user",
+          role,
+        );
       } catch {
         if (!localStorage.getItem("wellora_token")) return;
         persistNavigation("onboarding-user", role);
@@ -235,13 +261,13 @@ function App() {
 
     if (role === "partner") {
       persistNavigation("partner-dashboard", role);
-      return;
     }
   };
+
   return (
     <ThemeProvider>
       <div className="transition-colors duration-500">
-        {currentPage === "home" && <HomePage onNavigate={setCurrentPage} />}
+        {currentPage === "home" && <HomePage onNavigate={handleNavigate} />}
         {currentPage === "login" && (
           <LoginPage
             onNavigate={handleNavigate}
@@ -254,7 +280,7 @@ function App() {
         {currentPage === "verification" && (
           <VerificationPage
             email={verificationEmail}
-            onNavigate={setCurrentPage}
+            onNavigate={handleNavigate}
           />
         )}
         {currentPage === "onboarding-user" && (
@@ -267,46 +293,52 @@ function App() {
           <OnboardingPage role="partner" onNavigate={handleNavigate} />
         )}
         {currentPage === "pending" && (
-          <PendingPage onNavigate={setCurrentPage} />
+          <PendingPage onNavigate={handleNavigate} />
         )}
         {currentPage === "pending-approval" && (
           <PendingApprovalPage onNavigate={handleNavigate} />
         )}
         {currentPage === "user-dashboard" && (
-          <UserDashboardPage onNavigate={setCurrentPage} />
+          <UserDashboardPage onNavigate={handleNavigate} />
         )}
         {currentPage === "user-menu-order" && (
-          <MenuOrderPage onNavigate={setCurrentPage} />
+          <MenuOrderPage onNavigate={handleNavigate} />
         )}
         {currentPage === "user-meal-recommendations" && (
-          <MealRecommendationsPage onNavigate={setCurrentPage} />
+          <MealRecommendationsPage onNavigate={handleNavigate} />
         )}
         {currentPage === "user-wellness" && (
-          <WellnessPage onNavigate={setCurrentPage} />
+          <WellnessPage onNavigate={handleNavigate} />
         )}
         {currentPage === "user-settings" && (
-          <SettingsPage onNavigate={setCurrentPage} />
+          <SettingsPage onNavigate={handleNavigate} />
         )}
         {currentPage === "vendor-dashboard" && (
-          <VendorDashboardPage onNavigate={setCurrentPage} />
+          <VendorDashboardPage onNavigate={handleNavigate} />
         )}
         {currentPage === "vendor-order-management" && (
           <VendorDashboardPage
-            onNavigate={setCurrentPage}
+            onNavigate={handleNavigate}
             initialSection="orders"
           />
         )}
         {currentPage === "partner-dashboard" && (
-          <PartnerDashboardPage onNavigate={setCurrentPage} />
+          <PartnerDashboardPage onNavigate={handleNavigate} />
         )}
         {currentPage === "partner-guidance" && (
-          <PartnerGuidance onNavigate={setCurrentPage} />
+          <PartnerGuidance onNavigate={handleNavigate} />
         )}
         {currentPage === "invitation-setup" && (
           <InvitationSetupPage
             token={invitationToken}
-            onNavigate={setCurrentPage}
+            onNavigate={handleNavigate}
           />
+        )}
+        {currentPage === "checkout-success" && (
+          <CheckoutResultPage type="success" onNavigate={handleNavigate} />
+        )}
+        {currentPage === "checkout-cancel" && (
+          <CheckoutResultPage type="cancel" onNavigate={handleNavigate} />
         )}
       </div>
     </ThemeProvider>
