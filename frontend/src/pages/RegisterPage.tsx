@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   Mail,
   Lock,
@@ -16,14 +16,43 @@ import {
 import { ThemeToggle } from "../components/ThemeToggle";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import { registerUser } from "../api/auth";
+import {
+  normalizeEmail,
+  normalizeSpaces,
+  validateConfirmPassword,
+  validateEmail,
+  validateFullName,
+  validateOrganizationName,
+  validatePassword,
+  validatePhone,
+  validateRequired,
+} from "../utils/authValidation";
 
-type Page = "home" | "login" | "register" | "verification" | "pending-approval";
+type Page =
+  | "home"
+  | "login"
+  | "register"
+  | "verification"
+  | "pending-approval"
+  | "onboarding-user";
 
 interface RegisterPageProps {
   onNavigate: (page: Page, email?: string) => void;
 }
 
 type UserType = "general" | "partner" | "vendor" | null;
+type RegisterField =
+  | "name"
+  | "phone"
+  | "email"
+  | "organizationName"
+  | "tinNumber"
+  | "companyRegistrationNumber"
+  | "address"
+  | "password"
+  | "confirmPassword"
+  | "partnerType"
+  | "terms";
 
 export function RegisterPage({ onNavigate }: RegisterPageProps) {
   const [step, setStep] = useState<"userType" | "form">("userType");
@@ -46,10 +75,87 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [termsAccepted, setTermsAccepted] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<RegisterField, string>>>({});
+  const [touched, setTouched] = useState<Partial<Record<RegisterField, boolean>>>({});
+  const fieldRefs = {
+    name: useRef<HTMLInputElement>(null),
+    phone: useRef<HTMLInputElement>(null),
+    email: useRef<HTMLInputElement>(null),
+    organizationName: useRef<HTMLInputElement>(null),
+    tinNumber: useRef<HTMLInputElement>(null),
+    companyRegistrationNumber: useRef<HTMLInputElement>(null),
+    address: useRef<HTMLTextAreaElement>(null),
+    password: useRef<HTMLInputElement>(null),
+    confirmPassword: useRef<HTMLInputElement>(null),
+    terms: useRef<HTMLInputElement>(null),
+  };
+
+  const isBusinessAccount = userType === "partner" || userType === "vendor";
+
+  const validateRegisterField = (field: RegisterField, value?: string) => {
+    let message = "";
+    if (field === "name") message = validateFullName(value ?? formData.name);
+    if (field === "email") message = validateEmail(value ?? formData.email);
+    if (field === "phone") message = validatePhone(value ?? formData.phone, isBusinessAccount);
+    if (field === "organizationName") message = isBusinessAccount ? validateOrganizationName(value ?? formData.organizationName) : "";
+    if (field === "tinNumber") message = isBusinessAccount ? validateRequired(value ?? formData.tinNumber, "TIN number is required.") : "";
+    if (field === "companyRegistrationNumber") message = isBusinessAccount ? validateRequired(value ?? formData.companyRegistrationNumber, "Company registration number is required.") : "";
+    if (field === "address") message = isBusinessAccount ? validateRequired(value ?? formData.address, "Address is required.") : "";
+    if (field === "password") message = validatePassword(value ?? formData.password, formData.email);
+    if (field === "confirmPassword") message = validateConfirmPassword(value ?? formData.confirmPassword, formData.password);
+    if (field === "partnerType") message = userType === "partner" && !partnerType ? "Select a partner type." : "";
+    if (field === "terms") message = termsAccepted ? "" : "You must agree to the Terms & Conditions and Privacy Policy to continue.";
+    setFieldErrors((prev) => ({ ...prev, [field]: message || undefined }));
+    return message;
+  };
+
+  const validateForm = () => {
+    const fields: RegisterField[] = [
+      "name",
+      "email",
+      "phone",
+      "organizationName",
+      "tinNumber",
+      "companyRegistrationNumber",
+      "address",
+      "password",
+      "confirmPassword",
+      "partnerType",
+      "terms",
+    ];
+    const nextErrors: Partial<Record<RegisterField, string>> = {};
+    fields.forEach((field) => {
+      const message = validateRegisterField(field);
+      if (message) nextErrors[field] = message;
+    });
+    setTouched(Object.fromEntries(fields.map((field) => [field, true])) as Partial<Record<RegisterField, boolean>>);
+    setFieldErrors(nextErrors);
+    const firstInvalid = fields.find((field) => nextErrors[field]);
+    if (firstInvalid === "partnerType") return false;
+    if (firstInvalid) fieldRefs[firstInvalid as keyof typeof fieldRefs]?.current?.focus();
+    return Object.keys(nextErrors).length === 0;
+  };
+
+  const inputClass = (field: RegisterField) =>
+    `w-full rounded-xl border bg-gray-50 py-3.5 pr-4 text-gray-800 outline-none transition-all placeholder-gray-400 focus:border-transparent focus:ring-2 dark:bg-gray-900/50 dark:text-white ${
+      fieldErrors[field]
+        ? "border-red-300 focus:ring-red-500 dark:border-red-700"
+        : "border-gray-200 focus:ring-wellora dark:border-gray-700"
+    }`;
+
+  const onFieldChange = (field: keyof typeof formData, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    setError("");
+    const mappedField = field as RegisterField;
+    if (touched[mappedField] || fieldErrors[mappedField]) validateRegisterField(mappedField, value);
+  };
 
   const handleContinueFromUserType = () => {
     if (userType) {
       setStep("form");
+    } else {
+      setFieldErrors((prev) => ({ ...prev, terms: "Select an account type." }));
     }
   };
 
@@ -58,42 +164,41 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
     setError("");
     setSuccess("");
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match!");
-      return;
-    }
-
-    if (userType === "partner" && !partnerType) {
-      setError("Please select Hospital or Gym as the partner type.");
-      return;
-    }
+    if (!validateForm()) return;
 
     setIsLoading(true);
     try {
       const registration = await registerUser({
-        name: formData.name,
-        email: formData.email,
+        name: normalizeSpaces(formData.name),
+        email: normalizeEmail(formData.email),
         password: formData.password,
-        phone: formData.phone,
+        phone: normalizeSpaces(formData.phone),
         user_type: userType || "general",
         partner_type: userType === "partner" ? partnerType : undefined,
         organization_name:
           userType === "partner" || userType === "vendor"
-            ? formData.organizationName
+            ? normalizeSpaces(formData.organizationName)
             : undefined,
         tin_number:
           userType === "partner" || userType === "vendor"
-            ? formData.tinNumber
+            ? normalizeSpaces(formData.tinNumber)
             : undefined,
         company_registration_number:
           userType === "partner" || userType === "vendor"
-            ? formData.companyRegistrationNumber
+            ? normalizeSpaces(formData.companyRegistrationNumber)
             : undefined,
         address:
           userType === "partner" || userType === "vendor"
-            ? formData.address
+            ? normalizeSpaces(formData.address)
             : undefined,
       });
+
+      if (registration.access_token) {
+        localStorage.setItem("wellora_token", registration.access_token);
+      }
+      if (registration.user) {
+        localStorage.setItem("wellora_user", JSON.stringify(registration.user));
+      }
 
       if (userType === "partner" || userType === "vendor") {
         const applicationType = userType === "partner" ? "Partner" : "Vendor";
@@ -102,8 +207,8 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
           JSON.stringify({
             applicationType,
             partnerType: userType === "partner" ? partnerType : "",
-            organizationName: formData.organizationName,
-            email: formData.email,
+            organizationName: normalizeSpaces(formData.organizationName),
+            email: normalizeEmail(formData.email),
             status: "Pending Approval",
             submittedDate: new Date().toLocaleDateString("en-US", {
               month: "short",
@@ -113,15 +218,33 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
             applicationId: `${applicationType.slice(0, 3).toUpperCase()}-${registration.user?.id ?? Date.now()}`,
           }),
         );
-        setSuccess("Registration submitted for approval.");
+        setSuccess(
+          userType === "vendor"
+            ? "Your vendor registration has been submitted successfully and is awaiting administrator approval."
+            : "Your partner registration has been submitted successfully and is awaiting administrator approval.",
+        );
         setTimeout(() => onNavigate("pending-approval"), 800);
         return;
       }
 
-      setSuccess("Account created successfully! Redirecting to login...");
-      setTimeout(() => onNavigate("login"), 2000);
+      setSuccess(registration.message || "Your account has been created successfully.");
+      setTimeout(() => onNavigate("onboarding-user"), 800);
     } catch (err: any) {
-      setError(err.response?.data?.detail || "Registration failed. Try again.");
+      const detail = err.response?.data?.detail;
+      if (detail?.errors) {
+        const mappedErrors: Partial<Record<RegisterField, string>> = {
+          ...detail.errors,
+          organizationName: detail.errors.organization_name,
+          tinNumber: detail.errors.tin_number,
+          companyRegistrationNumber: detail.errors.company_registration_number,
+        };
+        setFieldErrors(mappedErrors);
+        const firstField = Object.keys(mappedErrors).find((field) => mappedErrors[field as RegisterField]) as RegisterField | undefined;
+        if (firstField && firstField in fieldRefs) {
+          fieldRefs[firstField as keyof typeof fieldRefs].current?.focus();
+        }
+      }
+      setError(detail?.message || detail || "Registration failed. Try again.");
     } finally {
       setIsLoading(false);
     }
@@ -283,16 +406,23 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                   <div className="relative">
                     <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
+                      ref={fieldRefs.name}
                       type="text"
                       value={formData.name}
-                      onChange={(e) =>
-                        setFormData({ ...formData, name: e.target.value })
-                      }
+                      onBlur={() => {
+                        setTouched((prev) => ({ ...prev, name: true }));
+                        validateRegisterField("name");
+                      }}
+                      onChange={(e) => onFieldChange("name", e.target.value)}
                       placeholder="John Doe"
-                      className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-wellora focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
+                      aria-invalid={Boolean(fieldErrors.name)}
+                      aria-describedby={fieldErrors.name ? "register-name-error" : undefined}
+                      autoComplete="name"
+                      className={`${inputClass("name")} pl-12`}
                       required
                     />
                   </div>
+                  {fieldErrors.name && <p id="register-name-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.name}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -302,16 +432,23 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                   <div className="relative">
                     <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
+                      ref={fieldRefs.phone}
                       type="tel"
                       value={formData.phone}
-                      onChange={(e) =>
-                        setFormData({ ...formData, phone: e.target.value })
-                      }
+                      onBlur={() => {
+                        setTouched((prev) => ({ ...prev, phone: true }));
+                        validateRegisterField("phone");
+                      }}
+                      onChange={(e) => onFieldChange("phone", e.target.value)}
                       placeholder="+94 71 234 5678"
-                      className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-wellora focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
-                      required
+                      aria-invalid={Boolean(fieldErrors.phone)}
+                      aria-describedby={fieldErrors.phone ? "register-phone-error" : undefined}
+                      autoComplete="tel"
+                      className={`${inputClass("phone")} pl-12`}
+                      required={isBusinessAccount}
                     />
                   </div>
+                  {fieldErrors.phone && <p id="register-phone-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.phone}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -321,16 +458,23 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                   <div className="relative">
                     <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
+                      ref={fieldRefs.email}
                       type="email"
                       value={formData.email}
-                      onChange={(e) =>
-                        setFormData({ ...formData, email: e.target.value })
-                      }
+                      onBlur={() => {
+                        setTouched((prev) => ({ ...prev, email: true }));
+                        validateRegisterField("email");
+                      }}
+                      onChange={(e) => onFieldChange("email", e.target.value)}
                       placeholder="your@email.com"
-                      className="w-full pl-12 pr-4 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-wellora focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
+                      aria-invalid={Boolean(fieldErrors.email)}
+                      aria-describedby={fieldErrors.email ? "register-email-error" : undefined}
+                      autoComplete="email"
+                      className={`${inputClass("email")} pl-12`}
                       required
                     />
                   </div>
+                  {fieldErrors.email && <p id="register-email-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.email}</p>}
                 </div>
 
                 {(userType === "partner" || userType === "vendor") && (
@@ -358,7 +502,11 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                                 name="partnerType"
                                 value={option.value}
                                 checked={partnerType === option.value}
-                                onChange={() => setPartnerType(option.value)}
+                                aria-invalid={Boolean(fieldErrors.partnerType)}
+                                onChange={() => {
+                                  setPartnerType(option.value);
+                                  setFieldErrors((prev) => ({ ...prev, partnerType: undefined }));
+                                }}
                                 className="h-4 w-4 border-gray-300 text-wellora focus:ring-wellora"
                                 required
                               />
@@ -366,6 +514,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                             </label>
                           ))}
                         </div>
+                        {fieldErrors.partnerType && <p className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.partnerType}</p>}
                       </div>
                     )}
 
@@ -376,16 +525,22 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                       <div className="relative">
                         <Building2 className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
                         <input
+                          ref={fieldRefs.organizationName}
                           type="text"
                           value={formData.organizationName}
-                          onChange={(e) =>
-                            setFormData({ ...formData, organizationName: e.target.value })
-                          }
+                          onBlur={() => {
+                            setTouched((prev) => ({ ...prev, organizationName: true }));
+                            validateRegisterField("organizationName");
+                          }}
+                          onChange={(e) => onFieldChange("organizationName", e.target.value)}
                           placeholder={userType === "vendor" ? "Healthy Bites Inc." : "City Hospital"}
-                          className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-800 outline-none transition-all placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-wellora dark:border-gray-700 dark:bg-gray-900/50 dark:text-white"
+                          aria-invalid={Boolean(fieldErrors.organizationName)}
+                          aria-describedby={fieldErrors.organizationName ? "register-org-error" : undefined}
+                          className={`${inputClass("organizationName")} pl-12`}
                           required
                         />
                       </div>
+                      {fieldErrors.organizationName && <p id="register-org-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.organizationName}</p>}
                     </div>
 
                     <div className="space-y-2">
@@ -395,16 +550,22 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                       <div className="relative">
                         <FileText className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
                         <input
+                          ref={fieldRefs.tinNumber}
                           type="text"
                           value={formData.tinNumber}
-                          onChange={(e) =>
-                            setFormData({ ...formData, tinNumber: e.target.value })
-                          }
+                          onBlur={() => {
+                            setTouched((prev) => ({ ...prev, tinNumber: true }));
+                            validateRegisterField("tinNumber");
+                          }}
+                          onChange={(e) => onFieldChange("tinNumber", e.target.value)}
                           placeholder="Tax Identification Number"
-                          className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-800 outline-none transition-all placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-wellora dark:border-gray-700 dark:bg-gray-900/50 dark:text-white"
+                          aria-invalid={Boolean(fieldErrors.tinNumber)}
+                          aria-describedby={fieldErrors.tinNumber ? "register-tin-error" : undefined}
+                          className={`${inputClass("tinNumber")} pl-12`}
                           required
                         />
                       </div>
+                      {fieldErrors.tinNumber && <p id="register-tin-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.tinNumber}</p>}
                     </div>
 
                     <div className="space-y-2">
@@ -414,16 +575,22 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                       <div className="relative">
                         <FileText className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
                         <input
+                          ref={fieldRefs.companyRegistrationNumber}
                           type="text"
                           value={formData.companyRegistrationNumber}
-                          onChange={(e) =>
-                            setFormData({ ...formData, companyRegistrationNumber: e.target.value })
-                          }
+                          onBlur={() => {
+                            setTouched((prev) => ({ ...prev, companyRegistrationNumber: true }));
+                            validateRegisterField("companyRegistrationNumber");
+                          }}
+                          onChange={(e) => onFieldChange("companyRegistrationNumber", e.target.value)}
                           placeholder="Company registration number"
-                          className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-800 outline-none transition-all placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-wellora dark:border-gray-700 dark:bg-gray-900/50 dark:text-white"
+                          aria-invalid={Boolean(fieldErrors.companyRegistrationNumber)}
+                          aria-describedby={fieldErrors.companyRegistrationNumber ? "register-company-error" : undefined}
+                          className={`${inputClass("companyRegistrationNumber")} pl-12`}
                           required
                         />
                       </div>
+                      {fieldErrors.companyRegistrationNumber && <p id="register-company-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.companyRegistrationNumber}</p>}
                     </div>
 
                     <div className="space-y-2">
@@ -433,16 +600,22 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                       <div className="relative">
                         <MapPin className="absolute left-4 top-4 h-5 w-5 text-gray-400" />
                         <textarea
+                          ref={fieldRefs.address}
                           value={formData.address}
-                          onChange={(e) =>
-                            setFormData({ ...formData, address: e.target.value })
-                          }
+                          onBlur={() => {
+                            setTouched((prev) => ({ ...prev, address: true }));
+                            validateRegisterField("address");
+                          }}
+                          onChange={(e) => onFieldChange("address", e.target.value)}
                           placeholder="Registered business address"
                           rows={3}
-                          className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-800 outline-none transition-all placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-wellora dark:border-gray-700 dark:bg-gray-900/50 dark:text-white"
+                          aria-invalid={Boolean(fieldErrors.address)}
+                          aria-describedby={fieldErrors.address ? "register-address-error" : undefined}
+                          className={`${inputClass("address")} resize-none pl-12`}
                           required
                         />
                       </div>
+                      {fieldErrors.address && <p id="register-address-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.address}</p>}
                     </div>
                   </>
                 )}
@@ -454,13 +627,24 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
+                      ref={fieldRefs.password}
                       type={showPassword ? "text" : "password"}
                       value={formData.password}
-                      onChange={(e) =>
-                        setFormData({ ...formData, password: e.target.value })
-                      }
+                      onBlur={() => {
+                        setTouched((prev) => ({ ...prev, password: true }));
+                        validateRegisterField("password");
+                      }}
+                      onChange={(e) => {
+                        onFieldChange("password", e.target.value);
+                        if (touched.confirmPassword || fieldErrors.confirmPassword) {
+                          validateRegisterField("confirmPassword");
+                        }
+                      }}
                       placeholder="Create a password"
-                      className="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-wellora focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
+                      aria-invalid={Boolean(fieldErrors.password)}
+                      aria-describedby={fieldErrors.password ? "register-password-error" : "register-password-help"}
+                      autoComplete="new-password"
+                      className={`${inputClass("password")} pl-12 pr-12`}
                       required
                     />
                     <button
@@ -475,6 +659,10 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                       )}
                     </button>
                   </div>
+                  <p id="register-password-help" className="text-xs text-gray-500 dark:text-gray-400">
+                    Use 8-64 characters with uppercase, lowercase, and special character.
+                  </p>
+                  {fieldErrors.password && <p id="register-password-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.password}</p>}
                 </div>
 
                 <div className="space-y-2">
@@ -484,16 +672,19 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                   <div className="relative">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input
+                      ref={fieldRefs.confirmPassword}
                       type={showConfirmPassword ? "text" : "password"}
                       value={formData.confirmPassword}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          confirmPassword: e.target.value,
-                        })
-                      }
+                      onBlur={() => {
+                        setTouched((prev) => ({ ...prev, confirmPassword: true }));
+                        validateRegisterField("confirmPassword");
+                      }}
+                      onChange={(e) => onFieldChange("confirmPassword", e.target.value)}
                       placeholder="Confirm your password"
-                      className="w-full pl-12 pr-12 py-3.5 bg-gray-50 dark:bg-gray-900/50 border border-gray-200 dark:border-gray-700 rounded-xl focus:ring-2 focus:ring-wellora focus:border-transparent outline-none transition-all text-gray-800 dark:text-white placeholder-gray-400"
+                      aria-invalid={Boolean(fieldErrors.confirmPassword)}
+                      aria-describedby={fieldErrors.confirmPassword ? "register-confirm-password-error" : undefined}
+                      autoComplete="new-password"
+                      className={`${inputClass("confirmPassword")} pl-12 pr-12`}
                       required
                     />
                     <button
@@ -510,11 +701,20 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                       )}
                     </button>
                   </div>
+                  {fieldErrors.confirmPassword && <p id="register-confirm-password-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.confirmPassword}</p>}
                 </div>
 
                 <div className="flex items-start space-x-2 text-sm">
                   <input
+                    ref={fieldRefs.terms}
                     type="checkbox"
+                    checked={termsAccepted}
+                    onChange={(e) => {
+                      setTermsAccepted(e.target.checked);
+                      setFieldErrors((prev) => ({ ...prev, terms: e.target.checked ? undefined : prev.terms }));
+                    }}
+                    aria-invalid={Boolean(fieldErrors.terms)}
+                    aria-describedby={fieldErrors.terms ? "register-terms-error" : undefined}
                     className="w-4 h-4 mt-0.5 rounded border-gray-300 text-wellora focus:ring-wellora"
                     required
                   />
@@ -535,6 +735,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                     </button>
                   </label>
                 </div>
+                {fieldErrors.terms && <p id="register-terms-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.terms}</p>}
 
                 {/* Error message */}
                 {error && (

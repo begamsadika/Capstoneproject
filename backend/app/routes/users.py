@@ -5,7 +5,7 @@ from sqlalchemy.orm import Session
 from ..database import get_db
 from ..models.user_profile import UserProfile
 from ..models.user import User
-from ..core.auth import get_current_user
+from ..core.auth import get_current_account, get_current_user
 from pydantic import BaseModel, Field
 from typing import Optional
 from ..models.health_metric import HealthMetric
@@ -230,7 +230,7 @@ def get_user_profile(
 # ─── GET CURRENT USER (me) ────────────────────────
 @router.get("/me")
 def get_me(
-    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
+    current_user: User = Depends(get_current_account), db: Session = Depends(get_db)
 ):
     return {
         "id": current_user.id,

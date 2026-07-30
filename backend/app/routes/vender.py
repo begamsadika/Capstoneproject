@@ -5,7 +5,7 @@ from ..database import get_db
 from ..models.vendor_profile import VendorProfile
 from ..models.vendor_approval import VendorApproval
 from ..models.user import User
-from ..core.auth import get_current_user
+from ..core.auth import get_current_account, get_current_user
 import os, shutil, uuid
 
 router = APIRouter(prefix="/api/vendor", tags=["Vendor"])
@@ -26,10 +26,17 @@ def approval_to_status(is_approved: int) -> str:
 # ─── GET VENDOR STATUS ────────────────────────────
 @router.get("/status")
 def get_vendor_status(
-    current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
+    current_user: User = Depends(get_current_account), db: Session = Depends(get_db)
 ):
     if current_user.user_type != "vendor":
         raise HTTPException(status_code=403, detail="Not a vendor account")
+
+    if current_user.registration_status == "approved" and current_user.is_active:
+        return {"status": "APPROVED", "is_approved": 1}
+    if current_user.registration_status == "rejected":
+        return {"status": "REJECTED", "is_approved": -1}
+    if current_user.registration_status == "pending" or not current_user.is_active:
+        return {"status": "PENDING", "is_approved": 0}
 
     profile = (
         db.query(VendorProfile).filter(VendorProfile.user_id == current_user.id).first()

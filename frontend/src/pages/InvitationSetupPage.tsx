@@ -3,6 +3,7 @@ import { Lock, CheckCircle2 } from "lucide-react";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import { setInvitationPassword } from "../api/partner";
 import type { AppPage } from "../types/page";
+import { validateConfirmPassword, validatePassword } from "../utils/authValidation";
 
 interface InvitationSetupPageProps {
   token: string;
@@ -18,12 +19,14 @@ export function InvitationSetupPage({ token, onNavigate }: InvitationSetupPagePr
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();
     setError("");
-    if (password.length < 8) {
-      setError("Password must be at least 8 characters.");
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      setError(passwordError);
       return;
     }
-    if (password !== confirmPassword) {
-      setError("Passwords do not match.");
+    const confirmError = validateConfirmPassword(confirmPassword, password);
+    if (confirmError) {
+      setError(confirmError);
       return;
     }
 
@@ -69,10 +72,18 @@ export function InvitationSetupPage({ token, onNavigate }: InvitationSetupPagePr
             <input
               type="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError("");
+              }}
+              aria-invalid={Boolean(error)}
+              autoComplete="new-password"
               className="w-full rounded-xl border border-slate-300 bg-white py-2.5 pl-10 pr-3 text-sm dark:border-slate-600 dark:bg-slate-800"
             />
           </div>
+          <span className="mt-1 block text-xs text-slate-500">
+            Use 8-64 characters with uppercase, lowercase, and special character.
+          </span>
         </label>
 
         <label className="mt-4 block">
@@ -82,7 +93,11 @@ export function InvitationSetupPage({ token, onNavigate }: InvitationSetupPagePr
           <input
             type="password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={(e) => {
+              setConfirmPassword(e.target.value);
+              setError("");
+            }}
+            autoComplete="new-password"
             className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3 py-2.5 text-sm dark:border-slate-600 dark:bg-slate-800"
           />
         </label>

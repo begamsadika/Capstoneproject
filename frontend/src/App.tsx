@@ -28,6 +28,11 @@ import {
 
 type Page = AppPage;
 type Role = "user" | "vendor" | "partner";
+type StoredUser = {
+  user_type?: string;
+  is_active?: boolean;
+  registration_status?: string;
+};
 
 const validPages: Page[] = [
   "home",
@@ -53,9 +58,23 @@ const validPages: Page[] = [
   "checkout-cancel",
 ];
 
-const restrictedPendingPages: Page[] = [
+const generalPages: Page[] = [
+  "onboarding-user",
+  "user-dashboard",
+  "user-menu-order",
+  "user-meal-recommendations",
+  "user-wellness",
+  "user-settings",
+];
+
+const vendorPages: Page[] = [
+  "onboarding-vendor",
   "vendor-dashboard",
   "vendor-order-management",
+];
+
+const partnerPages: Page[] = [
+  "onboarding-partner",
   "partner-dashboard",
   "partner-guidance",
 ];
@@ -88,27 +107,47 @@ const pageFromPath = (pathname: string): Page | null => {
 
 const pathForPage = (page: Page) => pagePaths[page] ?? null;
 
-const readStoredUser = () => {
+const readStoredUser = (): StoredUser | null => {
   try {
-    return JSON.parse(localStorage.getItem("wellora_user") || "{}") as {
-      user_type?: string;
-      is_active?: boolean;
-      registration_status?: string;
-    };
+    const raw = localStorage.getItem("wellora_user");
+    return raw ? (JSON.parse(raw) as StoredUser) : null;
   } catch {
-    return {};
+    return null;
   }
 };
 
-const redirectPendingProtectedPage = (page: Page): Page => {
+const isApprovedBusinessAccount = (user: StoredUser) =>
+  user.is_active !== false && user.registration_status === "approved";
+
+const guardedPage = (page: Page): Page => {
   const user = readStoredUser();
-  if (
-    (user.user_type === "partner" || user.user_type === "vendor") &&
-    (user.is_active === false || user.registration_status === "pending") &&
-    restrictedPendingPages.includes(page)
-  ) {
-    return "pending-approval";
+
+  if (page === "pending-approval") return page;
+  if (![...generalPages, ...vendorPages, ...partnerPages].includes(page)) return page;
+
+  const token = localStorage.getItem("wellora_token");
+  if (!token || !user?.user_type) return "login";
+
+  if (generalPages.includes(page)) {
+    return user.user_type === "general" && user.is_active !== false ? page : "login";
   }
+
+  if (vendorPages.includes(page)) {
+    if (user.user_type !== "vendor") return "login";
+    if (page === "onboarding-vendor") {
+      return isApprovedBusinessAccount(user) ? "vendor-dashboard" : "pending-approval";
+    }
+    return isApprovedBusinessAccount(user) ? page : "pending-approval";
+  }
+
+  if (partnerPages.includes(page)) {
+    if (user.user_type !== "partner") return "login";
+    if (page === "onboarding-partner") {
+      return isApprovedBusinessAccount(user) ? "partner-dashboard" : "pending-approval";
+    }
+    return isApprovedBusinessAccount(user) ? page : "pending-approval";
+  }
+
   return page;
 };
 
@@ -130,7 +169,7 @@ function resolveInitialPage(): Page {
     return "login";
   }
 
-  return redirectPendingProtectedPage(initialPage);
+  return guardedPage(initialPage);
 }
 
 function App() {
@@ -144,7 +183,7 @@ function App() {
   useEffect(() => {
     const handlePopState = () => {
       const page = pageFromPath(window.location.pathname);
-      if (page) setCurrentPage(page);
+      if (page) setCurrentPage(guardedPage(page));
     };
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
@@ -184,7 +223,7 @@ function App() {
   }, [currentPage]);
 
   const persistNavigation = (requestedPage: Page, role: Role | null = null) => {
-    const page = redirectPendingProtectedPage(requestedPage);
+    const page = guardedPage(requestedPage);
     setCurrentPage(page);
     localStorage.setItem("current-page", page);
 

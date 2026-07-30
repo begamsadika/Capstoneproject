@@ -15,10 +15,12 @@ router = APIRouter(prefix="/api/admin", tags=["Admin"])
 
 
 def status_from_user(user: User) -> str:
+    if user.registration_status == "approved" and user.is_active:
+        return "Approved"
     if user.registration_status == "rejected":
         return "Rejected"
-    if user.registration_status == "approved" or user.is_active:
-        return "Approved"
+    if user.registration_status == "approved" and not user.is_active:
+        return "Inactive"
     return "Pending"
 
 
@@ -189,7 +191,9 @@ def list_vendors(
         else:
             is_approved = 0
 
-        if is_approved == 1:
+        if user.registration_status == "approved" and not user.is_active:
+            approval_status = "Inactive"
+        elif is_approved == 1:
             approval_status = "Approved"
         elif is_approved == -1:
             approval_status = "Rejected"
@@ -294,7 +298,7 @@ def approve_vendor(
         user.registration_status = "approved"
         user.approval_date = datetime.utcnow()
         db.commit()
-        return {"message": "Vendor approved successfully", "vendor_id": profile.id, "status": "Approved"}
+        return {"message": "Vendor account approved successfully.", "vendor_id": profile.id, "status": "Approved"}
 
     latest = (
         db.query(VendorApproval)
@@ -323,7 +327,7 @@ def approve_vendor(
         user.approval_date = datetime.utcnow()
 
     db.commit()
-    return {"message": "Vendor approved successfully", "vendor_id": vendor_id, "status": "Approved"}
+    return {"message": "Vendor account approved successfully.", "vendor_id": vendor_id, "status": "Approved"}
 
 
 # ─── SUSPEND / REJECT VENDOR ──────────────────────
@@ -341,7 +345,7 @@ def suspend_vendor(
         user.is_active = False
         user.registration_status = "rejected"
         db.commit()
-        return {"message": "Vendor suspended successfully", "vendor_id": vendor_id, "status": "Rejected"}
+        return {"message": "Vendor account rejected successfully.", "vendor_id": vendor_id, "status": "Rejected"}
 
     latest = (
         db.query(VendorApproval)
@@ -369,7 +373,7 @@ def suspend_vendor(
         user.registration_status = "rejected"
 
     db.commit()
-    return {"message": "Vendor suspended successfully", "vendor_id": vendor_id, "status": "Rejected"}
+    return {"message": "Vendor account rejected successfully.", "vendor_id": vendor_id, "status": "Rejected"}
 
 
 @router.get("/partners")
@@ -430,7 +434,7 @@ def approve_partner(
     partner.registration_status = "approved"
     partner.approval_date = datetime.utcnow()
     db.commit()
-    return {"message": "Partner approved successfully", "partner_id": partner_id, "status": "Approved"}
+    return {"message": "Partner account approved successfully.", "partner_id": partner_id, "status": "Approved"}
 
 
 @router.put("/partners/{partner_id}/reject")
