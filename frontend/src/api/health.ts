@@ -16,6 +16,8 @@ export interface HealthMetrics {
   activity_level: string;
   dietary_preference: string | null;
   allergies: string | null;
+  medical_conditions: string | null;
+  medications: string | null;
   ideal_weight_kg: number;
   weight_to_goal_kg: number;
   estimated_weeks_to_goal: number;

@@ -1,0 +1,763 @@
+{
+  "component": "bypass",
+  "generated_at": "2026-07-30T21:10:22.183835+00:00",
+  "summary": {
+    "total": 50,
+    "passed": 22,
+    "failed": 28,
+    "accuracy_percent": 44.0,
+    "average_latency_ms": 0.27
+  },
+  "results": [
+    {
+      "id": 1,
+      "handler": "profile_fact",
+      "question": "What is my BMI?",
+      "expected_keywords": [
+        "27.3"
+      ],
+      "matched_keywords": [
+        "27.3"
+      ],
+      "answer": "Your current recorded BMI is **27.3 (Overweight)**.\n\nCalculation: 70 kg ÷ (1.6 m × 1.6 m) = **27.3**.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.71,
+      "status": "PASS"
+    },
+    {
+      "id": 2,
+      "handler": "profile_fact",
+      "question": "Tell me my current BMI",
+      "expected_keywords": [
+        "27.3"
+      ],
+      "matched_keywords": [
+        "27.3"
+      ],
+      "answer": "Your current recorded BMI is **27.3 (Overweight)**.\n\nCalculation: 70 kg ÷ (1.6 m × 1.6 m) = **27.3**.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.07,
+      "status": "PASS"
+    },
+    {
+      "id": 3,
+      "handler": "profile_fact",
+      "question": "What is my current weight?",
+      "expected_keywords": [
+        "70"
+      ],
+      "matched_keywords": [
+        "70"
+      ],
+      "answer": "Your current recorded body weight is **70 kg**.\n\nYour recorded BMI is **27.3**.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.88,
+      "status": "PASS"
+    },
+    {
+      "id": 4,
+      "handler": "profile_fact",
+      "question": "How much do I weigh?",
+      "expected_keywords": [
+        "70"
+      ],
+      "matched_keywords": [
+        "70"
+      ],
+      "answer": "Your current recorded body weight is **70 kg**.\n\nYour recorded BMI is **27.3**.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.34,
+      "status": "PASS"
+    },
+    {
+      "id": 5,
+      "handler": "profile_fact",
+      "question": "How tall am I?",
+      "expected_keywords": [
+        "160"
+      ],
+      "matched_keywords": [
+        "160"
+      ],
+      "answer": "Your recorded height is **160 cm**.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.91,
+      "status": "PASS"
+    },
+    {
+      "id": 6,
+      "handler": "bmi_faq",
+      "question": "What is BMI?",
+      "expected_keywords": [
+        "body mass index"
+      ],
+      "matched_keywords": [
+        "body mass index"
+      ],
+      "answer": "**BMI (Body Mass Index)** is a screening measurement that compares your weight with your height.\n\n**Formula:** weight in kilograms ÷ height in metres²\n\nFor adults, the commonly used categories are:\n- **Below 18.5:** Underweight\n- **18.5–24.9:** Healthy weight range\n- **25.0–29.9:** Overweight\n- **30 or higher:** Obesity range\n\nBMI is a screening tool, not a diagnosis. It does not directly measure body fat or account for factors such as muscle mass, age, pregnancy, or individual medical history.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.33,
+      "status": "PASS"
+    },
+    {
+      "id": 7,
+      "handler": "bmi_faq",
+      "question": "How is BMI calculated?",
+      "expected_keywords": [
+        "weight",
+        "height"
+      ],
+      "matched_keywords": [
+        "weight",
+        "height"
+      ],
+      "answer": "**BMI (Body Mass Index)** is a screening measurement that compares your weight with your height.\n\n**Formula:** weight in kilograms ÷ height in metres²\n\nFor adults, the commonly used categories are:\n- **Below 18.5:** Underweight\n- **18.5–24.9:** Healthy weight range\n- **25.0–29.9:** Overweight\n- **30 or higher:** Obesity range\n\nBMI is a screening tool, not a diagnosis. It does not directly measure body fat or account for factors such as muscle mass, age, pregnancy, or individual medical history.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.64,
+      "status": "PASS"
+    },
+    {
+      "id": 8,
+      "handler": "bmi_faq",
+      "question": "What does BMI mean?",
+      "expected_keywords": [
+        "body mass index"
+      ],
+      "matched_keywords": [
+        "body mass index"
+      ],
+      "answer": "**BMI (Body Mass Index)** is a screening measurement that compares your weight with your height.\n\n**Formula:** weight in kilograms ÷ height in metres²\n\nFor adults, the commonly used categories are:\n- **Below 18.5:** Underweight\n- **18.5–24.9:** Healthy weight range\n- **25.0–29.9:** Overweight\n- **30 or higher:** Obesity range\n\nBMI is a screening tool, not a diagnosis. It does not directly measure body fat or account for factors such as muscle mass, age, pregnancy, or individual medical history.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.06,
+      "status": "PASS"
+    },
+    {
+      "id": 9,
+      "handler": "bmi_faq",
+      "question": "Explain body mass index",
+      "expected_keywords": [
+        "weight",
+        "height"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.05,
+      "status": "FAIL"
+    },
+    {
+      "id": 10,
+      "handler": "bmi_faq",
+      "question": "How do doctors calculate BMI?",
+      "expected_keywords": [
+        "weight",
+        "height"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.05,
+      "status": "FAIL"
+    },
+    {
+      "id": 11,
+      "handler": "goal_calories",
+      "question": "How many calories should I eat to lose weight?",
+      "expected_keywords": [
+        "1653"
+      ],
+      "matched_keywords": [
+        "1653"
+      ],
+      "answer": "To reach your ideal weight of **55.9 kg** (losing 14.1 kg), your daily calorie target is already set:\n\n• Maintenance calories: 2153 kcal/day\n• Daily deficit: 0 kcal/day\n• **Your current target: 1653 kcal/day**\n• Estimated time to goal: ~28 weeks at this rate\n\nStick to this target and you're on track. No changes needed.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 2.17,
+      "status": "PASS"
+    },
+    {
+      "id": 12,
+      "handler": "goal_calories",
+      "question": "What is my calorie target?",
+      "expected_keywords": [
+        "1653"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.03,
+      "status": "FAIL"
+    },
+    {
+      "id": 13,
+      "handler": "goal_calories",
+      "question": "What is my maintenance calorie?",
+      "expected_keywords": [
+        "2153"
+      ],
+      "matched_keywords": [],
+      "answer": "Your estimated maintenance calories are **2,153 kcal/day**.\n\nThis is the approximate amount of energy needed to maintain your current weight based on the information and activity level saved in your profile.\n\nYour current calorie target for your **weight loss** goal is **1,653 kcal/day** — a **500 kcal/day deficit**.\n\n*This is an estimate; update your profile if your weight or activity level changes.*",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.11,
+      "status": "FAIL"
+    },
+    {
+      "id": 14,
+      "handler": "goal_calories",
+      "question": "How many calories do I need to maintain?",
+      "expected_keywords": [
+        "2153"
+      ],
+      "matched_keywords": [],
+      "answer": "Your estimated maintenance calories are **2,153 kcal/day**.\n\nThis is the approximate amount of energy needed to maintain your current weight based on the information and activity level saved in your profile.\n\nYour current calorie target for your **weight loss** goal is **1,653 kcal/day** — a **500 kcal/day deficit**.\n\n*This is an estimate; update your profile if your weight or activity level changes.*",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.11,
+      "status": "FAIL"
+    },
+    {
+      "id": 15,
+      "handler": "goal_calories",
+      "question": "Tell me my daily calorie deficit target",
+      "expected_keywords": [
+        "calorie",
+        "target"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.02,
+      "status": "FAIL"
+    },
+    {
+      "id": 16,
+      "handler": "ideal_weight",
+      "question": "What is my ideal weight?",
+      "expected_keywords": [
+        "55.9"
+      ],
+      "matched_keywords": [
+        "55.9"
+      ],
+      "answer": "Based on your height (160.0 cm), your **ideal weight is 55.9 kg**.\n\n• Current weight: 70.0 kg — currently **overweight** (BMI 27.3)\n• Healthy weight range for your height: 47.4–63.7 kg\n• You need to **lose 14.1 kg** to reach your ideal weight.\n• At a safe pace, this takes approximately **28 weeks**.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.25,
+      "status": "PASS"
+    },
+    {
+      "id": 17,
+      "handler": "ideal_weight",
+      "question": "How much should I ideally weigh?",
+      "expected_keywords": [
+        "55.9"
+      ],
+      "matched_keywords": [
+        "55.9"
+      ],
+      "answer": "Based on your height (160.0 cm), your **ideal weight is 55.9 kg**.\n\n• Current weight: 70.0 kg — currently **overweight** (BMI 27.3)\n• Healthy weight range for your height: 47.4–63.7 kg\n• You need to **lose 14.1 kg** to reach your ideal weight.\n• At a safe pace, this takes approximately **28 weeks**.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.05,
+      "status": "PASS"
+    },
+    {
+      "id": 18,
+      "handler": "ideal_weight",
+      "question": "Tell me my healthy target weight",
+      "expected_keywords": [
+        "55.9"
+      ],
+      "matched_keywords": [
+        "55.9"
+      ],
+      "answer": "Based on your height (160.0 cm), your **ideal weight is 55.9 kg**.\n\n• Current weight: 70.0 kg — currently **overweight** (BMI 27.3)\n• Healthy weight range for your height: 47.4–63.7 kg\n• You need to **lose 14.1 kg** to reach your ideal weight.\n• At a safe pace, this takes approximately **28 weeks**.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.04,
+      "status": "PASS"
+    },
+    {
+      "id": 19,
+      "handler": "ideal_weight",
+      "question": "What should my target body weight be?",
+      "expected_keywords": [
+        "55.9"
+      ],
+      "matched_keywords": [
+        "55.9"
+      ],
+      "answer": "Based on your height (160.0 cm), your **ideal weight is 55.9 kg**.\n\n• Current weight: 70.0 kg — currently **overweight** (BMI 27.3)\n• Healthy weight range for your height: 47.4–63.7 kg\n• You need to **lose 14.1 kg** to reach your ideal weight.\n• At a safe pace, this takes approximately **28 weeks**.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.05,
+      "status": "PASS"
+    },
+    {
+      "id": 20,
+      "handler": "ideal_weight",
+      "question": "Calculate my ideal weight",
+      "expected_keywords": [
+        "55.9"
+      ],
+      "matched_keywords": [
+        "55.9"
+      ],
+      "answer": "Based on your height (160.0 cm), your **ideal weight is 55.9 kg**.\n\n• Current weight: 70.0 kg — currently **overweight** (BMI 27.3)\n• Healthy weight range for your height: 47.4–63.7 kg\n• You need to **lose 14.1 kg** to reach your ideal weight.\n• At a safe pace, this takes approximately **28 weeks**.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.11,
+      "status": "PASS"
+    },
+    {
+      "id": 21,
+      "handler": "time_to_goal",
+      "question": "How long until I reach my goal?",
+      "expected_keywords": [
+        "week"
+      ],
+      "matched_keywords": [
+        "week"
+      ],
+      "answer": "At your current calorie target of **1653 kcal/day**, you'll reach your ideal weight of **55.9 kg** in approximately:\n\n• **28 weeks** (~6.5 months)\n\nThis is based on loseing 14.1 kg at a safe, sustainable pace of ~0.5 kg/week.\n\n*Stay consistent and you'll get there!*",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.68,
+      "status": "PASS"
+    },
+    {
+      "id": 22,
+      "handler": "time_to_goal",
+      "question": "How many weeks to my target weight?",
+      "expected_keywords": [
+        "week"
+      ],
+      "matched_keywords": [
+        "week"
+      ],
+      "answer": "At your current calorie target of **1653 kcal/day**, you'll reach your ideal weight of **55.9 kg** in approximately:\n\n• **28 weeks** (~6.5 months)\n\nThis is based on loseing 14.1 kg at a safe, sustainable pace of ~0.5 kg/week.\n\n*Stay consistent and you'll get there!*",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.11,
+      "status": "PASS"
+    },
+    {
+      "id": 23,
+      "handler": "time_to_goal",
+      "question": "When will I reach my ideal weight?",
+      "expected_keywords": [
+        "week"
+      ],
+      "matched_keywords": [
+        "week"
+      ],
+      "answer": "At your current calorie target of **1653 kcal/day**, you'll reach your ideal weight of **55.9 kg** in approximately:\n\n• **28 weeks** (~6.5 months)\n\nThis is based on loseing 14.1 kg at a safe, sustainable pace of ~0.5 kg/week.\n\n*Stay consistent and you'll get there!*",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.1,
+      "status": "PASS"
+    },
+    {
+      "id": 24,
+      "handler": "time_to_goal",
+      "question": "Estimate my time to goal",
+      "expected_keywords": [
+        "week"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.02,
+      "status": "FAIL"
+    },
+    {
+      "id": 25,
+      "handler": "time_to_goal",
+      "question": "How long to lose the weight to my goal?",
+      "expected_keywords": [
+        "week"
+      ],
+      "matched_keywords": [
+        "week"
+      ],
+      "answer": "At your current calorie target of **1653 kcal/day**, you'll reach your ideal weight of **55.9 kg** in approximately:\n\n• **28 weeks** (~6.5 months)\n\nThis is based on loseing 14.1 kg at a safe, sustainable pace of ~0.5 kg/week.\n\n*Stay consistent and you'll get there!*",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.09,
+      "status": "PASS"
+    },
+    {
+      "id": 26,
+      "handler": "safe_timeline",
+      "question": "Is it safe to lose 10kg in one month?",
+      "expected_keywords": [
+        "safe"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 2.73,
+      "status": "FAIL"
+    },
+    {
+      "id": 27,
+      "handler": "safe_timeline",
+      "question": "Can I safely gain 10kg in two months?",
+      "expected_keywords": [
+        "safe"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.08,
+      "status": "FAIL"
+    },
+    {
+      "id": 28,
+      "handler": "safe_timeline",
+      "question": "Is losing 5kg in two weeks safe?",
+      "expected_keywords": [
+        "safe"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.06,
+      "status": "FAIL"
+    },
+    {
+      "id": 29,
+      "handler": "safe_timeline",
+      "question": "What is a safe pace for weight loss?",
+      "expected_keywords": [
+        "week"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.11,
+      "status": "FAIL"
+    },
+    {
+      "id": 30,
+      "handler": "safe_timeline",
+      "question": "Can I lose 20kg in 30 days safely?",
+      "expected_keywords": [
+        "safe"
+      ],
+      "matched_keywords": [
+        "safe"
+      ],
+      "answer": "✅ **To lose 20.0 kg safely, aim for ~154 days (22.0 weeks).**\n\nHere's why:\n• Safe rate: ~1 kg/week (1,000 cal/day deficit)\n• Formula: 20.0 kg × 7,700 kcal ÷ 1000 cal/day = 154 days\n• Recommended daily calorie target: **1200 cal/day** (deficit from your maintenance of 2153 cal/day)\n\nStick to this rate for steady, sustainable results. Going faster risks muscle loss (for weight loss) or excess fat gain (for weight gain).\n\n*Always consult a doctor or dietitian for a personalised plan.*",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.14,
+      "status": "PASS"
+    },
+    {
+      "id": 31,
+      "handler": "weight_recommendation",
+      "question": "Should I lose or gain weight?",
+      "expected_keywords": [
+        "lose"
+      ],
+      "matched_keywords": [
+        "lose"
+      ],
+      "answer": "✅ **Weight loss is recommended for you.**\n\nWhy:\n• Your BMI is 27.3 (Overweight) — above the healthy range of 18.5–24.9.\n• Your health goal is set to **lose weight**.\n\n• Target weight: 55.9 kg (lose 14.1 kg)\n• Estimated timeline at safe pace: ~28 weeks\n• Recommended daily calories: 1653 kcal\n\nWeight gain would move you further from your goal and increase health risks.\n\n*Consult your doctor or dietitian for a personalised plan.*",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.12,
+      "status": "PASS"
+    },
+    {
+      "id": 32,
+      "handler": "weight_recommendation",
+      "question": "Do I need to lose weight?",
+      "expected_keywords": [
+        "lose"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "FAIL"
+    },
+    {
+      "id": 33,
+      "handler": "weight_recommendation",
+      "question": "Should I gain weight based on my BMI?",
+      "expected_keywords": [
+        "weight"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "FAIL"
+    },
+    {
+      "id": 34,
+      "handler": "weight_recommendation",
+      "question": "What weight change do you recommend?",
+      "expected_keywords": [
+        "weight"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.02,
+      "status": "FAIL"
+    },
+    {
+      "id": 35,
+      "handler": "weight_recommendation",
+      "question": "Am I better off losing weight?",
+      "expected_keywords": [
+        "lose"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "FAIL"
+    },
+    {
+      "id": 36,
+      "handler": "weight_assessment",
+      "question": "Am I overweight?",
+      "expected_keywords": [
+        "overweight"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 1.19,
+      "status": "FAIL"
+    },
+    {
+      "id": 37,
+      "handler": "weight_assessment",
+      "question": "Is my weight healthy?",
+      "expected_keywords": [
+        "weight"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.05,
+      "status": "FAIL"
+    },
+    {
+      "id": 38,
+      "handler": "weight_assessment",
+      "question": "Assess my current weight",
+      "expected_keywords": [
+        "weight"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.03,
+      "status": "FAIL"
+    },
+    {
+      "id": 39,
+      "handler": "weight_assessment",
+      "question": "What does my BMI category mean for me?",
+      "expected_keywords": [
+        "overweight"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.03,
+      "status": "FAIL"
+    },
+    {
+      "id": 40,
+      "handler": "weight_assessment",
+      "question": "Is 70kg healthy for my height?",
+      "expected_keywords": [
+        "weight"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.03,
+      "status": "FAIL"
+    },
+    {
+      "id": 41,
+      "handler": "goal_calories",
+      "question": "What is my TDEE?",
+      "expected_keywords": [
+        "2153"
+      ],
+      "matched_keywords": [],
+      "answer": "Your estimated maintenance calories are **2,153 kcal/day**.\n\nThis is the approximate amount of energy needed to maintain your current weight based on the information and activity level saved in your profile.\n\nYour current calorie target for your **weight loss** goal is **1,653 kcal/day** — a **500 kcal/day deficit**.\n\n*This is an estimate; update your profile if your weight or activity level changes.*",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.11,
+      "status": "FAIL"
+    },
+    {
+      "id": 42,
+      "handler": "goal_calories",
+      "question": "Calories per day for my goal?",
+      "expected_keywords": [
+        "calorie"
+      ],
+      "matched_keywords": [
+        "calorie"
+      ],
+      "answer": "To reach your ideal weight of **55.9 kg** (losing 14.1 kg), your daily calorie target is already set:\n\n• Maintenance calories: 2153 kcal/day\n• Daily deficit: 0 kcal/day\n• **Your current target: 1653 kcal/day**\n• Estimated time to goal: ~28 weeks at this rate\n\nStick to this target and you're on track. No changes needed.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.17,
+      "status": "PASS"
+    },
+    {
+      "id": 43,
+      "handler": "goal_calories",
+      "question": "Show my maintenance and target calories",
+      "expected_keywords": [
+        "2153",
+        "1653"
+      ],
+      "matched_keywords": [],
+      "answer": "Your estimated maintenance calories are **2,153 kcal/day**.\n\nThis is the approximate amount of energy needed to maintain your current weight based on the information and activity level saved in your profile.\n\nYour current calorie target for your **weight loss** goal is **1,653 kcal/day** — a **500 kcal/day deficit**.\n\n*This is an estimate; update your profile if your weight or activity level changes.*",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.1,
+      "status": "FAIL"
+    },
+    {
+      "id": 44,
+      "handler": "goal_calories",
+      "question": "What daily intake supports weight loss?",
+      "expected_keywords": [
+        "1653"
+      ],
+      "matched_keywords": [
+        "1653"
+      ],
+      "answer": "To reach your ideal weight of **55.9 kg** (losing 14.1 kg), your daily calorie target is already set:\n\n• Maintenance calories: 2153 kcal/day\n• Daily deficit: 0 kcal/day\n• **Your current target: 1653 kcal/day**\n• Estimated time to goal: ~28 weeks at this rate\n\nStick to this target and you're on track. No changes needed.",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.1,
+      "status": "PASS"
+    },
+    {
+      "id": 45,
+      "handler": "goal_calories",
+      "question": "How large is my calorie deficit?",
+      "expected_keywords": [
+        "500"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.08,
+      "status": "FAIL"
+    },
+    {
+      "id": 46,
+      "handler": "profile_fact",
+      "question": "Can you remind me of my height?",
+      "expected_keywords": [
+        "160"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.07,
+      "status": "FAIL"
+    },
+    {
+      "id": 47,
+      "handler": "profile_fact",
+      "question": "Remind me of my body weight",
+      "expected_keywords": [
+        "70"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.06,
+      "status": "FAIL"
+    },
+    {
+      "id": 48,
+      "handler": "profile_fact",
+      "question": "Show my saved BMI",
+      "expected_keywords": [
+        "27.3"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.05,
+      "status": "FAIL"
+    },
+    {
+      "id": 49,
+      "handler": "profile_fact",
+      "question": "What BMI is recorded in my profile?",
+      "expected_keywords": [
+        "27.3"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.06,
+      "status": "FAIL"
+    },
+    {
+      "id": 50,
+      "handler": "profile_fact",
+      "question": "What height is saved for me?",
+      "expected_keywords": [
+        "160"
+      ],
+      "matched_keywords": [],
+      "answer": "",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.06,
+      "status": "FAIL"
+    }
+  ]
+}

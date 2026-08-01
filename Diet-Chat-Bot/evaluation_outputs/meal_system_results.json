@@ -1,0 +1,4589 @@
+{
+  "component": "meal_planner_logger",
+  "generated_at": "2026-07-30T19:58:42.701999+00:00",
+  "summary": {
+    "total": 50,
+    "passed": 39,
+    "failed": 11,
+    "accuracy_percent": 78.0,
+    "average_latency_ms": 15.39
+  },
+  "results": [
+    {
+      "id": 1,
+      "subcomponent": "meal_slot",
+      "question": "What should I eat for breakfast?",
+      "expected_keywords": [
+        "Breakfast"
+      ],
+      "matched_keywords": [
+        "Breakfast"
+      ],
+      "actual": "Breakfast",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.02,
+      "status": "PASS"
+    },
+    {
+      "id": 2,
+      "subcomponent": "meal_slot",
+      "question": "Suggest lunch",
+      "expected_keywords": [
+        "Lunch"
+      ],
+      "matched_keywords": [
+        "Lunch"
+      ],
+      "actual": "Lunch",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "PASS"
+    },
+    {
+      "id": 3,
+      "subcomponent": "meal_slot",
+      "question": "Give me dinner options",
+      "expected_keywords": [
+        "Dinner"
+      ],
+      "matched_keywords": [
+        "Dinner"
+      ],
+      "actual": "Dinner",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "PASS"
+    },
+    {
+      "id": 4,
+      "subcomponent": "meal_slot",
+      "question": "What snack can I have?",
+      "expected_keywords": [
+        "Snack"
+      ],
+      "matched_keywords": [
+        "Snack"
+      ],
+      "actual": "Snack",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "PASS"
+    },
+    {
+      "id": 5,
+      "subcomponent": "meal_slot",
+      "question": "Plan my morning meal",
+      "expected_keywords": [
+        "Breakfast"
+      ],
+      "matched_keywords": [],
+      "actual": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "FAIL"
+    },
+    {
+      "id": 6,
+      "subcomponent": "meal_slot",
+      "question": "I need an evening dinner",
+      "expected_keywords": [
+        "Dinner"
+      ],
+      "matched_keywords": [
+        "Dinner"
+      ],
+      "actual": "Dinner",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "PASS"
+    },
+    {
+      "id": 7,
+      "subcomponent": "meal_slot",
+      "question": "Show a midday lunch",
+      "expected_keywords": [
+        "Lunch"
+      ],
+      "matched_keywords": [
+        "Lunch"
+      ],
+      "actual": "Lunch",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "PASS"
+    },
+    {
+      "id": 8,
+      "subcomponent": "meal_slot",
+      "question": "Recommend a healthy snack",
+      "expected_keywords": [
+        "Snack"
+      ],
+      "matched_keywords": [
+        "Snack"
+      ],
+      "actual": "Snack",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "PASS"
+    },
+    {
+      "id": 9,
+      "subcomponent": "meal_slot",
+      "question": "Breakfast ideas please",
+      "expected_keywords": [
+        "Breakfast"
+      ],
+      "matched_keywords": [
+        "Breakfast"
+      ],
+      "actual": "Breakfast",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "PASS"
+    },
+    {
+      "id": 10,
+      "subcomponent": "meal_slot",
+      "question": "What can I have for lunch?",
+      "expected_keywords": [
+        "Lunch"
+      ],
+      "matched_keywords": [
+        "Lunch"
+      ],
+      "actual": "Lunch",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "PASS"
+    },
+    {
+      "id": 11,
+      "subcomponent": "preparation_filter",
+      "question": "Give me food with no fried items",
+      "expected_keywords": [
+        "fried"
+      ],
+      "matched_keywords": [
+        "fried"
+      ],
+      "actual": [
+        "shallow_fried",
+        "deep_fried"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "PASS"
+    },
+    {
+      "id": 12,
+      "subcomponent": "preparation_filter",
+      "question": "Only steamed food please",
+      "expected_keywords": [
+        "steam"
+      ],
+      "matched_keywords": [],
+      "actual": [
+        "shallow_fried",
+        "stir_fried",
+        "deep_fried"
+      ],
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "FAIL"
+    },
+    {
+      "id": 13,
+      "subcomponent": "preparation_filter",
+      "question": "I want boiled meals",
+      "expected_keywords": [
+        "boil"
+      ],
+      "matched_keywords": [],
+      "actual": [],
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "FAIL"
+    },
+    {
+      "id": 14,
+      "subcomponent": "preparation_filter",
+      "question": "No oily food",
+      "expected_keywords": [
+        "oil"
+      ],
+      "matched_keywords": [],
+      "actual": [
+        "shallow_fried",
+        "deep_fried"
+      ],
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "FAIL"
+    },
+    {
+      "id": 15,
+      "subcomponent": "preparation_filter",
+      "question": "Avoid deep-fried dishes",
+      "expected_keywords": [
+        "fried"
+      ],
+      "matched_keywords": [],
+      "actual": [],
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "FAIL"
+    },
+    {
+      "id": 16,
+      "subcomponent": "preparation_filter",
+      "question": "Steamed and boiled foods only",
+      "expected_keywords": [
+        "steam",
+        "boil"
+      ],
+      "matched_keywords": [],
+      "actual": [],
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "FAIL"
+    },
+    {
+      "id": 17,
+      "subcomponent": "preparation_filter",
+      "question": "Prepare a non-fried dinner",
+      "expected_keywords": [
+        "fried"
+      ],
+      "matched_keywords": [],
+      "actual": [],
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "FAIL"
+    },
+    {
+      "id": 18,
+      "subcomponent": "preparation_filter",
+      "question": "Skip oily preparation",
+      "expected_keywords": [
+        "oil"
+      ],
+      "matched_keywords": [],
+      "actual": [],
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "FAIL"
+    },
+    {
+      "id": 19,
+      "subcomponent": "preparation_filter",
+      "question": "Can I have grilled food?",
+      "expected_keywords": [
+        "grill"
+      ],
+      "matched_keywords": [],
+      "actual": [],
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "FAIL"
+    },
+    {
+      "id": 20,
+      "subcomponent": "preparation_filter",
+      "question": "Give me baked meals",
+      "expected_keywords": [
+        "bak"
+      ],
+      "matched_keywords": [],
+      "actual": [],
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "FAIL"
+    },
+    {
+      "id": 21,
+      "subcomponent": "meal_plan",
+      "question": "Build a complete vegetarian meal plan for 1400 calories",
+      "expected_keywords": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "matched_keywords": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "actual": {
+        "Breakfast": {
+          "target_kcal": 350,
+          "options": [
+            {
+              "actual_kcal": 350,
+              "protein_g": 16.2,
+              "carbs_g": 52.0,
+              "fat_g": 8.5,
+              "foods": [
+                {
+                  "name": "Idli",
+                  "selected_serving_g": 80,
+                  "serving_size_g": 80,
+                  "min_serving_g": 55,
+                  "max_serving_g": 105,
+                  "calories": 140,
+                  "protein_g": 5.0,
+                  "carbs_g": 28.0,
+                  "fat_g": 1.0,
+                  "gi": 52,
+                  "gl": 14.6,
+                  "gi_category": "low",
+                  "prep_method": "steamed",
+                  "sodium_mg": 530,
+                  "sodium_category": "high",
+                  "fiber_g": 3.0,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 150,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 210,
+                  "protein_g": 11.2,
+                  "carbs_g": 24.0,
+                  "fat_g": 7.5,
+                  "gi": 30,
+                  "gl": 7.2,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 131,
+                  "sodium_category": "medium",
+                  "fiber_g": 9.0,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 350,
+              "protein_g": 9.6,
+              "carbs_g": 55.0,
+              "fat_g": 10.5,
+              "foods": [
+                {
+                  "name": "Kola Kanda",
+                  "selected_serving_g": 248,
+                  "serving_size_g": 250,
+                  "min_serving_g": 210,
+                  "max_serving_g": 290,
+                  "calories": 278,
+                  "protein_g": 6.0,
+                  "carbs_g": 44.6,
+                  "fat_g": 8.9,
+                  "gi": 45,
+                  "gl": 20.0,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 20,
+                  "sodium_category": "low",
+                  "fiber_g": 6.0,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Sambar",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 72,
+                  "protein_g": 3.6,
+                  "carbs_g": 10.4,
+                  "fat_g": 1.6,
+                  "gi": 25,
+                  "gl": 2.6,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 524,
+                  "sodium_category": "high",
+                  "fiber_g": 2.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 350,
+              "protein_g": 6.0,
+              "carbs_g": 61.6,
+              "fat_g": 9.9,
+              "foods": [
+                {
+                  "name": "Kakulu Bath",
+                  "selected_serving_g": 136,
+                  "serving_size_g": 150,
+                  "min_serving_g": 100,
+                  "max_serving_g": 200,
+                  "calories": 290,
+                  "protein_g": 4.5,
+                  "carbs_g": 52.6,
+                  "fat_g": 7.3,
+                  "gi": 55,
+                  "gl": 28.9,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 199,
+                  "sodium_category": "medium",
+                  "fiber_g": 2.3,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Tomato Curry",
+                  "selected_serving_g": 90,
+                  "serving_size_g": 120,
+                  "min_serving_g": 90,
+                  "max_serving_g": 150,
+                  "calories": 60,
+                  "protein_g": 1.5,
+                  "carbs_g": 9.0,
+                  "fat_g": 2.6,
+                  "gi": 15,
+                  "gl": 1.4,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 146,
+                  "sodium_category": "low",
+                  "fiber_g": 1.9,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 350,
+          "protein_g": 16.2,
+          "carbs_g": 52.0,
+          "fat_g": 8.5
+        },
+        "Lunch": {
+          "target_kcal": 490,
+          "options": [
+            {
+              "actual_kcal": 491,
+              "protein_g": 17.6,
+              "carbs_g": 80.8,
+              "fat_g": 9.9,
+              "foods": [
+                {
+                  "name": "Brown Rice",
+                  "selected_serving_g": 250,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 275,
+                  "protein_g": 6.0,
+                  "carbs_g": 56.2,
+                  "fat_g": 2.2,
+                  "gi": 50,
+                  "gl": 28.1,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 6,
+                  "sodium_category": "low",
+                  "fiber_g": 4.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 154,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 216,
+                  "protein_g": 11.6,
+                  "carbs_g": 24.6,
+                  "fat_g": 7.7,
+                  "gi": 30,
+                  "gl": 7.4,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 135,
+                  "sodium_category": "medium",
+                  "fiber_g": 9.2,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 490,
+              "protein_g": 7.1,
+              "carbs_g": 71.0,
+              "fat_g": 19.4,
+              "foods": [
+                {
+                  "name": "Coconut Rice",
+                  "selected_serving_g": 258,
+                  "serving_size_g": 200,
+                  "min_serving_g": 130,
+                  "max_serving_g": 270,
+                  "calories": 490,
+                  "protein_g": 7.1,
+                  "carbs_g": 71.0,
+                  "fat_g": 19.4,
+                  "gi": 65,
+                  "gl": 46.2,
+                  "gi_category": "medium",
+                  "prep_method": "boiled",
+                  "sodium_mg": 174,
+                  "sodium_category": "low",
+                  "fiber_g": 5.2,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 491,
+              "protein_g": 6.8,
+              "carbs_g": 55.3,
+              "fat_g": 27.1,
+              "foods": [
+                {
+                  "name": "Ghee Rice",
+                  "selected_serving_g": 185,
+                  "serving_size_g": 200,
+                  "min_serving_g": 130,
+                  "max_serving_g": 270,
+                  "calories": 352,
+                  "protein_g": 4.6,
+                  "carbs_g": 50.9,
+                  "fat_g": 13.9,
+                  "gi": 68,
+                  "gl": 34.6,
+                  "gi_category": "medium",
+                  "prep_method": "stir_fried",
+                  "sodium_mg": 153,
+                  "sodium_category": "medium",
+                  "fiber_g": 0.9,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Kiri Hodiya",
+                  "selected_serving_g": 110,
+                  "serving_size_g": 150,
+                  "min_serving_g": 110,
+                  "max_serving_g": 190,
+                  "calories": 139,
+                  "protein_g": 2.2,
+                  "carbs_g": 4.4,
+                  "fat_g": 13.2,
+                  "gi": 40,
+                  "gl": 1.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 396,
+                  "sodium_category": "high",
+                  "fiber_g": 0.4,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 491,
+          "protein_g": 17.6,
+          "carbs_g": 80.8,
+          "fat_g": 9.9
+        },
+        "Dinner": {
+          "target_kcal": 350,
+          "options": [
+            {
+              "actual_kcal": 350,
+              "protein_g": 6.2,
+              "carbs_g": 60.0,
+              "fat_g": 10.0,
+              "foods": [
+                {
+                  "name": "Tomato Rice",
+                  "selected_serving_g": 250,
+                  "serving_size_g": 200,
+                  "min_serving_g": 130,
+                  "max_serving_g": 270,
+                  "calories": 350,
+                  "protein_g": 6.2,
+                  "carbs_g": 60.0,
+                  "fat_g": 10.0,
+                  "gi": 65,
+                  "gl": 39.0,
+                  "gi_category": "medium",
+                  "prep_method": "boiled",
+                  "sodium_mg": 269,
+                  "sodium_category": "medium",
+                  "fiber_g": 3.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 350,
+              "protein_g": 9.1,
+              "carbs_g": 50.8,
+              "fat_g": 11.7,
+              "foods": [
+                {
+                  "name": "Pol Roti",
+                  "selected_serving_g": 101,
+                  "serving_size_g": 120,
+                  "min_serving_g": 80,
+                  "max_serving_g": 160,
+                  "calories": 278,
+                  "protein_g": 5.5,
+                  "carbs_g": 40.4,
+                  "fat_g": 10.1,
+                  "gi": 58,
+                  "gl": 23.4,
+                  "gi_category": "medium",
+                  "prep_method": "shallow_fried",
+                  "sodium_mg": 173,
+                  "sodium_category": "medium",
+                  "fiber_g": 4.2,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Sambar",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 72,
+                  "protein_g": 3.6,
+                  "carbs_g": 10.4,
+                  "fat_g": 1.6,
+                  "gi": 25,
+                  "gl": 2.6,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 524,
+                  "sodium_category": "high",
+                  "fiber_g": 2.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 350,
+              "protein_g": 11.7,
+              "carbs_g": 47.0,
+              "fat_g": 14.6,
+              "foods": [
+                {
+                  "name": "Oat Roti",
+                  "selected_serving_g": 100,
+                  "serving_size_g": 80,
+                  "min_serving_g": 60,
+                  "max_serving_g": 100,
+                  "calories": 206,
+                  "protein_g": 6.9,
+                  "carbs_g": 35.0,
+                  "fat_g": 5.6,
+                  "gi": 48,
+                  "gl": 16.8,
+                  "gi_category": "low",
+                  "prep_method": "pan_fried",
+                  "sodium_mg": 144,
+                  "sodium_category": "low",
+                  "fiber_g": 6.2,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Mushroom Curry",
+                  "selected_serving_g": 180,
+                  "serving_size_g": 150,
+                  "min_serving_g": 110,
+                  "max_serving_g": 190,
+                  "calories": 144,
+                  "protein_g": 4.8,
+                  "carbs_g": 12.0,
+                  "fat_g": 9.0,
+                  "gi": 15,
+                  "gl": 1.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 234,
+                  "sodium_category": "low",
+                  "fiber_g": 3.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 350,
+          "protein_g": 6.2,
+          "carbs_g": 60.0,
+          "fat_g": 10.0
+        },
+        "Snack": {
+          "target_kcal": 210,
+          "options": [
+            {
+              "actual_kcal": 209,
+              "protein_g": 9.4,
+              "carbs_g": 39.2,
+              "fat_g": 2.6,
+              "foods": [
+                {
+                  "name": "Watermelon (sliced)",
+                  "selected_serving_g": 230,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 300,
+                  "calories": 69,
+                  "protein_g": 1.4,
+                  "carbs_g": 17.2,
+                  "fat_g": 0.2,
+                  "gi": 72,
+                  "gl": 12.4,
+                  "gi_category": "high",
+                  "prep_method": "raw",
+                  "sodium_mg": 2,
+                  "sodium_category": "low",
+                  "fiber_g": 0.7,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Sprouted Mung Salad",
+                  "selected_serving_g": 80,
+                  "serving_size_g": 100,
+                  "min_serving_g": 80,
+                  "max_serving_g": 130,
+                  "calories": 68,
+                  "protein_g": 4.4,
+                  "carbs_g": 11.6,
+                  "fat_g": 0.8,
+                  "gi": 25,
+                  "gl": 2.9,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 76,
+                  "sodium_category": "low",
+                  "fiber_g": 2.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Sambar",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 72,
+                  "protein_g": 3.6,
+                  "carbs_g": 10.4,
+                  "fat_g": 1.6,
+                  "gi": 25,
+                  "gl": 2.6,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 524,
+                  "sodium_category": "high",
+                  "fiber_g": 2.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 210,
+              "protein_g": 3.3,
+              "carbs_g": 53.6,
+              "fat_g": 0.8,
+              "foods": [
+                {
+                  "name": "Papaya (sliced)",
+                  "selected_serving_g": 200,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 200,
+                  "calories": 80,
+                  "protein_g": 0.9,
+                  "carbs_g": 20.0,
+                  "fat_g": 0.5,
+                  "gi": 59,
+                  "gl": 11.7,
+                  "gi_category": "medium",
+                  "prep_method": "raw",
+                  "sodium_mg": 11,
+                  "sodium_category": "low",
+                  "fiber_g": 3.1,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Fresh Jackfruit",
+                  "selected_serving_g": 144,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 200,
+                  "calories": 130,
+                  "protein_g": 2.4,
+                  "carbs_g": 33.6,
+                  "fat_g": 0.3,
+                  "gi": 50,
+                  "gl": 16.8,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 3,
+                  "sodium_category": "low",
+                  "fiber_g": 2.2,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 210,
+              "protein_g": 7.5,
+              "carbs_g": 14.8,
+              "fat_g": 14.8,
+              "foods": [
+                {
+                  "name": "Avocado (half)",
+                  "selected_serving_g": 91,
+                  "serving_size_g": 80,
+                  "min_serving_g": 60,
+                  "max_serving_g": 100,
+                  "calories": 146,
+                  "protein_g": 1.5,
+                  "carbs_g": 6.8,
+                  "fat_g": 13.6,
+                  "gi": 10,
+                  "gl": 0.7,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 8,
+                  "sodium_category": "low",
+                  "fiber_g": 5.7,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Low-Fat Yogurt",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 64,
+                  "protein_g": 6.0,
+                  "carbs_g": 8.0,
+                  "fat_g": 1.2,
+                  "gi": 32,
+                  "gl": 2.6,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 64,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 209,
+          "protein_g": 9.4,
+          "carbs_g": 39.2,
+          "fat_g": 2.6
+        },
+        "feasibility": {
+          "evaluated_combinations": 81,
+          "guardrail_status": "strict",
+          "fat_limit_percent": 120,
+          "carbs_range_percent": [
+            80,
+            120
+          ],
+          "maximum_achievable_protein_g": 49.4,
+          "maximum_achievable_protein_percent": null
+        },
+        "totals": {
+          "target_kcal": 1400,
+          "actual_kcal": 1400,
+          "protein_g": 49.4,
+          "carbs_g": 232.0,
+          "fat_g": 31.0,
+          "calorie_delta": 0,
+          "calorie_within_5_percent": true,
+          "protein_coverage_percent": null,
+          "carbs_coverage_percent": null,
+          "fat_coverage_percent": null
+        },
+        "planned_slots": [
+          "Breakfast",
+          "Lunch",
+          "Dinner",
+          "Snack"
+        ],
+        "active_targets": {
+          "calories": 1400,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0
+        }
+      },
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 113.24,
+      "status": "PASS"
+    },
+    {
+      "id": 22,
+      "subcomponent": "meal_plan",
+      "question": "Build a complete vegetarian meal plan for 1600 calories",
+      "expected_keywords": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "matched_keywords": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "actual": {
+        "Breakfast": {
+          "target_kcal": 400,
+          "options": [
+            {
+              "actual_kcal": 400,
+              "protein_g": 18.2,
+              "carbs_g": 61.4,
+              "fat_g": 9.0,
+              "foods": [
+                {
+                  "name": "Idli",
+                  "selected_serving_g": 105,
+                  "serving_size_g": 80,
+                  "min_serving_g": 55,
+                  "max_serving_g": 105,
+                  "calories": 184,
+                  "protein_g": 6.6,
+                  "carbs_g": 36.8,
+                  "fat_g": 1.3,
+                  "gi": 52,
+                  "gl": 19.2,
+                  "gi_category": "low",
+                  "prep_method": "steamed",
+                  "sodium_mg": 696,
+                  "sodium_category": "high",
+                  "fiber_g": 3.9,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 154,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 216,
+                  "protein_g": 11.6,
+                  "carbs_g": 24.6,
+                  "fat_g": 7.7,
+                  "gi": 30,
+                  "gl": 7.4,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 135,
+                  "sodium_category": "medium",
+                  "fiber_g": 9.2,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 400,
+              "protein_g": 10.8,
+              "carbs_g": 63.0,
+              "fat_g": 12.1,
+              "foods": [
+                {
+                  "name": "Kola Kanda",
+                  "selected_serving_g": 290,
+                  "serving_size_g": 250,
+                  "min_serving_g": 210,
+                  "max_serving_g": 290,
+                  "calories": 325,
+                  "protein_g": 7.0,
+                  "carbs_g": 52.2,
+                  "fat_g": 10.4,
+                  "gi": 45,
+                  "gl": 23.4,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 23,
+                  "sodium_category": "low",
+                  "fiber_g": 7.0,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Sambar",
+                  "selected_serving_g": 125,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 75,
+                  "protein_g": 3.8,
+                  "carbs_g": 10.8,
+                  "fat_g": 1.7,
+                  "gi": 25,
+                  "gl": 2.7,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 546,
+                  "sodium_category": "high",
+                  "fiber_g": 2.1,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 399,
+              "protein_g": 7.8,
+              "carbs_g": 58.7,
+              "fat_g": 13.2,
+              "foods": [
+                {
+                  "name": "Kakulu Bath",
+                  "selected_serving_g": 127,
+                  "serving_size_g": 150,
+                  "min_serving_g": 100,
+                  "max_serving_g": 200,
+                  "calories": 271,
+                  "protein_g": 4.2,
+                  "carbs_g": 49.1,
+                  "fat_g": 6.8,
+                  "gi": 55,
+                  "gl": 27.0,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 186,
+                  "sodium_category": "medium",
+                  "fiber_g": 2.1,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Sweet Curd",
+                  "selected_serving_g": 80,
+                  "serving_size_g": 100,
+                  "min_serving_g": 80,
+                  "max_serving_g": 120,
+                  "calories": 128,
+                  "protein_g": 3.6,
+                  "carbs_g": 9.6,
+                  "fat_g": 6.4,
+                  "gi": 30,
+                  "gl": 2.9,
+                  "gi_category": "low",
+                  "prep_method": "fermented",
+                  "sodium_mg": 56,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 400,
+          "protein_g": 18.2,
+          "carbs_g": 61.4,
+          "fat_g": 9.0
+        },
+        "Lunch": {
+          "target_kcal": 560,
+          "options": [
+            {
+              "actual_kcal": 560,
+              "protein_g": 24.5,
+              "carbs_g": 89.4,
+              "fat_g": 10.9,
+              "foods": [
+                {
+                  "name": "Curd Rice",
+                  "selected_serving_g": 270,
+                  "serving_size_g": 200,
+                  "min_serving_g": 130,
+                  "max_serving_g": 270,
+                  "calories": 338,
+                  "protein_g": 9.5,
+                  "carbs_g": 56.7,
+                  "fat_g": 8.1,
+                  "gi": 58,
+                  "gl": 32.9,
+                  "gi_category": "medium",
+                  "prep_method": "boiled",
+                  "sodium_mg": 358,
+                  "sodium_category": "medium",
+                  "fiber_g": 2.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Kiriala",
+                  "selected_serving_g": 15,
+                  "serving_size_g": 10,
+                  "min_serving_g": 5,
+                  "max_serving_g": 15,
+                  "calories": 45,
+                  "protein_g": 9.0,
+                  "carbs_g": 0.0,
+                  "fat_g": 0.4,
+                  "gi": 38,
+                  "gl": 0.0,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 135,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Sambar",
+                  "selected_serving_g": 180,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 108,
+                  "protein_g": 5.4,
+                  "carbs_g": 15.6,
+                  "fat_g": 2.4,
+                  "gi": 25,
+                  "gl": 3.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 786,
+                  "sodium_category": "high",
+                  "fiber_g": 3.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "King Coconut (Thambili)",
+                  "selected_serving_g": 400,
+                  "serving_size_g": 350,
+                  "min_serving_g": 320,
+                  "max_serving_g": 400,
+                  "calories": 69,
+                  "protein_g": 0.6,
+                  "carbs_g": 17.1,
+                  "fat_g": 0.0,
+                  "gi": 45,
+                  "gl": 7.8,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 69,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 561,
+              "protein_g": 21.3,
+              "carbs_g": 88.8,
+              "fat_g": 12.4,
+              "foods": [
+                {
+                  "name": "Brown Rice",
+                  "selected_serving_g": 250,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 275,
+                  "protein_g": 6.0,
+                  "carbs_g": 56.2,
+                  "fat_g": 2.2,
+                  "gi": 50,
+                  "gl": 28.1,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 6,
+                  "sodium_category": "low",
+                  "fiber_g": 4.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 204,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 286,
+                  "protein_g": 15.3,
+                  "carbs_g": 32.6,
+                  "fat_g": 10.2,
+                  "gi": 30,
+                  "gl": 9.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 178,
+                  "sodium_category": "medium",
+                  "fiber_g": 12.2,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 561,
+              "protein_g": 7.9,
+              "carbs_g": 77.1,
+              "fat_g": 24.9,
+              "foods": [
+                {
+                  "name": "Ghee Rice",
+                  "selected_serving_g": 212,
+                  "serving_size_g": 200,
+                  "min_serving_g": 130,
+                  "max_serving_g": 270,
+                  "calories": 403,
+                  "protein_g": 5.3,
+                  "carbs_g": 58.3,
+                  "fat_g": 15.9,
+                  "gi": 68,
+                  "gl": 39.6,
+                  "gi_category": "medium",
+                  "prep_method": "stir_fried",
+                  "sodium_mg": 175,
+                  "sodium_category": "medium",
+                  "fiber_g": 1.1,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Jackfruit Curry",
+                  "selected_serving_g": 150,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 158,
+                  "protein_g": 2.6,
+                  "carbs_g": 18.8,
+                  "fat_g": 9.0,
+                  "gi": 52,
+                  "gl": 9.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 71,
+                  "sodium_category": "low",
+                  "fiber_g": 4.5,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 560,
+          "protein_g": 24.5,
+          "carbs_g": 89.4,
+          "fat_g": 10.9
+        },
+        "Dinner": {
+          "target_kcal": 400,
+          "options": [
+            {
+              "actual_kcal": 400,
+              "protein_g": 17.5,
+              "carbs_g": 56.2,
+              "fat_g": 12.7,
+              "foods": [
+                {
+                  "name": "Oat Roti",
+                  "selected_serving_g": 92,
+                  "serving_size_g": 80,
+                  "min_serving_g": 60,
+                  "max_serving_g": 100,
+                  "calories": 190,
+                  "protein_g": 6.3,
+                  "carbs_g": 32.2,
+                  "fat_g": 5.2,
+                  "gi": 48,
+                  "gl": 15.4,
+                  "gi_category": "low",
+                  "prep_method": "pan_fried",
+                  "sodium_mg": 132,
+                  "sodium_category": "low",
+                  "fiber_g": 5.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 150,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 210,
+                  "protein_g": 11.2,
+                  "carbs_g": 24.0,
+                  "fat_g": 7.5,
+                  "gi": 30,
+                  "gl": 7.2,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 131,
+                  "sodium_category": "medium",
+                  "fiber_g": 9.0,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 400,
+              "protein_g": 10.5,
+              "carbs_g": 63.1,
+              "fat_g": 12.6,
+              "foods": [
+                {
+                  "name": "Fried Rice",
+                  "selected_serving_g": 263,
+                  "serving_size_g": 250,
+                  "min_serving_g": 160,
+                  "max_serving_g": 340,
+                  "calories": 400,
+                  "protein_g": 10.5,
+                  "carbs_g": 63.1,
+                  "fat_g": 12.6,
+                  "gi": 65,
+                  "gl": 41.0,
+                  "gi_category": "medium",
+                  "prep_method": "stir_fried",
+                  "sodium_mg": 258,
+                  "sodium_category": "medium",
+                  "fiber_g": 3.2,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 401,
+              "protein_g": 8.1,
+              "carbs_g": 51.1,
+              "fat_g": 17.3,
+              "foods": [
+                {
+                  "name": "Pol Roti",
+                  "selected_serving_g": 109,
+                  "serving_size_g": 120,
+                  "min_serving_g": 80,
+                  "max_serving_g": 160,
+                  "calories": 300,
+                  "protein_g": 5.9,
+                  "carbs_g": 43.6,
+                  "fat_g": 10.9,
+                  "gi": 58,
+                  "gl": 25.3,
+                  "gi_category": "medium",
+                  "prep_method": "shallow_fried",
+                  "sodium_mg": 186,
+                  "sodium_category": "medium",
+                  "fiber_g": 4.5,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Bitter Gourd Curry",
+                  "selected_serving_g": 90,
+                  "serving_size_g": 120,
+                  "min_serving_g": 90,
+                  "max_serving_g": 150,
+                  "calories": 101,
+                  "protein_g": 2.2,
+                  "carbs_g": 7.5,
+                  "fat_g": 6.4,
+                  "gi": 38,
+                  "gl": 2.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 41,
+                  "sodium_category": "low",
+                  "fiber_g": 3.4,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 400,
+          "protein_g": 17.5,
+          "carbs_g": 56.2,
+          "fat_g": 12.7
+        },
+        "Snack": {
+          "target_kcal": 240,
+          "options": [
+            {
+              "actual_kcal": 240,
+              "protein_g": 3.0,
+              "carbs_g": 59.5,
+              "fat_g": 0.7,
+              "foods": [
+                {
+                  "name": "Banana (medium)",
+                  "selected_serving_g": 140,
+                  "serving_size_g": 120,
+                  "min_serving_g": 100,
+                  "max_serving_g": 140,
+                  "calories": 125,
+                  "protein_g": 1.5,
+                  "carbs_g": 31.5,
+                  "fat_g": 0.5,
+                  "gi": 51,
+                  "gl": 16.1,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 1,
+                  "sodium_category": "low",
+                  "fiber_g": 3.6,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Pineapple (sliced)",
+                  "selected_serving_g": 130,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 200,
+                  "calories": 68,
+                  "protein_g": 0.8,
+                  "carbs_g": 17.3,
+                  "fat_g": 0.2,
+                  "gi": 66,
+                  "gl": 11.4,
+                  "gi_category": "medium",
+                  "prep_method": "raw",
+                  "sodium_mg": 2,
+                  "sodium_category": "low",
+                  "fiber_g": 2.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Malay Pickle",
+                  "selected_serving_g": 40,
+                  "serving_size_g": 30,
+                  "min_serving_g": 20,
+                  "max_serving_g": 40,
+                  "calories": 47,
+                  "protein_g": 0.7,
+                  "carbs_g": 10.7,
+                  "fat_g": 0.0,
+                  "gi": 28,
+                  "gl": 2.9,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 1053,
+                  "sodium_category": "high",
+                  "fiber_g": 0.7,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 240,
+              "protein_g": 12.4,
+              "carbs_g": 47.6,
+              "fat_g": 2.2,
+              "foods": [
+                {
+                  "name": "Sprouted Mung Salad",
+                  "selected_serving_g": 80,
+                  "serving_size_g": 100,
+                  "min_serving_g": 80,
+                  "max_serving_g": 130,
+                  "calories": 68,
+                  "protein_g": 4.4,
+                  "carbs_g": 11.6,
+                  "fat_g": 0.8,
+                  "gi": 25,
+                  "gl": 2.9,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 76,
+                  "sodium_category": "low",
+                  "fiber_g": 2.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Low-Fat Yogurt",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 64,
+                  "protein_g": 6.0,
+                  "carbs_g": 8.0,
+                  "fat_g": 1.2,
+                  "gi": 32,
+                  "gl": 2.6,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 64,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Fresh Jackfruit",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 200,
+                  "calories": 108,
+                  "protein_g": 2.0,
+                  "carbs_g": 28.0,
+                  "fat_g": 0.2,
+                  "gi": 50,
+                  "gl": 14.0,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 2,
+                  "sodium_category": "low",
+                  "fiber_g": 1.8,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 240,
+              "protein_g": 5.5,
+              "carbs_g": 56.5,
+              "fat_g": 1.5,
+              "foods": [
+                {
+                  "name": "Guava (fresh)",
+                  "selected_serving_g": 118,
+                  "serving_size_g": 100,
+                  "min_serving_g": 80,
+                  "max_serving_g": 130,
+                  "calories": 80,
+                  "protein_g": 3.1,
+                  "carbs_g": 16.5,
+                  "fat_g": 1.2,
+                  "gi": 12,
+                  "gl": 2.0,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 2,
+                  "sodium_category": "low",
+                  "fiber_g": 6.4,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Watermelon (sliced)",
+                  "selected_serving_g": 300,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 300,
+                  "calories": 90,
+                  "protein_g": 1.8,
+                  "carbs_g": 22.5,
+                  "fat_g": 0.3,
+                  "gi": 72,
+                  "gl": 16.2,
+                  "gi_category": "high",
+                  "prep_method": "raw",
+                  "sodium_mg": 3,
+                  "sodium_category": "low",
+                  "fiber_g": 0.9,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "King Coconut Water",
+                  "selected_serving_g": 350,
+                  "serving_size_g": 300,
+                  "min_serving_g": 250,
+                  "max_serving_g": 350,
+                  "calories": 70,
+                  "protein_g": 0.6,
+                  "carbs_g": 17.5,
+                  "fat_g": 0.0,
+                  "gi": 3,
+                  "gl": 0.6,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 294,
+                  "sodium_category": "medium",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 240,
+          "protein_g": 3.0,
+          "carbs_g": 59.5,
+          "fat_g": 0.7
+        },
+        "feasibility": {
+          "evaluated_combinations": 81,
+          "guardrail_status": "strict",
+          "fat_limit_percent": 120,
+          "carbs_range_percent": [
+            80,
+            120
+          ],
+          "maximum_achievable_protein_g": 63.2,
+          "maximum_achievable_protein_percent": null
+        },
+        "totals": {
+          "target_kcal": 1600,
+          "actual_kcal": 1600,
+          "protein_g": 63.2,
+          "carbs_g": 266.5,
+          "fat_g": 33.3,
+          "calorie_delta": 0,
+          "calorie_within_5_percent": true,
+          "protein_coverage_percent": null,
+          "carbs_coverage_percent": null,
+          "fat_coverage_percent": null
+        },
+        "planned_slots": [
+          "Breakfast",
+          "Lunch",
+          "Dinner",
+          "Snack"
+        ],
+        "active_targets": {
+          "calories": 1600,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0
+        }
+      },
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 159.32,
+      "status": "PASS"
+    },
+    {
+      "id": 23,
+      "subcomponent": "meal_plan",
+      "question": "Build a complete vegetarian meal plan for 1800 calories",
+      "expected_keywords": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "matched_keywords": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "actual": {
+        "Breakfast": {
+          "target_kcal": 450,
+          "options": [
+            {
+              "actual_kcal": 450,
+              "protein_g": 20.8,
+              "carbs_g": 67.2,
+              "fat_g": 10.8,
+              "foods": [
+                {
+                  "name": "Idli",
+                  "selected_serving_g": 105,
+                  "serving_size_g": 80,
+                  "min_serving_g": 55,
+                  "max_serving_g": 105,
+                  "calories": 184,
+                  "protein_g": 6.6,
+                  "carbs_g": 36.8,
+                  "fat_g": 1.3,
+                  "gi": 52,
+                  "gl": 19.2,
+                  "gi_category": "low",
+                  "prep_method": "steamed",
+                  "sodium_mg": 696,
+                  "sodium_category": "high",
+                  "fiber_g": 3.9,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 190,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 266,
+                  "protein_g": 14.2,
+                  "carbs_g": 30.4,
+                  "fat_g": 9.5,
+                  "gi": 30,
+                  "gl": 9.1,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 166,
+                  "sodium_category": "medium",
+                  "fiber_g": 11.4,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 449,
+              "protein_g": 9.2,
+              "carbs_g": 81.9,
+              "fat_g": 10.4,
+              "foods": [
+                {
+                  "name": "Kola Kanda",
+                  "selected_serving_g": 270,
+                  "serving_size_g": 250,
+                  "min_serving_g": 210,
+                  "max_serving_g": 290,
+                  "calories": 302,
+                  "protein_g": 6.5,
+                  "carbs_g": 48.6,
+                  "fat_g": 9.7,
+                  "gi": 45,
+                  "gl": 21.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 22,
+                  "sodium_category": "low",
+                  "fiber_g": 6.5,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Corn Flakes",
+                  "selected_serving_g": 40,
+                  "serving_size_g": 30,
+                  "min_serving_g": 25,
+                  "max_serving_g": 40,
+                  "calories": 147,
+                  "protein_g": 2.7,
+                  "carbs_g": 33.3,
+                  "fat_g": 0.7,
+                  "gi": 81,
+                  "gl": 26.9,
+                  "gi_category": "high",
+                  "prep_method": "baked",
+                  "sodium_mg": 187,
+                  "sodium_category": "medium",
+                  "fiber_g": 1.3,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 450,
+              "protein_g": 9.2,
+              "carbs_g": 60.6,
+              "fat_g": 19.0,
+              "foods": [
+                {
+                  "name": "Kakulu Bath",
+                  "selected_serving_g": 132,
+                  "serving_size_g": 150,
+                  "min_serving_g": 100,
+                  "max_serving_g": 200,
+                  "calories": 282,
+                  "protein_g": 4.4,
+                  "carbs_g": 51.0,
+                  "fat_g": 7.0,
+                  "gi": 55,
+                  "gl": 28.1,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 194,
+                  "sodium_category": "medium",
+                  "fiber_g": 2.2,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Mee Kiri",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 168,
+                  "protein_g": 4.8,
+                  "carbs_g": 9.6,
+                  "fat_g": 12.0,
+                  "gi": 30,
+                  "gl": 2.9,
+                  "gi_category": "low",
+                  "prep_method": "fermented",
+                  "sodium_mg": 112,
+                  "sodium_category": "medium",
+                  "fiber_g": 1.2,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 450,
+          "protein_g": 20.8,
+          "carbs_g": 67.2,
+          "fat_g": 10.8
+        },
+        "Lunch": {
+          "target_kcal": 630,
+          "options": [
+            {
+              "actual_kcal": 630,
+              "protein_g": 16.7,
+              "carbs_g": 84.8,
+              "fat_g": 24.1,
+              "foods": [
+                {
+                  "name": "Ghee Rice",
+                  "selected_serving_g": 221,
+                  "serving_size_g": 200,
+                  "min_serving_g": 130,
+                  "max_serving_g": 270,
+                  "calories": 420,
+                  "protein_g": 5.5,
+                  "carbs_g": 60.8,
+                  "fat_g": 16.6,
+                  "gi": 68,
+                  "gl": 41.3,
+                  "gi_category": "medium",
+                  "prep_method": "stir_fried",
+                  "sodium_mg": 182,
+                  "sodium_category": "medium",
+                  "fiber_g": 1.1,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 150,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 210,
+                  "protein_g": 11.2,
+                  "carbs_g": 24.0,
+                  "fat_g": 7.5,
+                  "gi": 30,
+                  "gl": 7.2,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 131,
+                  "sodium_category": "medium",
+                  "fiber_g": 9.0,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 625,
+              "protein_g": 24.8,
+              "carbs_g": 96.2,
+              "fat_g": 14.7,
+              "foods": [
+                {
+                  "name": "Brown Rice",
+                  "selected_serving_g": 250,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 275,
+                  "protein_g": 6.0,
+                  "carbs_g": 56.2,
+                  "fat_g": 2.2,
+                  "gi": 50,
+                  "gl": 28.1,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 6,
+                  "sodium_category": "low",
+                  "fiber_g": 4.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 250,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 350,
+                  "protein_g": 18.8,
+                  "carbs_g": 40.0,
+                  "fat_g": 12.5,
+                  "gi": 30,
+                  "gl": 12.0,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 219,
+                  "sodium_category": "medium",
+                  "fiber_g": 15.0,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 607,
+              "protein_g": 25.2,
+              "carbs_g": 100.1,
+              "fat_g": 10.9,
+              "foods": [
+                {
+                  "name": "Curd Rice",
+                  "selected_serving_g": 270,
+                  "serving_size_g": 200,
+                  "min_serving_g": 130,
+                  "max_serving_g": 270,
+                  "calories": 338,
+                  "protein_g": 9.5,
+                  "carbs_g": 56.7,
+                  "fat_g": 8.1,
+                  "gi": 58,
+                  "gl": 32.9,
+                  "gi_category": "medium",
+                  "prep_method": "boiled",
+                  "sodium_mg": 358,
+                  "sodium_category": "medium",
+                  "fiber_g": 2.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Kiriala",
+                  "selected_serving_g": 15,
+                  "serving_size_g": 10,
+                  "min_serving_g": 5,
+                  "max_serving_g": 15,
+                  "calories": 45,
+                  "protein_g": 9.0,
+                  "carbs_g": 0.0,
+                  "fat_g": 0.4,
+                  "gi": 38,
+                  "gl": 0.0,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 135,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Sambar",
+                  "selected_serving_g": 180,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 108,
+                  "protein_g": 5.4,
+                  "carbs_g": 15.6,
+                  "fat_g": 2.4,
+                  "gi": 25,
+                  "gl": 3.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 786,
+                  "sodium_category": "high",
+                  "fiber_g": 3.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "King Coconut (Thambili)",
+                  "selected_serving_g": 400,
+                  "serving_size_g": 350,
+                  "min_serving_g": 320,
+                  "max_serving_g": 400,
+                  "calories": 69,
+                  "protein_g": 0.6,
+                  "carbs_g": 17.1,
+                  "fat_g": 0.0,
+                  "gi": 45,
+                  "gl": 7.8,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 69,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Malay Pickle",
+                  "selected_serving_g": 40,
+                  "serving_size_g": 30,
+                  "min_serving_g": 20,
+                  "max_serving_g": 40,
+                  "calories": 47,
+                  "protein_g": 0.7,
+                  "carbs_g": 10.7,
+                  "fat_g": 0.0,
+                  "gi": 28,
+                  "gl": 2.9,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 1053,
+                  "sodium_category": "high",
+                  "fiber_g": 0.7,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 630,
+          "protein_g": 16.7,
+          "carbs_g": 84.8,
+          "fat_g": 24.1
+        },
+        "Dinner": {
+          "target_kcal": 450,
+          "options": [
+            {
+              "actual_kcal": 450,
+              "protein_g": 20.0,
+              "carbs_g": 62.8,
+              "fat_g": 14.3,
+              "foods": [
+                {
+                  "name": "Oat Roti",
+                  "selected_serving_g": 100,
+                  "serving_size_g": 80,
+                  "min_serving_g": 60,
+                  "max_serving_g": 100,
+                  "calories": 206,
+                  "protein_g": 6.9,
+                  "carbs_g": 35.0,
+                  "fat_g": 5.6,
+                  "gi": 48,
+                  "gl": 16.8,
+                  "gi_category": "low",
+                  "prep_method": "pan_fried",
+                  "sodium_mg": 144,
+                  "sodium_category": "low",
+                  "fiber_g": 6.2,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 174,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 244,
+                  "protein_g": 13.1,
+                  "carbs_g": 27.8,
+                  "fat_g": 8.7,
+                  "gi": 30,
+                  "gl": 8.4,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 152,
+                  "sodium_category": "medium",
+                  "fiber_g": 10.4,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 450,
+              "protein_g": 9.0,
+              "carbs_g": 70.0,
+              "fat_g": 15.0,
+              "foods": [
+                {
+                  "name": "Vegetable Biryani",
+                  "selected_serving_g": 350,
+                  "serving_size_g": 350,
+                  "min_serving_g": 250,
+                  "max_serving_g": 450,
+                  "calories": 450,
+                  "protein_g": 9.0,
+                  "carbs_g": 70.0,
+                  "fat_g": 15.0,
+                  "gi": 65,
+                  "gl": 45.5,
+                  "gi_category": "medium",
+                  "prep_method": "boiled",
+                  "sodium_mg": 330,
+                  "sodium_category": "medium",
+                  "fiber_g": 8.0,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 450,
+              "protein_g": 8.1,
+              "carbs_g": 62.0,
+              "fat_g": 18.4,
+              "foods": [
+                {
+                  "name": "Pol Roti",
+                  "selected_serving_g": 122,
+                  "serving_size_g": 120,
+                  "min_serving_g": 80,
+                  "max_serving_g": 160,
+                  "calories": 336,
+                  "protein_g": 6.6,
+                  "carbs_g": 48.8,
+                  "fat_g": 12.2,
+                  "gi": 58,
+                  "gl": 28.3,
+                  "gi_category": "medium",
+                  "prep_method": "shallow_fried",
+                  "sodium_mg": 208,
+                  "sodium_category": "medium",
+                  "fiber_g": 5.1,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Pumpkin Curry",
+                  "selected_serving_g": 110,
+                  "serving_size_g": 150,
+                  "min_serving_g": 110,
+                  "max_serving_g": 190,
+                  "calories": 114,
+                  "protein_g": 1.5,
+                  "carbs_g": 13.2,
+                  "fat_g": 6.2,
+                  "gi": 38,
+                  "gl": 5.0,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 44,
+                  "sodium_category": "low",
+                  "fiber_g": 2.2,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 450,
+          "protein_g": 20.0,
+          "carbs_g": 62.8,
+          "fat_g": 14.3
+        },
+        "Snack": {
+          "target_kcal": 270,
+          "options": [
+            {
+              "actual_kcal": 270,
+              "protein_g": 12.9,
+              "carbs_g": 55.3,
+              "fat_g": 2.3,
+              "foods": [
+                {
+                  "name": "Sprouted Mung Salad",
+                  "selected_serving_g": 80,
+                  "serving_size_g": 100,
+                  "min_serving_g": 80,
+                  "max_serving_g": 130,
+                  "calories": 68,
+                  "protein_g": 4.4,
+                  "carbs_g": 11.6,
+                  "fat_g": 0.8,
+                  "gi": 25,
+                  "gl": 2.9,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 76,
+                  "sodium_category": "low",
+                  "fiber_g": 2.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Low-Fat Yogurt",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 64,
+                  "protein_g": 6.0,
+                  "carbs_g": 8.0,
+                  "fat_g": 1.2,
+                  "gi": 32,
+                  "gl": 2.6,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 64,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Fresh Jackfruit",
+                  "selected_serving_g": 153,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 200,
+                  "calories": 138,
+                  "protein_g": 2.5,
+                  "carbs_g": 35.7,
+                  "fat_g": 0.3,
+                  "gi": 50,
+                  "gl": 17.9,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 3,
+                  "sodium_category": "low",
+                  "fiber_g": 2.3,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 270,
+              "protein_g": 9.8,
+              "carbs_g": 54.0,
+              "fat_g": 3.6,
+              "foods": [
+                {
+                  "name": "Guava (fresh)",
+                  "selected_serving_g": 130,
+                  "serving_size_g": 100,
+                  "min_serving_g": 80,
+                  "max_serving_g": 130,
+                  "calories": 88,
+                  "protein_g": 3.4,
+                  "carbs_g": 18.2,
+                  "fat_g": 1.3,
+                  "gi": 12,
+                  "gl": 2.2,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 3,
+                  "sodium_category": "low",
+                  "fiber_g": 7.0,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Watermelon (sliced)",
+                  "selected_serving_g": 300,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 300,
+                  "calories": 90,
+                  "protein_g": 1.8,
+                  "carbs_g": 22.5,
+                  "fat_g": 0.3,
+                  "gi": 72,
+                  "gl": 16.2,
+                  "gi_category": "high",
+                  "prep_method": "raw",
+                  "sodium_mg": 3,
+                  "sodium_category": "low",
+                  "fiber_g": 0.9,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Sambar",
+                  "selected_serving_g": 153,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 92,
+                  "protein_g": 4.6,
+                  "carbs_g": 13.3,
+                  "fat_g": 2.0,
+                  "gi": 25,
+                  "gl": 3.3,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 668,
+                  "sodium_category": "high",
+                  "fiber_g": 2.5,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 270,
+              "protein_g": 4.3,
+              "carbs_g": 51.8,
+              "fat_g": 5.4,
+              "foods": [
+                {
+                  "name": "Faluda",
+                  "selected_serving_g": 324,
+                  "serving_size_g": 300,
+                  "min_serving_g": 210,
+                  "max_serving_g": 390,
+                  "calories": 270,
+                  "protein_g": 4.3,
+                  "carbs_g": 51.8,
+                  "fat_g": 5.4,
+                  "gi": 68,
+                  "gl": 35.2,
+                  "gi_category": "medium",
+                  "prep_method": "raw",
+                  "sodium_mg": 32,
+                  "sodium_category": "low",
+                  "fiber_g": 1.1,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 270,
+          "protein_g": 12.9,
+          "carbs_g": 55.3,
+          "fat_g": 2.3
+        },
+        "feasibility": {
+          "evaluated_combinations": 81,
+          "guardrail_status": "strict",
+          "fat_limit_percent": 120,
+          "carbs_range_percent": [
+            80,
+            120
+          ],
+          "maximum_achievable_protein_g": 70.4,
+          "maximum_achievable_protein_percent": null
+        },
+        "totals": {
+          "target_kcal": 1800,
+          "actual_kcal": 1800,
+          "protein_g": 70.4,
+          "carbs_g": 270.1,
+          "fat_g": 51.5,
+          "calorie_delta": 0,
+          "calorie_within_5_percent": true,
+          "protein_coverage_percent": null,
+          "carbs_coverage_percent": null,
+          "fat_coverage_percent": null
+        },
+        "planned_slots": [
+          "Breakfast",
+          "Lunch",
+          "Dinner",
+          "Snack"
+        ],
+        "active_targets": {
+          "calories": 1800,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0
+        }
+      },
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 143.1,
+      "status": "PASS"
+    },
+    {
+      "id": 24,
+      "subcomponent": "meal_plan",
+      "question": "Build a complete vegetarian meal plan for 2000 calories",
+      "expected_keywords": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "matched_keywords": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "actual": {
+        "Breakfast": {
+          "target_kcal": 500,
+          "options": [
+            {
+              "actual_kcal": 500,
+              "protein_g": 23.5,
+              "carbs_g": 73.0,
+              "fat_g": 12.6,
+              "foods": [
+                {
+                  "name": "Idli",
+                  "selected_serving_g": 105,
+                  "serving_size_g": 80,
+                  "min_serving_g": 55,
+                  "max_serving_g": 105,
+                  "calories": 184,
+                  "protein_g": 6.6,
+                  "carbs_g": 36.8,
+                  "fat_g": 1.3,
+                  "gi": 52,
+                  "gl": 19.2,
+                  "gi_category": "low",
+                  "prep_method": "steamed",
+                  "sodium_mg": 696,
+                  "sodium_category": "high",
+                  "fiber_g": 3.9,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 226,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 316,
+                  "protein_g": 16.9,
+                  "carbs_g": 36.2,
+                  "fat_g": 11.3,
+                  "gi": 30,
+                  "gl": 10.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 198,
+                  "sodium_category": "medium",
+                  "fiber_g": 13.6,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 500,
+              "protein_g": 12.3,
+              "carbs_g": 88.9,
+              "fat_g": 11.3,
+              "foods": [
+                {
+                  "name": "Kola Kanda",
+                  "selected_serving_g": 251,
+                  "serving_size_g": 250,
+                  "min_serving_g": 210,
+                  "max_serving_g": 290,
+                  "calories": 281,
+                  "protein_g": 6.0,
+                  "carbs_g": 45.2,
+                  "fat_g": 9.0,
+                  "gi": 45,
+                  "gl": 20.3,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 20,
+                  "sodium_category": "low",
+                  "fiber_g": 6.0,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Corn Flakes",
+                  "selected_serving_g": 40,
+                  "serving_size_g": 30,
+                  "min_serving_g": 25,
+                  "max_serving_g": 40,
+                  "calories": 147,
+                  "protein_g": 2.7,
+                  "carbs_g": 33.3,
+                  "fat_g": 0.7,
+                  "gi": 81,
+                  "gl": 26.9,
+                  "gi_category": "high",
+                  "prep_method": "baked",
+                  "sodium_mg": 187,
+                  "sodium_category": "medium",
+                  "fiber_g": 1.3,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Sambar",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 72,
+                  "protein_g": 3.6,
+                  "carbs_g": 10.4,
+                  "fat_g": 1.6,
+                  "gi": 25,
+                  "gl": 2.6,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 524,
+                  "sodium_category": "high",
+                  "fiber_g": 2.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 501,
+              "protein_g": 10.0,
+              "carbs_g": 69.9,
+              "fat_g": 20.3,
+              "foods": [
+                {
+                  "name": "Kakulu Bath",
+                  "selected_serving_g": 156,
+                  "serving_size_g": 150,
+                  "min_serving_g": 100,
+                  "max_serving_g": 200,
+                  "calories": 333,
+                  "protein_g": 5.2,
+                  "carbs_g": 60.3,
+                  "fat_g": 8.3,
+                  "gi": 55,
+                  "gl": 33.2,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 229,
+                  "sodium_category": "medium",
+                  "fiber_g": 2.6,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Mee Kiri",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 168,
+                  "protein_g": 4.8,
+                  "carbs_g": 9.6,
+                  "fat_g": 12.0,
+                  "gi": 30,
+                  "gl": 2.9,
+                  "gi_category": "low",
+                  "prep_method": "fermented",
+                  "sodium_mg": 112,
+                  "sodium_category": "medium",
+                  "fiber_g": 1.2,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 500,
+          "protein_g": 23.5,
+          "carbs_g": 73.0,
+          "fat_g": 12.6
+        },
+        "Lunch": {
+          "target_kcal": 700,
+          "options": [
+            {
+              "actual_kcal": 699,
+              "protein_g": 30.5,
+              "carbs_g": 106.2,
+              "fat_g": 15.5,
+              "foods": [
+                {
+                  "name": "Brown Rice",
+                  "selected_serving_g": 250,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 275,
+                  "protein_g": 6.0,
+                  "carbs_g": 56.2,
+                  "fat_g": 2.2,
+                  "gi": 50,
+                  "gl": 28.1,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 6,
+                  "sodium_category": "low",
+                  "fiber_g": 4.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 215,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 301,
+                  "protein_g": 16.1,
+                  "carbs_g": 34.4,
+                  "fat_g": 10.8,
+                  "gi": 30,
+                  "gl": 10.3,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 188,
+                  "sodium_category": "medium",
+                  "fiber_g": 12.9,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Kiriala",
+                  "selected_serving_g": 5,
+                  "serving_size_g": 10,
+                  "min_serving_g": 5,
+                  "max_serving_g": 15,
+                  "calories": 15,
+                  "protein_g": 3.0,
+                  "carbs_g": 0.0,
+                  "fat_g": 0.1,
+                  "gi": 38,
+                  "gl": 0.0,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 45,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Sambar",
+                  "selected_serving_g": 180,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 108,
+                  "protein_g": 5.4,
+                  "carbs_g": 15.6,
+                  "fat_g": 2.4,
+                  "gi": 25,
+                  "gl": 3.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 786,
+                  "sodium_category": "high",
+                  "fiber_g": 3.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 701,
+              "protein_g": 21.1,
+              "carbs_g": 121.8,
+              "fat_g": 14.1,
+              "foods": [
+                {
+                  "name": "Curd Rice",
+                  "selected_serving_g": 270,
+                  "serving_size_g": 200,
+                  "min_serving_g": 130,
+                  "max_serving_g": 270,
+                  "calories": 338,
+                  "protein_g": 9.5,
+                  "carbs_g": 56.7,
+                  "fat_g": 8.1,
+                  "gi": 58,
+                  "gl": 32.9,
+                  "gi_category": "medium",
+                  "prep_method": "boiled",
+                  "sodium_mg": 358,
+                  "sodium_category": "medium",
+                  "fiber_g": 2.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Mung Bean Rice",
+                  "selected_serving_g": 279,
+                  "serving_size_g": 300,
+                  "min_serving_g": 250,
+                  "max_serving_g": 350,
+                  "calories": 363,
+                  "protein_g": 11.6,
+                  "carbs_g": 65.1,
+                  "fat_g": 6.0,
+                  "gi": 45,
+                  "gl": 29.3,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 163,
+                  "sodium_category": "low",
+                  "fiber_g": 7.0,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 700,
+              "protein_g": 17.7,
+              "carbs_g": 95.0,
+              "fat_g": 26.9,
+              "foods": [
+                {
+                  "name": "Ghee Rice",
+                  "selected_serving_g": 258,
+                  "serving_size_g": 200,
+                  "min_serving_g": 130,
+                  "max_serving_g": 270,
+                  "calories": 490,
+                  "protein_g": 6.5,
+                  "carbs_g": 71.0,
+                  "fat_g": 19.4,
+                  "gi": 68,
+                  "gl": 48.2,
+                  "gi_category": "medium",
+                  "prep_method": "stir_fried",
+                  "sodium_mg": 213,
+                  "sodium_category": "medium",
+                  "fiber_g": 1.3,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 150,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 210,
+                  "protein_g": 11.2,
+                  "carbs_g": 24.0,
+                  "fat_g": 7.5,
+                  "gi": 30,
+                  "gl": 7.2,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 131,
+                  "sodium_category": "medium",
+                  "fiber_g": 9.0,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 699,
+          "protein_g": 30.5,
+          "carbs_g": 106.2,
+          "fat_g": 15.5
+        },
+        "Dinner": {
+          "target_kcal": 500,
+          "options": [
+            {
+              "actual_kcal": 501,
+              "protein_g": 8.9,
+              "carbs_g": 74.0,
+              "fat_g": 17.7,
+              "foods": [
+                {
+                  "name": "Polos Biryani",
+                  "selected_serving_g": 365,
+                  "serving_size_g": 350,
+                  "min_serving_g": 250,
+                  "max_serving_g": 450,
+                  "calories": 501,
+                  "protein_g": 8.9,
+                  "carbs_g": 74.0,
+                  "fat_g": 17.7,
+                  "gi": 65,
+                  "gl": 48.2,
+                  "gi_category": "medium",
+                  "prep_method": "boiled",
+                  "sodium_mg": 240,
+                  "sodium_category": "medium",
+                  "fiber_g": 8.9,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 500,
+              "protein_g": 22.7,
+              "carbs_g": 68.6,
+              "fat_g": 16.1,
+              "foods": [
+                {
+                  "name": "Oat Roti",
+                  "selected_serving_g": 100,
+                  "serving_size_g": 80,
+                  "min_serving_g": 60,
+                  "max_serving_g": 100,
+                  "calories": 206,
+                  "protein_g": 6.9,
+                  "carbs_g": 35.0,
+                  "fat_g": 5.6,
+                  "gi": 48,
+                  "gl": 16.8,
+                  "gi_category": "low",
+                  "prep_method": "pan_fried",
+                  "sodium_mg": 144,
+                  "sodium_category": "low",
+                  "fiber_g": 6.2,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 210,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 294,
+                  "protein_g": 15.8,
+                  "carbs_g": 33.6,
+                  "fat_g": 10.5,
+                  "gi": 30,
+                  "gl": 10.1,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 184,
+                  "sodium_category": "medium",
+                  "fiber_g": 12.6,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 499,
+              "protein_g": 9.1,
+              "carbs_g": 69.2,
+              "fat_g": 20.2,
+              "foods": [
+                {
+                  "name": "Pol Roti",
+                  "selected_serving_g": 140,
+                  "serving_size_g": 120,
+                  "min_serving_g": 80,
+                  "max_serving_g": 160,
+                  "calories": 385,
+                  "protein_g": 7.6,
+                  "carbs_g": 56.0,
+                  "fat_g": 14.0,
+                  "gi": 58,
+                  "gl": 32.4,
+                  "gi_category": "medium",
+                  "prep_method": "shallow_fried",
+                  "sodium_mg": 239,
+                  "sodium_category": "medium",
+                  "fiber_g": 5.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Pumpkin Curry",
+                  "selected_serving_g": 110,
+                  "serving_size_g": 150,
+                  "min_serving_g": 110,
+                  "max_serving_g": 190,
+                  "calories": 114,
+                  "protein_g": 1.5,
+                  "carbs_g": 13.2,
+                  "fat_g": 6.2,
+                  "gi": 38,
+                  "gl": 5.0,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 44,
+                  "sodium_category": "low",
+                  "fiber_g": 2.2,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 501,
+          "protein_g": 8.9,
+          "carbs_g": 74.0,
+          "fat_g": 17.7
+        },
+        "Snack": {
+          "target_kcal": 300,
+          "options": [
+            {
+              "actual_kcal": 300,
+              "protein_g": 13.5,
+              "carbs_g": 63.2,
+              "fat_g": 2.4,
+              "foods": [
+                {
+                  "name": "Sprouted Mung Salad",
+                  "selected_serving_g": 80,
+                  "serving_size_g": 100,
+                  "min_serving_g": 80,
+                  "max_serving_g": 130,
+                  "calories": 68,
+                  "protein_g": 4.4,
+                  "carbs_g": 11.6,
+                  "fat_g": 0.8,
+                  "gi": 25,
+                  "gl": 2.9,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 76,
+                  "sodium_category": "low",
+                  "fiber_g": 2.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Low-Fat Yogurt",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 64,
+                  "protein_g": 6.0,
+                  "carbs_g": 8.0,
+                  "fat_g": 1.2,
+                  "gi": 32,
+                  "gl": 2.6,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 64,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Fresh Jackfruit",
+                  "selected_serving_g": 187,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 200,
+                  "calories": 168,
+                  "protein_g": 3.1,
+                  "carbs_g": 43.6,
+                  "fat_g": 0.4,
+                  "gi": 50,
+                  "gl": 21.8,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 4,
+                  "sodium_category": "low",
+                  "fiber_g": 2.9,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 300,
+              "protein_g": 6.5,
+              "carbs_g": 71.5,
+              "fat_g": 2.0,
+              "foods": [
+                {
+                  "name": "Guava (fresh)",
+                  "selected_serving_g": 125,
+                  "serving_size_g": 100,
+                  "min_serving_g": 80,
+                  "max_serving_g": 130,
+                  "calories": 85,
+                  "protein_g": 3.2,
+                  "carbs_g": 17.5,
+                  "fat_g": 1.2,
+                  "gi": 12,
+                  "gl": 2.1,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 2,
+                  "sodium_category": "low",
+                  "fiber_g": 6.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Watermelon (sliced)",
+                  "selected_serving_g": 300,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 300,
+                  "calories": 90,
+                  "protein_g": 1.8,
+                  "carbs_g": 22.5,
+                  "fat_g": 0.3,
+                  "gi": 72,
+                  "gl": 16.2,
+                  "gi_category": "high",
+                  "prep_method": "raw",
+                  "sodium_mg": 3,
+                  "sodium_category": "low",
+                  "fiber_g": 0.9,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Banana (medium)",
+                  "selected_serving_g": 140,
+                  "serving_size_g": 120,
+                  "min_serving_g": 100,
+                  "max_serving_g": 140,
+                  "calories": 125,
+                  "protein_g": 1.5,
+                  "carbs_g": 31.5,
+                  "fat_g": 0.5,
+                  "gi": 51,
+                  "gl": 16.1,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 1,
+                  "sodium_category": "low",
+                  "fiber_g": 3.6,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 300,
+              "protein_g": 4.8,
+              "carbs_g": 57.6,
+              "fat_g": 6.0,
+              "foods": [
+                {
+                  "name": "Faluda",
+                  "selected_serving_g": 360,
+                  "serving_size_g": 300,
+                  "min_serving_g": 210,
+                  "max_serving_g": 390,
+                  "calories": 300,
+                  "protein_g": 4.8,
+                  "carbs_g": 57.6,
+                  "fat_g": 6.0,
+                  "gi": 68,
+                  "gl": 39.1,
+                  "gi_category": "medium",
+                  "prep_method": "raw",
+                  "sodium_mg": 36,
+                  "sodium_category": "low",
+                  "fiber_g": 1.2,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 300,
+          "protein_g": 13.5,
+          "carbs_g": 63.2,
+          "fat_g": 2.4
+        },
+        "feasibility": {
+          "evaluated_combinations": 81,
+          "guardrail_status": "strict",
+          "fat_limit_percent": 120,
+          "carbs_range_percent": [
+            80,
+            120
+          ],
+          "maximum_achievable_protein_g": 76.4,
+          "maximum_achievable_protein_percent": null
+        },
+        "totals": {
+          "target_kcal": 2000,
+          "actual_kcal": 2000,
+          "protein_g": 76.4,
+          "carbs_g": 316.4,
+          "fat_g": 48.2,
+          "calorie_delta": 0,
+          "calorie_within_5_percent": true,
+          "protein_coverage_percent": null,
+          "carbs_coverage_percent": null,
+          "fat_coverage_percent": null
+        },
+        "planned_slots": [
+          "Breakfast",
+          "Lunch",
+          "Dinner",
+          "Snack"
+        ],
+        "active_targets": {
+          "calories": 2000,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0
+        }
+      },
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 161.39,
+      "status": "PASS"
+    },
+    {
+      "id": 25,
+      "subcomponent": "meal_plan",
+      "question": "Build a complete vegetarian meal plan for 2200 calories",
+      "expected_keywords": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "matched_keywords": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "actual": {
+        "Breakfast": {
+          "target_kcal": 550,
+          "options": [
+            {
+              "actual_kcal": 550,
+              "protein_g": 25.8,
+              "carbs_g": 81.8,
+              "fat_g": 12.9,
+              "foods": [
+                {
+                  "name": "Idli",
+                  "selected_serving_g": 105,
+                  "serving_size_g": 80,
+                  "min_serving_g": 55,
+                  "max_serving_g": 105,
+                  "calories": 184,
+                  "protein_g": 6.6,
+                  "carbs_g": 36.8,
+                  "fat_g": 1.3,
+                  "gi": 52,
+                  "gl": 19.2,
+                  "gi_category": "low",
+                  "prep_method": "steamed",
+                  "sodium_mg": 696,
+                  "sodium_category": "high",
+                  "fiber_g": 3.9,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 184,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 258,
+                  "protein_g": 13.8,
+                  "carbs_g": 29.4,
+                  "fat_g": 9.2,
+                  "gi": 30,
+                  "gl": 8.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 161,
+                  "sodium_category": "medium",
+                  "fiber_g": 11.0,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Sambar",
+                  "selected_serving_g": 180,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 108,
+                  "protein_g": 5.4,
+                  "carbs_g": 15.6,
+                  "fat_g": 2.4,
+                  "gi": 25,
+                  "gl": 3.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 786,
+                  "sodium_category": "high",
+                  "fiber_g": 3.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 550,
+              "protein_g": 13.3,
+              "carbs_g": 96.3,
+              "fat_g": 12.8,
+              "foods": [
+                {
+                  "name": "Kola Kanda",
+                  "selected_serving_g": 282,
+                  "serving_size_g": 250,
+                  "min_serving_g": 210,
+                  "max_serving_g": 290,
+                  "calories": 316,
+                  "protein_g": 6.8,
+                  "carbs_g": 50.8,
+                  "fat_g": 10.2,
+                  "gi": 45,
+                  "gl": 22.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 23,
+                  "sodium_category": "low",
+                  "fiber_g": 6.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Ragi Ambula",
+                  "selected_serving_g": 325,
+                  "serving_size_g": 250,
+                  "min_serving_g": 175,
+                  "max_serving_g": 325,
+                  "calories": 234,
+                  "protein_g": 6.5,
+                  "carbs_g": 45.5,
+                  "fat_g": 2.6,
+                  "gi": 52,
+                  "gl": 23.7,
+                  "gi_category": "low",
+                  "prep_method": "fermented",
+                  "sodium_mg": 819,
+                  "sodium_category": "high",
+                  "fiber_g": 6.5,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 550,
+              "protein_g": 10.8,
+              "carbs_g": 78.8,
+              "fat_g": 21.5,
+              "foods": [
+                {
+                  "name": "Kakulu Bath",
+                  "selected_serving_g": 179,
+                  "serving_size_g": 150,
+                  "min_serving_g": 100,
+                  "max_serving_g": 200,
+                  "calories": 382,
+                  "protein_g": 6.0,
+                  "carbs_g": 69.2,
+                  "fat_g": 9.5,
+                  "gi": 55,
+                  "gl": 38.1,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 263,
+                  "sodium_category": "medium",
+                  "fiber_g": 3.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Mee Kiri",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 168,
+                  "protein_g": 4.8,
+                  "carbs_g": 9.6,
+                  "fat_g": 12.0,
+                  "gi": 30,
+                  "gl": 2.9,
+                  "gi_category": "low",
+                  "prep_method": "fermented",
+                  "sodium_mg": 112,
+                  "sodium_category": "medium",
+                  "fiber_g": 1.2,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 550,
+          "protein_g": 25.8,
+          "carbs_g": 81.8,
+          "fat_g": 12.9
+        },
+        "Lunch": {
+          "target_kcal": 770,
+          "options": [
+            {
+              "actual_kcal": 770,
+              "protein_g": 31.8,
+              "carbs_g": 121.5,
+              "fat_g": 16.8,
+              "foods": [
+                {
+                  "name": "Brown Rice",
+                  "selected_serving_g": 250,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 275,
+                  "protein_g": 6.0,
+                  "carbs_g": 56.2,
+                  "fat_g": 2.2,
+                  "gi": 50,
+                  "gl": 28.1,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 6,
+                  "sodium_category": "low",
+                  "fiber_g": 4.8,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 151,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 211,
+                  "protein_g": 11.3,
+                  "carbs_g": 24.2,
+                  "fat_g": 7.5,
+                  "gi": 30,
+                  "gl": 7.2,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 132,
+                  "sodium_category": "medium",
+                  "fiber_g": 9.1,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Kiriala",
+                  "selected_serving_g": 5,
+                  "serving_size_g": 10,
+                  "min_serving_g": 5,
+                  "max_serving_g": 15,
+                  "calories": 15,
+                  "protein_g": 3.0,
+                  "carbs_g": 0.0,
+                  "fat_g": 0.1,
+                  "gi": 38,
+                  "gl": 0.0,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 45,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Malay Pickle",
+                  "selected_serving_g": 40,
+                  "serving_size_g": 30,
+                  "min_serving_g": 20,
+                  "max_serving_g": 40,
+                  "calories": 47,
+                  "protein_g": 0.7,
+                  "carbs_g": 10.7,
+                  "fat_g": 0.0,
+                  "gi": 28,
+                  "gl": 2.9,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 1053,
+                  "sodium_category": "high",
+                  "fiber_g": 0.7,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Tempered Chickpeas",
+                  "selected_serving_g": 190,
+                  "serving_size_g": 150,
+                  "min_serving_g": 110,
+                  "max_serving_g": 190,
+                  "calories": 222,
+                  "protein_g": 10.8,
+                  "carbs_g": 30.4,
+                  "fat_g": 7.0,
+                  "gi": 28,
+                  "gl": 8.5,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 247,
+                  "sodium_category": "low",
+                  "fiber_g": 8.9,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 771,
+              "protein_g": 23.4,
+              "carbs_g": 134.4,
+              "fat_g": 15.3,
+              "foods": [
+                {
+                  "name": "Curd Rice",
+                  "selected_serving_g": 270,
+                  "serving_size_g": 200,
+                  "min_serving_g": 130,
+                  "max_serving_g": 270,
+                  "calories": 338,
+                  "protein_g": 9.5,
+                  "carbs_g": 56.7,
+                  "fat_g": 8.1,
+                  "gi": 58,
+                  "gl": 32.9,
+                  "gi_category": "medium",
+                  "prep_method": "boiled",
+                  "sodium_mg": 358,
+                  "sodium_category": "medium",
+                  "fiber_g": 2.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Mung Bean Rice",
+                  "selected_serving_g": 333,
+                  "serving_size_g": 300,
+                  "min_serving_g": 250,
+                  "max_serving_g": 350,
+                  "calories": 433,
+                  "protein_g": 13.9,
+                  "carbs_g": 77.7,
+                  "fat_g": 7.2,
+                  "gi": 45,
+                  "gl": 35.0,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 194,
+                  "sodium_category": "low",
+                  "fiber_g": 8.3,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 771,
+              "protein_g": 20.6,
+              "carbs_g": 103.6,
+              "fat_g": 29.4,
+              "foods": [
+                {
+                  "name": "Ghee Rice",
+                  "selected_serving_g": 270,
+                  "serving_size_g": 200,
+                  "min_serving_g": 130,
+                  "max_serving_g": 270,
+                  "calories": 513,
+                  "protein_g": 6.8,
+                  "carbs_g": 74.2,
+                  "fat_g": 20.2,
+                  "gi": 68,
+                  "gl": 50.5,
+                  "gi_category": "medium",
+                  "prep_method": "stir_fried",
+                  "sodium_mg": 223,
+                  "sodium_category": "medium",
+                  "fiber_g": 1.4,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 184,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 258,
+                  "protein_g": 13.8,
+                  "carbs_g": 29.4,
+                  "fat_g": 9.2,
+                  "gi": 30,
+                  "gl": 8.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 161,
+                  "sodium_category": "medium",
+                  "fiber_g": 11.0,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 770,
+          "protein_g": 31.8,
+          "carbs_g": 121.5,
+          "fat_g": 16.8
+        },
+        "Dinner": {
+          "target_kcal": 550,
+          "options": [
+            {
+              "actual_kcal": 549,
+              "protein_g": 25.3,
+              "carbs_g": 74.2,
+              "fat_g": 17.8,
+              "foods": [
+                {
+                  "name": "Oat Roti",
+                  "selected_serving_g": 100,
+                  "serving_size_g": 80,
+                  "min_serving_g": 60,
+                  "max_serving_g": 100,
+                  "calories": 206,
+                  "protein_g": 6.9,
+                  "carbs_g": 35.0,
+                  "fat_g": 5.6,
+                  "gi": 48,
+                  "gl": 16.8,
+                  "gi_category": "low",
+                  "prep_method": "pan_fried",
+                  "sodium_mg": 144,
+                  "sodium_category": "low",
+                  "fiber_g": 6.2,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Dhal Curry",
+                  "selected_serving_g": 245,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 250,
+                  "calories": 343,
+                  "protein_g": 18.4,
+                  "carbs_g": 39.2,
+                  "fat_g": 12.2,
+                  "gi": 30,
+                  "gl": 11.8,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 214,
+                  "sodium_category": "medium",
+                  "fiber_g": 14.7,
+                  "profile_reasons": [
+                    "fibre-rich",
+                    "protein-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 549,
+              "protein_g": 9.0,
+              "carbs_g": 83.6,
+              "fat_g": 19.1,
+              "foods": [
+                {
+                  "name": "Kiri Ala Biryani",
+                  "selected_serving_g": 418,
+                  "serving_size_g": 350,
+                  "min_serving_g": 250,
+                  "max_serving_g": 450,
+                  "calories": 549,
+                  "protein_g": 9.0,
+                  "carbs_g": 83.6,
+                  "fat_g": 19.1,
+                  "gi": 64,
+                  "gl": 53.5,
+                  "gi_category": "medium",
+                  "prep_method": "boiled",
+                  "sodium_mg": 161,
+                  "sodium_category": "low",
+                  "fiber_g": 7.2,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 550,
+              "protein_g": 11.2,
+              "carbs_g": 72.2,
+              "fat_g": 22.9,
+              "foods": [
+                {
+                  "name": "Pol Roti",
+                  "selected_serving_g": 160,
+                  "serving_size_g": 120,
+                  "min_serving_g": 80,
+                  "max_serving_g": 160,
+                  "calories": 440,
+                  "protein_g": 8.7,
+                  "carbs_g": 64.0,
+                  "fat_g": 16.0,
+                  "gi": 58,
+                  "gl": 37.1,
+                  "gi_category": "medium",
+                  "prep_method": "shallow_fried",
+                  "sodium_mg": 273,
+                  "sodium_category": "medium",
+                  "fiber_g": 6.7,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Bitter Gourd Curry",
+                  "selected_serving_g": 98,
+                  "serving_size_g": 120,
+                  "min_serving_g": 90,
+                  "max_serving_g": 150,
+                  "calories": 110,
+                  "protein_g": 2.5,
+                  "carbs_g": 8.2,
+                  "fat_g": 6.9,
+                  "gi": 38,
+                  "gl": 3.1,
+                  "gi_category": "low",
+                  "prep_method": "boiled",
+                  "sodium_mg": 45,
+                  "sodium_category": "low",
+                  "fiber_g": 3.7,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 549,
+          "protein_g": 25.3,
+          "carbs_g": 74.2,
+          "fat_g": 17.8
+        },
+        "Snack": {
+          "target_kcal": 330,
+          "options": [
+            {
+              "actual_kcal": 331,
+              "protein_g": 3.7,
+              "carbs_g": 64.6,
+              "fat_g": 7.5,
+              "foods": [
+                {
+                  "name": "Halapa",
+                  "selected_serving_g": 75,
+                  "serving_size_g": 60,
+                  "min_serving_g": 40,
+                  "max_serving_g": 80,
+                  "calories": 262,
+                  "protein_g": 3.1,
+                  "carbs_g": 47.5,
+                  "fat_g": 7.5,
+                  "gi": 65,
+                  "gl": 30.9,
+                  "gi_category": "medium",
+                  "prep_method": "steamed",
+                  "sodium_mg": 44,
+                  "sodium_category": "low",
+                  "fiber_g": 3.1,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "King Coconut (Thambili)",
+                  "selected_serving_g": 400,
+                  "serving_size_g": 350,
+                  "min_serving_g": 320,
+                  "max_serving_g": 400,
+                  "calories": 69,
+                  "protein_g": 0.6,
+                  "carbs_g": 17.1,
+                  "fat_g": 0.0,
+                  "gi": 45,
+                  "gl": 7.8,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 69,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 326,
+              "protein_g": 4.9,
+              "carbs_g": 82.5,
+              "fat_g": 1.4,
+              "foods": [
+                {
+                  "name": "Mango (sliced)",
+                  "selected_serving_g": 200,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 200,
+                  "calories": 132,
+                  "protein_g": 1.9,
+                  "carbs_g": 33.3,
+                  "fat_g": 0.8,
+                  "gi": 51,
+                  "gl": 17.1,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 3,
+                  "sodium_category": "low",
+                  "fiber_g": 3.5,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Watermelon (sliced)",
+                  "selected_serving_g": 300,
+                  "serving_size_g": 200,
+                  "min_serving_g": 150,
+                  "max_serving_g": 300,
+                  "calories": 90,
+                  "protein_g": 1.8,
+                  "carbs_g": 22.5,
+                  "fat_g": 0.3,
+                  "gi": 72,
+                  "gl": 16.2,
+                  "gi_category": "high",
+                  "prep_method": "raw",
+                  "sodium_mg": 3,
+                  "sodium_category": "low",
+                  "fiber_g": 0.9,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Pineapple (sliced)",
+                  "selected_serving_g": 200,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 200,
+                  "calories": 104,
+                  "protein_g": 1.2,
+                  "carbs_g": 26.7,
+                  "fat_g": 0.3,
+                  "gi": 66,
+                  "gl": 17.6,
+                  "gi_category": "medium",
+                  "prep_method": "raw",
+                  "sodium_mg": 3,
+                  "sodium_category": "low",
+                  "fiber_g": 3.1,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            },
+            {
+              "actual_kcal": 329,
+              "protein_g": 14.8,
+              "carbs_g": 69.2,
+              "fat_g": 2.6,
+              "foods": [
+                {
+                  "name": "Sprouted Mung Salad",
+                  "selected_serving_g": 100,
+                  "serving_size_g": 100,
+                  "min_serving_g": 80,
+                  "max_serving_g": 130,
+                  "calories": 85,
+                  "protein_g": 5.5,
+                  "carbs_g": 14.5,
+                  "fat_g": 1.0,
+                  "gi": 25,
+                  "gl": 3.6,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 95,
+                  "sodium_category": "low",
+                  "fiber_g": 3.5,
+                  "profile_reasons": [
+                    "fibre-rich"
+                  ],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Low-Fat Yogurt",
+                  "selected_serving_g": 120,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 180,
+                  "calories": 64,
+                  "protein_g": 6.0,
+                  "carbs_g": 8.0,
+                  "fat_g": 1.2,
+                  "gi": 32,
+                  "gl": 2.6,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 64,
+                  "sodium_category": "low",
+                  "fiber_g": 0.0,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                },
+                {
+                  "name": "Fresh Jackfruit",
+                  "selected_serving_g": 200,
+                  "serving_size_g": 150,
+                  "min_serving_g": 120,
+                  "max_serving_g": 200,
+                  "calories": 180,
+                  "protein_g": 3.3,
+                  "carbs_g": 46.7,
+                  "fat_g": 0.4,
+                  "gi": 50,
+                  "gl": 23.3,
+                  "gi_category": "low",
+                  "prep_method": "raw",
+                  "sodium_mg": 4,
+                  "sodium_category": "low",
+                  "fiber_g": 3.1,
+                  "profile_reasons": [],
+                  "medication_notes": []
+                }
+              ]
+            }
+          ],
+          "actual_kcal": 331,
+          "protein_g": 3.7,
+          "carbs_g": 64.6,
+          "fat_g": 7.5
+        },
+        "feasibility": {
+          "evaluated_combinations": 81,
+          "guardrail_status": "strict",
+          "fat_limit_percent": 120,
+          "carbs_range_percent": [
+            80,
+            120
+          ],
+          "maximum_achievable_protein_g": 86.6,
+          "maximum_achievable_protein_percent": null
+        },
+        "totals": {
+          "target_kcal": 2200,
+          "actual_kcal": 2200,
+          "protein_g": 86.6,
+          "carbs_g": 342.1,
+          "fat_g": 55.0,
+          "calorie_delta": 0,
+          "calorie_within_5_percent": true,
+          "protein_coverage_percent": null,
+          "carbs_coverage_percent": null,
+          "fat_coverage_percent": null
+        },
+        "planned_slots": [
+          "Breakfast",
+          "Lunch",
+          "Dinner",
+          "Snack"
+        ],
+        "active_targets": {
+          "calories": 2200,
+          "protein_g": 0.0,
+          "carbs_g": 0.0,
+          "fat_g": 0.0
+        }
+      },
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 180.24,
+      "status": "PASS"
+    },
+    {
+      "id": 26,
+      "subcomponent": "meal_log_detection",
+      "question": "I ate Kiribath for breakfast",
+      "expected_keywords": [
+        "kiribath",
+        "breakfast"
+      ],
+      "matched_keywords": [
+        "kiribath",
+        "breakfast"
+      ],
+      "actual": [
+        "kiribath",
+        "Breakfast"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.22,
+      "status": "PASS"
+    },
+    {
+      "id": 27,
+      "subcomponent": "meal_log_detection",
+      "question": "Log Pittu for lunch",
+      "expected_keywords": [
+        "pittu",
+        "lunch"
+      ],
+      "matched_keywords": [
+        "pittu",
+        "lunch"
+      ],
+      "actual": [
+        "pittu",
+        "Lunch"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.14,
+      "status": "PASS"
+    },
+    {
+      "id": 28,
+      "subcomponent": "meal_log_detection",
+      "question": "I had option 1 for dinner",
+      "expected_keywords": [
+        "1",
+        "dinner"
+      ],
+      "matched_keywords": [
+        "1",
+        "dinner"
+      ],
+      "actual": [
+        "option 1",
+        "Dinner"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "PASS"
+    },
+    {
+      "id": 29,
+      "subcomponent": "meal_log_detection",
+      "question": "Record Dhal Curry for dinner",
+      "expected_keywords": [
+        "dhal curry",
+        "dinner"
+      ],
+      "matched_keywords": [
+        "dhal curry",
+        "dinner"
+      ],
+      "actual": [
+        "dhal curry",
+        "Dinner"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.26,
+      "status": "PASS"
+    },
+    {
+      "id": 30,
+      "subcomponent": "meal_log_detection",
+      "question": "I consumed Hoppers Appa for breakfast",
+      "expected_keywords": [
+        "hoppers",
+        "breakfast"
+      ],
+      "matched_keywords": [
+        "hoppers",
+        "breakfast"
+      ],
+      "actual": [
+        "hoppers appa",
+        "Breakfast"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "PASS"
+    },
+    {
+      "id": 31,
+      "subcomponent": "meal_log_detection",
+      "question": "I just ate Pol Roti",
+      "expected_keywords": [
+        "pol roti"
+      ],
+      "matched_keywords": [
+        "pol roti"
+      ],
+      "actual": [
+        "pol roti",
+        null
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "PASS"
+    },
+    {
+      "id": 32,
+      "subcomponent": "meal_log_detection",
+      "question": "Log option 2 as lunch",
+      "expected_keywords": [
+        "2",
+        "lunch"
+      ],
+      "matched_keywords": [
+        "2",
+        "lunch"
+      ],
+      "actual": [
+        "option 2",
+        "Lunch"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "PASS"
+    },
+    {
+      "id": 33,
+      "subcomponent": "meal_log_detection",
+      "question": "I finished eating Fish Curry for dinner",
+      "expected_keywords": [
+        "fish curry",
+        "dinner"
+      ],
+      "matched_keywords": [
+        "fish curry",
+        "dinner"
+      ],
+      "actual": [
+        "eating fish curry",
+        "Dinner"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "PASS"
+    },
+    {
+      "id": 34,
+      "subcomponent": "meal_log_detection",
+      "question": "Record my Kola Kanda for breakfast",
+      "expected_keywords": [
+        "kola kanda",
+        "breakfast"
+      ],
+      "matched_keywords": [
+        "kola kanda",
+        "breakfast"
+      ],
+      "actual": [
+        "kola kanda",
+        "Breakfast"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.01,
+      "status": "PASS"
+    },
+    {
+      "id": 35,
+      "subcomponent": "meal_log_detection",
+      "question": "I had Papadam for snack",
+      "expected_keywords": [
+        "papadam",
+        "snack"
+      ],
+      "matched_keywords": [
+        "papadam",
+        "snack"
+      ],
+      "actual": [
+        "papadam",
+        "Snack"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "PASS"
+    },
+    {
+      "id": 36,
+      "subcomponent": "log_summary_detection",
+      "question": "Show my food log",
+      "expected_keywords": [
+        "true"
+      ],
+      "matched_keywords": [
+        "true"
+      ],
+      "actual": true,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "PASS"
+    },
+    {
+      "id": 37,
+      "subcomponent": "log_summary_detection",
+      "question": "What did I eat today?",
+      "expected_keywords": [
+        "true"
+      ],
+      "matched_keywords": [
+        "true"
+      ],
+      "actual": true,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "PASS"
+    },
+    {
+      "id": 38,
+      "subcomponent": "log_summary_detection",
+      "question": "How many calories did I eat today?",
+      "expected_keywords": [
+        "true"
+      ],
+      "matched_keywords": [
+        "true"
+      ],
+      "actual": true,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "PASS"
+    },
+    {
+      "id": 39,
+      "subcomponent": "log_summary_detection",
+      "question": "Show my meal history",
+      "expected_keywords": [
+        "true"
+      ],
+      "matched_keywords": [
+        "true"
+      ],
+      "actual": true,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "PASS"
+    },
+    {
+      "id": 40,
+      "subcomponent": "log_summary_detection",
+      "question": "How many calories are left?",
+      "expected_keywords": [
+        "true"
+      ],
+      "matched_keywords": [],
+      "actual": false,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 0.0,
+      "status": "FAIL"
+    },
+    {
+      "id": 41,
+      "subcomponent": "food_preference",
+      "question": "I don't like Pittu",
+      "expected_keywords": [
+        "dislike",
+        "pittu"
+      ],
+      "matched_keywords": [
+        "dislike",
+        "pittu"
+      ],
+      "actual": [
+        "dislike",
+        "Pittu"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 5.53,
+      "status": "PASS"
+    },
+    {
+      "id": 42,
+      "subcomponent": "food_preference",
+      "question": "I hate Kottu Roti",
+      "expected_keywords": [
+        "dislike",
+        "kottu"
+      ],
+      "matched_keywords": [
+        "dislike",
+        "kottu"
+      ],
+      "actual": [
+        "dislike",
+        "Kottu Roti"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.65,
+      "status": "PASS"
+    },
+    {
+      "id": 43,
+      "subcomponent": "food_preference",
+      "question": "I like Kiribath",
+      "expected_keywords": [
+        "like",
+        "kiribath"
+      ],
+      "matched_keywords": [
+        "like",
+        "kiribath"
+      ],
+      "actual": [
+        "like",
+        "Kiribath"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.7,
+      "status": "PASS"
+    },
+    {
+      "id": 44,
+      "subcomponent": "food_preference",
+      "question": "I love Dhal Curry",
+      "expected_keywords": [
+        "like",
+        "dhal"
+      ],
+      "matched_keywords": [
+        "like",
+        "dhal"
+      ],
+      "actual": [
+        "like",
+        "Dhal Curry"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.41,
+      "status": "PASS"
+    },
+    {
+      "id": 45,
+      "subcomponent": "food_preference",
+      "question": "Please avoid Pol Roti",
+      "expected_keywords": [
+        "dislike",
+        "pol roti"
+      ],
+      "matched_keywords": [
+        "dislike",
+        "pol roti"
+      ],
+      "actual": [
+        "dislike",
+        "Pol Roti"
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.44,
+      "status": "PASS"
+    },
+    {
+      "id": 46,
+      "subcomponent": "substitution_detection",
+      "question": "Replace Pittu with something else",
+      "expected_keywords": [
+        "pittu"
+      ],
+      "matched_keywords": [
+        "pittu"
+      ],
+      "actual": [
+        "Pittu",
+        null
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.98,
+      "status": "PASS"
+    },
+    {
+      "id": 47,
+      "subcomponent": "substitution_detection",
+      "question": "Swap Kiribath please",
+      "expected_keywords": [
+        "kiribath"
+      ],
+      "matched_keywords": [
+        "kiribath"
+      ],
+      "actual": [
+        "Kiribath",
+        null
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 1.26,
+      "status": "PASS"
+    },
+    {
+      "id": 48,
+      "subcomponent": "substitution_detection",
+      "question": "Can you replace Kottu Roti?",
+      "expected_keywords": [
+        "kottu"
+      ],
+      "matched_keywords": [
+        "kottu"
+      ],
+      "actual": [
+        "Kottu Roti",
+        null
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.41,
+      "status": "PASS"
+    },
+    {
+      "id": 49,
+      "subcomponent": "substitution_detection",
+      "question": "Give me something instead of Pol Roti",
+      "expected_keywords": [
+        "pol roti"
+      ],
+      "matched_keywords": [
+        "pol roti"
+      ],
+      "actual": [
+        "Pol Roti",
+        null
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.55,
+      "status": "PASS"
+    },
+    {
+      "id": 50,
+      "subcomponent": "substitution_detection",
+      "question": "Change Dhal Curry to another food",
+      "expected_keywords": [
+        "dhal"
+      ],
+      "matched_keywords": [
+        "dhal"
+      ],
+      "actual": [
+        "Dhal Curry",
+        null
+      ],
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 0.64,
+      "status": "PASS"
+    }
+  ]
+}

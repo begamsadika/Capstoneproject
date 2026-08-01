@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import { getUserProfile, updateUserProfile, UserProfile } from "../api/user";
+import { getUserProfile, updateUserProfile } from "../api/user";
 import {
   Bell,
   CheckCircle2,
@@ -25,7 +25,6 @@ const PROFILE_IMG =
 type SettingsTab = "profile" | "health" | "partner" | "logout";
 
 export function SettingsPage({ onNavigate }: SettingsPageProps) {
-  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isSaving, setIsSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState("");
   const [tab, setTab] = useState<SettingsTab>("profile");
@@ -35,15 +34,23 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
   const [mobile, setMobile] = useState("");
   const [dob, setDob] = useState("");
   const [gender, setGender] = useState<"male" | "female" | "other">("female");
+  const [medicalConditions, setMedicalConditions] = useState("");
+  const [medications, setMedications] = useState("");
+  const [healthSaveMsg, setHealthSaveMsg] = useState("");
   const photoInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     getUserProfile().then((data) => {
       if (data) {
-        setProfile(data);
         setFullName(data.name ?? "");
         setEmail(data.email ?? "");
-        setGender((data.gender as any) ?? "female");
+        setGender(
+          data.gender === "male" || data.gender === "female" || data.gender === "other"
+            ? data.gender
+            : "female",
+        );
+        setMedicalConditions(data.medical_conditions ?? "");
+        setMedications(data.medications ?? "");
       }
     });
   }, []);
@@ -293,8 +300,9 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                         }
                       }}
                       className="rounded-xl bg-wellora px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-wellora-hover"
+                      disabled={isSaving}
                     >
-                      {isEditing ? "Save" : "Edit"}
+                      {isSaving ? "Saving…" : isEditing ? "Save" : "Edit"}
                     </button>
                   </div>
                 </div>
@@ -306,14 +314,78 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                     Health Profile
                   </h2>
                   <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
-                    Height, weight, activity level, and health goals from
-                    onboarding appear here. Connect a device or update your
-                    profile to keep recommendations accurate.
+                    Add diagnosed conditions and current medications so Diet AI
+                    can check relevant food restrictions and interactions.
                   </p>
-                  <p className="mt-4 text-sm text-slate-500 dark:text-slate-500">
-                    This section can be wired to your onboarding data and
-                    wearables later.
-                  </p>
+                  <div className="mt-6 grid gap-5 sm:grid-cols-2">
+                    <label className="block">
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Medical conditions
+                      </span>
+                      <textarea
+                        value={medicalConditions}
+                        onChange={(event) => setMedicalConditions(event.target.value)}
+                        maxLength={1000}
+                        rows={5}
+                        placeholder="e.g., Type 2 diabetes, hypertension"
+                        className="mt-1.5 w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none focus:border-wellora focus:ring-1 focus:ring-wellora dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+                      />
+                      <span className="mt-1 block text-xs text-slate-500">
+                        Enter diagnosed conditions separated by commas.
+                      </span>
+                    </label>
+                    <label className="block">
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Current medications
+                      </span>
+                      <textarea
+                        value={medications}
+                        onChange={(event) => setMedications(event.target.value)}
+                        maxLength={1000}
+                        rows={5}
+                        placeholder="e.g., Metformin, warfarin"
+                        className="mt-1.5 w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm text-slate-900 outline-none focus:border-wellora focus:ring-1 focus:ring-wellora dark:border-slate-600 dark:bg-slate-800 dark:text-white"
+                      />
+                      <span className="mt-1 block text-xs text-slate-500">
+                        Enter medicine names separated by commas.
+                      </span>
+                    </label>
+                  </div>
+                  <div className="mt-5 rounded-xl bg-amber-50 p-4 text-xs leading-relaxed text-amber-800 dark:bg-amber-950/30 dark:text-amber-300">
+                    These are user-reported details for dietary guidance. Wellora
+                    does not diagnose conditions or replace advice from your doctor
+                    or pharmacist.
+                  </div>
+                  <div className="mt-6 flex items-center justify-end gap-4">
+                    {healthSaveMsg && (
+                      <p className="text-sm font-medium text-wellora">{healthSaveMsg}</p>
+                    )}
+                    <button
+                      type="button"
+                      disabled={isSaving}
+                      onClick={async () => {
+                        setIsSaving(true);
+                        try {
+                          await updateUserProfile({
+                            medical_conditions: medicalConditions,
+                            medications,
+                          });
+                          const refreshed = await getUserProfile();
+                          setMedicalConditions(refreshed.medical_conditions ?? "");
+                          setMedications(refreshed.medications ?? "");
+                          setHealthSaveMsg("Health profile saved!");
+                        } catch {
+                          setHealthSaveMsg("Failed to save health profile.");
+                        } finally {
+                          setIsSaving(false);
+                          setTimeout(() => setHealthSaveMsg(""), 3000);
+                        }
+                      }}
+                      className="rounded-xl bg-wellora px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-wellora-hover disabled:opacity-60"
+                    >
+                      {isSaving ? "Saving…" : "Save health profile"}
+                    </button>
+                  </div>
                 </div>
               )}
 

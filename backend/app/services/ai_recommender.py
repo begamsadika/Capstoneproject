@@ -59,6 +59,8 @@ def build_user_context(
 - Fat Target: {health_metric.get('fat_target_g', 0)}g
 - Dietary Preference: {health_metric.get('dietary_preference') or 'None'}
 - Allergies: {health_metric.get('allergies') or 'None'}
+- Medical Conditions: {health_metric.get('medical_conditions') or 'None reported'}
+- Medications: {health_metric.get('medications') or 'None reported'}
 - Activity Level: {health_metric.get('activity_level', 'moderate')}
 
 ORDER HISTORY (last 30 days):
@@ -112,10 +114,11 @@ def get_ai_recommendations(
 Select TOP 3-5 meals that best match:
 1. The user's health goal and calorie budget ({calories_left} kcal remaining today)
 2. Their dietary preferences and allergies (NEVER recommend meals with allergens)
-3. Nutritional balance
-4. Prioritize meals similar to their highly-rated (4-5 star) meals
-5. AVOID recommending meals rated 1-2 stars by the user
-6. Provide variety — avoid repeating meals ordered very recently
+3. Their reported medical conditions and medication-related food restrictions
+4. Nutritional balance
+5. Prioritize meals similar to their highly-rated (4-5 star) meals
+6. AVOID recommending meals rated 1-2 stars by the user
+7. Provide variety — avoid repeating meals ordered very recently
 
 Respond ONLY in this exact JSON format, no extra text, no markdown:
 {{

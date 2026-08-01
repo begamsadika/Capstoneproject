@@ -13,6 +13,8 @@ export interface UserProfile {
   health_goal?: string;
   dietary_preferences?: string;
   allergies?: string;
+  medical_conditions?: string;
+  medications?: string;
 }
 
 // Submit user onboarding
@@ -44,6 +46,8 @@ export interface UpdateProfileData {
   health_goal?: string;
   dietary_preferences?: string;
   allergies?: string;
+  medical_conditions?: string;
+  medications?: string;
 }
 
 export const updateUserProfile = async (data: UpdateProfileData) => {

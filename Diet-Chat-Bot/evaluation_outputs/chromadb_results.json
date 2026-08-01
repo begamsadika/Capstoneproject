@@ -1,0 +1,1267 @@
+{
+  "component": "chromadb",
+  "generated_at": "2026-07-30T20:02:00.694949+00:00",
+  "summary": {
+    "total": 50,
+    "passed": 31,
+    "failed": 19,
+    "accuracy_percent": 62.0,
+    "average_latency_ms": 125.21
+  },
+  "results": [
+    {
+      "id": 1,
+      "question": "Suggest vegetarian breakfast",
+      "top_k": 5,
+      "expected_any": [
+        "string hoppers",
+        "pittu",
+        "hoppers",
+        "kiribath",
+        "kola kanda"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Brinjal Moju",
+        "Coconut Chutney",
+        "Tofu Kottu",
+        "Vegetable Kottu",
+        "Inguru Maluwa"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 885.99,
+      "status": "FAIL"
+    },
+    {
+      "id": 2,
+      "question": "Find me a vegetarian breakfast",
+      "top_k": 5,
+      "expected_any": [
+        "string hoppers",
+        "pittu",
+        "hoppers",
+        "kiribath",
+        "kola kanda"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Tofu Kottu",
+        "Vegetable Kottu",
+        "Brinjal Moju",
+        "Coconut Chutney",
+        "Rasam"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 162.51,
+      "status": "FAIL"
+    },
+    {
+      "id": 3,
+      "question": "I want vegetarian breakfast",
+      "top_k": 5,
+      "expected_any": [
+        "string hoppers",
+        "pittu",
+        "hoppers",
+        "kiribath",
+        "kola kanda"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Tofu Kottu",
+        "Brinjal Moju",
+        "Coconut Chutney",
+        "Rasam",
+        "Vegetable Kottu"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 59.4,
+      "status": "FAIL"
+    },
+    {
+      "id": 4,
+      "question": "Show foods suitable for vegetarian breakfast",
+      "top_k": 5,
+      "expected_any": [
+        "string hoppers",
+        "pittu",
+        "hoppers",
+        "kiribath",
+        "kola kanda"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Coconut Chutney",
+        "Vegetable Kottu",
+        "Inguru Maluwa",
+        "Brinjal Moju",
+        "Puttu"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 77.12,
+      "status": "FAIL"
+    },
+    {
+      "id": 5,
+      "question": "What is a good vegetarian breakfast option?",
+      "top_k": 5,
+      "expected_any": [
+        "string hoppers",
+        "pittu",
+        "hoppers",
+        "kiribath",
+        "kola kanda"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Coconut Chutney",
+        "Brinjal Moju",
+        "Rasam",
+        "Wambatu Moju",
+        "Puttu"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 75.48,
+      "status": "FAIL"
+    },
+    {
+      "id": 6,
+      "question": "Suggest high protein curry",
+      "top_k": 5,
+      "expected_any": [
+        "chicken curry",
+        "fish curry",
+        "dhal curry",
+        "prawn curry"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Wood Apple Curry",
+        "Del Curry",
+        "Belimal Curry",
+        "Tomato Curry",
+        "Ash Plantain Curry"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 70.48,
+      "status": "FAIL"
+    },
+    {
+      "id": 7,
+      "question": "Find me a high protein curry",
+      "top_k": 5,
+      "expected_any": [
+        "chicken curry",
+        "fish curry",
+        "dhal curry",
+        "prawn curry"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Wood Apple Curry",
+        "Del Curry",
+        "Belimal Curry",
+        "Tomato Curry",
+        "Ash Plantain Curry"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 42.15,
+      "status": "FAIL"
+    },
+    {
+      "id": 8,
+      "question": "I want high protein curry",
+      "top_k": 5,
+      "expected_any": [
+        "chicken curry",
+        "fish curry",
+        "dhal curry",
+        "prawn curry"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Wood Apple Curry",
+        "Del Curry",
+        "Belimal Curry",
+        "Tomato Curry",
+        "Cashew Curry"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 37.05,
+      "status": "FAIL"
+    },
+    {
+      "id": 9,
+      "question": "Show foods suitable for high protein curry",
+      "top_k": 5,
+      "expected_any": [
+        "chicken curry",
+        "fish curry",
+        "dhal curry",
+        "prawn curry"
+      ],
+      "matched_expected": [
+        "chicken curry"
+      ],
+      "returned_foods": [
+        "Del Curry",
+        "Wood Apple Curry",
+        "Belimal Curry",
+        "Long Bean Curry",
+        "Chicken Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.25,
+      "error": null,
+      "elapsed_ms": 42.49,
+      "status": "PASS"
+    },
+    {
+      "id": 10,
+      "question": "What is a good high protein curry option?",
+      "top_k": 5,
+      "expected_any": [
+        "chicken curry",
+        "fish curry",
+        "dhal curry",
+        "prawn curry"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Wood Apple Curry",
+        "Del Curry",
+        "Belimal Curry",
+        "Tomato Curry",
+        "Drumstick Curry"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 31.54,
+      "status": "FAIL"
+    },
+    {
+      "id": 11,
+      "question": "Suggest low calorie vegetable curry",
+      "top_k": 5,
+      "expected_any": [
+        "snake gourd",
+        "bitter gourd",
+        "pumpkin"
+      ],
+      "matched_expected": [
+        "pumpkin"
+      ],
+      "returned_foods": [
+        "Cabbage Curry",
+        "Pumpkin Curry",
+        "Del Curry",
+        "Carrot Curry",
+        "Belimal Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.33,
+      "error": null,
+      "elapsed_ms": 86.25,
+      "status": "PASS"
+    },
+    {
+      "id": 12,
+      "question": "Find me a low calorie vegetable curry",
+      "top_k": 5,
+      "expected_any": [
+        "snake gourd",
+        "bitter gourd",
+        "pumpkin"
+      ],
+      "matched_expected": [
+        "pumpkin"
+      ],
+      "returned_foods": [
+        "Cabbage Curry",
+        "Del Curry",
+        "Pumpkin Curry",
+        "Carrot Curry",
+        "Belimal Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.33,
+      "error": null,
+      "elapsed_ms": 92.31,
+      "status": "PASS"
+    },
+    {
+      "id": 13,
+      "question": "I want low calorie vegetable curry",
+      "top_k": 5,
+      "expected_any": [
+        "snake gourd",
+        "bitter gourd",
+        "pumpkin"
+      ],
+      "matched_expected": [
+        "pumpkin"
+      ],
+      "returned_foods": [
+        "Cabbage Curry",
+        "Pumpkin Curry",
+        "Del Curry",
+        "Carrot Curry",
+        "Belimal Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.33,
+      "error": null,
+      "elapsed_ms": 203.02,
+      "status": "PASS"
+    },
+    {
+      "id": 14,
+      "question": "Show foods suitable for low calorie vegetable curry",
+      "top_k": 5,
+      "expected_any": [
+        "snake gourd",
+        "bitter gourd",
+        "pumpkin"
+      ],
+      "matched_expected": [
+        "pumpkin"
+      ],
+      "returned_foods": [
+        "Cabbage Curry",
+        "Del Curry",
+        "Carrot Curry",
+        "Belimal Curry",
+        "Pumpkin Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.33,
+      "error": null,
+      "elapsed_ms": 572.78,
+      "status": "PASS"
+    },
+    {
+      "id": 15,
+      "question": "What is a good low calorie vegetable curry option?",
+      "top_k": 5,
+      "expected_any": [
+        "snake gourd",
+        "bitter gourd",
+        "pumpkin"
+      ],
+      "matched_expected": [
+        "pumpkin"
+      ],
+      "returned_foods": [
+        "Cabbage Curry",
+        "Carrot Curry",
+        "Del Curry",
+        "Pumpkin Curry",
+        "Wood Apple Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.33,
+      "error": null,
+      "elapsed_ms": 47.27,
+      "status": "PASS"
+    },
+    {
+      "id": 16,
+      "question": "Suggest Sri Lankan breakfast",
+      "top_k": 5,
+      "expected_any": [
+        "kiribath",
+        "hoppers",
+        "pittu",
+        "kola kanda"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Malabar Parotta",
+        "Milk Tea",
+        "Chicken Curry",
+        "Mung Bean Rice",
+        "Uttapam"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 94.38,
+      "status": "FAIL"
+    },
+    {
+      "id": 17,
+      "question": "Find me a Sri Lankan breakfast",
+      "top_k": 5,
+      "expected_any": [
+        "kiribath",
+        "hoppers",
+        "pittu",
+        "kola kanda"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Malabar Parotta",
+        "Chicken Curry",
+        "Milk Tea",
+        "Uttapam",
+        "Mung Bean Rice"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 250.65,
+      "status": "FAIL"
+    },
+    {
+      "id": 18,
+      "question": "I want Sri Lankan breakfast",
+      "top_k": 5,
+      "expected_any": [
+        "kiribath",
+        "hoppers",
+        "pittu",
+        "kola kanda"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Malabar Parotta",
+        "Milk Tea",
+        "Chicken Curry",
+        "Mung Bean Rice",
+        "Uttapam"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 239.2,
+      "status": "FAIL"
+    },
+    {
+      "id": 19,
+      "question": "Show foods suitable for Sri Lankan breakfast",
+      "top_k": 5,
+      "expected_any": [
+        "kiribath",
+        "hoppers",
+        "pittu",
+        "kola kanda"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Mung Bean Rice",
+        "Malabar Parotta",
+        "Chicken Curry",
+        "Uttapam",
+        "Vegetable Fried Rice"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 928.14,
+      "status": "FAIL"
+    },
+    {
+      "id": 20,
+      "question": "What is a good Sri Lankan breakfast option?",
+      "top_k": 5,
+      "expected_any": [
+        "kiribath",
+        "hoppers",
+        "pittu",
+        "kola kanda"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Malabar Parotta",
+        "Chicken Curry",
+        "Mung Bean Rice",
+        "Milk Tea",
+        "Uttapam"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 127.52,
+      "status": "FAIL"
+    },
+    {
+      "id": 21,
+      "question": "Suggest healthy green side dish",
+      "top_k": 5,
+      "expected_any": [
+        "mallung",
+        "gotukola",
+        "kankun"
+      ],
+      "matched_expected": [
+        "mallung"
+      ],
+      "returned_foods": [
+        "Green Bean Curry",
+        "Pol Mallung",
+        "Drumstick Curry",
+        "Thalapa",
+        "Thalipa"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.33,
+      "error": null,
+      "elapsed_ms": 20.24,
+      "status": "PASS"
+    },
+    {
+      "id": 22,
+      "question": "Find me a healthy green side dish",
+      "top_k": 5,
+      "expected_any": [
+        "mallung",
+        "gotukola",
+        "kankun"
+      ],
+      "matched_expected": [
+        "mallung"
+      ],
+      "returned_foods": [
+        "Pol Mallung",
+        "Drumstick Curry",
+        "Green Bean Curry",
+        "Thalapa",
+        "Thalipa"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.33,
+      "error": null,
+      "elapsed_ms": 623.64,
+      "status": "PASS"
+    },
+    {
+      "id": 23,
+      "question": "I want healthy green side dish",
+      "top_k": 5,
+      "expected_any": [
+        "mallung",
+        "gotukola",
+        "kankun"
+      ],
+      "matched_expected": [
+        "mallung"
+      ],
+      "returned_foods": [
+        "Pol Mallung",
+        "Green Bean Curry",
+        "Drumstick Curry",
+        "Wambatu Moju",
+        "Thalapa"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.33,
+      "error": null,
+      "elapsed_ms": 95.96,
+      "status": "PASS"
+    },
+    {
+      "id": 24,
+      "question": "Show foods suitable for healthy green side dish",
+      "top_k": 5,
+      "expected_any": [
+        "mallung",
+        "gotukola",
+        "kankun"
+      ],
+      "matched_expected": [
+        "mallung"
+      ],
+      "returned_foods": [
+        "Green Bean Curry",
+        "Drumstick Curry",
+        "Pol Mallung",
+        "Thalipa",
+        "Kola Mallung"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.33,
+      "error": null,
+      "elapsed_ms": 34.01,
+      "status": "PASS"
+    },
+    {
+      "id": 25,
+      "question": "What is a good healthy green side dish option?",
+      "top_k": 5,
+      "expected_any": [
+        "mallung",
+        "gotukola",
+        "kankun"
+      ],
+      "matched_expected": [
+        "mallung"
+      ],
+      "returned_foods": [
+        "Drumstick Curry",
+        "Pol Mallung",
+        "Green Bean Curry",
+        "Thalapa",
+        "Thalipa"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.33,
+      "error": null,
+      "elapsed_ms": 61.12,
+      "status": "PASS"
+    },
+    {
+      "id": 26,
+      "question": "Suggest seafood lunch",
+      "top_k": 5,
+      "expected_any": [
+        "fish",
+        "prawn"
+      ],
+      "matched_expected": [
+        "fish",
+        "prawn"
+      ],
+      "returned_foods": [
+        "Crab Curry",
+        "Fish Biryani",
+        "Diyawara",
+        "Fried Fish",
+        "Prawn Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 84.49,
+      "status": "PASS"
+    },
+    {
+      "id": 27,
+      "question": "Find me a seafood lunch",
+      "top_k": 5,
+      "expected_any": [
+        "fish",
+        "prawn"
+      ],
+      "matched_expected": [
+        "fish"
+      ],
+      "returned_foods": [
+        "Crab Curry",
+        "Fish Biryani",
+        "Fried Fish",
+        "Diyawara",
+        "Fish Kottu"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 55.08,
+      "status": "PASS"
+    },
+    {
+      "id": 28,
+      "question": "I want seafood lunch",
+      "top_k": 5,
+      "expected_any": [
+        "fish",
+        "prawn"
+      ],
+      "matched_expected": [
+        "fish",
+        "prawn"
+      ],
+      "returned_foods": [
+        "Crab Curry",
+        "Diyawara",
+        "Fried Fish",
+        "Fish Biryani",
+        "Prawn Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 69.13,
+      "status": "PASS"
+    },
+    {
+      "id": 29,
+      "question": "Show foods suitable for seafood lunch",
+      "top_k": 5,
+      "expected_any": [
+        "fish",
+        "prawn"
+      ],
+      "matched_expected": [
+        "fish",
+        "prawn"
+      ],
+      "returned_foods": [
+        "Crab Curry",
+        "Fish Biryani",
+        "Fried Fish",
+        "Maldive Fish",
+        "Prawn Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 81.19,
+      "status": "PASS"
+    },
+    {
+      "id": 30,
+      "question": "What is a good seafood lunch option?",
+      "top_k": 5,
+      "expected_any": [
+        "fish",
+        "prawn"
+      ],
+      "matched_expected": [
+        "fish",
+        "prawn"
+      ],
+      "returned_foods": [
+        "Crab Curry",
+        "Prawn Curry",
+        "Fried Fish",
+        "Diyawara",
+        "Fish Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 114.46,
+      "status": "PASS"
+    },
+    {
+      "id": 31,
+      "question": "Suggest vegan snack",
+      "top_k": 5,
+      "expected_any": [
+        "papadam",
+        "murukku"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Miris Gala",
+        "Banana (medium)",
+        "Buth",
+        "Koonissu",
+        "String Hoppers"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 33.03,
+      "status": "FAIL"
+    },
+    {
+      "id": 32,
+      "question": "Find me a vegan snack",
+      "top_k": 5,
+      "expected_any": [
+        "papadam",
+        "murukku"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Wadei",
+        "Miris Gala",
+        "String Hoppers",
+        "Banana (medium)",
+        "Koonissu"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 70.75,
+      "status": "FAIL"
+    },
+    {
+      "id": 33,
+      "question": "I want vegan snack",
+      "top_k": 5,
+      "expected_any": [
+        "papadam",
+        "murukku"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "String Hoppers",
+        "Miris Gala",
+        "Buth",
+        "Wadei",
+        "Banana (medium)"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 44.44,
+      "status": "FAIL"
+    },
+    {
+      "id": 34,
+      "question": "Show foods suitable for vegan snack",
+      "top_k": 5,
+      "expected_any": [
+        "papadam",
+        "murukku"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Miris Gala",
+        "String Hoppers",
+        "Buth",
+        "Koonissu",
+        "Avocado (half)"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 94.83,
+      "status": "FAIL"
+    },
+    {
+      "id": 35,
+      "question": "What is a good vegan snack option?",
+      "top_k": 5,
+      "expected_any": [
+        "papadam",
+        "murukku"
+      ],
+      "matched_expected": [],
+      "returned_foods": [
+        "Banana (medium)",
+        "Koonissu",
+        "Buth",
+        "Avocado (half)",
+        "Wadei"
+      ],
+      "hit_at_5": false,
+      "initialization_error": null,
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 40.31,
+      "status": "FAIL"
+    },
+    {
+      "id": 36,
+      "question": "Suggest coconut condiment",
+      "top_k": 5,
+      "expected_any": [
+        "pol sambol",
+        "coconut sambol"
+      ],
+      "matched_expected": [
+        "pol sambol",
+        "coconut sambol"
+      ],
+      "returned_foods": [
+        "Coconut Chutney",
+        "Coconut Sambol",
+        "Pol Sambol",
+        "Kiri Hodiya",
+        "Pol Mallung"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 19.32,
+      "status": "PASS"
+    },
+    {
+      "id": 37,
+      "question": "Find me a coconut condiment",
+      "top_k": 5,
+      "expected_any": [
+        "pol sambol",
+        "coconut sambol"
+      ],
+      "matched_expected": [
+        "pol sambol",
+        "coconut sambol"
+      ],
+      "returned_foods": [
+        "Coconut Chutney",
+        "Coconut Sambol",
+        "Coconut Milk (Light)",
+        "Pol Sambol",
+        "Kiri Hodiya"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 31.25,
+      "status": "PASS"
+    },
+    {
+      "id": 38,
+      "question": "I want coconut condiment",
+      "top_k": 5,
+      "expected_any": [
+        "pol sambol",
+        "coconut sambol"
+      ],
+      "matched_expected": [
+        "pol sambol",
+        "coconut sambol"
+      ],
+      "returned_foods": [
+        "Coconut Chutney",
+        "Coconut Sambol",
+        "Coconut Milk (Light)",
+        "Pol Sambol",
+        "Pol Pani"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 33.99,
+      "status": "PASS"
+    },
+    {
+      "id": 39,
+      "question": "Show foods suitable for coconut condiment",
+      "top_k": 5,
+      "expected_any": [
+        "pol sambol",
+        "coconut sambol"
+      ],
+      "matched_expected": [
+        "coconut sambol"
+      ],
+      "returned_foods": [
+        "Coconut Chutney",
+        "Coconut Sambol",
+        "Kiri Hodiya",
+        "Coconut Milk (Light)",
+        "Hathmaluwa"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 95.81,
+      "status": "PASS"
+    },
+    {
+      "id": 40,
+      "question": "What is a good coconut condiment option?",
+      "top_k": 5,
+      "expected_any": [
+        "pol sambol",
+        "coconut sambol"
+      ],
+      "matched_expected": [
+        "coconut sambol"
+      ],
+      "returned_foods": [
+        "Coconut Chutney",
+        "Coconut Sambol",
+        "Coconut Milk (Light)",
+        "Kiri Hodi",
+        "Kiri Hodiya"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 157.37,
+      "status": "PASS"
+    },
+    {
+      "id": 41,
+      "question": "Suggest lentil protein meal",
+      "top_k": 5,
+      "expected_any": [
+        "dhal curry"
+      ],
+      "matched_expected": [
+        "dhal curry"
+      ],
+      "returned_foods": [
+        "Lentil Fritters",
+        "Lentil Rice (Parippu Bath)",
+        "Dhal Curry",
+        "Isso Wade",
+        "Parippu Vade"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 24.11,
+      "status": "PASS"
+    },
+    {
+      "id": 42,
+      "question": "Find me a lentil protein meal",
+      "top_k": 5,
+      "expected_any": [
+        "dhal curry"
+      ],
+      "matched_expected": [
+        "dhal curry"
+      ],
+      "returned_foods": [
+        "Lentil Fritters",
+        "Lentil Rice (Parippu Bath)",
+        "Isso Wade",
+        "Parippu Vade",
+        "Dhal Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 35.43,
+      "status": "PASS"
+    },
+    {
+      "id": 43,
+      "question": "I want lentil protein meal",
+      "top_k": 5,
+      "expected_any": [
+        "dhal curry"
+      ],
+      "matched_expected": [
+        "dhal curry"
+      ],
+      "returned_foods": [
+        "Lentil Fritters",
+        "Lentil Rice (Parippu Bath)",
+        "Parippu Vade",
+        "Dhal Curry",
+        "Sambar"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 31.83,
+      "status": "PASS"
+    },
+    {
+      "id": 44,
+      "question": "Show foods suitable for lentil protein meal",
+      "top_k": 5,
+      "expected_any": [
+        "dhal curry"
+      ],
+      "matched_expected": [
+        "dhal curry"
+      ],
+      "returned_foods": [
+        "Lentil Fritters",
+        "Lentil Rice (Parippu Bath)",
+        "Parippu Vade",
+        "Dhal Curry",
+        "Isso Wade"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 53.08,
+      "status": "PASS"
+    },
+    {
+      "id": 45,
+      "question": "What is a good lentil protein meal option?",
+      "top_k": 5,
+      "expected_any": [
+        "dhal curry"
+      ],
+      "matched_expected": [
+        "dhal curry"
+      ],
+      "returned_foods": [
+        "Lentil Fritters",
+        "Lentil Rice (Parippu Bath)",
+        "Sambar",
+        "Dhal Curry",
+        "Parippu Vade"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 19.25,
+      "status": "PASS"
+    },
+    {
+      "id": 46,
+      "question": "Suggest gluten free dinner curry",
+      "top_k": 5,
+      "expected_any": [
+        "curry"
+      ],
+      "matched_expected": [
+        "curry"
+      ],
+      "returned_foods": [
+        "Del Curry",
+        "Pumpkin Curry",
+        "Cabbage Curry",
+        "Chicken Curry",
+        "Belimal Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 29.28,
+      "status": "PASS"
+    },
+    {
+      "id": 47,
+      "question": "Find me a gluten free dinner curry",
+      "top_k": 5,
+      "expected_any": [
+        "curry"
+      ],
+      "matched_expected": [
+        "curry"
+      ],
+      "returned_foods": [
+        "Del Curry",
+        "Pumpkin Curry",
+        "Wood Apple Curry",
+        "Cabbage Curry",
+        "Belimal Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 18.43,
+      "status": "PASS"
+    },
+    {
+      "id": 48,
+      "question": "I want gluten free dinner curry",
+      "top_k": 5,
+      "expected_any": [
+        "curry"
+      ],
+      "matched_expected": [
+        "curry"
+      ],
+      "returned_foods": [
+        "Del Curry",
+        "Pumpkin Curry",
+        "Cabbage Curry",
+        "Belimal Curry",
+        "Wood Apple Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 19.81,
+      "status": "PASS"
+    },
+    {
+      "id": 49,
+      "question": "Show foods suitable for gluten free dinner curry",
+      "top_k": 5,
+      "expected_any": [
+        "curry"
+      ],
+      "matched_expected": [
+        "curry"
+      ],
+      "returned_foods": [
+        "Del Curry",
+        "Pumpkin Curry",
+        "Cabbage Curry",
+        "Wood Apple Curry",
+        "Belimal Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 17.36,
+      "status": "PASS"
+    },
+    {
+      "id": 50,
+      "question": "What is a good gluten free dinner curry option?",
+      "top_k": 5,
+      "expected_any": [
+        "curry"
+      ],
+      "matched_expected": [
+        "curry"
+      ],
+      "returned_foods": [
+        "Del Curry",
+        "Wood Apple Curry",
+        "Pumpkin Curry",
+        "Belimal Curry",
+        "Cabbage Curry"
+      ],
+      "hit_at_5": true,
+      "initialization_error": null,
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 25.83,
+      "status": "PASS"
+    }
+  ]
+}

@@ -136,6 +136,8 @@ def build_health_metrics(
     age: int = 30,
     dietary_pref: str = "",
     allergies: str = "",
+    medical_conditions: str = "",
+    medications: str = "",
 ):
     """
     Master function — calculates ALL health metrics.
@@ -168,6 +170,8 @@ def build_health_metrics(
         "activity_level": activity_level,
         "dietary_preference": dietary_pref,
         "allergies": allergies,
+        "medical_conditions": medical_conditions,
+        "medications": medications,
         "ideal_weight_kg": ideal_weight,
         "weight_to_goal_kg": weight_diff,
         "estimated_weeks_to_goal": weeks_to_goal,

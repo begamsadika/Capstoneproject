@@ -1,0 +1,943 @@
+{
+  "component": "llm_fallback",
+  "generated_at": "2026-07-30T20:08:23.995975+00:00",
+  "summary": {
+    "total": 50,
+    "passed": 48,
+    "failed": 2,
+    "accuracy_percent": 96.0,
+    "average_latency_ms": 7483.49
+  },
+  "results": [
+    {
+      "id": 1,
+      "question": "Explain balanced eating in simple terms.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "nutrient",
+        "health"
+      ],
+      "matched_keywords": [
+        "nutrient",
+        "health"
+      ],
+      "answer": "Balanced eating involves consuming a variety of foods from all food groups – fruits, vegetables, whole grains, proteins, and dairy – in appropriate proportions. It’s about ensuring you’re getting enough of each nutrient your body needs to function properly.  Focusing on a wider range of foods helps prevent nutrient deficiencies and supports overall health.  Ultimately, it’s about creating a diet that provides your body with the resources it needs to thrive.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 9396.66,
+      "status": "PASS"
+    },
+    {
+      "id": 2,
+      "question": "Why is balanced eating important?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "nutrient",
+        "health"
+      ],
+      "matched_keywords": [
+        "nutrient",
+        "health"
+      ],
+      "answer": "Balanced eating is crucial for overall health because it provides your body with the essential nutrients it needs to function optimally.  A balanced diet ensures you obtain enough vitamins, minerals, and macronutrients to support energy levels, immune function, and tissue repair.  Without sufficient balance, you risk deficiencies that can impact various bodily processes.  Ultimately, prioritizing balance contributes to long-term well-being and disease prevention.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 9995.86,
+      "status": "PASS"
+    },
+    {
+      "id": 3,
+      "question": "Give three general tips about balanced eating.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "nutrient",
+        "health"
+      ],
+      "matched_keywords": [
+        "nutrient",
+        "health"
+      ],
+      "answer": "Here are three general tips for balanced eating: \n\n1.  **Focus on a variety of food groups:** Include fruits, vegetables, whole grains, lean proteins, and healthy fats to ensure you’re getting essential nutrients.\n2.  **Pay attention to portion sizes:** Avoid overeating by consciously controlling the amount of food you consume.\n3.  **Stay hydrated:** Drinking enough water is crucial for overall health and can help with digestion and satiety. \n\n**Disclaimer:** *I am an AI Chatbot and not a registered dietitian or medical professional. This information is for general knowledge and informational purposes only, and does not constitute medical advice. It is essential to consult with a qualified healthcare provider for any health concerns or before making any decisions related to your health or treatment.*",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 12399.41,
+      "status": "PASS"
+    },
+    {
+      "id": 4,
+      "question": "How can someone improve balanced eating?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "nutrient",
+        "health"
+      ],
+      "matched_keywords": [
+        "nutrient",
+        "health"
+      ],
+      "answer": "Improving balanced eating involves focusing on consuming a variety of foods from all food groups – fruits, vegetables, lean proteins, and whole grains.  Pay attention to portion sizes and mindful eating – savoring each bite and eating slowly.  It also means paying attention to your body’s hunger and fullness cues, rather than rigidly following a set number of calories.  Finally, prioritize nutrient-dense foods to support your overall health and well-being.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 8292.83,
+      "status": "PASS"
+    },
+    {
+      "id": 5,
+      "question": "What should a beginner know about balanced eating?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "nutrient",
+        "health"
+      ],
+      "matched_keywords": [
+        "nutrient",
+        "health"
+      ],
+      "answer": "A beginner’s approach to balanced eating focuses on consuming a variety of foods from all food groups – fruits, vegetables, grains, protein, and dairy – in appropriate proportions. Prioritize whole, unprocessed foods like fruits, vegetables, and whole grains to ensure you’re getting essential nutrients.  Pay attention to portion sizes and include healthy fats and lean proteins for energy and satiety.  Consistency and mindful eating are key to establishing healthy habits over time.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 7803.37,
+      "status": "PASS"
+    },
+    {
+      "id": 6,
+      "question": "Explain healthy eating habits in simple terms.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "habit",
+        "health"
+      ],
+      "matched_keywords": [
+        "habit",
+        "health"
+      ],
+      "answer": "Healthy eating habits focus on consuming a variety of nutrient-rich foods like fruits, vegetables, lean proteins, and whole grains. It’s important to eat regular meals and snacks to maintain stable energy levels throughout the day.  Prioritize whole foods over processed options and pay attention to portion sizes to support overall well-being. Finally, listen to your body’s hunger and fullness cues – eating mindfully is key!",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 8691.69,
+      "status": "PASS"
+    },
+    {
+      "id": 7,
+      "question": "Why is healthy eating habits important?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "habit",
+        "health"
+      ],
+      "matched_keywords": [
+        "habit",
+        "health"
+      ],
+      "answer": "Healthy eating habits are crucial for overall well-being because they provide the body with essential nutrients needed for optimal function.  They can improve energy levels, boost the immune system, and reduce the risk of chronic diseases like heart disease and diabetes.  Regularly consuming nutrient-rich foods supports physical health and helps maintain a healthy weight. Ultimately, prioritizing healthy eating habits contributes to a longer, happier, and healthier life.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 10911.53,
+      "status": "PASS"
+    },
+    {
+      "id": 8,
+      "question": "Give three general tips about healthy eating habits.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "habit",
+        "health"
+      ],
+      "matched_keywords": [
+        "habit",
+        "health"
+      ],
+      "answer": "Here are three general tips for healthy eating habits: Focus on consuming a variety of fruits, vegetables, and whole grains to ensure you’re getting essential nutrients. Prioritize lean protein sources like fish, poultry, and beans to support muscle health and satiety. Finally, limit processed foods, sugary drinks, and excessive amounts of unhealthy fats to maintain overall well-being.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 9184.57,
+      "status": "PASS"
+    },
+    {
+      "id": 9,
+      "question": "How can someone improve healthy eating habits?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "habit",
+        "health"
+      ],
+      "matched_keywords": [
+        "habit",
+        "health"
+      ],
+      "answer": "Improving healthy eating habits involves making gradual, sustainable changes. Focus on incorporating more whole foods like fruits, vegetables, and lean proteins, while reducing processed foods and added sugars.  Pay attention to portion sizes and mindful eating – savoring each bite.  Finally, prioritize consistent habits and seek support from resources like nutritionists or registered dietitians if needed.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 7822.16,
+      "status": "PASS"
+    },
+    {
+      "id": 10,
+      "question": "What should a beginner know about healthy eating habits?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "habit",
+        "health"
+      ],
+      "matched_keywords": [
+        "habit",
+        "health"
+      ],
+      "answer": "Starting with healthy eating habits involves focusing on whole, unprocessed foods like fruits, vegetables, and lean proteins.  It’s important to consume a variety of nutrient-rich foods to ensure you’re getting essential vitamins and minerals.  Pay attention to portion sizes and balance your meals with carbohydrates, proteins, and healthy fats.  Finally, aim for regular, sustainable habits rather than drastic changes for long-term well-being.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 9346.5,
+      "status": "PASS"
+    },
+    {
+      "id": 11,
+      "question": "Explain portion control in simple terms.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "portion",
+        "calorie"
+      ],
+      "matched_keywords": [
+        "portion"
+      ],
+      "answer": "Portion control involves eating a reasonable amount of food relative to your body’s needs. It’s about understanding serving sizes and limiting them to avoid overeating.  Focus on filling up slightly before eating more to feel satisfied with less food.  Ultimately, mindful eating – paying attention to how much you consume – is key to portion control.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 6389.59,
+      "status": "PASS"
+    },
+    {
+      "id": 12,
+      "question": "Why is portion control important?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "portion",
+        "calorie"
+      ],
+      "matched_keywords": [
+        "portion",
+        "calorie"
+      ],
+      "answer": "Portion control is important because it helps manage calorie intake and maintain a healthy weight. Consuming too much food can lead to increased calorie consumption and potential weight gain.  It also promotes better nutrient utilization by ensuring you’re consuming the right amount of each food group. Ultimately, portion control contributes to overall health and well-being.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 9569.53,
+      "status": "PASS"
+    },
+    {
+      "id": 13,
+      "question": "Give three general tips about portion control.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "portion",
+        "calorie"
+      ],
+      "matched_keywords": [
+        "portion"
+      ],
+      "answer": "Here are three general tips for portion control:\n\n1.  Start with smaller portions and gradually increase them as you get used to them.\n2.  Use smaller plates and bowls to visually represent smaller amounts.\n3.  Pay attention to serving sizes on food labels and be mindful of how much you’re actually eating.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 8269.08,
+      "status": "PASS"
+    },
+    {
+      "id": 14,
+      "question": "How can someone improve portion control?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "portion",
+        "calorie"
+      ],
+      "matched_keywords": [
+        "portion"
+      ],
+      "answer": "Improving portion control involves being mindful of serving sizes and practicing mindful eating – paying attention to how much you’re consuming without distractions.  Start by using smaller plates, and paying attention to your body’s hunger and fullness cues.  Gradually decrease the amount of food you eat at each sitting, and focus on savoring each bite.  Finally, track your food intake for a week to identify patterns and areas for improvement.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 8497.59,
+      "status": "PASS"
+    },
+    {
+      "id": 15,
+      "question": "What should a beginner know about portion control?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "portion",
+        "calorie"
+      ],
+      "matched_keywords": [
+        "portion",
+        "calorie"
+      ],
+      "answer": "Beginners should aim for a general guideline of 1/2 to 1/3 of their daily calories from each meal and snack.  Focus on filling half your plate with vegetables and a good portion of carbohydrates, and the other half with lean protein and healthy fats.  Consistently paying attention to serving sizes – using smaller plates – can significantly impact how much you eat.  Ultimately, mindful portion control helps maintain a healthy weight and energy balance.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 7993.79,
+      "status": "PASS"
+    },
+    {
+      "id": 16,
+      "question": "Explain hydration in simple terms.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "water",
+        "hydrat"
+      ],
+      "matched_keywords": [
+        "water",
+        "hydrat"
+      ],
+      "answer": "Staying adequately hydrated is crucial for overall health and bodily functions. It’s simply the amount of water your body needs to stay balanced.  Adequate water intake helps regulate body temperature, transport nutrients, and flush out waste.  Listen to your body's thirst cues and aim to drink enough to feel reasonably hydrated – generally, about half your body weight in ounces.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 7056.21,
+      "status": "PASS"
+    },
+    {
+      "id": 17,
+      "question": "Why is hydration important?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "water",
+        "hydrat"
+      ],
+      "matched_keywords": [
+        "water",
+        "hydrat"
+      ],
+      "answer": "Adequate hydration is crucial for numerous bodily functions, including regulating body temperature, transporting nutrients, and lubricating joints. Water helps maintain skin elasticity and supports overall health.  Dehydration can lead to fatigue, headaches, and impaired cognitive function.  Ultimately, sufficient hydration supports your body’s optimal performance and well-being.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 7939.64,
+      "status": "PASS"
+    },
+    {
+      "id": 18,
+      "question": "Give three general tips about hydration.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "water",
+        "hydrat"
+      ],
+      "matched_keywords": [
+        "water",
+        "hydrat"
+      ],
+      "answer": "Here are three general tips for staying hydrated:  Drink water consistently throughout the day, aiming for regular sips rather than large amounts infrequently.  Pay attention to your body’s thirst cues – drink when you feel thirsty.  Also, consume fluids like water, unsweetened tea, or coconut water to replenish lost fluids.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 7123.77,
+      "status": "PASS"
+    },
+    {
+      "id": 19,
+      "question": "How can someone improve hydration?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "water",
+        "hydrat"
+      ],
+      "matched_keywords": [
+        "water",
+        "hydrat"
+      ],
+      "answer": "Improving hydration involves consistently drinking enough water throughout the day.  It’s a good idea to aim for at least eight glasses (64 ounces) daily, but individual needs vary.  You can also increase water intake by carrying a water bottle with you and sipping regularly.  Listen to your body’s thirst cues and prioritize fluids from various sources like fruits and vegetables.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 9594.3,
+      "status": "PASS"
+    },
+    {
+      "id": 20,
+      "question": "What should a beginner know about hydration?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "water",
+        "hydrat"
+      ],
+      "matched_keywords": [
+        "water",
+        "hydrat"
+      ],
+      "answer": "Adequate hydration is essential for overall health and well-being, playing a crucial role in many bodily functions.  Beginners should aim to drink enough water throughout the day – generally around 8 cups (64 ounces) – but individual needs can vary.  Listen to your body's thirst cues and pay attention to urine color, which can indicate hydration status.  Consistency is key – gradually increase fluid intake to allow your body to adjust.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 9012.57,
+      "status": "PASS"
+    },
+    {
+      "id": 21,
+      "question": "Explain mindful eating in simple terms.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "mindful",
+        "hunger"
+      ],
+      "matched_keywords": [
+        "mindful"
+      ],
+      "answer": "Mindful eating is about paying attention to your food – what you see, smell, taste, and touch – as you eat.  It’s about slowing down and avoiding distractions like your phone while eating.  Focusing on these sensory experiences can help you recognize when you’re full and prevent overeating. Ultimately, it’s about savoring each bite and appreciating the nourishment your body receives.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 7647.94,
+      "status": "PASS"
+    },
+    {
+      "id": 22,
+      "question": "Why is mindful eating important?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "mindful",
+        "hunger"
+      ],
+      "matched_keywords": [
+        "mindful",
+        "hunger"
+      ],
+      "answer": "Mindful eating is important because it promotes a greater awareness of your body’s hunger and fullness cues.  It helps you savor your food, leading to improved digestion and potentially better nutrient absorption.  It also reduces mindless overeating and helps you recognize emotional triggers that might lead to unhealthy eating habits. Ultimately, mindful eating supports a healthier relationship with food and overall well-being.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 6935.45,
+      "status": "PASS"
+    },
+    {
+      "id": 23,
+      "question": "Give three general tips about mindful eating.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "mindful",
+        "hunger"
+      ],
+      "matched_keywords": [
+        "mindful",
+        "hunger"
+      ],
+      "answer": "Mindful eating involves paying attention to your food – savoring each bite and noticing the textures, smells, and tastes.  Focus on your body’s hunger and fullness cues, eating slowly and deliberately.  Avoid distractions like screens while eating to fully engage with your food.  Ultimately, mindful eating promotes a healthier relationship with food and reduces overeating.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 7018.81,
+      "status": "PASS"
+    },
+    {
+      "id": 24,
+      "question": "How can someone improve mindful eating?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "mindful",
+        "hunger"
+      ],
+      "matched_keywords": [
+        "mindful",
+        "hunger"
+      ],
+      "answer": "Mindful eating involves paying attention to the experience of eating – savoring each bite, noticing hunger and fullness cues, and reducing distractions. Focus on the taste, texture, and smell of your food, rather than immediately focusing on what’s next to eat. Cultivate awareness of your body’s signals of satiety and stop when you feel comfortably full.  It’s about connecting with your food and enjoying the process of eating.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 8656.98,
+      "status": "PASS"
+    },
+    {
+      "id": 25,
+      "question": "What should a beginner know about mindful eating?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "mindful",
+        "hunger"
+      ],
+      "matched_keywords": [
+        "mindful",
+        "hunger"
+      ],
+      "answer": "Mindful eating involves paying attention to your food – noticing its taste, texture, and smell – without judgment. It’s about slowing down and savoring each bite, rather than eating quickly.  Focusing on your body’s hunger and fullness cues is key, and practicing awareness can help you recognize when you’re truly satisfied.  Ultimately, mindful eating promotes a healthier relationship with food and reduces overeating.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 7804.01,
+      "status": "PASS"
+    },
+    {
+      "id": 26,
+      "question": "Explain sleep and nutrition in simple terms.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "sleep",
+        "health"
+      ],
+      "matched_keywords": [
+        "sleep",
+        "health"
+      ],
+      "answer": "Sleep and nutrition are both crucial for overall health. Sleep allows your body and brain to repair and consolidate memories, while proper nutrition provides the energy and building blocks your body needs.  A balanced diet and sufficient sleep support optimal bodily functions like hormone regulation and immune system strength.  Ultimately, they work together to improve your well-being.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 6789.25,
+      "status": "PASS"
+    },
+    {
+      "id": 27,
+      "question": "Why is sleep and nutrition important?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "sleep",
+        "health"
+      ],
+      "matched_keywords": [
+        "sleep",
+        "health"
+      ],
+      "answer": "Sleep and nutrition are crucial for overall health and well-being because they impact numerous bodily functions.  Sleep allows your body to repair and restore itself, while nutrition provides the energy and building blocks your cells need.  Adequate sleep and a balanced diet support optimal hormone regulation, immune system function, and physical recovery.  Ultimately, prioritizing these factors contributes to a healthier and more energetic you.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 8481.77,
+      "status": "PASS"
+    },
+    {
+      "id": 28,
+      "question": "Give three general tips about sleep and nutrition.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "sleep",
+        "health"
+      ],
+      "matched_keywords": [
+        "sleep",
+        "health"
+      ],
+      "answer": "Okay, here are three general tips about sleep and nutrition:\n\n1.  **Prioritize consistent sleep schedules:** Aim to go to bed and wake up around the same time each day, even on weekends, to regulate your body's natural sleep-wake cycle.\n2.  **Focus on whole foods:**  Consume a diet rich in fruits, vegetables, lean protein, and whole grains for sustained energy and essential nutrients.\n3.  **Stay hydrated throughout the day:** Dehydration can disrupt sleep and impact overall health, so drink plenty of water. \n\n**Disclaimer:** *I am an AI Chatbot and not a medical professional. This information is for general knowledge and informational purposes only, and does not constitute medical advice. It is essential to consult with a qualified healthcare professional for any health concerns or before making any decisions related to your health or treatment.*",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 12565.84,
+      "status": "PASS"
+    },
+    {
+      "id": 29,
+      "question": "How can someone improve sleep and nutrition?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "sleep",
+        "health"
+      ],
+      "matched_keywords": [
+        "sleep"
+      ],
+      "answer": "Improving sleep and nutrition often involves establishing a consistent sleep schedule, aiming for 7-9 hours of quality sleep each night.  Focus on consuming nutrient-rich foods like fruits, vegetables, and lean protein, while avoiding excessive caffeine and alcohol.  Regular, mindful eating and light exercise can also significantly contribute to better sleep and overall well-being. Finally, creating a relaxing bedtime routine can further support restful sleep.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 12736.63,
+      "status": "PASS"
+    },
+    {
+      "id": 30,
+      "question": "What should a beginner know about sleep and nutrition?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "sleep",
+        "health"
+      ],
+      "matched_keywords": [
+        "sleep",
+        "health"
+      ],
+      "answer": "Beginners should prioritize a consistent sleep schedule – aiming for 7-9 hours per night – as sleep impacts everything from energy levels to mood.  Nutrition focuses on whole foods like fruits, vegetables, and lean protein to provide the building blocks your body needs.  Don’t drastically change your diet overnight; small, sustainable shifts are key. Finally, focus on hydration throughout the day to support overall health and sleep quality.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 5857.86,
+      "status": "PASS"
+    },
+    {
+      "id": 31,
+      "question": "Explain meal consistency in simple terms.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "meal",
+        "energy"
+      ],
+      "matched_keywords": [
+        "meal"
+      ],
+      "answer": "Meal consistency refers to how a food is presented – whether it’s smooth, chunky, or a mix of both. Consistency impacts how easily food slides down your throat and can affect digestion. It’s important for overall nutrition and can also contribute to how you feel while eating. Ultimately, consistency is about creating a texture that’s comfortable and enjoyable for you.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 5998.21,
+      "status": "PASS"
+    },
+    {
+      "id": 32,
+      "question": "Why is meal consistency important?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "meal",
+        "energy"
+      ],
+      "matched_keywords": [
+        "meal",
+        "energy"
+      ],
+      "answer": "Meal consistency is important for several reasons – it helps maintain digestive health by preventing food from sitting too long in your system, making it easier to digest and absorb nutrients. Consistent meals also promote satiety, which can aid in weight management. Furthermore, it helps your body recognize when it’s full, reducing overeating.  Finally, consistent eating patterns can contribute to improved energy levels and overall well-being.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 5655.83,
+      "status": "PASS"
+    },
+    {
+      "id": 33,
+      "question": "Give three general tips about meal consistency.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "meal",
+        "energy"
+      ],
+      "matched_keywords": [
+        "meal"
+      ],
+      "answer": "Here are three general tips for meal consistency:\n\n1.  **Plan Ahead:** Create a meal plan for the week to ensure you have ingredients readily available and avoid last-minute decisions that can lead to unhealthy choices.\n2.  **Cook in Batches:** Prepare larger portions of foods like grains, proteins, or vegetables to save time and make it easier to assemble meals throughout the week.\n3.  **Don’t Overcook:** Pay attention to cooking times to avoid food becoming mushy or dry, which can impact taste and texture.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 6608.37,
+      "status": "PASS"
+    },
+    {
+      "id": 34,
+      "question": "How can someone improve meal consistency?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "meal",
+        "energy"
+      ],
+      "matched_keywords": [
+        "meal"
+      ],
+      "answer": "Improving meal consistency often involves planning ahead and preparing multiple meals throughout the week.  Focus on batch cooking or meal prepping to save time and ensure you have healthy options readily available.  Similarly, choose recipes with easily adaptable ingredients so you can quickly switch things up.  Finally, consider creating a consistent routine around mealtimes to establish healthy habits.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 5395.11,
+      "status": "PASS"
+    },
+    {
+      "id": 35,
+      "question": "What should a beginner know about meal consistency?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "meal",
+        "energy"
+      ],
+      "matched_keywords": [
+        "meal"
+      ],
+      "answer": "Beginners should focus on incorporating a variety of nutrient-rich foods into their meals to ensure adequate nutrition.  Consistency is key – aiming for regular meal times helps regulate digestion and nutrient absorption.  Pay attention to portion sizes to support healthy weight management, and choose foods that are easily digestible.  Ultimately, establishing a consistent eating pattern can contribute to overall well-being.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 5723.92,
+      "status": "PASS"
+    },
+    {
+      "id": 36,
+      "question": "Explain reading food labels in simple terms.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "label",
+        "serving"
+      ],
+      "matched_keywords": [
+        "label",
+        "serving"
+      ],
+      "answer": "Reading food labels is like a detective for your food! It tells you about the ingredients, how much of each is there, and how it’s made. Pay attention to serving sizes, calories, fat, sugar, and sodium – these are all important details. Ultimately, it helps you make healthier choices based on what you’re eating.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 5772.45,
+      "status": "PASS"
+    },
+    {
+      "id": 37,
+      "question": "Why is reading food labels important?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "label",
+        "serving"
+      ],
+      "matched_keywords": [
+        "label"
+      ],
+      "answer": "Reading food labels is important because it provides detailed information about the nutritional content of a food, including ingredients, nutrients, and potential allergens. This allows you to make informed choices about what you’re eating and make healthier decisions based on your individual needs and health goals. Understanding the nutritional breakdown helps you identify potential problems and customize your diet. Ultimately, it empowers you to prioritize a balanced and healthy eating plan.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 5823.33,
+      "status": "PASS"
+    },
+    {
+      "id": 38,
+      "question": "Give three general tips about reading food labels.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "label",
+        "serving"
+      ],
+      "matched_keywords": [
+        "label",
+        "serving"
+      ],
+      "answer": "Here are three general tips for reading food labels:  First, pay attention to the serving size – it’s often misleading. Second, check the nutrition facts panel for key nutrients like calories, fats, and sodium.  Finally, look for ingredients lists – the more recognizable and natural ingredients, the better!",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 5235.0,
+      "status": "PASS"
+    },
+    {
+      "id": 39,
+      "question": "How can someone improve reading food labels?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "label",
+        "serving"
+      ],
+      "matched_keywords": [
+        "label",
+        "serving"
+      ],
+      "answer": "Improving reading food labels is a great way to make healthier choices! Start by carefully examining the ingredient list – look for common allergens and unnecessary additives. Pay attention to serving sizes and nutritional information like calories, fat, sugar, and fiber. Finally, consider using a food label reader app or website to quickly scan the information and make informed decisions about what you eat.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 5567.2,
+      "status": "PASS"
+    },
+    {
+      "id": 40,
+      "question": "What should a beginner know about reading food labels?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "label",
+        "serving"
+      ],
+      "matched_keywords": [
+        "label",
+        "serving"
+      ],
+      "answer": "Beginners should learn to read food labels to understand the nutritional information of a product. Pay attention to serving sizes, calories, macronutrients (protein, carbs, and fats), and added sugars.  Also, look for ingredients to identify potential allergens or ingredients you might want to avoid.  Finally, understanding these basics will help you make informed choices about your diet!",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 5483.62,
+      "status": "PASS"
+    },
+    {
+      "id": 41,
+      "question": "Explain reducing added sugar in simple terms.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "sugar",
+        "health"
+      ],
+      "matched_keywords": [
+        "sugar"
+      ],
+      "answer": "Reducing added sugar from your diet involves limiting foods and drinks that have added sugars like high fructose corn syrup or sucrose.  It’s generally about making more choices that emphasize whole foods like fruits, vegetables, and lean proteins.  This can help you feel better and potentially reduce risks associated with excessive sugar intake.  Small changes like swapping sugary drinks for water or opting for baked goods with less sugar are good starting points.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 6266.91,
+      "status": "PASS"
+    },
+    {
+      "id": 42,
+      "question": "Why is reducing added sugar important?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "sugar",
+        "health"
+      ],
+      "matched_keywords": [
+        "sugar",
+        "health"
+      ],
+      "answer": "Reducing added sugar intake is beneficial for many reasons. It can contribute to improved overall health by lowering risks of obesity, type 2 diabetes, and heart disease. Furthermore, limiting added sugars may help stabilize blood sugar levels and support healthy weight management. Ultimately, prioritizing whole, unprocessed foods often involves minimizing added sugars to promote well-being.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 5477.2,
+      "status": "PASS"
+    },
+    {
+      "id": 43,
+      "question": "Give three general tips about reducing added sugar.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "sugar",
+        "health"
+      ],
+      "matched_keywords": [
+        "sugar"
+      ],
+      "answer": "Here are three general tips for reducing added sugar: \n1.  Read food labels carefully – look for hidden sugars in processed foods and sauces. \n2.  Limit sugary drinks and desserts – opt for water, unsweetened tea, or fruit. \n3.  Choose whole, unprocessed foods like fruits, vegetables, and lean proteins – these naturally have less added sugar.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 5877.86,
+      "status": "PASS"
+    },
+    {
+      "id": 44,
+      "question": "How can someone improve reducing added sugar?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "sugar",
+        "health"
+      ],
+      "matched_keywords": [
+        "sugar"
+      ],
+      "answer": "Reducing added sugar intake can be achieved by making gradual changes to your diet. Focus on incorporating more whole, unprocessed foods like fruits, vegetables, and whole grains. Limit sugary drinks, processed snacks, and desserts.  Pay attention to reading food labels and choosing lower-sugar options whenever possible.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 5117.59,
+      "status": "PASS"
+    },
+    {
+      "id": 45,
+      "question": "What should a beginner know about reducing added sugar?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "sugar",
+        "health"
+      ],
+      "matched_keywords": [
+        "sugar",
+        "health"
+      ],
+      "answer": "Reducing added sugar is a good step towards improved health as it can significantly impact your well-being.  Start by identifying common sources like sugary drinks, candy, and processed foods.  Focus on gradually replacing these with healthier alternatives like fruits, vegetables, and whole grains.  Ultimately, mindful choices and moderation are key to minimizing the negative effects of excessive sugar intake.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 5620.99,
+      "status": "PASS"
+    },
+    {
+      "id": 46,
+      "question": "Explain sustainable diet changes in simple terms.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "gradual",
+        "habit"
+      ],
+      "matched_keywords": [],
+      "answer": "Sustainable diet changes focus on incorporating foods that have a lower environmental impact, like choosing plant-based options and reducing food waste. It also emphasizes eating seasonally and locally to minimize transportation.  Prioritizing whole, unprocessed foods – like fruits, vegetables, and whole grains – is key. Ultimately, sustainable eating supports both your health and the planet’s well-being.",
+      "generation_status": "SUCCESS",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 5409.64,
+      "status": "FAIL"
+    },
+    {
+      "id": 47,
+      "question": "Why is sustainable diet changes important?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "gradual",
+        "habit"
+      ],
+      "matched_keywords": [
+        "habit"
+      ],
+      "answer": "Sustainable diet changes are crucial because they promote long-term health and environmental well-being.  They emphasize foods that support biodiversity and minimize waste, reducing our impact on the planet.  Focusing on plant-based options and locally sourced ingredients contributes to a lower carbon footprint. Ultimately, adopting sustainable eating habits supports both our health and the health of the Earth.",
+      "generation_status": "SUCCESS",
+      "score": 0.5,
+      "error": null,
+      "elapsed_ms": 6168.15,
+      "status": "PASS"
+    },
+    {
+      "id": 48,
+      "question": "Give three general tips about sustainable diet changes.",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "gradual",
+        "habit"
+      ],
+      "matched_keywords": [],
+      "answer": "Here are three general tips for sustainable diet changes:\n\n1.  Focus on whole, unprocessed foods like fruits, vegetables, and whole grains to maximize nutrient intake.\n2.  Reduce intake of highly processed foods, which often contain added sugars, unhealthy fats, and sodium.\n3.  Prioritize plant-based meals and mindful eating to encourage healthy choices and reduce your environmental impact.",
+      "generation_status": "SUCCESS",
+      "score": 0.0,
+      "error": null,
+      "elapsed_ms": 5645.61,
+      "status": "FAIL"
+    },
+    {
+      "id": 49,
+      "question": "How can someone improve sustainable diet changes?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "gradual",
+        "habit"
+      ],
+      "matched_keywords": [
+        "gradual",
+        "habit"
+      ],
+      "answer": "Improving sustainable diet changes involves gradually incorporating healthier habits rather than drastic overhauls. Focus on building a foundation of whole foods – fruits, vegetables, and lean proteins – and practicing mindful eating.  Regularly planning and prepping meals can make healthy choices easier, and tracking progress can provide motivation. Ultimately, prioritize foods you enjoy and that fit your lifestyle for long-term adherence.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 5588.79,
+      "status": "PASS"
+    },
+    {
+      "id": 50,
+      "question": "What should a beginner know about sustainable diet changes?",
+      "model": "gemma3:1b",
+      "expected_keywords": [
+        "gradual",
+        "habit"
+      ],
+      "matched_keywords": [
+        "gradual",
+        "habit"
+      ],
+      "answer": "Starting with sustainable diet changes involves focusing on incorporating whole, unprocessed foods like fruits, vegetables, and lean protein. Prioritize minimally processed options and reduce your intake of processed foods, sugary drinks, and excessive saturated fats.  It’s important to build habits gradually, focusing on enjoying healthy choices rather than strict restrictions.  Ultimately, sustainability means making changes you can maintain long-term for overall health and well-being.",
+      "generation_status": "SUCCESS",
+      "score": 1.0,
+      "error": null,
+      "elapsed_ms": 5953.68,
+      "status": "PASS"
+    }
+  ]
+}

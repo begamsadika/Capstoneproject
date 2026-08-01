@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, Float, String, Date, DateTime, ForeignKey, Boolean
+from sqlalchemy import Column, Integer, Float, String, Date, DateTime, ForeignKey, Boolean, Unicode
 from datetime import datetime, date
 from ..database import Base
 
@@ -38,6 +38,8 @@ class HealthMetric(Base):
     # sedentary / light / moderate / active / very_active
     dietary_preference        = Column(String(100))
     allergies                 = Column(String(200))
+    medical_conditions        = Column(Unicode(1000))
+    medications               = Column(Unicode(1000))
 
     # ─── AI Features (for future ML model) ────────
     ideal_weight_kg           = Column(Float)

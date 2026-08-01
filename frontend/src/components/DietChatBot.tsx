@@ -1,21 +1,27 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { MessageCircle, Send, X, Bot, Square, Trash2 } from "lucide-react";
+import { MessageCircle, Send, X, Bot, Square, Trash2, Plus } from "lucide-react";
 import { getHealthMetrics, HealthMetrics } from "../api/health";
 import { getUserProfile } from "../api/user";
-
-const STREAM_URL = "http://localhost:8001/chat/stream";
-const MAX_HISTORY = 10;
-const SESSION_KEY = "wellora_floating_chat";
+import {
+  deleteDietChatConversation,
+  DietChatConversation,
+  getDietChatConversation,
+  getDietChatConversations,
+  streamDietChat,
+} from "../api/dietChat";
+import { DietChatLoadingStatus } from "./DietChatLoadingStatus";
+import { DietChatMarkdown } from "./DietChatMarkdown";
+import {
+  DietChatAnswerSource,
+  DietChatSourceIndicator,
+} from "./DietChatSourceIndicator";
 
 interface Message {
   role: "user" | "bot";
   text: string;
   streaming?: boolean;
-}
-
-interface HistoryItem {
-  role: "user" | "assistant";
-  content: string;
+  loadingQuestion?: string;
+  sources?: DietChatAnswerSource[];
 }
 
 function getTimeGreeting(): string {
@@ -83,32 +89,36 @@ export function DietChatBot() {
   ]);
   const [input, setInput]           = useState("");
   const [streaming, setStreaming]   = useState(false);
-  const [calorieOverride, setCalorieOverride] = useState<number | null>(null);
+  const [contextReady, setContextReady] = useState(false);
+  const [conversations, setConversations] = useState<DietChatConversation[]>([]);
+  const [conversationId, setConversationId] = useState<number | null>(null);
+  const [, setCalorieOverride] = useState<number | null>(null);
   const calorieOverrideRef      = useRef<number | null>(null);
-  const bottomRef               = useRef<HTMLDivElement>(null);
+  const messagesRef             = useRef<HTMLDivElement>(null);
   const abortRef                = useRef<AbortController | null>(null);
-  const historyRef              = useRef<HistoryItem[]>([]);
+  const conversationIdRef      = useRef<number | null>(null);
 
-  // Restore session on mount, or fetch metrics and show greeting
+  const greetingMessage = useCallback((): Message => ({
+    role: "bot",
+    text: metrics
+      ? buildGreeting(metrics, userNameRef.current)
+      : `${getTimeGreeting()}! I'm your Diet AI. Ask me anything about food, nutrition, or dietary advice!`,
+  }), [metrics]);
+
+  const openConversation = useCallback(async (id: number) => {
+    const detail = await getDietChatConversation(id);
+    conversationIdRef.current = id;
+    setConversationId(id);
+    setMessages([
+      greetingMessage(),
+      ...detail.messages.map((message): Message => ({
+        role: message.role === "assistant" ? "bot" : "user",
+        text: message.content,
+      })),
+    ]);
+  }, [greetingMessage]);
+
   useEffect(() => {
-    // Always fetch the user name so sendMessage can send it
-    getUserProfile()
-      .then((profile) => { userNameRef.current = (profile.name || "").split(" ")[0]; })
-      .catch(() => {});
-
-    try {
-      const saved = sessionStorage.getItem(SESSION_KEY);
-      if (saved) {
-        const { messages: savedMsgs, history: savedHistory, metricsSnapshot } = JSON.parse(saved);
-        if (savedMsgs?.length > 1) {
-          setMessages(savedMsgs.map((m: Message) => ({ ...m, streaming: false })));
-          historyRef.current = savedHistory || [];
-          if (metricsSnapshot) setMetrics(metricsSnapshot);
-          return;
-        }
-      }
-    } catch {}
-
     Promise.all([getHealthMetrics(), getUserProfile()])
       .then(([m, profile]) => {
         setMetrics(m);
@@ -116,30 +126,34 @@ export function DietChatBot() {
         userNameRef.current = firstName;
         setMessages([{ role: "bot", text: buildGreeting(m, firstName) }]);
       })
-      .catch(() => {
-        const timeGreet = getTimeGreeting();
-        setMessages([{
-          role: "bot",
-          text: `${timeGreet}! I'm your Diet AI. Ask me anything about food, nutrition, or dietary advice!`,
-        }]);
-      });
+      .catch(() => setMessages([{
+        role: "bot",
+        text: `${getTimeGreeting()}! I'm your Diet AI. Ask me anything about food, nutrition, or dietary advice!`,
+      }]))
+      .finally(() => setContextReady(true));
   }, []);
 
-  // Save conversation to sessionStorage whenever messages change
   useEffect(() => {
-    if (messages.length === 0) return;
-    try {
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({
-        messages: messages.filter((m) => !m.streaming),
-        history:  historyRef.current,
-        metricsSnapshot: metrics,
-      }));
-    } catch {}
-  }, [messages, metrics]);
+    if (!contextReady) return;
+    getDietChatConversations()
+      .then(async (items) => {
+        setConversations(items);
+        if (items.length > 0) await openConversation(items[0].id);
+        else setMessages([greetingMessage()]);
+      })
+      .catch(() => setMessages([greetingMessage()]));
+  }, [contextReady, greetingMessage, openConversation]);
 
   // Auto-scroll to latest message
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const container = messagesRef.current;
+    if (!container) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      container.scrollTop = container.scrollHeight;
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, [messages, streaming]);
 
   const sendMessage = useCallback(async () => {
@@ -152,38 +166,34 @@ export function DietChatBot() {
     setInput("");
     setStreaming(true);
 
-    // Track in history
-    historyRef.current = [
-      ...historyRef.current,
-      { role: "user", content: text },
-    ].slice(-MAX_HISTORY);
-
     // Add streaming placeholder
     setMessages((prev) => [
       ...prev,
-      { role: "bot", text: "", streaming: true },
+      { role: "bot", text: "", streaming: true, loadingQuestion: text },
     ]);
 
     const controller = new AbortController();
     abortRef.current = controller;
 
     try {
-      const res = await fetch(STREAM_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const res = await streamDietChat(
+        {
           message: text,
-          history: historyRef.current.slice(0, -1), // history before this message
-          user_metrics: metrics ?? undefined,
+          conversation_id: conversationIdRef.current ?? undefined,
           calorie_target_override: calorieOverrideRef.current ?? undefined,
-          user_name: userNameRef.current || undefined,
-        }),
-        signal: controller.signal,
-      });
+        },
+        controller.signal,
+      );
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({ detail: "Server error" }));
         throw new Error(err.detail || `HTTP ${res.status}`);
+      }
+
+      const returnedConversationId = Number(res.headers.get("X-Conversation-Id"));
+      if (Number.isInteger(returnedConversationId) && returnedConversationId > 0) {
+        conversationIdRef.current = returnedConversationId;
+        setConversationId(returnedConversationId);
       }
 
       const reader = res.body!.getReader();
@@ -202,8 +212,27 @@ export function DietChatBot() {
           const payload = line.slice(6).trim();
           if (payload === "[DONE]") break;
           try {
-            const { token, error: srvErr } = JSON.parse(payload);
+            const {
+              token,
+              error: srvErr,
+              answer_source: answerSource,
+              answer_sources: answerSources,
+            } = JSON.parse(payload) as {
+              token?: string;
+              error?: string;
+              answer_source?: DietChatAnswerSource;
+              answer_sources?: DietChatAnswerSource[];
+            };
             if (srvErr) throw new Error(srvErr);
+            const sources = answerSources ?? (answerSource ? [answerSource] : undefined);
+            if (sources?.length) {
+              setMessages((prev) => {
+                const next = [...prev];
+                const last = next.length - 1;
+                next[last] = { ...next[last], sources };
+                return next;
+              });
+            }
             if (token) {
               botReply += token;
               setMessages((prev) => {
@@ -213,8 +242,10 @@ export function DietChatBot() {
                 return next;
               });
             }
-          } catch (e: any) {
-            if (e.message !== "Unexpected end of JSON input") throw e;
+          } catch (error: unknown) {
+            if (!(error instanceof Error) || error.message !== "Unexpected end of JSON input") {
+              throw error;
+            }
           }
         }
       }
@@ -227,11 +258,7 @@ export function DietChatBot() {
         return next;
       });
 
-      // Save bot reply to history
-      historyRef.current = [
-        ...historyRef.current,
-        { role: "assistant", content: botReply },
-      ].slice(-MAX_HISTORY);
+      getDietChatConversations().then(setConversations).catch(() => {});
 
       // If the bot reply contains a calculated calorie target, store it
       const calMatch = botReply.match(/New Daily Calorie Target[:\s*]+(\d{3,5})\s*cal/i);
@@ -241,7 +268,8 @@ export function DietChatBot() {
         setCalorieOverride(val);
       }
 
-    } catch (err: any) {
+    } catch (error: unknown) {
+      const err = error instanceof Error ? error : new Error("Unexpected chat error");
       if (err.name === "AbortError") {
         // Stop button pressed — finalise whatever streamed so far
         setMessages((prev) => {
@@ -254,7 +282,7 @@ export function DietChatBot() {
         });
       } else {
         const msg = err.message?.includes("fetch") || err.message?.includes("Failed")
-          ? "Cannot reach the Diet AI server. Make sure it is running on port 8001."
+          ? "Cannot reach the Wellora server. Please try again shortly."
           : err.message;
         setMessages((prev) => {
           const next = [...prev];
@@ -266,7 +294,7 @@ export function DietChatBot() {
     } finally {
       setStreaming(false);
     }
-  }, [input, streaming, metrics]);
+  }, [input, streaming]);
 
   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendMessage(); }
@@ -274,13 +302,21 @@ export function DietChatBot() {
 
   const stopStreaming = () => abortRef.current?.abort();
 
-  const clearChat = () => {
-    sessionStorage.removeItem(SESSION_KEY);
-    historyRef.current = [];
+  const newChat = () => {
+    conversationIdRef.current = null;
+    setConversationId(null);
     calorieOverrideRef.current = null;
     setCalorieOverride(null);
-    const greeting = metrics ? buildGreeting(metrics, userNameRef.current) : `${getTimeGreeting()}! I'm your Diet AI. Ask me anything!`;
-    setMessages([{ role: "bot", text: greeting }]);
+    setMessages([greetingMessage()]);
+  };
+
+  const clearChat = async () => {
+    const id = conversationIdRef.current;
+    if (id) {
+      await deleteDietChatConversation(id);
+      setConversations((items) => items.filter((item) => item.id !== id));
+    }
+    newChat();
   };
 
   return (
@@ -318,6 +354,15 @@ export function DietChatBot() {
             </div>
             <div className="flex items-center gap-1">
               <button
+                onClick={newChat}
+                disabled={streaming}
+                aria-label="New chat"
+                title="New chat"
+                className="rounded-full p-1 transition hover:bg-white/20 disabled:opacity-40"
+              >
+                <Plus className="w-3.5 h-3.5 text-white" />
+              </button>
+              <button
                 onClick={clearChat}
                 disabled={streaming}
                 aria-label="Clear chat"
@@ -336,19 +381,47 @@ export function DietChatBot() {
             </div>
           </div>
 
+          {conversations.length > 0 && (
+            <div className="border-b border-slate-200 bg-white px-3 py-2 dark:border-slate-700 dark:bg-slate-900">
+              <select
+                value={conversationId ?? ""}
+                onChange={(event) => openConversation(Number(event.target.value))}
+                disabled={streaming}
+                aria-label="Previous conversations"
+                className="w-full rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 text-xs text-slate-600 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+              >
+                <option value="" disabled>New conversation</option>
+                {conversations.map((conversation) => (
+                  <option key={conversation.id} value={conversation.id}>
+                    {conversation.title}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           {/* Message list */}
-          <div className="flex-1 overflow-y-auto p-4 space-y-3">
+          <div ref={messagesRef} className="min-h-0 flex-1 overflow-y-auto p-4 space-y-3">
             {messages.map((msg, i) => (
               <div
                 key={i}
-                className={`max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed whitespace-pre-line ${
-                  msg.role === "user"
-                    ? "ml-auto bg-wellora text-white"
-                    : "bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200"
+                className={`max-w-[85%] text-sm leading-relaxed ${
+                  msg.streaming && !msg.text
+                    ? "px-1 py-2"
+                    : msg.role === "user"
+                      ? "ml-auto whitespace-pre-line rounded-2xl bg-wellora px-3 py-2 text-white"
+                      : "rounded-2xl bg-slate-100 px-3 py-2 text-slate-800 dark:bg-slate-800 dark:text-slate-200"
                 }`}
               >
-                {msg.text}
-                {msg.streaming && (
+                {msg.streaming && !msg.text ? (
+                  <DietChatLoadingStatus
+                    question={msg.loadingQuestion ?? ""}
+                    sources={msg.sources}
+                  />
+                ) : msg.role === "bot" ? (
+                  <DietChatMarkdown content={msg.text} />
+                ) : msg.text}
+                {msg.streaming && Boolean(msg.text) && (
                   <span
                     style={{
                       display: "inline-block",
@@ -362,16 +435,19 @@ export function DietChatBot() {
                     }}
                   />
                 )}
+                {msg.role === "bot" && msg.sources?.length && Boolean(msg.text) && (
+                  <div className="mt-2 flex justify-end gap-1">
+                    {msg.sources.map((source) => (
+                      <DietChatSourceIndicator
+                        key={source}
+                        source={source}
+                        active={msg.streaming}
+                      />
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
-            {streaming && messages[messages.length - 1]?.text === "" && (
-              <div className="flex gap-1 px-3 py-2">
-                <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "0ms" }} />
-                <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "150ms" }} />
-                <span className="w-2 h-2 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "300ms" }} />
-              </div>
-            )}
-            <div ref={bottomRef} />
           </div>
 
           {/* Input bar */}

@@ -42,3 +42,47 @@ def ensure_user_is_active_column() -> None:
                 """
             )
         )
+
+
+def ensure_diet_chat_summary_columns() -> None:
+    """Add rolling-memory columns when the conversation table already exists."""
+    with engine.begin() as conn:
+        conn.execute(
+            text(
+                """
+                IF OBJECT_ID('Wellora_DietChatConversations', 'U') IS NOT NULL
+                AND COL_LENGTH('Wellora_DietChatConversations', 'summary') IS NULL
+                ALTER TABLE Wellora_DietChatConversations ADD summary NVARCHAR(MAX) NULL;
+
+                IF OBJECT_ID('Wellora_DietChatConversations', 'U') IS NOT NULL
+                AND COL_LENGTH('Wellora_DietChatConversations', 'summary_through_message_id') IS NULL
+                ALTER TABLE Wellora_DietChatConversations ADD summary_through_message_id INT NULL;
+                """
+            )
+        )
+
+
+def ensure_user_medical_profile_columns() -> None:
+    """Add optional user-reported conditions and medications to profile tables."""
+    with engine.begin() as conn:
+        conn.execute(
+            text(
+                """
+                IF OBJECT_ID('Wellora_UserProfiles', 'U') IS NOT NULL
+                AND COL_LENGTH('Wellora_UserProfiles', 'medical_conditions') IS NULL
+                ALTER TABLE Wellora_UserProfiles ADD medical_conditions NVARCHAR(1000) NULL;
+
+                IF OBJECT_ID('Wellora_UserProfiles', 'U') IS NOT NULL
+                AND COL_LENGTH('Wellora_UserProfiles', 'medications') IS NULL
+                ALTER TABLE Wellora_UserProfiles ADD medications NVARCHAR(1000) NULL;
+
+                IF OBJECT_ID('Wellora_HealthMetrics', 'U') IS NOT NULL
+                AND COL_LENGTH('Wellora_HealthMetrics', 'medical_conditions') IS NULL
+                ALTER TABLE Wellora_HealthMetrics ADD medical_conditions NVARCHAR(1000) NULL;
+
+                IF OBJECT_ID('Wellora_HealthMetrics', 'U') IS NOT NULL
+                AND COL_LENGTH('Wellora_HealthMetrics', 'medications') IS NULL
+                ALTER TABLE Wellora_HealthMetrics ADD medications NVARCHAR(1000) NULL;
+                """
+            )
+        )

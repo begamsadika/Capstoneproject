@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from ..database import get_db
 from ..models.user import User
+from ..models.user_profile import UserProfile
 from ..core.security import hash_password, verify_password, create_access_token
 
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
@@ -52,6 +53,14 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
         raise HTTPException(status_code=401, detail="Invalid email or password")
 
     token = create_access_token({"sub": str(user.id)})
+    onboarding_done = None
+    if user.user_type == "general":
+        onboarding_done = (
+            db.query(UserProfile.id)
+            .filter(UserProfile.user_id == user.id)
+            .first()
+            is not None
+        )
 
     return {
         "message":      "Login successful!",
@@ -61,6 +70,7 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
             "id":        user.id,
             "name":      user.name,
             "email":     user.email,
-            "user_type": user.user_type
+            "user_type": user.user_type,
+            "onboarding_done": onboarding_done,
         }
     }

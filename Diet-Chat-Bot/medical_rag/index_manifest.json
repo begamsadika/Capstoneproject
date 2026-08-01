@@ -1,0 +1,7 @@
+{
+  "built_at_utc": "2026-07-31T20:40:31.294700+00:00",
+  "collection": "wellora_medical_guidance",
+  "chunks": 2059,
+  "embedding_model": "all-MiniLM-L6-v2",
+  "offline_ready": true
+}
