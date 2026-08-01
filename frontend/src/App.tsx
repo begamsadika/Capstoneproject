@@ -66,6 +66,9 @@ const publicPages = new Set<Page>([
 ]);
 
 function resolveInitialPage(): Page {
+  const inviteToken = new URLSearchParams(window.location.search).get("invite");
+  if (inviteToken) return "invitation-setup";
+
   const savedPage = localStorage.getItem("current-page") as Page | null;
   const initialPage = savedPage && validPages.includes(savedPage) ? savedPage : "home";
 
@@ -78,34 +81,26 @@ function resolveInitialPage(): Page {
     return "login";
   }
 
+  try {
+    const user = JSON.parse(localStorage.getItem("wellora_user") || "{}") as {
+      user_type?: string;
+      is_active?: boolean;
+    };
+    if (
+      user.is_active === false &&
+      (user.user_type === "partner" || user.user_type === "vendor") &&
+      restrictedPendingPages.includes(initialPage)
+    ) {
+      return "pending-approval";
+    }
+  } catch {
+    // Keep the resolved page if local storage contains malformed user data.
+  }
+
   return initialPage;
 }
 
 function App() {
-  const [currentPage, setCurrentPage] = useState<Page>(() => {
-    const inviteToken = new URLSearchParams(window.location.search).get("invite");
-    if (inviteToken) return "invitation-setup";
-    const savedPage = localStorage.getItem("current-page") as Page | null;
-    if (savedPage && validPages.includes(savedPage)) {
-      try {
-        const user = JSON.parse(localStorage.getItem("wellora_user") || "{}") as {
-          user_type?: string;
-          is_active?: boolean;
-        };
-        if (
-          user.is_active === false &&
-          (user.user_type === "partner" || user.user_type === "vendor") &&
-          restrictedPendingPages.includes(savedPage)
-        ) {
-          return "pending-approval";
-        }
-      } catch {
-        return savedPage;
-      }
-      return savedPage;
-    }
-    return "home";
-  });
   const [invitationToken] = useState(
     () => new URLSearchParams(window.location.search).get("invite") ?? "",
   );
