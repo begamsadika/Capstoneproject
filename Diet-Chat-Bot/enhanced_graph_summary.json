@@ -1,16 +1,17 @@
 {
-  "total_nodes": 559,
-  "total_edges": 627,
+  "total_nodes": 670,
+  "total_edges": 1280,
   "node_types": {
-    "ingredient": 349,
-    "food": 199,
+    "ingredient": 400,
+    "food": 259,
     "chronic_disease": 4,
     "meal_plan": 4,
     "allergy": 3
   },
   "edge_types": {
-    "contains": 616,
-    "recommends": 11
+    "contains": 839,
+    "recommends": 11,
+    "includes": 430
   },
   "sample_edges": [
     {

@@ -36,6 +36,8 @@ def _get_health_metric(user_id: int, db: Session) -> dict:
         "fat_target_g": m.fat_target_g,
         "dietary_preference": m.dietary_preference or "",
         "allergies": m.allergies or "",
+        "medical_conditions": m.medical_conditions or "",
+        "medications": m.medications or "",
         "activity_level": m.activity_level or "moderate",
         "estimated_weeks_to_goal": m.estimated_weeks_to_goal,
         "weight_to_goal_kg": m.weight_to_goal_kg,

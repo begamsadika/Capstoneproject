@@ -4,6 +4,36 @@ import pickle
 import json
 import os
 
+
+def _number(value, default=0.0):
+    """Convert CSV nutrition values to finite floats for graph rules."""
+    try:
+        number = float(value)
+        return number if pd.notna(number) else default
+    except (TypeError, ValueError):
+        return default
+
+
+def meal_plan_suitability(plan, food):
+    """Return (score, reason) when a food satisfies a meal-plan rule."""
+    calories = _number(food.get("calories"))
+    protein = _number(food.get("protein_g"))
+    carbs = _number(food.get("carbs_g"))
+    fat = _number(food.get("fat_g"))
+    fiber = _number(food.get("fiber_g"))
+
+    if plan == "Low-Carb Diet" and carbs <= 30:
+        return 1.0 + (30 - carbs) / 30 + min(protein / 30, 1.0), "carbs_g <= 30"
+    if plan == "Low-Fat Diet" and fat <= 10:
+        return 1.0 + (10 - fat) / 10 + min(fiber / 10, 0.5), "fat_g <= 10"
+    if plan == "High-Protein Diet" and protein >= 15:
+        return 1.0 + min((protein - 15) / 30, 1.0), "protein_g >= 15"
+    if plan == "Balanced Diet" and 100 <= calories <= 550 and protein >= 5 and fiber >= 2:
+        return 1.0 + min(protein / 30, 1.0) + min(fiber / 10, 0.5), "100-550 kcal, protein_g >= 5, fiber_g >= 2"
+    if plan == "Mediterranean" and fiber >= 2 and fat <= 20:
+        return 1.0 + min(fiber / 10, 0.5) + min(protein / 30, 0.5), "fiber_g >= 2, fat_g <= 20"
+    return None
+
 def load_and_analyze_data():
     """Load and analyze the CSV datasets"""
     print("Loading datasets...")
@@ -139,6 +169,31 @@ def create_enhanced_knowledge_graph(nutrition_df, illness_df, food_df):
             for plan in plans:
                 if G.has_node(plan):
                     G.add_edge(condition, plan, relationship='recommends')
+
+    # Connect each meal-plan node to concrete foods. This enables the chatbot
+    # to traverse Condition -> Meal Plan -> Food instead of falling back to a
+    # hard-coded food list whenever a condition only has meal-plan neighbors.
+    print("Connecting meal plans to suitable foods...")
+    food_nodes = [
+        (node, data)
+        for node, data in G.nodes(data=True)
+        if data.get("type") == "food"
+    ]
+    for plan in meal_plans:
+        if pd.isna(plan) or not G.has_node(plan):
+            continue
+        for food_name, food_data in food_nodes:
+            suitability = meal_plan_suitability(plan, food_data)
+            if suitability is None:
+                continue
+            score, reason = suitability
+            G.add_edge(
+                plan,
+                food_name,
+                relationship="includes",
+                suitability_score=round(score, 3),
+                criteria=reason,
+            )
     
     # Map allergies to foods to avoid (simplified)
     allergy_avoidance = {

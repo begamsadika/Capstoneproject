@@ -105,11 +105,18 @@ QUESTIONS = [
     (45, "weekly",      "Show me day 3 details",                    ["Day 3", "Breakfast", "Option 1"]),
     (46, "weekly",      "What is the Wednesday plan?",              ["Day 4", "Wednesday", "Breakfast"]),
     (47, "weekly",      "Give me a new weekly plan",                ["Day 1", "Day 7", "Monday"]),
+
+    # Q48: answered immediately from the saved profile (no LLM)
+    (48, "calorie",     "What is my maintenance calorie?",          ["maintenance", "kcal/day", "target"]),
+
+    # Q49: resolves wording from the ideal-weight response (no LLM)
+    (49, "weight",      "What does 'at a safe pace' mean?",         ["0.5 kg per week", "weeks", "calorie"]),
 ]
 
 # ── SSE streaming helper ────────────────────────────────────────────────────
 def stream_response(message: str, history: list, metrics: dict) -> str:
     payload = {
+        "user_id": 1,
         "message": message,
         "history": history,
         "user_metrics": metrics,

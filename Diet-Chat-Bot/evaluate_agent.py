@@ -117,6 +117,23 @@ def score_answer(answer, expected_keywords):
     return score, hits
 
 
+def retrieval_succeeded(context):
+    """Return False when graph lookup did not retrieve usable context."""
+    return bool(context.strip()) and not context.startswith(
+        "No relevant data found in knowledge graph."
+    )
+
+
+def generation_succeeded(answer):
+    """Separate model/API failures from answer-accuracy failures."""
+    normalized = answer.strip().lower()
+    return (
+        bool(normalized)
+        and not normalized.startswith("ollama error:")
+        and not normalized.startswith("no response from model")
+    )
+
+
 # ── Test cases ────────────────────────────────────────────────────────────────
 
 test_cases = [
@@ -257,11 +274,14 @@ print("        DIET KNOWLEDGE GRAPH — EVALUATION RESULTS")
 print("=" * 65)
 
 for i, case in enumerate(test_cases):
-    print(f"\n[{i+1:02d}/20] {case['query']}")
+    print(f"\n[{i+1:02d}/{len(test_cases)}] {case['query']}")
     print(f"       Graph: {case['type'].upper()} | Keyword: {case['keyword']}")
 
     context, answer = ask_agent(case["query"], case["keyword"], case["type"])
     score, hits = score_answer(answer, case["expected"])
+    retrieval_ok = retrieval_succeeded(context)
+    generation_ok = generation_succeeded(answer)
+    retrieval_score, retrieval_hits = score_answer(context, case["expected"])
 
     total_score += score
     if case["type"] == "drug":
@@ -273,6 +293,11 @@ for i, case in enumerate(test_cases):
     bar = "█" * int(score * 10) + "░" * (10 - int(score * 10))
 
     print(f"       Answer  : {answer[:180].strip()}...")
+    print(
+        f"       Retrieval: {'SUCCESS' if retrieval_ok else 'FAIL'} "
+        f"({retrieval_score:.0%} expected-keyword coverage)"
+    )
+    print(f"       Generation: {'SUCCESS' if generation_ok else 'FAIL'}")
     print(f"       Expected: {case['expected']}")
     print(f"       Matched : {hits}")
     print(f"       Score   : [{bar}] {score:.0%}  {status}")
@@ -283,7 +308,12 @@ for i, case in enumerate(test_cases):
             "type": case["type"],
             "query": case["query"],
             "keyword": case["keyword"],
+            "retrieved_context": context.strip(),
+            "retrieval_status": "SUCCESS" if retrieval_ok else "FAIL",
+            "retrieval_expected_keywords": retrieval_hits,
+            "retrieval_score": round(retrieval_score, 2),
             "answer": answer.strip(),
+            "generation_status": "SUCCESS" if generation_ok else "FAIL",
             "expected_keywords": case["expected"],
             "matched_keywords": hits,
             "score": round(score, 2),
@@ -293,22 +323,28 @@ for i, case in enumerate(test_cases):
 
 # ── Summary ───────────────────────────────────────────────────────────────────
 
-overall_accuracy = (total_score / len(test_cases)) * 100
-drug_accuracy = (sum(drug_scores) / len(drug_scores)) * 100
-condition_accuracy = (sum(condition_scores) / len(condition_scores)) * 100
+overall_accuracy = (total_score / len(test_cases)) * 100 if test_cases else 0
+drug_accuracy = (sum(drug_scores) / len(drug_scores)) * 100 if drug_scores else 0
+condition_accuracy = (
+    (sum(condition_scores) / len(condition_scores)) * 100 if condition_scores else 0
+)
 passed = sum(1 for r in results if r["status"] == "PASS")
+retrieval_passed = sum(1 for r in results if r["retrieval_status"] == "SUCCESS")
+generation_passed = sum(1 for r in results if r["generation_status"] == "SUCCESS")
 
 print("\n" + "=" * 65)
 print("                        SUMMARY")
 print("=" * 65)
 print(f"  Total queries       : {len(test_cases)}")
-print(f"  Passed (score ≥50%) : {passed}/20")
+print(f"  Passed (score ≥50%) : {passed}/{len(test_cases)}")
+print(f"  Graph retrievals    : {retrieval_passed}/{len(test_cases)} successful")
+print(f"  Model generations   : {generation_passed}/{len(test_cases)} successful")
 print(f"  Overall Accuracy    : {overall_accuracy:.1f}%")
 print(
-    f"  Drug queries        : {drug_accuracy:.1f}%  ({sum(1 for r in results if r['type']=='drug' and r['status']=='PASS')}/10 passed)"
+    f"  Drug queries        : {drug_accuracy:.1f}%  ({sum(1 for r in results if r['type']=='drug' and r['status']=='PASS')}/{len(drug_scores)} passed)"
 )
 print(
-    f"  Condition queries   : {condition_accuracy:.1f}%  ({sum(1 for r in results if r['type']=='condition' and r['status']=='PASS')}/10 passed)"
+    f"  Condition queries   : {condition_accuracy:.1f}%  ({sum(1 for r in results if r['type']=='condition' and r['status']=='PASS')}/{len(condition_scores)} passed)"
 )
 print("=" * 65)
 
@@ -318,6 +354,8 @@ output = {
     "summary": {
         "total_queries": len(test_cases),
         "passed": passed,
+        "retrievals_successful": retrieval_passed,
+        "generations_successful": generation_passed,
         "overall_accuracy": f"{overall_accuracy:.1f}%",
         "drug_accuracy": f"{drug_accuracy:.1f}%",
         "condition_accuracy": f"{condition_accuracy:.1f}%",

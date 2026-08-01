@@ -1,14 +1,13 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from datetime import date, datetime
+from datetime import date
 from ..database import get_db
 from ..models.health_metric import HealthMetric
 from ..models.daily_log import DailyLog
-from ..models.order import Order
-from ..models.meal import Meal
 from ..models.user import User
 from ..core.auth import get_current_user
-from ..services.health_calculator import build_health_metrics, calculate_wellness_score
+from ..services.health_calculator import build_health_metrics
+from ..services.nutrition_log import rebuild_daily_log
 
 router = APIRouter(prefix="/api/health", tags=["Health Metrics"])
 
@@ -44,6 +43,8 @@ def get_health_metrics(
         "activity_level": metric.activity_level,
         "dietary_preference": metric.dietary_preference,
         "allergies": metric.allergies,
+        "medical_conditions": metric.medical_conditions,
+        "medications": metric.medications,
         "ideal_weight_kg": metric.ideal_weight_kg,
         "weight_to_goal_kg": metric.weight_to_goal_kg,
         "estimated_weeks_to_goal": metric.estimated_weeks_to_goal,
@@ -68,14 +69,23 @@ def get_today_log(
         db.query(HealthMetric).filter(HealthMetric.user_id == current_user.id).first()
     )
 
+    # Pull macro targets from HealthMetric (source of truth for targets)
+    protein_target  = round(metric.protein_target_g, 1) if metric and metric.protein_target_g else 0.0
+    carbs_target    = round(metric.carbs_target_g,   1) if metric and metric.carbs_target_g   else 0.0
+    fat_target      = round(metric.fat_target_g,     1) if metric and metric.fat_target_g     else 0.0
+    calorie_target  = metric.target_calories if metric else 2000
+
     if not log:
         return {
             "log_date": str(today),
             "calories_consumed": 0,
-            "calorie_target": metric.target_calories if metric else 2000,
-            "protein_consumed_g": 0,
-            "carbs_consumed_g": 0,
-            "fat_consumed_g": 0,
+            "calorie_target": calorie_target,
+            "protein_consumed_g": 0.0,
+            "carbs_consumed_g": 0.0,
+            "fat_consumed_g": 0.0,
+            "protein_target_g": protein_target,
+            "carbs_target_g": carbs_target,
+            "fat_target_g": fat_target,
             "meals_count": 0,
             "calorie_goal_met": False,
             "wellness_score": 0,
@@ -85,10 +95,13 @@ def get_today_log(
     return {
         "log_date": str(log.log_date),
         "calories_consumed": log.calories_consumed,
-        "calorie_target": log.calorie_target,
+        "calorie_target": log.calorie_target or calorie_target,
         "protein_consumed_g": log.protein_consumed_g,
         "carbs_consumed_g": log.carbs_consumed_g,
         "fat_consumed_g": log.fat_consumed_g,
+        "protein_target_g": protein_target,
+        "carbs_target_g": carbs_target,
+        "fat_target_g": fat_target,
         "meals_count": log.meals_count,
         "calorie_goal_met": log.calorie_goal_met,
         "wellness_score": log.wellness_score,
@@ -128,110 +141,18 @@ def get_log_history(
 def sync_daily_log(
     current_user: User = Depends(get_current_user), db: Session = Depends(get_db)
 ):
-    """
-    Syncs today's orders into the daily log.
-    Call this after placing an order or once per day.
-    """
+    """Rebuild today's aggregate from orders and reported food intake."""
     today = date.today()
-    metric = (
-        db.query(HealthMetric).filter(HealthMetric.user_id == current_user.id).first()
-    )
-
-    target_cal = metric.target_calories if metric else 2000
-    protein_t = metric.protein_target_g if metric else 0
-    carbs_t = metric.carbs_target_g if metric else 0
-    fat_t = metric.fat_target_g if metric else 0
-
-    # Get today's orders
-    orders = (
-        db.query(Order)
-        .filter(
-            Order.user_id == current_user.id,
-            Order.created_at >= datetime.combine(today, datetime.min.time()),
-            Order.status != "cancelled",
-        )
-        .all()
-    )
-
-    total_cal = 0
-    total_protein = 0.0
-    total_carbs = 0.0
-    total_fat = 0.0
-    meals_count = len(orders)
-
-    for o in orders:
-        meal = db.query(Meal).filter(Meal.id == o.meal_id).first()
-        if meal:
-            total_cal += meal.calories * o.quantity
-            # Estimate macros from calories if not stored
-            total_protein += (meal.calories * 0.30 / 4) * o.quantity
-            total_carbs += (meal.calories * 0.40 / 4) * o.quantity
-            total_fat += (meal.calories * 0.30 / 9) * o.quantity
-
-    # Calculate goal achievement
-    goal_met = abs(total_cal - target_cal) / max(target_cal, 1) <= 0.1
-    wellness = calculate_wellness_score(total_cal, target_cal, meals_count)
-
-    # Get previous day streak
-    from datetime import timedelta
-
-    yesterday = today - timedelta(days=1)
-    prev_log = (
-        db.query(DailyLog)
-        .filter(DailyLog.user_id == current_user.id, DailyLog.log_date == yesterday)
-        .first()
-    )
-    streak = (
-        (prev_log.streak_day + 1)
-        if (prev_log and prev_log.calorie_goal_met)
-        else (1 if goal_met else 0)
-    )
-
-    # Upsert daily log
-    log = (
-        db.query(DailyLog)
-        .filter(DailyLog.user_id == current_user.id, DailyLog.log_date == today)
-        .first()
-    )
-
-    if log:
-        log.calories_consumed = total_cal
-        log.protein_consumed_g = round(total_protein, 1)
-        log.carbs_consumed_g = round(total_carbs, 1)
-        log.fat_consumed_g = round(total_fat, 1)
-        log.meals_count = meals_count
-        log.calorie_goal_met = goal_met
-        log.wellness_score = wellness
-        log.streak_day = streak
-        log.calorie_target = target_cal
-    else:
-        log = DailyLog(
-            user_id=current_user.id,
-            log_date=today,
-            calories_consumed=total_cal,
-            protein_consumed_g=round(total_protein, 1),
-            carbs_consumed_g=round(total_carbs, 1),
-            fat_consumed_g=round(total_fat, 1),
-            meals_count=meals_count,
-            calorie_goal_met=goal_met,
-            wellness_score=wellness,
-            streak_day=streak,
-            calorie_target=target_cal,
-            protein_target_g=protein_t,
-            carbs_target_g=carbs_t,
-            fat_target_g=fat_t,
-        )
-        db.add(log)
-
+    log = rebuild_daily_log(db, current_user.id, today)
     db.commit()
 
     return {
         "message": "Daily log synced!",
-        "calories_consumed": total_cal,
-        "calorie_target": target_cal,
-        "wellness_score": wellness,
-        "calorie_goal_met": goal_met,
-        "streak_day": streak,
+        "calories_consumed": log.calories_consumed,
+        "calorie_target": log.calorie_target,
+        "wellness_score": log.wellness_score,
+        "calorie_goal_met": log.calorie_goal_met,
+        "streak_day": log.streak_day,
     }
 
 
@@ -280,6 +201,8 @@ def get_progress_summary(
         "estimated_weeks_to_goal": metric.estimated_weeks_to_goal,
         "dietary_preference": metric.dietary_preference,
         "allergies": metric.allergies,
+        "medical_conditions": metric.medical_conditions,
+        "medications": metric.medications,
         "avg_calories_7d": round(avg_calories),
         "avg_wellness_score_7d": round(avg_wellness),
         "days_on_track_7d": days_on_track,

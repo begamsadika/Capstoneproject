@@ -346,6 +346,7 @@ def handle_semantic_food_query(
     metrics: dict,
     top_k: int = 5,
     exclude_names: set | None = None,
+    disliked_foods: set[str] | None = None,
 ) -> str | None:
     """
     Detect and answer natural-language food queries like
@@ -359,21 +360,24 @@ def handle_semantic_food_query(
     """
     msg = message.strip().lower()
 
+    import re as _re_si
     # ── Intent keywords — suggestion/request verbs ────────────────────────────
-    food_intent = any(w in msg for w in (
-        "something", "suggest", "recommend", "give me", "show me",
-        "what can i", "find me", "any", "options for",
-        # expanded set
-        "ideas", "idea", "options", "want", "need",
-        "looking for", "tell me", "list", "which",
-    ))
+    # Use word-boundary check for short words like "any" to avoid matching "many"
+    food_intent = (
+        any(w in msg for w in (
+            "something", "suggest", "recommend", "give me", "show me",
+            "what can i", "find me", "options for",
+            "ideas", "idea", "options", "want", "need",
+            "looking for", "tell me", "list", "which",
+        ))
+        or bool(_re_si.search(r'\bany\b', msg))   # word-boundary "any"
+    )
 
     # ── Food-context keywords — nouns / adjectives that signal food domain ────
     food_ctx = any(w in msg for w in (
         "eat", "food", "meal", "breakfast", "lunch", "dinner", "snack",
         "dish", "recipe", "option", "protein", "calorie", "light", "heavy",
         "spicy", "sweet", "healthy", "low", "high", "vegan", "vegetarian",
-        # expanded set
         "gi", "glycemic", "carb", "fat", "fibre", "fiber",
         "gluten", "dairy", "sodium", "salt", "sugar",
         "filling", "nutritious", "energy", "weight",
@@ -387,10 +391,12 @@ def handle_semantic_food_query(
     if any(t in msg for t in plan_triggers):
         return None
 
-    # Don't intercept purely educational questions ("what is", "explain", "define")
+    # Don't intercept educational / quantitative nutrition questions
     educational = any(msg.startswith(p) for p in (
         "what is", "what are", "what does", "explain", "define",
-        "how does", "how do", "why is", "why are", "tell me about",
+        "how does", "how do", "how much", "how many", "how often",
+        "why is", "why are", "tell me about",
+        "should i", "can i", "is it", "are there",
     ))
     if educational:
         return None
@@ -417,15 +423,22 @@ def handle_semantic_food_query(
     names = semantic_search_foods(message, top_k=top_k * 5, extra_filters=extra or None)
 
     # ── Post-filter: allergies, dislikes, hard constraints ───────────────────
-    from meal_logger import _disliked_foods
-    from food_db import _food_df, apply_allergy_filter
+    from food_db import (
+        _food_df,
+        apply_allergy_filter,
+        apply_medical_condition_filter,
+        medical_food_reasons,
+        rank_foods_for_medical_profile,
+    )
+    from medication_rules import apply_medication_food_filter, medication_food_notes
 
     filtered_df = _food_df[_food_df["food_item"].isin(names)].copy()
 
     if allergies:
         filtered_df = apply_allergy_filter(filtered_df, allergies)
-    if _disliked_foods:
-        filtered_df = filtered_df[~filtered_df["food_item"].isin(_disliked_foods)]
+    filtered_df = apply_medication_food_filter(filtered_df, metrics)
+    if disliked_foods:
+        filtered_df = filtered_df[~filtered_df["food_item"].isin(disliked_foods)]
     if exclude_names:
         filtered_df = filtered_df[~filtered_df["food_item"].isin(exclude_names)]
 
@@ -469,6 +482,9 @@ def handle_semantic_food_query(
         if not _non_condiment.empty:
             filtered_df = _non_condiment
 
+    filtered_df = apply_medical_condition_filter(filtered_df, metrics)
+    filtered_df = rank_foods_for_medical_profile(filtered_df, metrics)
+
     # Apply hard attribute filters derived from query keywords
     if _want_low_gi and "gi_category" in filtered_df.columns:
         gi_filtered = filtered_df[filtered_df["gi_category"].str.lower().isin(["low", "medium"])]
@@ -482,14 +498,20 @@ def handle_semantic_food_query(
 
     # ── Sort by attribute when explicitly requested ───────────────────────────
     if _want_high_prot and "protein_g" in filtered_df.columns:
-        filtered_df = filtered_df.sort_values("protein_g", ascending=False)
+        filtered_df = filtered_df.sort_values(
+            ["_medical_score", "protein_g"], ascending=[False, False]
+        )
     elif _want_low_cal and "calories" in filtered_df.columns:
-        filtered_df = filtered_df.sort_values("calories", ascending=True)
+        filtered_df = filtered_df.sort_values(
+            ["_medical_score", "calories"], ascending=[False, True]
+        )
     else:
         # Default: keep original semantic ranking
         name_order = {n: i for i, n in enumerate(names)}
         filtered_df["_rank"] = filtered_df["food_item"].map(name_order).fillna(999)
-        filtered_df = filtered_df.sort_values("_rank")
+        filtered_df = filtered_df.sort_values(
+            ["_medical_score", "_rank"], ascending=[False, True]
+        )
 
     filtered_df = filtered_df.head(top_k)
 
@@ -508,6 +530,11 @@ def handle_semantic_food_query(
         tag_str = f" | {tags}" if tags and tags != "nan" else ""
         gi_str  = f" | GI: {gi_cat}" if gi_cat and gi_cat != "nan" else ""
         lines.append(f"• **{name}** — {cal} kcal | Protein: {prot}g{gi_str}{tag_str}")
+        reasons = medical_food_reasons(row, metrics)
+        if reasons:
+            lines.append(f"  *Profile fit: {', '.join(reasons)}*")
+        for note in medication_food_notes(row, metrics):
+            lines.append(f"  *Medication note: {note}*")
         if cat and cat != "nan":
             lines.append(f"  *{cat}*")
 
