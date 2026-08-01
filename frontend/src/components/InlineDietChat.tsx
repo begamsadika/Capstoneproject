@@ -1,7 +1,5 @@
-import { Bot, Send, Sparkles, Square, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useState, useRef, useEffect, useCallback } from "react";
-import { Send, Bot, Sparkles, Square, Trash2, Plus } from "lucide-react";
+import { Bot, Plus, Send, Sparkles, Square, Trash2 } from "lucide-react";
 import { getHealthMetrics, HealthMetrics } from "../api/health";
 import { getUserProfile } from "../api/user";
 import {
@@ -18,12 +16,20 @@ import {
   DietChatSourceIndicator,
 } from "./DietChatSourceIndicator";
 
+const MAX_HISTORY = 10;
+const SESSION_KEY = "wellora_inline_chat";
+
 interface Message {
   role: "user" | "bot";
   text: string;
   streaming?: boolean;
   loadingQuestion?: string;
   sources?: DietChatAnswerSource[];
+}
+
+interface HistoryItem {
+  role: "user" | "assistant";
+  content: string;
 }
 
 function isHistoryItem(item: unknown): item is HistoryItem {
@@ -109,11 +115,12 @@ export function InlineDietChat() {
   const [contextReady, setContextReady] = useState(false);
   const [conversations, setConversations] = useState<DietChatConversation[]>([]);
   const [conversationId, setConversationId] = useState<number | null>(null);
-  const [, setCalorieOverride] = useState<number | null>(null);
+  const [calorieOverride, setCalorieOverride] = useState<number | null>(null);
   const calorieOverrideRef            = useRef<number | null>(null);
   const messagesRef                   = useRef<HTMLDivElement>(null);
   const abortRef                      = useRef<AbortController | null>(null);
   const conversationIdRef            = useRef<number | null>(null);
+  const historyRef                   = useRef<HistoryItem[]>([]);
 
   const greetingMessage = useCallback((): Message => ({
     role: "bot",
