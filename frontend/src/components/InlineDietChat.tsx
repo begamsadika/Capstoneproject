@@ -1,5 +1,5 @@
-import { Bot, Plus, Send, Sparkles, Square, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Bot, Plus, Send, Sparkles, Square, Trash2 } from "lucide-react";
 import { getHealthMetrics, HealthMetrics } from "../api/health";
 import { getUserProfile } from "../api/user";
 import {
@@ -121,6 +121,7 @@ export function InlineDietChat() {
   const abortRef                      = useRef<AbortController | null>(null);
   const conversationIdRef            = useRef<number | null>(null);
   const historyRef                    = useRef<HistoryItem[]>([]);
+  const historyRef                   = useRef<HistoryItem[]>([]);
 
   const greetingMessage = useCallback((): Message => ({
     role: "bot",

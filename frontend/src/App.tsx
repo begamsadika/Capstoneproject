@@ -174,6 +174,26 @@ function resolveInitialPage(): Page {
 
 function App() {
   const [currentPage, setCurrentPage] = useState<Page>(resolveInitialPage);
+  try {
+    const user = JSON.parse(localStorage.getItem("wellora_user") || "{}") as {
+      user_type?: string;
+      is_active?: boolean;
+    };
+    if (
+      user.is_active === false &&
+      (user.user_type === "partner" || user.user_type === "vendor") &&
+      restrictedPendingPages.includes(initialPage)
+    ) {
+      return "pending-approval";
+    }
+  } catch {
+    // Keep the resolved page if local storage contains malformed user data.
+  }
+
+  return initialPage;
+}
+
+function App() {
   const [invitationToken] = useState(
     () => new URLSearchParams(window.location.search).get("invite") ?? "",
   );
