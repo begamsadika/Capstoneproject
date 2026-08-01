@@ -8,20 +8,24 @@ pnpm-debug.log*
 lerna-debug.log*
 
 # Node
-node_modules
-frontend/node_modules
-.vite
-frontend/.vite
+node_modules/
+frontend/node_modules/
+admin/node_modules/
+.vite/
+frontend/.vite/
+admin/.vite/
 
 # Build
-dist
-dist-ssr
+dist/
+dist-ssr/
+frontend/dist/
+admin/dist/
 *.local
 
 # IDE
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 
 # Windows
@@ -31,11 +35,27 @@ dist-ssr
 *.sln
 *.sw?
 
-# Env
+# Environment files
 .env
+frontend/.env
+admin/.env
+backend/.env
+Diet-Chat-Bot/.env
 
-# Python
+# Keep examples
+!.env.example
+
+# Python cache
 __pycache__/
 backend/__pycache__/
 backend/app/__pycache__/
+Diet-Chat-Bot/__pycache__/
 *.pyc
+*.pyo
+*.pyd
+
+# Python virtual environments
+venv/
+.venv/
+backend/venv/
+Diet-Chat-Bot/venv/
