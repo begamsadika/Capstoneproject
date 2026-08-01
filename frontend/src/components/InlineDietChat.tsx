@@ -120,6 +120,7 @@ export function InlineDietChat() {
   const messagesRef                   = useRef<HTMLDivElement>(null);
   const abortRef                      = useRef<AbortController | null>(null);
   const conversationIdRef            = useRef<number | null>(null);
+  const historyRef                    = useRef<HistoryItem[]>([]);
   const historyRef                   = useRef<HistoryItem[]>([]);
 
   const greetingMessage = useCallback((): Message => ({

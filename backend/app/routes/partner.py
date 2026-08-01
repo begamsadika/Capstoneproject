@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from sqlalchemy.orm import Session
 import os
+import re
 import secrets
 import smtplib
 from email.message import EmailMessage
@@ -30,6 +31,23 @@ class CreatePartnerClientRequest(BaseModel):
 
 class SetInvitationPasswordRequest(BaseModel):
     password: str
+
+
+PASSWORD_RE = re.compile(r"^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).+$")
+
+
+def validate_invitation_password(password: str) -> None:
+    if not password:
+        raise HTTPException(status_code=422, detail="Password is required.")
+    if len(password) < 8:
+        raise HTTPException(status_code=422, detail="Password must contain at least 8 characters.")
+    if len(password) > 64:
+        raise HTTPException(status_code=422, detail="Password must not exceed 64 characters.")
+    if not PASSWORD_RE.match(password):
+        raise HTTPException(
+            status_code=422,
+            detail="Password must include an uppercase letter, a lowercase letter, and a special character.",
+        )
 
 
 class RecommendMealsRequest(BaseModel):
@@ -163,8 +181,7 @@ def set_invitation_password(
     data: SetInvitationPasswordRequest,
     db: Session = Depends(get_db),
 ):
-    if len(data.password) < 8:
-        raise HTTPException(status_code=400, detail="Password must be at least 8 characters")
+    validate_invitation_password(data.password)
 
     client = db.query(PartnerClient).filter(PartnerClient.invitation_token == token).first()
     if not client:

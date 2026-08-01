@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import {
   Mail,
@@ -17,6 +17,7 @@ import { VendorStatus } from "../api/vendor";
 import { loginUser } from "../api/auth";
 import type { AppPage } from "../types/page";
 import { consumeSessionNotice } from "../auth/session";
+import { normalizeEmail, validateEmail, validateLoginPassword } from "../utils/authValidation";
 
 interface LoginPageProps {
   onNavigate: (page: AppPage) => void;
@@ -67,31 +68,62 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(consumeSessionNotice);
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
+  const [touched, setTouched] = useState<{ email?: boolean; password?: boolean }>({});
+  const emailRef = useRef<HTMLInputElement>(null);
+  const passwordRef = useRef<HTMLInputElement>(null);
+
+  const validateField = (field: "email" | "password", value: string) => {
+    const message = field === "email" ? validateEmail(value) : validateLoginPassword(value);
+    setFieldErrors((prev) => ({ ...prev, [field]: message || undefined }));
+    return message;
+  };
+
+  const validateForm = () => {
+    const emailError = validateEmail(email);
+    const passwordError = validateLoginPassword(password);
+    setTouched({ email: true, password: true });
+    setFieldErrors({
+      email: emailError || undefined,
+      password: passwordError || undefined,
+    });
+    if (emailError) emailRef.current?.focus();
+    else if (passwordError) passwordRef.current?.focus();
+    return !emailError && !passwordError;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
     setError("");
+    if (!validateForm()) return;
     setIsLoading(true);
 
     try {
-      const data = await loginUser({ email, password });
+      const data = await loginUser({ email: normalizeEmail(email), password });
 
       const actualRole = data.user.user_type;
       const selectedRole = role === "user" ? "general" : role;
 
       if (actualRole !== selectedRole) {
-        setError(
-          `This account is registered as "${actualRole}". Please select the correct role.`,
-        );
+        setError("Invalid email address or password.");
         return;
       }
 
       localStorage.setItem("wellora_token", data.access_token);
       localStorage.setItem("wellora_user", JSON.stringify(data.user));
 
-      if ((role === "vendor" || role === "partner") && data.user.is_active === false) {
+      if (
+        (role === "vendor" || role === "partner") &&
+        (data.user.registration_status !== "approved" || data.user.is_active === false)
+      ) {
         const applicationType = role === "partner" ? "Partner" : "Vendor";
+        const status =
+          data.user.registration_status === "rejected"
+            ? "Rejected"
+            : data.user.registration_status === "approved" && data.user.is_active === false
+              ? "Inactive"
+              : "Pending Approval";
         localStorage.setItem(
           "pending-approval-application",
           JSON.stringify({
@@ -99,7 +131,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
             partnerType: data.user.partner_type ?? "",
             organizationName: data.user.organization_name || data.user.name,
             email: data.user.email,
-            status: "Pending Approval",
+            status,
             submittedDate: new Date(data.user.created_at || Date.now()).toLocaleDateString("en-US", {
               month: "short",
               day: "numeric",
@@ -132,6 +164,16 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
 
       onLoginSuccess(role, undefined, data.user.onboarding_done);
     } catch (err: unknown) {
+      const responseData = axios.isAxiosError(err) ? err.response?.data : undefined;
+      const detail = responseData?.detail;
+
+      if (detail?.errors) {
+        setFieldErrors(detail.errors);
+        const firstField = Object.keys(detail.errors)[0];
+        if (firstField === "email") emailRef.current?.focus();
+        if (firstField === "password") passwordRef.current?.focus();
+      }
+
       if (axios.isAxiosError(err) && err.code === "ECONNABORTED") {
         setError(
           "Login is taking too long. Please check the backend database connection and try again.",
@@ -141,10 +183,11 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
           "Unable to reach the Wellora backend. Please check that it is running.",
         );
       } else if (axios.isAxiosError(err)) {
-        const responseData = err.response?.data as
-          | { detail?: string }
-          | undefined;
-        setError(responseData?.detail || "Invalid email or password.");
+        setError(
+          detail?.message ||
+            (typeof detail === "string" ? detail : "") ||
+            "Invalid email address or password.",
+        );
       } else {
         setError("Login failed unexpectedly. Please try again.");
       }
@@ -256,14 +299,31 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                 <div className="relative">
                   <Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
                   <input
+                    ref={emailRef}
                     type="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
+                    onBlur={() => {
+                      setTouched((prev) => ({ ...prev, email: true }));
+                      validateField("email", email);
+                    }}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setError("");
+                      if (touched.email || fieldErrors.email) validateField("email", e.target.value);
+                    }}
                     placeholder="your@email.com"
-                    className="w-full rounded-lg border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:border-wellora focus:ring-1 focus:ring-wellora dark:border-gray-600/70 dark:bg-gray-950/60 dark:text-white dark:placeholder:text-gray-500"
+                    aria-invalid={Boolean(fieldErrors.email)}
+                    aria-describedby={fieldErrors.email ? "login-email-error" : undefined}
+                    autoComplete="email"
+                    className={`w-full rounded-lg border bg-gray-50 py-3.5 pl-12 pr-4 text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:ring-1 dark:bg-gray-950/60 dark:text-white dark:placeholder:text-gray-500 ${
+                      fieldErrors.email
+                        ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-700"
+                        : "border-gray-200 focus:border-wellora focus:ring-wellora dark:border-gray-600/70"
+                    }`}
                     required
                   />
                 </div>
+                {fieldErrors.email && <p id="login-email-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.email}</p>}
               </div>
 
               <div className="space-y-2">
@@ -273,11 +333,27 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                 <div className="relative">
                   <Lock className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
                   <input
+                    ref={passwordRef}
                     type={showPassword ? "text" : "password"}
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    onBlur={() => {
+                      setTouched((prev) => ({ ...prev, password: true }));
+                      validateField("password", password);
+                    }}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setError("");
+                      if (touched.password || fieldErrors.password) validateField("password", e.target.value);
+                    }}
                     placeholder="Enter your password"
-                    className="w-full rounded-lg border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-12 text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:border-wellora focus:ring-1 focus:ring-wellora dark:border-gray-600/70 dark:bg-gray-950/60 dark:text-white dark:placeholder:text-gray-500"
+                    aria-invalid={Boolean(fieldErrors.password)}
+                    aria-describedby={fieldErrors.password ? "login-password-error" : undefined}
+                    autoComplete="current-password"
+                    className={`w-full rounded-lg border bg-gray-50 py-3.5 pl-12 pr-12 text-gray-900 outline-none transition-all placeholder:text-gray-400 focus:ring-1 dark:bg-gray-950/60 dark:text-white dark:placeholder:text-gray-500 ${
+                      fieldErrors.password
+                        ? "border-red-300 focus:border-red-500 focus:ring-red-500 dark:border-red-700"
+                        : "border-gray-200 focus:border-wellora focus:ring-wellora dark:border-gray-600/70"
+                    }`}
                     required
                   />
                   <button
@@ -292,6 +368,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                     )}
                   </button>
                 </div>
+                {fieldErrors.password && <p id="login-password-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.password}</p>}
               </div>
 
               <div className="flex items-center justify-between text-sm">

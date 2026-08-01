@@ -4,7 +4,9 @@ import {
   Clock3,
   Headphones,
   Home,
+  LogOut,
   Mail,
+  RefreshCw,
   type LucideIcon,
 } from "lucide-react";
 
@@ -17,6 +19,10 @@ export interface PendingApprovalProps {
   submittedDate: string;
   applicationId: string;
   onReturnHome: () => void;
+  onLogout?: () => void;
+  onRefreshStatus?: () => void;
+  isRefreshing?: boolean;
+  statusMessage?: string;
 }
 
 const formatPartnerType = (partnerType?: string) => {
@@ -34,6 +40,10 @@ export function PendingApproval({
   submittedDate,
   applicationId,
   onReturnHome,
+  onLogout,
+  onRefreshStatus,
+  isRefreshing = false,
+  statusMessage = "",
 }: PendingApprovalProps) {
   const isPartner = applicationType === "Partner";
   const nameLabel = isPartner ? "Organization Name" : "Business Name";
@@ -41,7 +51,7 @@ export function PendingApproval({
     { title: "Registration Submitted", state: "done", icon: CheckCircle2 },
     { title: "Verification & Approval", state: "current", icon: Clock3 },
     { title: "Approval Email", state: "next", icon: Mail },
-    { title: "Partner Portal Activated", state: "next", icon: Circle },
+    { title: `${applicationType} Portal Activated`, state: "next", icon: Circle },
   ];
   const summary = [
     ["Application ID", applicationId],
@@ -137,6 +147,24 @@ export function PendingApproval({
           </section>
 
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:justify-center">
+            {statusMessage && (
+              <div className="sm:basis-full">
+                <p className="text-center text-sm font-medium text-slate-600 dark:text-slate-300">
+                  {statusMessage}
+                </p>
+              </div>
+            )}
+            {onRefreshStatus && (
+              <button
+                type="button"
+                onClick={onRefreshStatus}
+                disabled={isRefreshing}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-wellora/30 bg-wellora-light px-5 py-3 text-sm font-semibold text-wellora-dark transition hover:bg-wellora-soft disabled:cursor-not-allowed disabled:opacity-70 dark:border-wellora/40 dark:bg-wellora/10 dark:text-wellora"
+              >
+                <RefreshCw className={`h-4 w-4 ${isRefreshing ? "animate-spin" : ""}`} />
+                {isRefreshing ? "Checking..." : "Refresh Status"}
+              </button>
+            )}
             <button
               type="button"
               onClick={onReturnHome}
@@ -144,6 +172,15 @@ export function PendingApproval({
             >
               <Home className="h-4 w-4" /> Return Home
             </button>
+            {onLogout && (
+              <button
+                type="button"
+                onClick={onLogout}
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+              >
+                <LogOut className="h-4 w-4" /> Logout
+              </button>
+            )}
             <button
               type="button"
               className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"

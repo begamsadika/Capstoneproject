@@ -17,4 +17,6 @@ export type AppPage =
   | 'vendor-order-management'
   | 'partner-dashboard'
   | 'partner-guidance'
-  | 'invitation-setup';
+  | 'invitation-setup'
+  | 'checkout-success'
+  | 'checkout-cancel';

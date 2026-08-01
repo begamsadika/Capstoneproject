@@ -24,12 +24,24 @@ DATABASE_POOL_TIMEOUT_SECONDS = _positive_int_env(
     "DATABASE_POOL_TIMEOUT_SECONDS", 5
 )
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
+
+STRIPE_SECRET_KEY = os.getenv("STRIPE_SECRET_KEY", "")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET", "")
+FRONTEND_SUCCESS_URL = os.getenv(
+    "FRONTEND_SUCCESS_URL", "http://localhost:5173/checkout/success"
+)
+FRONTEND_CANCEL_URL = os.getenv(
+    "FRONTEND_CANCEL_URL", "http://localhost:5173/checkout/cancel"
+)
+STRIPE_CURRENCY = os.getenv("STRIPE_CURRENCY", "lkr")
+
 DIET_CHAT_SERVICE_URL = os.getenv(
     "DIET_CHAT_SERVICE_URL", "http://127.0.0.1:8001"
 ).rstrip("/")
 DIET_CHAT_MEMORY_SUMMARY_ENABLED = os.getenv(
     "DIET_CHAT_MEMORY_SUMMARY_ENABLED", "false"
 ).strip().lower() in {"1", "true", "yes", "on"}
+
 try:
     _diet_chat_read_timeout = os.getenv(
         "DIET_CHAT_STREAM_READ_TIMEOUT_SECONDS", "0"

@@ -6,6 +6,7 @@ from app.db_migrations import (
     ensure_meal_image_filename_column,
     ensure_meal_ingredients_column,
     ensure_partner_portal_tables,
+    ensure_order_checkout_columns,
     ensure_user_registration_review_columns,
     ensure_user_partner_type_column,
     ensure_user_is_active_column,
@@ -48,6 +49,7 @@ ensure_user_is_active_column()
 ensure_user_partner_type_column()
 ensure_user_registration_review_columns()
 ensure_partner_portal_tables()
+ensure_order_checkout_columns()
 Base.metadata.create_all(bind=engine)
 from app.routes.diet_chat import router as diet_chat_router
 
