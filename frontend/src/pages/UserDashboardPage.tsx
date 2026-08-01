@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getUserProfile, UserProfile } from "../api/user";
 import { getAIRecommendations, AIRecommendation, AIRecommendationResult } from "../api/ai";
+import { getNutritionToday, NutritionToday } from "../api/nutrition";
 import {
   getMyPartnerRecommendedMeals,
   type PartnerRecommendedMeal,
@@ -49,9 +50,11 @@ export function UserDashboardPage({ onNavigate }: UserDashboardPageProps) {
   const [partnerMeals, setPartnerMeals] = useState<PartnerRecommendedMeal[]>([]);
   const [aiLoading, setAiLoading] = useState(true);
   const [aiError, setAiError] = useState<string | null>(null);
+  const [nutrition, setNutrition] = useState<NutritionToday | null>(null);
 
   useEffect(() => {
     getUserProfile().then(setProfile).catch(console.error);
+    getNutritionToday().then(setNutrition).catch(console.error);
   }, []);
 
   const fetchRecommendations = () => {
@@ -95,11 +98,11 @@ export function UserDashboardPage({ onNavigate }: UserDashboardPageProps) {
             <div className="flex items-center gap-3 rounded-3xl bg-white/90 dark:bg-slate-900/80 border border-slate-200 dark:border-slate-700 px-4 py-3 shadow-sm">
               <Bell className="w-5 h-5 text-slate-600 dark:text-slate-300" />
               <div className="text-left">
-                <p className="text-sm font-medium text-slate-900 dark:text-white">
+                <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
                   Daily target
                 </p>
-                <p className="mt-3 text-4xl font-bold text-slate-900 dark:text-white">
-                  {profile?.bmi ?? "—"}
+                <p className="text-lg font-bold text-slate-900 dark:text-white">
+                  {nutrition?.calorie_target ?? profile?.calorie_goal ?? "—"} kcal
                 </p>
               </div>
             </div>
@@ -286,34 +289,57 @@ export function UserDashboardPage({ onNavigate }: UserDashboardPageProps) {
                       </p>
                     </div>
                     <p className="mt-3 text-4xl font-bold text-slate-900 dark:text-white">
-                      1850 kcal
+                      {nutrition?.calories_consumed ?? 0} kcal
                     </p>
                   </div>
                   <div className="rounded-full bg-slate-100 px-3 py-1.5 text-sm font-semibold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                    Out of 2000 kcal
+                    Out of {nutrition?.calorie_target ?? profile?.calorie_goal ?? 2000} kcal
                   </div>
                 </div>
                 <div className="mt-5 h-3 overflow-hidden rounded-full bg-slate-200 dark:bg-slate-800">
-                  <div className="h-full w-[92.5%] rounded-full bg-wellora"></div>
+                  <div
+                    className="h-full rounded-full bg-wellora transition-all duration-500"
+                    style={{
+                      width: `${Math.min(
+                        100,
+                        nutrition && nutrition.calorie_target > 0
+                          ? Math.round((nutrition.calories_consumed / nutrition.calorie_target) * 100)
+                          : 0
+                      )}%`,
+                    }}
+                  ></div>
                 </div>
+                {nutrition && (
+                  <div className="mt-3 flex gap-4 text-xs text-slate-500 dark:text-slate-400">
+                    <span>P: {nutrition.protein_consumed_g}g / {nutrition.protein_target_g}g</span>
+                    <span>C: {nutrition.carbs_consumed_g}g / {nutrition.carbs_target_g}g</span>
+                    <span>F: {nutrition.fat_consumed_g}g / {nutrition.fat_target_g}g</span>
+                  </div>
+                )}
               </article>
 
               <article className="rounded-3xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/85 p-6 shadow-sm">
                 <div className="flex items-center justify-between gap-4">
                   <div>
                     <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                      Progress
+                      Daily Progress
                     </p>
                     <p className="mt-3 text-4xl font-bold text-slate-900 dark:text-white">
-                      82%
+                      {nutrition && nutrition.calorie_target > 0
+                        ? `${Math.min(100, Math.round((nutrition.calories_consumed / nutrition.calorie_target) * 100))}%`
+                        : "—"}
                     </p>
                   </div>
-                  <div className="inline-flex items-center justify-center rounded-2xl bg-sky-50 px-3 py-2 text-sky-700 dark:bg-sky-500/10 dark:text-sky-200">
+                  <div className={`inline-flex items-center justify-center rounded-2xl px-3 py-2 ${nutrition?.calorie_goal_met ? "bg-sky-50 text-sky-700 dark:bg-sky-500/10 dark:text-sky-200" : "bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400"}`}>
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                 </div>
                 <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">
-                  On track with your weekly nutrition and wellness goals.
+                  {nutrition?.calorie_goal_met
+                    ? "Daily calorie goal met! Great work."
+                    : nutrition
+                    ? `${(nutrition.calorie_target - nutrition.calories_consumed).toLocaleString()} kcal remaining to hit your target.`
+                    : "Log meals to track your progress."}
                 </p>
               </article>
             </section>

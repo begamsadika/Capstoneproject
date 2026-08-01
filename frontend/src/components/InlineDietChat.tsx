@@ -1,21 +1,29 @@
 import { Bot, Send, Sparkles, Square, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { Send, Bot, Sparkles, Square, Trash2, Plus } from "lucide-react";
 import { getHealthMetrics, HealthMetrics } from "../api/health";
 import { getUserProfile } from "../api/user";
-
-const STREAM_URL = "http://localhost:8001/chat/stream";
-const MAX_HISTORY = 10;
-const SESSION_KEY = "wellora_inline_chat";
+import {
+  deleteDietChatConversation,
+  DietChatConversation,
+  getDietChatConversation,
+  getDietChatConversations,
+  streamDietChat,
+} from "../api/dietChat";
+import { DietChatLoadingStatus } from "./DietChatLoadingStatus";
+import { DietChatMarkdown } from "./DietChatMarkdown";
+import {
+  DietChatAnswerSource,
+  DietChatSourceIndicator,
+} from "./DietChatSourceIndicator";
 
 interface Message {
   role: "user" | "bot";
   text: string;
   streaming?: boolean;
-}
-
-interface HistoryItem {
-  role: "user" | "assistant";
-  content: string;
+  loadingQuestion?: string;
+  sources?: DietChatAnswerSource[];
 }
 
 function isHistoryItem(item: unknown): item is HistoryItem {
@@ -98,13 +106,35 @@ export function InlineDietChat() {
   const [messages, setMessages]       = useState<Message[]>([]);
   const [input, setInput]             = useState("");
   const [streaming, setStreaming]     = useState(false);
-  const [calorieOverride, setCalorieOverride] = useState<number | null>(null);
+  const [contextReady, setContextReady] = useState(false);
+  const [conversations, setConversations] = useState<DietChatConversation[]>([]);
+  const [conversationId, setConversationId] = useState<number | null>(null);
+  const [, setCalorieOverride] = useState<number | null>(null);
   const calorieOverrideRef            = useRef<number | null>(null);
-  const bottomRef                     = useRef<HTMLDivElement>(null);
+  const messagesRef                   = useRef<HTMLDivElement>(null);
   const abortRef                      = useRef<AbortController | null>(null);
-  const historyRef                    = useRef<HistoryItem[]>([]);
+  const conversationIdRef            = useRef<number | null>(null);
 
-  // Restore session on mount, or fetch metrics and show greeting
+  const greetingMessage = useCallback((): Message => ({
+    role: "bot",
+    text: metrics
+      ? buildGreeting(metrics, userNameRef.current)
+      : `${getTimeGreeting()}! I'm your Diet AI. Ask me anything about food, nutrition, or dietary advice!`,
+  }), [metrics]);
+
+  const openConversation = useCallback(async (id: number) => {
+    const detail = await getDietChatConversation(id);
+    conversationIdRef.current = id;
+    setConversationId(id);
+    setMessages([
+      greetingMessage(),
+      ...detail.messages.map((message): Message => ({
+        role: message.role === "assistant" ? "bot" : "user",
+        text: message.content,
+      })),
+    ]);
+  }, [greetingMessage]);
+
   useEffect(() => {
     // Always fetch the user name so sendMessage can send it
     getUserProfile()
@@ -134,30 +164,34 @@ export function InlineDietChat() {
         userNameRef.current = firstName;
         setMessages([{ role: "bot", text: buildGreeting(m, firstName) }]);
       })
-      .catch(() => {
-        const timeGreet = getTimeGreeting();
-        setMessages([{
-          role: "bot",
-          text: `${timeGreet}! I'm your Diet AI. Ask me anything about food, nutrition, or dietary advice!`,
-        }]);
-      });
+      .catch(() => setMessages([{
+        role: "bot",
+        text: `${getTimeGreeting()}! I'm your Diet AI. Ask me anything about food, nutrition, or dietary advice!`,
+      }]))
+      .finally(() => setContextReady(true));
   }, []);
 
-  // Save conversation to sessionStorage whenever messages change
   useEffect(() => {
-    if (messages.length === 0) return;
-    try {
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({
-        messages: messages.filter((m) => !m.streaming),
-        history:  historyRef.current,
-        metricsSnapshot: metrics,
-      }));
-    } catch {}
-  }, [messages, metrics]);
+    if (!contextReady) return;
+    getDietChatConversations()
+      .then(async (items) => {
+        setConversations(items);
+        if (items.length > 0) await openConversation(items[0].id);
+        else setMessages([greetingMessage()]);
+      })
+      .catch(() => setMessages([greetingMessage()]));
+  }, [contextReady, greetingMessage, openConversation]);
 
   // Auto-scroll
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    const container = messagesRef.current;
+    if (!container) return;
+
+    const frame = window.requestAnimationFrame(() => {
+      container.scrollTop = container.scrollHeight;
+    });
+
+    return () => window.cancelAnimationFrame(frame);
   }, [messages, streaming]);
 
   const sendMessage = useCallback(async (quickText?: string) => {
@@ -175,28 +209,33 @@ export function InlineDietChat() {
     ].slice(-MAX_HISTORY);
 
     // Streaming placeholder
-    setMessages((prev) => [...prev, { role: "bot", text: "", streaming: true }]);
+    setMessages((prev) => [
+      ...prev,
+      { role: "bot", text: "", streaming: true, loadingQuestion: text },
+    ]);
 
     const controller = new AbortController();
     abortRef.current = controller;
 
     try {
-      const res = await fetch(STREAM_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const res = await streamDietChat(
+        {
           message: text,
-          history: historyRef.current.slice(0, -1),
-          user_metrics: metrics ?? undefined,
+          conversation_id: conversationIdRef.current ?? undefined,
           calorie_target_override: calorieOverrideRef.current ?? undefined,
-          user_name: userNameRef.current || undefined,
-        }),
-        signal: controller.signal,
-      });
+        },
+        controller.signal,
+      );
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({ detail: "Server error" }));
         throw new Error(err.detail || `HTTP ${res.status}`);
+      }
+
+      const returnedConversationId = Number(res.headers.get("X-Conversation-Id"));
+      if (Number.isInteger(returnedConversationId) && returnedConversationId > 0) {
+        conversationIdRef.current = returnedConversationId;
+        setConversationId(returnedConversationId);
       }
 
       const reader = res.body!.getReader();
@@ -215,8 +254,27 @@ export function InlineDietChat() {
           const payload = line.slice(6).trim();
           if (payload === "[DONE]") break;
           try {
-            const { token, error: srvErr } = JSON.parse(payload);
+            const {
+              token,
+              error: srvErr,
+              answer_source: answerSource,
+              answer_sources: answerSources,
+            } = JSON.parse(payload) as {
+              token?: string;
+              error?: string;
+              answer_source?: DietChatAnswerSource;
+              answer_sources?: DietChatAnswerSource[];
+            };
             if (srvErr) throw new Error(srvErr);
+            const sources = answerSources ?? (answerSource ? [answerSource] : undefined);
+            if (sources?.length) {
+              setMessages((prev) => {
+                const next = [...prev];
+                const last = next.length - 1;
+                next[last] = { ...next[last], sources };
+                return next;
+              });
+            }
             if (token) {
               botReply += token;
               setMessages((prev) => {
@@ -226,8 +284,10 @@ export function InlineDietChat() {
                 return next;
               });
             }
-          } catch (e: any) {
-            if (e.message !== "Unexpected end of JSON input") throw e;
+          } catch (error: unknown) {
+            if (!(error instanceof Error) || error.message !== "Unexpected end of JSON input") {
+              throw error;
+            }
           }
         }
       }
@@ -243,6 +303,7 @@ export function InlineDietChat() {
         ...historyRef.current,
         { role: "assistant", content: botReply } satisfies HistoryItem,
       ].slice(-MAX_HISTORY);
+      getDietChatConversations().then(setConversations).catch(() => {});
 
       // If the bot reply contains a calculated calorie target, store it
       const calMatch = botReply.match(/New Daily Calorie Target[:\s*]+(\d{3,5})\s*cal/i);
@@ -252,7 +313,8 @@ export function InlineDietChat() {
         setCalorieOverride(val);
       }
 
-    } catch (err: any) {
+    } catch (error: unknown) {
+      const err = error instanceof Error ? error : new Error("Unexpected chat error");
       if (err.name === "AbortError") {
         setMessages((prev) => {
           const next = [...prev];
@@ -262,7 +324,7 @@ export function InlineDietChat() {
         });
       } else {
         const msg = err.message?.includes("fetch") || err.message?.includes("Failed")
-          ? "Cannot reach the Diet AI server. Make sure it is running on port 8001."
+          ? "Cannot reach the Wellora server. Please try again shortly."
           : err.message;
         setMessages((prev) => {
           const next = [...prev];
@@ -273,23 +335,31 @@ export function InlineDietChat() {
     } finally {
       setStreaming(false);
     }
-  }, [input, streaming, metrics]);
+  }, [input, streaming]);
 
   const handleKey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") sendMessage();
   };
 
-  const clearChat = () => {
-    sessionStorage.removeItem(SESSION_KEY);
-    historyRef.current = [];
+  const newChat = () => {
+    conversationIdRef.current = null;
+    setConversationId(null);
     calorieOverrideRef.current = null;
     setCalorieOverride(null);
-    const greeting = buildGreeting(metrics!, userNameRef.current);
-    setMessages([{ role: "bot", text: metrics ? greeting : `${getTimeGreeting()}! I'm your Diet AI. Ask me anything!` }]);
+    setMessages([greetingMessage()]);
+  };
+
+  const clearChat = async () => {
+    const id = conversationIdRef.current;
+    if (id) {
+      await deleteDietChatConversation(id);
+      setConversations((items) => items.filter((item) => item.id !== id));
+    }
+    newChat();
   };
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full min-h-0 flex-col">
       {/* Header bar */}
       <div className="shrink-0 flex items-center gap-2 border-b border-slate-200 bg-white px-5 py-3 dark:border-slate-800 dark:bg-slate-900">
         <Bot className="h-4 w-4 text-wellora" />
@@ -299,11 +369,36 @@ export function InlineDietChat() {
             {metrics.health_goal?.replace(/_/g, " ")} · {calorieOverride ?? metrics.target_calories} kcal
           </span>
         )}
+        {conversations.length > 0 && (
+          <select
+            value={conversationId ?? ""}
+            onChange={(event) => openConversation(Number(event.target.value))}
+            disabled={streaming}
+            aria-label="Previous conversations"
+            className="ml-auto max-w-44 rounded-lg border border-slate-200 bg-slate-50 px-2 py-1 text-xs text-slate-600 outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+          >
+            <option value="" disabled>New conversation</option>
+            {conversations.map((conversation) => (
+              <option key={conversation.id} value={conversation.id}>
+                {conversation.title}
+              </option>
+            ))}
+          </select>
+        )}
+        <button
+          onClick={newChat}
+          disabled={streaming}
+          title="New chat"
+          className={`${conversations.length === 0 ? "ml-auto" : ""} flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-slate-400 transition hover:bg-wellora/10 hover:text-wellora disabled:opacity-40`}
+        >
+          <Plus className="h-3.5 w-3.5" />
+          New
+        </button>
         <button
           onClick={clearChat}
           disabled={streaming}
           title="Clear chat"
-          className="ml-auto flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-slate-400 transition hover:bg-red-50 hover:text-red-500 disabled:opacity-40 dark:hover:bg-red-950/30"
+          className="flex items-center gap-1 rounded-lg px-2 py-1 text-xs text-slate-400 transition hover:bg-red-50 hover:text-red-500 disabled:opacity-40 dark:hover:bg-red-950/30"
         >
           <Trash2 className="h-3.5 w-3.5" />
           Clear
@@ -311,23 +406,32 @@ export function InlineDietChat() {
       </div>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto space-y-3 p-4 bg-slate-50 dark:bg-slate-950/40">
+      <div ref={messagesRef} className="min-h-0 flex-1 overflow-y-auto space-y-3 p-4 bg-slate-50 dark:bg-slate-950/40">
         {messages.map((msg, i) => (
           <div key={i} className={`flex gap-2 ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-            {msg.role === "bot" && (
+            {msg.role === "bot" && !(msg.streaming && !msg.text) && (
               <div className="mt-1 flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-wellora/10">
                 <Sparkles className="h-3.5 w-3.5 text-wellora" />
               </div>
             )}
             <div
-              className={`max-w-[80%] rounded-2xl px-3.5 py-2.5 text-sm leading-relaxed whitespace-pre-line ${
-                msg.role === "user"
-                  ? "bg-wellora text-white"
-                  : "bg-white text-slate-800 shadow-sm ring-1 ring-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-700"
+              className={`max-w-[80%] text-sm leading-relaxed ${
+                msg.streaming && !msg.text
+                  ? "px-0 py-2"
+                  : msg.role === "user"
+                    ? "whitespace-pre-line rounded-2xl bg-wellora px-3.5 py-2.5 text-white"
+                    : "rounded-2xl bg-white px-3.5 py-2.5 text-slate-800 shadow-sm ring-1 ring-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:ring-slate-700"
               }`}
             >
-              {msg.text}
-              {msg.streaming && (
+              {msg.streaming && !msg.text ? (
+                <DietChatLoadingStatus
+                  question={msg.loadingQuestion ?? ""}
+                  sources={msg.sources}
+                />
+              ) : msg.role === "bot" ? (
+                <DietChatMarkdown content={msg.text} />
+              ) : msg.text}
+              {msg.streaming && Boolean(msg.text) && (
                 <span
                   style={{
                     display: "inline-block",
@@ -341,24 +445,21 @@ export function InlineDietChat() {
                   }}
                 />
               )}
+              {msg.role === "bot" && msg.sources?.length && Boolean(msg.text) && (
+                <div className="mt-2 flex justify-end gap-1">
+                  {msg.sources.map((source) => (
+                    <DietChatSourceIndicator
+                      key={source}
+                      source={source}
+                      active={msg.streaming}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
           </div>
         ))}
 
-        {/* Typing dots — show only when streaming but no text yet */}
-        {streaming && messages[messages.length - 1]?.text === "" && (
-          <div className="flex items-center gap-2">
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-wellora/10">
-              <Sparkles className="h-3.5 w-3.5 text-wellora" />
-            </div>
-            <div className="flex gap-1 rounded-2xl bg-white px-3.5 py-3 shadow-sm ring-1 ring-slate-200 dark:bg-slate-800 dark:ring-slate-700">
-              <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "0ms" }} />
-              <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "150ms" }} />
-              <span className="w-1.5 h-1.5 rounded-full bg-slate-400 animate-bounce" style={{ animationDelay: "300ms" }} />
-            </div>
-          </div>
-        )}
-        <div ref={bottomRef} />
       </div>
 
       {/* Quick prompt chips */}

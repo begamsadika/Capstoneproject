@@ -1,201 +1,259 @@
-food_id,food_item,serving_size_g,category,main_ingredients,calories,protein_g,carbs_g,fat_g,fiber_g,nutrition_notes,dietary_tags
-SL001,Kiribath,150,Grains & Rice Dishes,"White rice,coconut milk,salt",315,5.2,58,7.5,1.2,Festive milk rice,"Gluten-Free,Vegetarian"
-SL002,String Hoppers,120,Grains & Rice Dishes,"Rice flour,water,salt",210,3.6,48,0.4,2,Steamed noodle cakes,"Gluten-Free,Vegetarian,Vegan"
-SL003,Hoppers Appa,100,Grains & Rice Dishes,"Rice flour,coconut milk,yeast,sugar",180,2.5,28,6.5,1,Bowl-shaped pancake,"Gluten-Free,Vegetarian"
-SL004,Egg Hoppers,130,Grains & Rice Dishes,"Rice flour,coconut milk,egg,yeast",260,7,28,12,1,Hopper with egg,Gluten-Free
-SL005,Pittu,150,Grains & Rice Dishes,"Rice flour,coconut,water,salt",340,4.5,58,10,4.5,Steamed rice flour rolls,"Gluten-Free,Vegetarian,Vegan"
-SL006,Kottu Roti,350,Roti & Flatbreads,"Godamba roti,vegetables,egg,spices",550,15,70,22,6,Chopped roti stir-fry,Contains Gluten
-SL007,Pol Roti,120,Roti & Flatbreads,"Wheat flour,coconut,onion,green chili",330,6.5,48,12,5,Coconut flatbread,"Contains Gluten,Vegetarian"
-SL008,Godamba Roti,100,Roti & Flatbreads,"Wheat flour,water,oil,salt",280,7,50,5.5,2,Basic flatbread,"Contains Gluten,Vegetarian,Vegan"
-SL009,Paratha,150,Roti & Flatbreads,"Wheat flour,oil,ghee,salt",450,8,55,22,3,Layered flaky bread,Contains Gluten
-SL010,Dhal Curry,200,Pulses & Legumes,"Red lentils,onion,garlic,spices,coconut milk",280,15,32,10,12,Staple lentil curry,"Gluten-Free,Vegetarian"
-SL011,Pol Sambol,30,Condiments & Pickles,"Grated coconut,onion,chili,lime,salt",85,1.2,3.5,7.5,2,Coconut relish,"Gluten-Free,Vegetarian,Vegan"
-SL012,Lunu Miris,20,Condiments & Pickles,"Red onion,chili,salt,lime",25,0.5,5,0.2,1,Spicy onion sambol,"Gluten-Free,Vegetarian,Vegan"
-SL013,Seeni Sambol,30,Condiments & Pickles,"Onion,sugar,spices,tamarind",95,0.8,18,2.5,0.5,Sweet caramelized onion,"Gluten-Free,Vegetarian,Vegan"
-SL014,Mallung,100,Leafy Greens & Herbs,"Leafy greens,coconut,onion,lime",120,3.5,8,8,4,Finely chopped greens,"Gluten-Free,Vegetarian,Vegan"
-SL015,Gotukola Sambol,100,Leafy Greens & Herbs,"Gotukola leaves,coconut,onion,lime",115,3.2,7.5,8,4.5,Centella asiatica salad,"Gluten-Free,Vegetarian,Vegan"
-SL016,Kankun Mallung,100,Leafy Greens & Herbs,"Kankun leaves,coconut,onion,spices",110,3,6.8,7.5,4,Water spinach salad,"Gluten-Free,Vegetarian,Vegan"
-SL017,Snake Gourd Curry,150,Vegetables,"Snake gourd,coconut milk,spices",140,2.5,12,9,3,Mild creamy curry,"Gluten-Free,Vegetarian"
-SL018,Bitter Gourd Curry,120,Vegetables,"Bitter gourd,onion,spices,coconut milk",135,3,10,8.5,4.5,Medicinal bitter curry,"Gluten-Free,Vegetarian"
-SL019,Pumpkin Curry,150,Vegetables,"Pumpkin,coconut milk,spices",155,2,18,8.5,3,Sweet creamy curry,"Gluten-Free,Vegetarian"
-SL020,Jackfruit Curry,200,Vegetables,"Young jackfruit,coconut milk,spices",210,3.5,25,12,6,Meaty vegetarian curry,"Gluten-Free,Vegetarian"
-SL021,Brinjal Moju,100,Vegetables,"Eggplant,spices,oil,tamarind",180,1.5,15,13,4,Eggplant pickle,"Gluten-Free,Vegetarian,Vegan"
-SL022,Fried Fish,100,Seafood,"Fish,spices,oil,lime",210,22,2,13,0,Crispy fried fish,"Gluten-Free,Pescatarian"
-SL023,Fish Curry,200,Seafood,"Fish,coconut milk,spices,tamarind",320,25,12,20,2,Rich spicy fish curry,"Gluten-Free,Pescatarian"
-SL024,Prawn Curry,180,Seafood,"Prawns,coconut milk,spices",280,24,10,18,1,Creamy prawn curry,"Gluten-Free,Pescatarian"
-SL025,Chicken Curry,200,Poultry & Meat,"Chicken,spices,coconut milk",380,28,8,26,1,Classic Sri Lankan chicken,Gluten-Free
-SL026,Deviled Chicken,150,Poultry & Meat,"Chicken,onion,chili,spices",290,25,12,16,2,Spicy stir-fried chicken,Gluten-Free
-SL027,Polos Curry,200,Vegetables,"Young jackfruit,coconut milk,spices",220,3.8,26,12,7,Jackfruit meat alternative,"Gluten-Free,Vegetarian"
-SL028,Wambatu Moju,100,Vegetables,"Brinjal,spices,oil,tamarind",175,1.2,14,12.5,4.5,Eggplant pickle sweet-sour,"Gluten-Free,Vegetarian,Vegan"
-SL029,Kiri Hodi,150,Curries & Gravies,"Coconut milk,onion,green chili,spices",210,3.5,8,18,0.5,Mild white coconut gravy,"Gluten-Free,Vegetarian"
-SL030,Papadam,15,Snacks & Appetizers,"Black gram flour,oil,salt",70,2.5,4,4.5,0.5,Thin crispy disc,"Gluten-Free,Vegetarian,Vegan"
-SL031,Murukku,30,Snacks & Appetizers,"Rice flour,black gram flour,oil,spices",150,2,18,8,0.5,Spiral crunchy snack,"Gluten-Free,Vegetarian,Vegan"
-SL032,Thalapa,200,Grains & Rice Dishes,"Red rice,fish,spices,coconut",420,18,55,15,5,Fisherman's mixed meal,"Gluten-Free,Pescatarian"
-SL033,Kola Kanda,250,Beverages,"Herbal greens,rice flour,coconut milk",280,6,45,9,6,Herbal medicinal porridge,"Gluten-Free,Vegetarian"
-SL034,Coconut Sambol,30,Condiments & Pickles,"Grated coconut,chili,onion,lime",90,1.3,4,8,2.5,Essential Sri Lankan condiment,"Gluten-Free,Vegetarian,Vegan"
-SL035,Tempered Potatoes,150,Vegetables,"Potato,onion,spices,oil",210,3.5,28,10,3,Spicy potato stir-fry,"Gluten-Free,Vegetarian,Vegan"
-SL036,Cashew Curry,150,Nuts & Seeds,"Cashew nuts,coconut milk,spices",420,9,18,35,3.5,Rich creamy curry,"Gluten-Free,Vegetarian"
-SL037,Mango Curry,150,Vegetables,"Green mango,coconut milk,spices",165,1.5,22,9,3,Sweet-sour mango,"Gluten-Free,Vegetarian"
-SL038,Wood Apple Curry,150,Vegetables,"Wood apple,coconut milk,spices",175,3,25,8,4,Unique tangy curry,"Gluten-Free,Vegetarian"
-SL039,Ash Plantain Curry,150,Vegetables,"Ash plantain,coconut milk,spices",190,2,30,8,4,Starchy fruit curry,"Gluten-Free,Vegetarian"
-SL040,Lentil Fritters,100,Pulses & Legumes,"Red lentils,onion,spices,oil",210,8.5,22,10,6,Protein-rich snack,"Gluten-Free,Vegetarian"
-SL041,Coconut Roti,120,Roti & Flatbreads,"Wheat flour,coconut,onion,chili",340,7,48,13,5.5,Filled coconut flatbread,"Contains Gluten,Vegetarian"
-SL042,Sambol Rice,300,Grains & Rice Dishes,"Rice,mixed vegetables,coconut sambol",520,12,85,15,8,Complete meal bowl,"Gluten-Free,Vegetarian,Vegan"
-SL043,Saffron Rice,200,Grains & Rice Dishes,"Rice,spices,ghee,onion",320,5,58,8,1.5,Fragrant festive rice,"Gluten-Free,Vegetarian"
-SL044,Sweet Curd,100,Dairy Products,"Buffalo milk,curd culture,sugar",160,4.5,12,8,0,Traditional dessert,Gluten-Free
-SL045,Kitul Treacle,20,Natural Sweeteners,Kitul palm sap,65,0,16,0,0,Natural sweetener,"Gluten-Free,Vegetarian,Vegan"
-SL046,Watalappan,100,Desserts & Sweets,"Coconut milk,eggs,jaggery,cashew",280,6,28,16,1,Steamed coconut custard,Gluten-Free
-SL047,Love Cake,80,Desserts & Sweets,"Cashew nuts,semolina,coconut,jam",320,4.5,42,15,1.5,Burgher community cake,Contains Gluten
-SL048,Kavum,50,Desserts & Sweets,"Rice flour,jaggery,oil",190,1.5,30,7.5,0.5,Traditional oil cake,"Gluten-Free,Vegetarian"
-SL049,Kokis,40,Desserts & Sweets,"Rice flour,coconut milk,oil",175,1.2,22,9,0.3,Crispy deep-fried sweet,"Gluten-Free,Vegetarian"
-SL050,Aluwa,50,Desserts & Sweets,"Rice flour,coconut,sugar",210,2,35,7,1.5,Semolina-based sweet,"Gluten-Free,Vegetarian"
-SL051,Milk Rice,150,Grains & Rice Dishes,"White rice,coconut milk,salt",310,4.5,55,8,1,Alternative kiribath name,"Gluten-Free,Vegetarian"
-SL052,Tempered Cashews,100,Nuts & Seeds,"Cashew nuts,onion,chili,spices",520,12,20,44,4,Rich crunchy appetizer,"Gluten-Free,Vegetarian,Vegan"
-SL053,Green Bean Curry,150,Vegetables,"Green beans,coconut milk,spices",145,3.5,12,9,4.5,Simple everyday curry,"Gluten-Free,Vegetarian"
-SL054,Beetroot Curry,150,Vegetables,"Beetroot,coconut milk,spices",140,2.5,15,8,3,Sweet earthy curry,"Gluten-Free,Vegetarian"
-SL055,Carrot Curry,150,Vegetables,"Carrot,coconut milk,spices",135,1.8,14,8,3.5,Rich in vitamin A,"Gluten-Free,Vegetarian"
-SL056,Leek Curry,150,Vegetables,"Leek,coconut milk,spices",130,2.5,10,9,3,Mild flavored curry,"Gluten-Free,Vegetarian"
-SL057,Cabbage Curry,150,Vegetables,"Cabbage,coconut milk,spices",125,2.5,11,8,4,Simple everyday curry,"Gluten-Free,Vegetarian"
-SL058,Lunupola,10,Spices & Seasonings,"Chili powder,salt,spices",18,0.5,3.5,0.2,1,Chili paste seasoning,"Gluten-Free,Vegetarian,Vegan"
-SL059,Maldive Fish,10,Seafood,Smoked tuna,15,3.5,0,0.5,0,Dried fish flakes,"Gluten-Free,Pescatarian"
-SL060,Kiriala,10,Vegetables,Seaweed,5,0.8,1,0.1,0.5,Edible seaweed salad,"Gluten-Free,Vegetarian,Vegan"
-SL061,Rasam,150,Soups & Broths,"Tamarind,tomato,spices,mustard",70,1.5,12,1.5,2,Tangy pepper soup,"Gluten-Free,Vegetarian,Vegan"
-SL062,Sinhala Curry Powder,10,Spices & Seasonings,"Coriander,cumin,fennel,spices",32,1,5,1.2,2.5,Spice blend,"Gluten-Free,Vegetarian,Vegan"
-SL063,Black Pork Curry,200,Poultry & Meat,"Pork,spices,vinegar,garlic",450,30,8,32,1,Rich dark pork curry,Gluten-Free
-SL064,Mutton Curry,200,Poultry & Meat,"Mutton,spices,coconut milk",450,28,10,32,2,Spicy goat curry,Gluten-Free
-SL065,Squid Curry,180,Seafood,"Squid,coconut milk,spices",260,22,12,15,1.5,Tender squid in gravy,"Gluten-Free,Pescatarian"
-SL066,Crab Curry,200,Seafood,"Crab,coconut milk,spices",280,24,10,18,1,Coastal delicacy,"Gluten-Free,Pescatarian"
-SL067,Lamprais,400,Grains & Rice Dishes,"Rice,meat,egg,brinjal,sambol",850,32,95,38,8,Dutch Burgher meal,Contains Gluten
-SL068,Frikkadel,120,Poultry & Meat,"Beef,breadcrumbs,onion,spices",280,18,12,18,1.5,Dutch meatballs,Contains Gluten
-SL069,Bibikkan,80,Desserts & Sweets,"Coconut,jaggery,semolina,cashew",310,4,48,12,3,Coconut cake,Contains Gluten
-SL070,Kiri Toffee,50,Desserts & Sweets,"Milk,sugar,cashew",200,3,35,6,0,Milk fudge,"Gluten-Free,Vegetarian"
-SL071,Jaggery,15,Natural Sweeteners,Palm jaggery,55,0.1,14,0,0,Natural unrefined sugar,"Gluten-Free,Vegetarian,Vegan"
-SL072,Kithul Jaggery,15,Natural Sweeteners,Kithul palm sap,58,0.1,14.5,0,0,Fiber-rich sweetener,"Gluten-Free,Vegetarian,Vegan"
-SL073,Pol Pani,15,Natural Sweeteners,Coconut sap,55,0.1,14,0,0,Coconut treacle,"Gluten-Free,Vegetarian,Vegan"
-SL074,Mee Kiri,150,Dairy Products,"Sour milk,coconut,spices",210,6,12,15,1.5,Soured milk preparation,"Gluten-Free,Vegetarian"
-SL075,Thalaguli,100,Desserts & Sweets,"Sesame seeds,jaggery",480,12,40,30,8,Sesame sweet balls,"Gluten-Free,Vegetarian,Vegan"
-SL076,Kalu Dodol,80,Desserts & Sweets,"Rice flour,coconut milk,jaggery",320,2,55,10,1,Dark sticky toffee,"Gluten-Free,Vegetarian"
-SL077,Puhul Dosi,80,Desserts & Sweets,"Pumpkin,jaggery,coconut",210,1.5,45,3,3,Pumpkin preserve,"Gluten-Free,Vegetarian,Vegan"
-SL078,Mung Kavum,50,Desserts & Sweets,"Green gram flour,jaggery",180,4,30,5,3,Mung bean sweet,"Gluten-Free,Vegetarian"
-SL079,Undu Walalu,50,Desserts & Sweets,"Black gram flour,jaggery",195,4.5,32,6,2.5,Black gram sweet rolls,"Gluten-Free,Vegetarian"
-SL080,Athiraha,50,Desserts & Sweets,"Rice flour,jaggery,ghee",200,2,38,5,1,Deep-fried sweet,"Gluten-Free,Vegetarian"
-SL081,Thala Hakuru,100,Desserts & Sweets,"Sesame seeds,jaggery",520,15,35,38,10,Sesame jaggery block,"Gluten-Free,Vegetarian,Vegan"
-SL082,Nelli Pickle,50,Condiments & Pickles,"Indian gooseberry,spices,oil",95,0.5,12,5,2,Tangy gooseberry pickle,"Gluten-Free,Vegetarian,Vegan"
-SL083,Amba Pickle,50,Condiments & Pickles,"Mango,spices,oil",85,0.3,10,5,1.5,Spicy mango pickle,"Gluten-Free,Vegetarian,Vegan"
-SL084,Inguru Maluwa,150,Vegetables,"Ginger,chili,onion",80,1.5,12,2.5,2,Ginger chutney,"Gluten-Free,Vegetarian,Vegan"
-SL085,Kos Atta,100,Vegetables,"Jackfruit seeds,coconut,spices",180,4.5,28,6,6,Jackfruit seed curry,"Gluten-Free,Vegetarian"
-SL086,Del Curry,150,Vegetables,"Breadfruit,coconut milk,spices",210,2.5,35,8,6,Breadfruit curry,"Gluten-Free,Vegetarian"
-SL087,Kohila Curry,150,Vegetables,"Lasia spinosa,coconut milk,spices",140,2.5,18,7,4.5,Spiny lasia curry,"Gluten-Free,Vegetarian"
-SL088,Nellika Mallung,100,Leafy Greens & Herbs,"Indian gooseberry,coconut,onion",110,2,12,6,5,Gooseberry greens mix,"Gluten-Free,Vegetarian,Vegan"
-SL089,Kola Mallung,100,Leafy Greens & Herbs,"Mixed greens,coconut,onion,lime",115,3,7,8,4.5,Assorted leafy greens,"Gluten-Free,Vegetarian,Vegan"
-SL090,Kiri Ala,150,Vegetables,"Yam,coconut milk,spices",190,2.5,28,7,3.5,Yam curry,"Gluten-Free,Vegetarian"
-SL091,Hathmaluwa,200,Vegetables,"Mixed vegetables,coconut milk,spices",210,4,22,12,6,Seven vegetable curry,"Gluten-Free,Vegetarian"
-SL092,Miris Gala,100,Snacks & Appetizers,"Chili,rice flour,oil",320,3,45,15,4,Fried chili snack,"Gluten-Free,Vegetarian,Vegan"
-SL093,Thalaguli,50,Desserts & Sweets,"Sesame,jaggery,coconut",240,6,20,15,4.5,Sesame balls,"Gluten-Free,Vegetarian,Vegan"
-SL094,Kiri Peni,100,Dairy Products,"Milk,sugar",260,5,35,12,0,Milk toffee,"Gluten-Free,Vegetarian"
-SL095,Pani Walalu,60,Desserts & Sweets,"Rice flour,jaggery",230,2,42,6,1,Honeycomb shaped sweet,"Gluten-Free,Vegetarian"
-SL096,Kalu Kavum,50,Desserts & Sweets,"Rice flour,jaggery",190,1.5,32,6,1,Dark oil cake,"Gluten-Free,Vegetarian"
-SL097,Thalapa Dosi,200,Grains & Rice Dishes,"Red rice,fish,coconut",420,18,55,14,5,Mixed fish and rice,"Gluten-Free,Pescatarian"
-SL098,Kurakkan Roti,120,Millet & Ancient Grains,"Finger millet flour,coconut,onion",280,6,45,8,7,Healthy millet roti,"Gluten-Free,Vegetarian,Vegan"
-SL099,Kurakkan Pittu,150,Millet & Ancient Grains,"Finger millet flour,coconut",300,6.5,52,8,9,Millet steamed rolls,"Gluten-Free,Vegetarian,Vegan"
-SL100,Kurakkan Thalapa,200,Millet & Ancient Grains,"Finger millet,fish,coconut",400,16,55,13,10,Millet with fish,"Gluten-Free,Pescatarian"
-SL101,Ragi Ambula,250,Fermented Foods,"Finger millet,buttermilk",180,5,35,2,5,Millet fermented drink,"Gluten-Free,Vegetarian"
-SL102,Belimal Curry,150,Vegetables,"Bael fruit,coconut milk,spices",170,2.5,28,6,5,Wood apple curry,"Gluten-Free,Vegetarian"
-SL103,Diyawara,200,Seafood,"Freshwater fish,coconut milk,spices",340,28,12,20,2,Fish from reservoirs,"Gluten-Free,Pescatarian"
-SL104,Koonissu,50,Snacks & Appetizers,"Rice flour,coconut,mustard",220,3,35,8,2.5,Stuffed rice rolls,"Gluten-Free,Vegetarian,Vegan"
-SL105,Pani Pani,30,Desserts & Sweets,"Rice flour,coconut milk,sugar",120,1,20,4,0.5,Steamed sweet cakes,"Gluten-Free,Vegetarian"
-SL106,Halapa,60,Desserts & Sweets,"Rice flour,coconut,jaggery",210,2.5,38,6,2.5,Steamed sweet parcels,"Gluten-Free,Vegetarian"
-SL107,Kiri Bath,150,Grains & Rice Dishes,"White rice,coconut milk,salt",310,4.5,55,8,1,Milk rice festive,"Gluten-Free,Vegetarian"
-SL108,Kakulu Bath,150,Grains & Rice Dishes,"Red rice,coconut milk",320,5,58,8,2.5,Festive red rice,"Gluten-Free,Vegetarian"
-SL109,Suddha Bath,150,Grains & Rice Dishes,"White rice,water,salt",195,4,43,0.5,0.8,Plain boiled rice,"Gluten-Free,Vegetarian,Vegan"
-SL110,Indi Appa,100,Grains & Rice Dishes,"Rice flour,water,yeast",165,2.5,36,0.8,1.2,Sour hoppers,"Gluten-Free,Vegetarian,Vegan"
-SL111,Pani Appa,100,Grains & Rice Dishes,"Rice flour,coconut milk,treacle",210,2.5,38,6,1,Sweet hoppers,"Gluten-Free,Vegetarian"
-SL112,Karakala,100,Fermented Foods,"Rice flour,yogurt",120,3,22,2,1.5,Fermented rice snack,"Gluten-Free,Vegetarian"
-SL113,Pittu Kiri,200,Grains & Rice Dishes,"Pittu,coconut milk",520,7,70,22,5,Pittu with milk gravy,"Gluten-Free,Vegetarian"
-SL114,Era Vade,100,Seafood,"Prawns,rice flour,spices",190,12,18,8,1.5,Prawn fritters,"Gluten-Free,Pescatarian"
-SL115,Malu Vade,100,Seafood,"Fish,rice flour,spices",185,11,18,8,1,Fish fritters,"Gluten-Free,Pescatarian"
-SL116,Parippu Vade,100,Pulses & Legumes,"Red lentils,onion,spices",210,8.5,22,10,6,Lentil fritters,"Gluten-Free,Vegetarian"
-SL117,Kaju Vade,100,Nuts & Seeds,"Cashew nuts,rice flour,spices",320,8,28,20,2.5,Cashew fritters,"Gluten-Free,Vegetarian"
-SL118,Bathala Vade,100,Vegetables,"Sweet potato,rice flour,spices",180,3,28,6,3.5,Sweet potato fritters,"Gluten-Free,Vegetarian,Vegan"
-SL119,Kesel Muwa Vade,100,Vegetables,"Banana blossom,rice flour,spices",165,3.5,22,7,4,Banana flower fritters,"Gluten-Free,Vegetarian"
-SL120,Polos Vade,100,Vegetables,"Young jackfruit,rice flour,spices",175,3,24,7,5,Jackfruit fritters,"Gluten-Free,Vegetarian,Vegan"
-SL121,Ulundu Vade,100,Pulses & Legumes,"Black gram flour,onion,spices",215,8,28,9,4,Black gram fritters,"Gluten-Free,Vegetarian"
-SL122,Pani Pol,30,Desserts & Sweets,"Coconut,jaggery,wheat flour",110,1.5,18,4,1,Stuffed pancake,"Contains Gluten,Vegetarian"
-SL123,Wadei,40,Snacks & Appetizers,"Rice flour,onion,chili",140,2,20,6,1,Crunchy snack ring,"Gluten-Free,Vegetarian,Vegan"
-SL124,Thosai,150,Fermented Foods,"Rice flour,black gram",320,8,48,10,3,Savory fermented crepe,"Gluten-Free,Vegetarian"
-SL125,Idiyappam,120,Grains & Rice Dishes,"Rice flour,water,salt",210,3.6,48,0.4,2,String hoppers,"Gluten-Free,Vegetarian,Vegan"
-SL126,Puttu,150,Grains & Rice Dishes,"Rice flour,coconut,water,salt",340,4.5,58,10,4.5,Steamed rice cake,"Gluten-Free,Vegetarian,Vegan"
-SL127,Appam,100,Grains & Rice Dishes,"Rice flour,coconut milk,yeast",180,2.5,28,6.5,1,Hoppers,"Gluten-Free,Vegetarian"
-SL128,Thalipa,250,Grains & Rice Dishes,"Rice,mixed vegetables,fish",580,20,85,18,7,Mixed rice meal,"Gluten-Free,Pescatarian"
-SL129,Buth,150,Grains & Rice Dishes,"Rice,mixed vegetables,spices",210,4.5,45,1.5,2.5,Simple fried rice,"Gluten-Free,Vegetarian,Vegan"
-SL130,Kiri Hodiya,150,Curries & Gravies,"Coconut milk,onion,spices",190,3,6,18,0.5,White coconut gravy,"Gluten-Free,Vegetarian"
-SL131,Pol Mallung,100,Leafy Greens & Herbs,"Grated coconut,onion,chili,lime",110,1.8,6,9,3,Coconut salad,"Gluten-Free,Vegetarian,Vegan"
-SL132,Karapincha Sambol,30,Leafy Greens & Herbs,"Curry leaves,coconut,onion,lime",80,1.5,4,7,2,Curry leaf sambol,"Gluten-Free,Vegetarian,Vegan"
-SL133,Lunu Dehi,30,Condiments & Pickles,"Lime,chili,salt",20,0.3,4,0.2,0.5,Spiced lime pickle,"Gluten-Free,Vegetarian,Vegan"
-SL134,Amu Miris,10,Condiments & Pickles,"Green chili,salt,lime",8,0.2,1.5,0.1,0.5,Spicy chili relish,"Gluten-Free,Vegetarian,Vegan"
-SL135,Kochchi Sambol,30,Condiments & Pickles,"Bird's eye chili,coconut,onion,lime",95,1.2,4.5,8,2,Very spicy sambol,"Gluten-Free,Vegetarian,Vegan"
-SL136,Vaangi Bath,200,Grains & Rice Dishes,"Rice,brinjal,spices",350,6,58,10,5,Eggplant rice,"Gluten-Free,Vegetarian"
-SL137,Lemon Rice,200,Grains & Rice Dishes,"Rice,lemon,peanuts",330,6,52,10,2.5,Tangy lemon rice,"Gluten-Free,Vegetarian,Vegan"
-SL138,Curd Rice,200,Grains & Rice Dishes,"Rice,yogurt",250,7,42,6,1.5,Soothing yogurt rice,"Gluten-Free,Vegetarian"
-SL139,Tomato Rice,200,Grains & Rice Dishes,"Rice,tomato,spices",280,5,48,8,3,Spicy tomato rice,"Gluten-Free,Vegetarian,Vegan"
-SL140,Coconut Rice,200,Grains & Rice Dishes,"Rice,coconut,spices",380,5.5,55,15,4,Fragrant coconut rice,"Gluten-Free,Vegetarian,Vegan"
-SL141,Mint Rice,200,Grains & Rice Dishes,"Rice,mint,spices",290,5,50,8,3.5,Refreshing mint rice,"Gluten-Free,Vegetarian,Vegan"
-SL142,Corriander Rice,200,Grains & Rice Dishes,"Rice,coriander,spices",295,5,51,8,3,Herb-infused rice,"Gluten-Free,Vegetarian,Vegan"
-SL143,Ghee Rice,200,Grains & Rice Dishes,"Rice,ghee,spices",380,5,55,15,1,Rich aromatic rice,"Gluten-Free,Vegetarian"
-SL144,Jeera Rice,200,Grains & Rice Dishes,"Rice,cumin seeds,ghee",340,4.5,55,10,1.5,Cumin rice,"Gluten-Free,Vegetarian"
-SL145,Fried Rice,250,Grains & Rice Dishes,"Rice,vegetables,egg,soy sauce",380,10,60,12,3,Chinese-style fried rice,Contains Gluten
-SL146,Nasi Goreng,250,Grains & Rice Dishes,"Rice,vegetables,egg,spices",390,10,62,12,3,Indonesian fried rice,Contains Gluten
-SL147,Biryani,350,Grains & Rice Dishes,"Rice,meat,spices,yogurt",550,25,65,22,3,Fragrant layered rice,Contains Gluten
-SL148,Buriyani,350,Grains & Rice Dishes,"Rice,chicken,spices",540,24,64,22,3,Sri Lankan biryani,Contains Gluten
-SL149,Mutton Biryani,350,Grains & Rice Dishes,"Rice,mutton,spices",580,28,62,26,3,Richer biryani,Contains Gluten
-SL150,Chicken Biryani,350,Grains & Rice Dishes,"Rice,chicken,spices",540,26,64,22,3,Popular biryani,Contains Gluten
-SL151,Vegetable Biryani,350,Grains & Rice Dishes,"Rice,mixed vegetables,spices",450,9,70,15,8,Vegetarian version,"Contains Gluten,Vegetarian"
-SL152,Egg Biryani,350,Grains & Rice Dishes,"Rice,egg,spices",470,14,68,16,3.5,Egg biryani,Contains Gluten
-SL153,Fish Biryani,350,Grains & Rice Dishes,"Rice,fish,spices",490,22,65,18,3,Seafood biryani,"Contains Gluten,Pescatarian"
-SL154,Prawn Biryani,350,Grains & Rice Dishes,"Rice,prawns,spices",510,24,64,20,2.5,Prawn biryani,"Contains Gluten,Pescatarian"
-SL155,Breadfruit Biryani,350,Grains & Rice Dishes,"Rice,breadfruit,spices",470,8,72,16,9,Breadfruit biryani,"Contains Gluten,Vegetarian"
-SL156,Kiri Ala Biryani,350,Grains & Rice Dishes,"Rice,yam,spices",460,7.5,70,16,6,Yam biryani,"Contains Gluten,Vegetarian"
-SL157,Polos Biryani,350,Grains & Rice Dishes,"Rice,jackfruit,spices",480,8.5,71,17,8.5,Jackfruit biryani,"Contains Gluten,Vegetarian"
-SL158,Kaju Biryani,350,Grains & Rice Dishes,"Rice,cashew nuts,spices",540,12,65,25,5,Cashew biryani,"Contains Gluten,Vegetarian"
-SL159,Paneer Biryani,350,Grains & Rice Dishes,"Rice,paneer,spices",520,18,62,22,3.5,Indian cheese biryani,"Contains Gluten,Vegetarian"
-SL160,Soya Biryani,350,Grains & Rice Dishes,"Rice,soya chunks,spices",470,25,58,15,8,Soya protein biryani,"Contains Gluten,Vegetarian"
-SL161,Mushroom Biryani,350,Grains & Rice Dishes,"Rice,mushroom,spices",440,12,65,14,6,Mushroom biryani,"Contains Gluten,Vegetarian"
-SL162,Cauliflower Biryani,350,Grains & Rice Dishes,"Rice,cauliflower,spices",430,10,64,14,7,Low-carb alternative,"Contains Gluten,Vegetarian"
-SL163,Kola Biryani,350,Grains & Rice Dishes,"Rice,spinach,spices",420,9,62,15,8,Green leafy biryani,"Contains Gluten,Vegetarian"
-SL164,Kottu,350,Roti & Flatbreads,"Roti,vegetables,meat,spices",560,18,70,24,6,Chopped roti stir-fry,Contains Gluten
-SL165,Cheese Kottu,350,Roti & Flatbreads,"Roti,cheese,vegetables",580,22,68,28,5,Cheese version,Contains Gluten
-SL166,Egg Kottu,350,Roti & Flatbreads,"Roti,egg,vegetables",540,16,70,22,5.5,Egg version,Contains Gluten
-SL167,Chicken Kottu,350,Roti & Flatbreads,"Roti,chicken,vegetables",590,28,68,26,5.5,Chicken version,Contains Gluten
-SL168,Mutton Kottu,350,Roti & Flatbreads,"Roti,mutton,vegetables",620,30,67,30,5,Mutton version,Contains Gluten
-SL169,Fish Kottu,350,Roti & Flatbreads,"Roti,fish,vegetables",560,26,69,24,5,Fish version,"Contains Gluten,Pescatarian"
-SL170,Prawn Kottu,350,Roti & Flatbreads,"Roti,prawns,vegetables",570,28,68,25,4.5,Prawn version,"Contains Gluten,Pescatarian"
-SL171,Vegetable Kottu,350,Roti & Flatbreads,"Roti,mixed vegetables",520,12,72,20,8,Vegetarian version,"Contains Gluten,Vegetarian"
-SL172,Soy Kottu,350,Roti & Flatbreads,"Roti,soya chunks",530,20,70,21,8,Soya protein version,"Contains Gluten,Vegetarian"
-SL173,Paneer Kottu,350,Roti & Flatbreads,"Roti,paneer",580,24,68,27,5,Paneer version,"Contains Gluten,Vegetarian"
-SL174,Mushroom Kottu,350,Roti & Flatbreads,"Roti,mushroom",540,14,71,22,7,Mushroom version,"Contains Gluten,Vegetarian"
-SL175,Kottu Rotti,350,Roti & Flatbreads,"Roti,mixed,spices",560,16,71,24,6,Spicy version,Contains Gluten
-SL176,String Hoppers Kottu,350,Grains & Rice Dishes,"String hoppers,vegetables",480,12,75,14,6,String hopper stir-fry,"Gluten-Free,Vegetarian"
-SL177,Idiyappam Kottu,350,Grains & Rice Dishes,"Idiyappam,vegetables",490,12,76,15,6,Idiyappam stir-fry,"Gluten-Free,Vegetarian"
-SL178,Pittu Kottu,350,Grains & Rice Dishes,"Pittu,vegetables",520,10,72,20,7,Pittu stir-fry,"Gluten-Free,Vegetarian"
-SL179,Thosai Kottu,350,Fermented Foods,"Thosai,vegetables",480,12,68,18,6,Thosai stir-fry,"Gluten-Free,Vegetarian"
-SL180,Paneer Butter Masala,200,Curries & Gravies,"Paneer,tomato,butter,cream",380,15,12,30,2,Creamy paneer curry,"Contains Gluten,Vegetarian"
-SL181,Butter Chicken,200,Poultry & Meat,"Chicken,tomato,butter,cream",450,28,10,32,1.5,Rich creamy chicken,Contains Gluten
-SL182,Tandoori Chicken,150,Poultry & Meat,"Chicken,yogurt,spices",280,30,5,15,0.5,Grilled spiced chicken,Contains Gluten
-SL183,Chilli Chicken,150,Poultry & Meat,"Chicken,chili,soy sauce",320,25,18,16,1,Spicy Indo-Chinese dish,Contains Gluten
-SL184,Garlic Naan,100,Roti & Flatbreads,"Wheat flour,garlic,butter",300,8,45,10,2,Leavened garlic bread,Contains Gluten
-SL185,Butter Naan,100,Roti & Flatbreads,"Wheat flour,butter",310,7,46,11,1.5,Buttered leavened bread,Contains Gluten
-SL186,Roti Canai,120,Roti & Flatbreads,"Wheat flour,oil,condensed milk",350,6,45,16,1,Flaky Malaysian flatbread,Contains Gluten
-SL187,Chapati,80,Roti & Flatbreads,"Whole wheat flour,water,salt",180,5,30,4,4,Whole wheat flatbread,"Contains Gluten,Vegetarian,Vegan"
-SL188,Phulka,80,Roti & Flatbreads,"Whole wheat flour,water,salt",170,5,32,2,3.5,Soft whole wheat roti,"Contains Gluten,Vegetarian,Vegan"
-SL189,Puri,60,Roti & Flatbreads,"Wheat flour,oil,salt",220,4,25,12,1,Deep-fried puffy bread,"Contains Gluten,Vegetarian"
-SL190,Bhatura,100,Roti & Flatbreads,"Wheat flour,yogurt,oil",280,6,38,12,1.5,Fermented fried bread,"Contains Gluten,Vegetarian"
-SL191,Aloo Paratha,150,Roti & Flatbreads,"Wheat flour,potato,spices",380,8,50,16,4,Stuffed potato flatbread,"Contains Gluten,Vegetarian"
-SL192,Gobi Paratha,150,Roti & Flatbreads,"Wheat flour,cauliflower,spices",360,9,48,14,5,Stuffed cauliflower flatbread,"Contains Gluten,Vegetarian"
-SL193,Paneer Paratha,150,Roti & Flatbreads,"Wheat flour,paneer,spices",420,14,45,20,3,Stuffed cheese flatbread,"Contains Gluten,Vegetarian"
-SL194,Samosa,80,Snacks & Appetizers,"Wheat flour,potato,peas,spices",250,5,30,12,3,Fried stuffed pastry,"Contains Gluten,Vegetarian"
-SL195,Vada,50,Snacks & Appetizers,"Black gram flour,onion,spices",140,6,12,8,3,Savory donut-shaped fritter,"Gluten-Free,Vegetarian"
-SL196,Idli,80,Fermented Foods,"Rice flour,black gram",140,5,28,1,3,Steamed fermented rice cake,"Gluten-Free,Vegetarian"
-SL197,Dosa,120,Fermented Foods,"Rice flour,black gram",210,6,38,4,4,Crispy fermented crepe,"Gluten-Free,Vegetarian"
-SL198,Upma,150,Grains & Rice Dishes,"Semolina,vegetables,spices",280,6,45,8,4,Savory semolina porridge,"Contains Gluten,Vegetarian"
-SL199,Pongal,200,Grains & Rice Dishes,"Rice,mung dal,pepper,cumin",320,8,58,8,5,South Indian rice-lentil dish,"Gluten-Free,Vegetarian"
-SL200,Bisi Bele Bath,300,Grains & Rice Dishes,"Rice,lentils,vegetables,spices",400,12,70,10,8,Spicy rice-lentil dish,"Gluten-Free,Vegetarian"
+food_id,food_item,serving_size_g,category,main_ingredients,calories,protein_g,carbs_g,fat_g,fiber_g,nutrition_notes,dietary_tags,meal_type,dish_role,cal_per_100g,macro_basis,pairs_well_with,min_serving_g,max_serving_g,allergens,gi,gl,gi_category,prep_method,sodium_mg,sodium_category
+SL001,Kiribath,150,Grains & Rice Dishes,"White rice,coconut milk,salt",315,5.2,58.0,7.5,1.2,Festive milk rice,"Gluten-Free,Vegetarian",breakfast,main,210.0,per_serving,SL044,100,200,none,72,41.8,high,boiled,120,low
+SL002,String Hoppers,120,Grains & Rice Dishes,"Rice flour,water,salt",210,3.6,48.0,0.4,2.0,Steamed noodle cakes,"Gluten-Free,Vegetarian,Vegan",breakfast,main,175.0,per_serving,"SL010,SL029,SL112,SL130,SL203",80,160,none,70,33.6,medium,steamed,130,low
+SL003,Hoppers Appa,100,Grains & Rice Dishes,"Rice flour,coconut milk,yeast,sugar",180,2.5,28.0,6.5,1.0,Bowl-shaped pancake,"Gluten-Free,Vegetarian",breakfast,main,180.0,per_serving,"SL010,SL029,SL130",65,135,none,55,15.4,low,steamed,105,low
+SL004,Egg Hoppers,130,Grains & Rice Dishes,"Rice flour,coconut milk,egg,yeast",260,7.0,28.0,12.0,1.0,Hopper with egg,Gluten-Free,breakfast,standalone,200.0,per_serving,,85,175,egg,55,15.4,low,steamed,290,medium
+SL005,Pittu,150,Grains & Rice Dishes,"Rice flour,coconut,water,salt",340,4.5,58.0,10.0,4.5,Steamed rice flour rolls,"Gluten-Free,Vegetarian,Vegan",breakfast,main,226.7,per_serving,"SL010,SL029,SL044,SL130,SL203",100,200,none,68,39.4,medium,steamed,170,medium
+SL006,Kottu Roti,350,Roti & Flatbreads,"Godamba roti,vegetables,egg,spices",550,15.0,70.0,22.0,6.0,Chopped roti stir-fry,Contains Gluten,lunch_dinner,standalone,157.1,per_serving,,250,450,"egg,gluten",70,49.0,medium,stir_fried,210,medium
+SL007,Pol Roti,120,Roti & Flatbreads,"Wheat flour,coconut,onion,green chili",330,6.5,48.0,12.0,5.0,Coconut flatbread,"Contains Gluten,Vegetarian",any,main,275.0,per_serving,"SL010,SL017,SL018,SL019,SL029,SL130,SL202",80,160,gluten,58,27.8,medium,shallow_fried,205,medium
+SL008,Godamba Roti,100,Roti & Flatbreads,"Wheat flour,water,oil,salt",280,7.0,50.0,5.5,2.0,Basic flatbread,"Contains Gluten,Vegetarian,Vegan",any,main,280.0,per_serving,"SL010,SL017,SL025,SL029,SL130",65,135,gluten,72,36.0,high,shallow_fried,185,medium
+SL009,Paratha,150,Roti & Flatbreads,"Wheat flour,oil,ghee,salt",450,8.0,55.0,22.0,3.0,Layered flaky bread,"Contains Gluten,Vegetarian",lunch_dinner,main,300.0,per_serving,"SL010,SL017,SL019,SL020,SL025,SL180",100,200,"dairy,gluten",60,33.0,medium,shallow_fried,340,medium
+SL010,Dhal Curry,200,Pulses & Legumes,"Red lentils,onion,garlic,spices,coconut milk",280,15.0,32.0,10.0,12.0,Staple lentil curry,"Gluten-Free,Vegetarian",any,side,140.0,per_serving,,150,250,none,30,9.6,low,boiled,175,medium
+SL011,Pol Sambol,30,Condiments & Pickles,"Grated coconut,onion,chili,lime,salt",85,1.2,3.5,7.5,2.0,Coconut relish,"Gluten-Free,Vegetarian,Vegan",condiment,side,283.3,per_serving,,20,40,none,28,1.0,low,raw,310,medium
+SL012,Lunu Miris,20,Condiments & Pickles,"Red onion,chili,salt,lime",25,0.5,5.0,0.2,1.0,Spicy onion sambol,"Gluten-Free,Vegetarian,Vegan",condiment,condiment,125.0,per_serving,,15,25,none,28,1.4,low,raw,700,high
+SL013,Seeni Sambol,30,Condiments & Pickles,"Onion,sugar,spices,tamarind",95,0.8,18.0,2.5,0.5,Sweet caramelized onion,"Gluten-Free,Vegetarian,Vegan",condiment,side,316.7,per_serving,,20,40,none,28,5.0,low,stir_fried,380,medium
+SL014,Mallung,100,Leafy Greens & Herbs,"Leafy greens,coconut,onion,lime",120,3.5,8.0,8.0,4.0,Finely chopped greens,"Gluten-Free,Vegetarian,Vegan",condiment,side,120.0,per_serving,,75,125,none,22,1.8,low,boiled,35,low
+SL015,Gotukola Sambol,100,Leafy Greens & Herbs,"Gotukola leaves,coconut,onion,lime",115,3.2,7.5,8.0,4.5,Centella asiatica salad,"Gluten-Free,Vegetarian,Vegan",condiment,side,115.0,per_serving,,75,125,none,22,1.6,low,raw,415,high
+SL016,Kankun Mallung,100,Leafy Greens & Herbs,"Kankun leaves,coconut,onion,spices",110,3.0,6.8,7.5,4.0,Water spinach salad,"Gluten-Free,Vegetarian,Vegan",condiment,side,110.0,per_serving,,75,125,none,22,1.5,low,boiled,10,low
+SL017,Snake Gourd Curry,150,Vegetables,"Snake gourd,coconut milk,spices",140,2.5,12.0,9.0,3.0,Mild creamy curry,"Gluten-Free,Vegetarian",lunch_dinner,side,93.3,per_serving,,110,190,none,38,4.6,low,boiled,40,low
+SL018,Bitter Gourd Curry,120,Vegetables,"Bitter gourd,onion,spices,coconut milk",135,3.0,10.0,8.5,4.5,Medicinal bitter curry,"Gluten-Free,Vegetarian",lunch_dinner,side,112.5,per_serving,,90,150,none,38,3.8,low,boiled,55,low
+SL019,Pumpkin Curry,150,Vegetables,"Pumpkin,coconut milk,spices",155,2.0,18.0,8.5,3.0,Sweet creamy curry,"Gluten-Free,Vegetarian",lunch_dinner,side,103.3,per_serving,,110,190,none,38,6.8,low,boiled,60,low
+SL020,Jackfruit Curry,200,Vegetables,"Young jackfruit,coconut milk,spices",210,3.5,25.0,12.0,6.0,Meaty vegetarian curry,"Gluten-Free,Vegetarian",lunch_dinner,side,105.0,per_serving,,150,250,none,52,13.0,low,boiled,95,low
+SL021,Brinjal Moju,100,Vegetables,"Eggplant,spices,oil,tamarind",180,1.5,15.0,13.0,4.0,Eggplant pickle,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,side,180.0,per_serving,,75,125,none,38,5.7,low,deep_fried,105,low
+SL022,Fried Fish,100,Seafood,"Fish,spices,oil,lime",210,22.0,2.0,13.0,0.0,Crispy fried fish,"Gluten-Free,Pescatarian",lunch_dinner,side,210.0,per_serving,,75,125,fish,0,0.0,low,shallow_fried,215,medium
+SL023,Fish Curry,200,Seafood,"Fish,coconut milk,spices,tamarind",320,25.0,12.0,20.0,2.0,Rich spicy fish curry,"Gluten-Free,Pescatarian",lunch_dinner,side,160.0,per_serving,,150,250,fish,0,0.0,low,boiled,485,high
+SL024,Prawn Curry,180,Seafood,"Prawns,coconut milk,spices",280,24.0,10.0,18.0,1.0,Creamy prawn curry,"Gluten-Free,Pescatarian",lunch_dinner,side,155.6,per_serving,,135,225,shellfish,0,0.0,low,boiled,300,medium
+SL025,Chicken Curry,200,Poultry & Meat,"Chicken,spices,coconut milk",380,28.0,8.0,26.0,1.0,Classic Sri Lankan chicken,Gluten-Free,lunch_dinner,side,190.0,per_serving,,150,250,none,0,0.0,low,boiled,565,high
+SL026,Deviled Chicken,150,Poultry & Meat,"Chicken,onion,chili,spices",290,25.0,12.0,16.0,2.0,Spicy stir-fried chicken,Gluten-Free,lunch_dinner,side,193.3,per_serving,,110,190,none,0,0.0,low,stir_fried,530,high
+SL027,Polos Curry,200,Vegetables,"Young jackfruit,coconut milk,spices",220,3.8,26.0,12.0,7.0,Jackfruit meat alternative,"Gluten-Free,Vegetarian",lunch_dinner,side,110.0,per_serving,,150,250,none,52,13.5,low,boiled,120,low
+SL028,Wambatu Moju,100,Vegetables,"Brinjal,spices,oil,tamarind",175,1.2,14.0,12.5,4.5,Eggplant pickle sweet-sour,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,side,175.0,per_serving,,75,125,none,38,5.3,low,deep_fried,100,low
+SL029,Kiri Hodi,150,Curries & Gravies,"Coconut milk,onion,green chili,spices",210,3.5,8.0,18.0,0.5,Mild white coconut gravy,"Gluten-Free,Vegetarian",any,side,140.0,per_serving,,110,190,none,40,3.2,low,boiled,465,high
+SL030,Papadam,15,Snacks & Appetizers,"Black gram flour,oil,salt",70,2.5,4.0,4.5,0.5,Thin crispy disc,"Gluten-Free,Vegetarian,Vegan",snack,condiment,466.7,per_serving,,10,20,none,70,2.8,medium,deep_fried,260,medium
+SL031,Murukku,30,Snacks & Appetizers,"Rice flour,black gram flour,oil,spices",150,2.0,18.0,8.0,0.5,Spiral crunchy snack,"Gluten-Free,Vegetarian,Vegan",snack,standalone,500.0,per_serving,,25,35,none,70,12.6,medium,deep_fried,380,medium
+SL032,Thalapa,200,Grains & Rice Dishes,"Red rice,fish,spices,coconut",420,18.0,55.0,15.0,5.0,Fisherman's mixed meal,"Gluten-Free,Pescatarian",breakfast,main,210.0,per_serving,"SL029,SL130",130,270,fish,55,30.2,low,boiled,250,medium
+SL033,Kola Kanda,250,Beverages,"Herbal greens,rice flour,coconut milk",280,6.0,45.0,9.0,6.0,Herbal medicinal porridge,"Gluten-Free,Vegetarian",breakfast,standalone,112.0,per_serving,,210,290,none,45,20.2,low,boiled,20,low
+SL034,Coconut Sambol,30,Condiments & Pickles,"Grated coconut,chili,onion,lime",90,1.3,4.0,8.0,2.5,Essential Sri Lankan condiment,"Gluten-Free,Vegetarian,Vegan",condiment,side,300.0,per_serving,,20,40,none,28,1.1,low,raw,815,high
+SL035,Tempered Potatoes,150,Vegetables,"Potato,onion,spices,oil",210,3.5,28.0,10.0,3.0,Spicy potato stir-fry,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,side,140.0,per_serving,,110,190,none,38,10.6,low,stir_fried,140,medium
+SL036,Cashew Curry,150,Nuts & Seeds,"Cashew nuts,coconut milk,spices",420,9.0,18.0,35.0,3.5,Rich creamy curry,"Gluten-Free,Vegetarian",lunch_dinner,side,280.0,per_serving,,120,180,nuts,30,5.4,low,boiled,280,medium
+SL037,Mango Curry,150,Vegetables,"Green mango,coconut milk,spices",165,1.5,22.0,9.0,3.0,Sweet-sour mango,"Gluten-Free,Vegetarian",lunch_dinner,side,110.0,per_serving,,110,190,none,38,8.4,low,boiled,125,low
+SL038,Wood Apple Curry,150,Vegetables,"Wood apple,coconut milk,spices",175,3.0,25.0,8.0,4.0,Unique tangy curry,"Gluten-Free,Vegetarian",lunch_dinner,side,116.7,per_serving,,110,190,none,38,9.5,low,boiled,135,low
+SL039,Ash Plantain Curry,150,Vegetables,"Ash plantain,coconut milk,spices",190,2.0,30.0,8.0,4.0,Starchy fruit curry,"Gluten-Free,Vegetarian",lunch_dinner,side,126.7,per_serving,,110,190,none,50,15.0,low,boiled,50,low
+SL040,Lentil Fritters,40,Pulses & Legumes,"Red lentils,onion,spices,oil",90,8.5,22.0,10.0,6.0,Protein-rich snack,"Gluten-Free,Vegetarian",snack,side,225.0,per_serving,,30,80,none,32,7.0,low,deep_fried,330,medium
+SL041,Coconut Roti,120,Roti & Flatbreads,"Wheat flour,coconut,onion,chili",340,7.0,48.0,13.0,5.5,Filled coconut flatbread,"Contains Gluten,Vegetarian",any,main,283.3,per_serving,"SL010,SL017,SL018,SL019,SL029,SL130,SL202",80,160,gluten,58,27.8,medium,shallow_fried,260,medium
+SL042,Sambol Rice,300,Grains & Rice Dishes,"Rice,mixed vegetables,coconut sambol",520,12.0,85.0,15.0,8.0,Complete meal bowl,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,standalone,173.3,per_serving,,250,450,none,70,59.5,medium,boiled,575,high
+SL043,Saffron Rice,200,Grains & Rice Dishes,"Rice,spices,ghee,onion",320,5.0,58.0,8.0,1.5,Fragrant festive rice,"Gluten-Free,Vegetarian",lunch_dinner,main,160.0,per_serving,"SL010,SL019,SL020,SL023,SL024,SL025",130,270,dairy,68,39.4,medium,boiled,170,medium
+SL044,Sweet Curd,100,Dairy Products,"Buffalo milk,curd culture,sugar",160,4.5,12.0,8.0,0.0,Traditional yogurt-style dairy,"Gluten-Free,Vegetarian",breakfast,side,160.0,per_serving,,80,120,dairy,30,3.6,low,fermented,70,low
+SL045,Kitul Treacle,20,Natural Sweeteners,Kitul palm sap,65,0.0,16.0,0.0,0.0,Natural sweetener,"Gluten-Free,Vegetarian,Vegan",condiment,condiment,325.0,per_serving,,15,25,none,60,9.6,medium,raw,5,low
+SL046,Watalappan,100,Desserts & Sweets,"Coconut milk,eggs,jaggery,cashew",280,6.0,28.0,16.0,1.0,Steamed coconut custard,"Gluten-Free,Vegetarian",snack,standalone,280.0,per_serving,,70,130,"egg,nuts",55,15.4,low,steamed,70,low
+SL047,Love Cake,80,Desserts & Sweets,"Cashew nuts,semolina,coconut,jam",320,4.5,42.0,15.0,1.5,Burgher community cake,Contains Gluten,snack,standalone,400.0,per_serving,,55,105,"gluten,nuts",55,23.1,low,baked,40,low
+SL048,Kavum,50,Desserts & Sweets,"Rice flour,jaggery,oil",190,1.5,30.0,7.5,0.5,Traditional oil cake,"Gluten-Free,Vegetarian",snack,standalone,380.0,per_serving,,35,65,none,68,20.4,medium,deep_fried,25,low
+SL049,Kokis,40,Desserts & Sweets,"Rice flour,coconut milk,oil",175,1.2,22.0,9.0,0.3,Crispy deep-fried sweet,"Gluten-Free,Vegetarian",snack,standalone,437.5,per_serving,,30,50,none,68,15.0,medium,deep_fried,25,low
+SL050,Aluwa,50,Desserts & Sweets,"Rice flour,coconut,sugar",210,2.0,35.0,7.0,1.5,Semolina-based sweet,"Gluten-Free,Vegetarian",snack,standalone,420.0,per_serving,,35,65,none,65,22.8,medium,deep_fried,45,low
+SL051,Milk Rice,150,Grains & Rice Dishes,"White rice,coconut milk,salt",310,4.5,55.0,8.0,1.0,Alternative kiribath name,"Gluten-Free,Vegetarian",breakfast,main,206.7,per_serving,"SL044,SL074",100,200,none,72,39.6,high,boiled,125,low
+SL052,Tempered Cashews,100,Nuts & Seeds,"Cashew nuts,onion,chili,spices",520,12.0,20.0,44.0,4.0,Rich crunchy appetizer,"Gluten-Free,Vegetarian,Vegan",snack,side,520.0,per_serving,,80,120,nuts,20,4.0,low,stir_fried,5,low
+SL053,Green Bean Curry,150,Vegetables,"Green beans,coconut milk,spices",145,3.5,12.0,9.0,4.5,Simple everyday curry,"Gluten-Free,Vegetarian",lunch_dinner,side,96.7,per_serving,,110,190,none,38,4.6,low,boiled,140,medium
+SL054,Beetroot Curry,150,Vegetables,"Beetroot,coconut milk,spices",140,2.5,15.0,8.0,3.0,Sweet earthy curry,"Gluten-Free,Vegetarian",lunch_dinner,side,93.3,per_serving,,110,190,none,38,5.7,low,boiled,75,low
+SL055,Carrot Curry,150,Vegetables,"Carrot,coconut milk,spices",135,1.8,14.0,8.0,3.5,Rich in vitamin A,"Gluten-Free,Vegetarian",lunch_dinner,side,90.0,per_serving,,110,190,none,38,5.3,low,boiled,105,low
+SL056,Leek Curry,150,Vegetables,"Leek,coconut milk,spices",130,2.5,10.0,9.0,3.0,Mild flavored curry,"Gluten-Free,Vegetarian",lunch_dinner,side,86.7,per_serving,,110,190,none,38,3.8,low,boiled,65,low
+SL057,Cabbage Curry,150,Vegetables,"Cabbage,coconut milk,spices",125,2.5,11.0,8.0,4.0,Simple everyday curry,"Gluten-Free,Vegetarian",lunch_dinner,side,83.3,per_serving,,110,190,none,38,4.2,low,boiled,135,low
+SL058,Lunupola,10,Spices & Seasonings,"Chili powder,salt,spices",18,0.5,3.5,0.2,1.0,Chili paste seasoning,"Gluten-Free,Vegetarian,Vegan",condiment,condiment,180.0,per_serving,,5,15,none,10,0.4,low,raw,5,low
+SL059,Maldive Fish,10,Seafood,Smoked tuna,15,3.5,0.0,0.5,0.0,Dried fish flakes,"Gluten-Free,Pescatarian",condiment,condiment,150.0,per_serving,,5,15,fish,0,0.0,low,raw,850,high
+SL060,Kiriala,10,Vegetables,Seaweed,30,6.0,0.0,0.3,0.0,Edible seaweed salad,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,side,300.0,per_serving,,5,15,none,38,0.0,low,raw,90,low
+SL061,Rasam,150,Soups & Broths,"Tamarind,tomato,spices,mustard",70,1.5,12.0,1.5,2.0,Tangy pepper soup,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,side,46.7,per_serving,,120,180,none,25,3.0,low,boiled,675,high
+SL062,Sinhala Curry Powder,10,Spices & Seasonings,"Coriander,cumin,fennel,spices",32,1.0,5.0,1.2,2.5,Spice blend,"Gluten-Free,Vegetarian,Vegan",condiment,condiment,320.0,per_serving,,5,15,none,10,0.5,low,raw,10,low
+SL063,Black Pork Curry,200,Poultry & Meat,"Pork,spices,vinegar,garlic",450,30.0,8.0,32.0,1.0,Rich dark pork curry,Gluten-Free,lunch_dinner,side,225.0,per_serving,,150,250,none,0,0.0,low,boiled,395,medium
+SL064,Mutton Curry,200,Poultry & Meat,"Mutton,spices,coconut milk",450,28.0,10.0,32.0,2.0,Spicy goat curry,Gluten-Free,lunch_dinner,side,225.0,per_serving,,150,250,none,0,0.0,low,boiled,240,medium
+SL065,Squid Curry,180,Seafood,"Squid,coconut milk,spices",260,22.0,12.0,15.0,1.5,Tender squid in gravy,"Gluten-Free,Pescatarian",lunch_dinner,side,144.4,per_serving,,135,225,none,0,0.0,low,boiled,480,high
+SL066,Crab Curry,200,Seafood,"Crab,coconut milk,spices",280,24.0,10.0,18.0,1.0,Coastal delicacy,"Gluten-Free,Pescatarian",lunch_dinner,side,140.0,per_serving,,150,250,shellfish,0,0.0,low,boiled,350,medium
+SL067,Lamprais,400,Grains & Rice Dishes,"Rice,meat,egg,brinjal,sambol",850,32.0,95.0,38.0,8.0,Dutch Burgher meal,Contains Gluten,lunch_dinner,standalone,212.5,per_serving,,380,420,"egg,gluten",70,66.5,medium,baked,825,high
+SL068,Frikkadel,120,Poultry & Meat,"Beef,breadcrumbs,onion,spices",280,18.0,12.0,18.0,1.5,Dutch meatballs,Contains Gluten,lunch_dinner,side,233.3,per_serving,,90,150,gluten,0,0.0,low,deep_fried,520,high
+SL069,Bibikkan,80,Desserts & Sweets,"Coconut,jaggery,semolina,cashew",310,4.0,48.0,12.0,3.0,Coconut cake,Contains Gluten,snack,standalone,387.5,per_serving,,55,105,"gluten,nuts",58,27.8,medium,baked,60,low
+SL070,Kiri Toffee,50,Desserts & Sweets,"Milk,sugar,cashew",200,3.0,35.0,6.0,0.0,Milk fudge,"Gluten-Free,Vegetarian",snack,standalone,400.0,per_serving,,35,65,"dairy,nuts",60,21.0,medium,boiled,75,low
+SL071,Jaggery,15,Natural Sweeteners,Palm jaggery,55,0.1,14.0,0.0,0.0,Natural unrefined sugar,"Gluten-Free,Vegetarian,Vegan",condiment,condiment,366.7,per_serving,,10,20,none,60,8.4,medium,raw,5,low
+SL072,Kithul Jaggery,15,Natural Sweeteners,Kithul palm sap,58,0.1,14.5,0.0,0.0,Fiber-rich sweetener,"Gluten-Free,Vegetarian,Vegan",condiment,condiment,386.7,per_serving,,10,20,none,60,8.7,medium,raw,10,low
+SL073,Pol Pani,15,Natural Sweeteners,Coconut sap,55,0.1,14.0,0.0,0.0,Coconut treacle,"Gluten-Free,Vegetarian,Vegan",condiment,condiment,366.7,per_serving,,10,20,none,60,8.4,medium,raw,5,low
+SL074,Mee Kiri,150,Dairy Products,"Sour milk,coconut,spices",210,6.0,12.0,15.0,1.5,Soured milk preparation,"Gluten-Free,Vegetarian",breakfast,side,140.0,per_serving,,120,180,dairy,30,3.6,low,fermented,140,medium
+SL075,Thalaguli,40,Desserts & Sweets,"Sesame seeds,jaggery",192,4.8,16.0,12.0,8.0,Sesame sweet balls,"Gluten-Free,Vegetarian,Vegan",snack,standalone,480.0,per_serving,,20,60,none,52,8.3,low,raw,25,low
+SL076,Kalu Dodol,80,Desserts & Sweets,"Rice flour,coconut milk,jaggery",320,2.0,55.0,10.0,1.0,Dark sticky toffee,"Gluten-Free,Vegetarian",snack,standalone,400.0,per_serving,,55,105,none,65,35.8,medium,boiled,20,low
+SL077,Puhul Dosi,80,Desserts & Sweets,"Pumpkin,jaggery,coconut",210,1.5,45.0,3.0,3.0,Pumpkin preserve,"Gluten-Free,Vegetarian,Vegan",snack,standalone,262.5,per_serving,,55,105,none,62,27.9,medium,boiled,60,low
+SL078,Mung Kavum,50,Desserts & Sweets,"Green gram flour,jaggery",180,4.0,30.0,5.0,3.0,Mung bean sweet,"Gluten-Free,Vegetarian",snack,standalone,360.0,per_serving,,35,65,none,45,13.5,low,deep_fried,35,low
+SL079,Undu Walalu,50,Desserts & Sweets,"Black gram flour,jaggery",195,4.5,32.0,6.0,2.5,Black gram sweet rolls,"Gluten-Free,Vegetarian",snack,standalone,390.0,per_serving,,35,65,none,42,13.4,low,deep_fried,70,low
+SL080,Athiraha,50,Desserts & Sweets,"Rice flour,jaggery,ghee",200,2.0,38.0,5.0,1.0,Deep-fried sweet,"Gluten-Free,Vegetarian",snack,standalone,400.0,per_serving,,35,65,dairy,68,25.8,medium,deep_fried,40,low
+SL081,Thala Hakuru,40,Desserts & Sweets,"Sesame seeds,jaggery",208,6.0,14.0,15.2,10.0,Sesame jaggery block,"Gluten-Free,Vegetarian,Vegan",snack,standalone,520.0,per_serving,,20,60,none,52,7.3,low,raw,25,low
+SL082,Nelli Pickle,50,Condiments & Pickles,"Indian gooseberry,spices,oil",95,0.5,12.0,5.0,2.0,Tangy gooseberry pickle,"Gluten-Free,Vegetarian,Vegan",condiment,condiment,190.0,per_serving,,35,65,none,28,3.4,low,raw,835,high
+SL083,Amba Pickle,50,Condiments & Pickles,"Mango,spices,oil",85,0.3,10.0,5.0,1.5,Spicy mango pickle,"Gluten-Free,Vegetarian,Vegan",condiment,condiment,170.0,per_serving,,35,65,none,28,2.8,low,raw,520,high
+SL084,Inguru Maluwa,150,Vegetables,"Ginger,chili,onion",150,2.0,14.0,8.0,2.0,Ginger chutney,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,condiment,100.0,per_serving,,110,190,none,38,5.3,low,stir_fried,140,medium
+SL085,Kos Atta,100,Vegetables,"Jackfruit seeds,coconut,spices",180,4.5,28.0,6.0,6.0,Jackfruit seed curry,"Gluten-Free,Vegetarian",lunch_dinner,side,180.0,per_serving,,75,125,none,38,10.6,low,boiled,40,low
+SL086,Del Curry,150,Vegetables,"Breadfruit,coconut milk,spices",210,2.5,35.0,8.0,6.0,Breadfruit curry,"Gluten-Free,Vegetarian",lunch_dinner,side,140.0,per_serving,,110,190,gluten,55,19.2,low,boiled,80,low
+SL087,Kohila Curry,150,Vegetables,"Lasia spinosa,coconut milk,spices",140,2.5,18.0,7.0,4.5,Spiny lasia curry,"Gluten-Free,Vegetarian",lunch_dinner,side,93.3,per_serving,,110,190,none,38,6.8,low,boiled,65,low
+SL088,Nellika Mallung,100,Leafy Greens & Herbs,"Indian gooseberry,coconut,onion",110,2.0,12.0,6.0,5.0,Gooseberry greens mix,"Gluten-Free,Vegetarian,Vegan",condiment,side,110.0,per_serving,,75,125,none,22,2.6,low,boiled,40,low
+SL089,Kola Mallung,100,Leafy Greens & Herbs,"Mixed greens,coconut,onion,lime",115,3.0,7.0,8.0,4.5,Assorted leafy greens,"Gluten-Free,Vegetarian,Vegan",condiment,side,115.0,per_serving,,75,125,none,22,1.5,low,boiled,50,low
+SL090,Kiri Ala,150,Vegetables,"Yam,coconut milk,spices",190,2.5,28.0,7.0,3.5,Yam curry,"Gluten-Free,Vegetarian",lunch_dinner,side,126.7,per_serving,,110,190,none,55,15.4,low,boiled,135,low
+SL091,Hathmaluwa,200,Vegetables,"Mixed vegetables,coconut milk,spices",210,4.0,22.0,12.0,6.0,Seven vegetable curry,"Gluten-Free,Vegetarian",lunch_dinner,side,105.0,per_serving,,150,250,none,38,8.4,low,boiled,75,low
+SL092,Miris Gala,100,Snacks & Appetizers,"Chili,rice flour,oil",320,3.0,45.0,15.0,4.0,Fried chili snack,"Gluten-Free,Vegetarian,Vegan",snack,standalone,320.0,per_serving,,85,115,none,68,30.6,medium,deep_fried,235,medium
+SL094,Kiri Peni,100,Desserts & Sweets,"Milk,sugar",260,5.0,35.0,12.0,0.0,Milk toffee (sweet candy),"Gluten-Free,Vegetarian",snack,standalone,260.0,per_serving,,70,130,dairy,60,21.0,medium,boiled,40,low
+SL095,Pani Walalu,60,Desserts & Sweets,"Rice flour,jaggery",230,2.0,42.0,6.0,1.0,Honeycomb shaped sweet,"Gluten-Free,Vegetarian",snack,standalone,383.3,per_serving,,40,80,none,65,27.3,medium,deep_fried,35,low
+SL096,Kalu Kavum,50,Desserts & Sweets,"Rice flour,jaggery",190,1.5,32.0,6.0,1.0,Dark oil cake,"Gluten-Free,Vegetarian",snack,standalone,380.0,per_serving,,35,65,none,68,21.8,medium,deep_fried,60,low
+SL097,Thalapa Dosi,200,Grains & Rice Dishes,"Red rice,fish,coconut",420,18.0,55.0,14.0,5.0,Mixed fish and rice,"Gluten-Free,Pescatarian",breakfast,main,210.0,per_serving,"SL010,SL029",130,270,fish,55,30.2,low,boiled,170,medium
+SL098,Kurakkan Roti,120,Millet & Ancient Grains,"Finger millet flour,coconut,onion",280,6.0,45.0,8.0,7.0,Healthy millet roti,"Gluten-Free,Vegetarian,Vegan",any,main,233.3,per_serving,"SL010,SL029,SL044",80,160,none,54,24.3,low,shallow_fried,170,medium
+SL099,Kurakkan Pittu,150,Millet & Ancient Grains,"Finger millet flour,coconut",300,6.5,52.0,8.0,9.0,Millet steamed rolls,"Gluten-Free,Vegetarian,Vegan",any,main,200.0,per_serving,"SL010,SL029,SL130",100,200,none,54,28.1,low,steamed,200,medium
+SL100,Kurakkan Thalapa,200,Millet & Ancient Grains,"Finger millet,fish,coconut",400,16.0,55.0,13.0,10.0,Millet with fish,"Gluten-Free,Pescatarian",breakfast,main,200.0,per_serving,"SL029,SL130",130,270,fish,54,29.7,low,shallow_fried,165,medium
+SL101,Ragi Ambula,250,Fermented Foods,"Finger millet,buttermilk",180,5.0,35.0,2.0,5.0,Millet fermented drink,"Gluten-Free,Vegetarian",breakfast,standalone,72.0,per_serving,,175,325,dairy,52,18.2,low,fermented,630,high
+SL102,Belimal Curry,150,Vegetables,"Bael fruit,coconut milk,spices",170,2.5,28.0,6.0,5.0,Wood apple curry,"Gluten-Free,Vegetarian",lunch_dinner,side,113.3,per_serving,,110,190,none,38,10.6,low,boiled,40,low
+SL103,Diyawara,200,Seafood,"Freshwater fish,coconut milk,spices",340,28.0,12.0,20.0,2.0,Fish from reservoirs,"Gluten-Free,Pescatarian",lunch_dinner,side,170.0,per_serving,,150,250,fish,0,0.0,low,boiled,285,medium
+SL104,Koonissu,50,Snacks & Appetizers,"Rice flour,coconut,mustard",220,3.0,35.0,8.0,2.5,Stuffed rice rolls,"Gluten-Free,Vegetarian,Vegan",snack,standalone,440.0,per_serving,,40,55,none,68,23.8,medium,deep_fried,425,high
+SL105,Pani Pani,30,Desserts & Sweets,"Rice flour,coconut milk,sugar",120,1.0,20.0,4.0,0.5,Steamed sweet cakes,"Gluten-Free,Vegetarian",snack,standalone,400.0,per_serving,,20,40,none,60,12.0,medium,steamed,65,low
+SL106,Halapa,60,Desserts & Sweets,"Rice flour,coconut,jaggery",210,2.5,38.0,6.0,2.5,Steamed sweet parcels,"Gluten-Free,Vegetarian",snack,standalone,350.0,per_serving,,40,80,none,65,24.7,medium,steamed,35,low
+SL107,Kiri Bath,150,Grains & Rice Dishes,"White rice,coconut milk,salt",310,4.5,55.0,8.0,1.0,Milk rice festive,"Gluten-Free,Vegetarian",breakfast,main,206.7,per_serving,SL044,100,200,none,72,39.6,high,boiled,140,medium
+SL108,Kakulu Bath,150,Grains & Rice Dishes,"Red rice,coconut milk",320,5.0,58.0,8.0,2.5,Festive red rice,"Gluten-Free,Vegetarian",breakfast,main,213.3,per_serving,"SL044,SL074",100,200,none,55,31.9,low,boiled,220,medium
+SL109,Suddha Bath,150,Grains & Rice Dishes,"White rice,water,salt",195,4.0,43.0,0.5,0.8,Plain boiled rice,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,main,130.0,per_serving,"SL010,SL017,SL018,SL019,SL020,SL025,SL053,SL054,SL055",100,200,none,72,31.0,high,boiled,195,medium
+SL110,Indi Appa,100,Grains & Rice Dishes,"Rice flour,water,yeast",165,2.5,36.0,0.8,1.2,Sour hoppers,"Gluten-Free,Vegetarian,Vegan",breakfast,main,165.0,per_serving,"SL010,SL029,SL130",65,135,none,55,19.8,low,steamed,170,medium
+SL111,Pani Appa,100,Grains & Rice Dishes,"Rice flour,coconut milk,treacle",210,2.5,38.0,6.0,1.0,Sweet hoppers,"Gluten-Free,Vegetarian",breakfast,main,210.0,per_serving,"SL029,SL044",65,135,none,55,20.9,low,steamed,335,medium
+SL113,Pittu Kiri,200,Grains & Rice Dishes,"Pittu,coconut milk",520,7.0,70.0,22.0,5.0,Pittu with milk gravy,"Gluten-Free,Vegetarian",breakfast,standalone,260.0,per_serving,,150,250,none,68,47.6,medium,steamed,275,medium
+SL114,Era Vade,100,Seafood,"Prawns,rice flour,spices",190,12.0,18.0,8.0,1.5,Prawn fritters,"Gluten-Free,Pescatarian",snack,side,190.0,per_serving,,75,125,shellfish,0,0.0,low,deep_fried,485,high
+SL115,Malu Vade,100,Seafood,"Fish,rice flour,spices",185,11.0,18.0,8.0,1.0,Fish fritters,"Gluten-Free,Pescatarian",snack,side,185.0,per_serving,,75,125,fish,0,0.0,low,deep_fried,310,medium
+SL116,Parippu Vade,100,Pulses & Legumes,"Red lentils,onion,spices",210,8.5,22.0,10.0,6.0,Lentil fritters,"Gluten-Free,Vegetarian",snack,side,210.0,per_serving,,75,125,none,32,7.0,low,deep_fried,325,medium
+SL117,Kaju Vade,100,Nuts & Seeds,"Cashew nuts,rice flour,spices",320,8.0,28.0,20.0,2.5,Cashew fritters,"Gluten-Free,Vegetarian",snack,side,320.0,per_serving,,80,120,nuts,20,5.6,low,deep_fried,5,low
+SL118,Bathala Vade,100,Vegetables,"Sweet potato,rice flour,spices",180,3.0,28.0,6.0,3.5,Sweet potato fritters,"Gluten-Free,Vegetarian,Vegan",snack,side,180.0,per_serving,,75,125,none,38,10.6,low,deep_fried,135,low
+SL119,Kesel Muwa Vade,100,Vegetables,"Banana blossom,rice flour,spices",165,3.5,22.0,7.0,4.0,Banana flower fritters,"Gluten-Free,Vegetarian",snack,side,165.0,per_serving,,75,125,none,38,8.4,low,deep_fried,130,low
+SL120,Polos Vade,100,Vegetables,"Young jackfruit,rice flour,spices",175,3.0,24.0,7.0,5.0,Jackfruit fritters,"Gluten-Free,Vegetarian,Vegan",snack,side,175.0,per_serving,,75,125,none,38,9.1,low,deep_fried,130,low
+SL121,Ulundu Vade,100,Pulses & Legumes,"Black gram flour,onion,spices",215,8.0,28.0,9.0,4.0,Black gram fritters,"Gluten-Free,Vegetarian",snack,side,215.0,per_serving,,75,125,none,32,9.0,low,deep_fried,165,medium
+SL122,Pani Pol,30,Desserts & Sweets,"Coconut,jaggery,wheat flour",110,1.5,18.0,4.0,1.0,Stuffed pancake,"Contains Gluten,Vegetarian",snack,standalone,366.7,per_serving,,20,40,gluten,50,9.0,low,shallow_fried,35,low
+SL123,Wadei,40,Snacks & Appetizers,"Rice flour,onion,chili",140,2.0,20.0,6.0,1.0,Crunchy snack ring,"Gluten-Free,Vegetarian,Vegan",snack,standalone,350.0,per_serving,,35,45,none,60,12.0,medium,deep_fried,165,medium
+SL124,Thosai,150,Fermented Foods,"Rice flour,black gram",320,8.0,48.0,10.0,3.0,Savory fermented crepe,"Gluten-Free,Vegetarian",any,main,213.3,per_serving,"SL010,SL029,SL201,SL202",105,195,none,52,25.0,low,shallow_fried,460,high
+SL125,Idiyappam,120,Grains & Rice Dishes,"Rice flour,water,salt",210,3.6,48.0,0.4,2.0,String hoppers,"Gluten-Free,Vegetarian,Vegan",breakfast,main,175.0,per_serving,"SL010,SL029,SL112,SL130,SL203",80,160,none,70,33.6,medium,steamed,200,medium
+SL126,Puttu,150,Grains & Rice Dishes,"Rice flour,coconut,water,salt",340,4.5,58.0,10.0,4.5,Steamed rice cake,"Gluten-Free,Vegetarian,Vegan",breakfast,main,226.7,per_serving,"SL010,SL029,SL044,SL130,SL203",100,200,none,68,39.4,medium,steamed,170,medium
+SL127,Appam,100,Grains & Rice Dishes,"Rice flour,coconut milk,yeast",180,2.5,28.0,6.5,1.0,Hoppers,"Gluten-Free,Vegetarian",breakfast,main,180.0,per_serving,"SL010,SL029,SL130",65,135,none,55,15.4,low,steamed,115,low
+SL128,Thalipa,250,Grains & Rice Dishes,"Rice,mixed vegetables,fish",580,20.0,85.0,18.0,7.0,Mixed rice meal,"Gluten-Free,Pescatarian",breakfast,main,232.0,per_serving,"SL010,SL029",150,300,fish,70,59.5,medium,boiled,155,medium
+SL129,Buth,150,Grains & Rice Dishes,"Rice,mixed vegetables,spices",210,4.5,45.0,1.5,2.5,Simple fried rice,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,main,140.0,per_serving,"SL010,SL017,SL018,SL019,SL020,SL025,SL053,SL054,SL055",100,200,none,65,29.2,medium,boiled,335,medium
+SL130,Kiri Hodiya,150,Curries & Gravies,"Coconut milk,onion,spices",190,3.0,6.0,18.0,0.5,White coconut gravy,"Gluten-Free,Vegetarian",any,side,126.7,per_serving,,110,190,none,40,2.4,low,boiled,540,high
+SL131,Pol Mallung,100,Leafy Greens & Herbs,"Grated coconut,onion,chili,lime",110,1.8,6.0,9.0,3.0,Coconut salad,"Gluten-Free,Vegetarian,Vegan",condiment,side,110.0,per_serving,,75,125,none,22,1.3,low,boiled,55,low
+SL132,Karapincha Sambol,30,Leafy Greens & Herbs,"Curry leaves,coconut,onion,lime",80,1.5,4.0,7.0,2.0,Curry leaf sambol,"Gluten-Free,Vegetarian,Vegan",condiment,side,266.7,per_serving,,20,40,none,22,0.9,low,raw,560,high
+SL133,Lunu Dehi,30,Condiments & Pickles,"Lime,chili,salt",20,0.3,4.0,0.2,0.5,Spiced lime pickle,"Gluten-Free,Vegetarian,Vegan",condiment,condiment,66.7,per_serving,,20,40,none,28,1.1,low,raw,565,high
+SL134,Amu Miris,10,Condiments & Pickles,"Green chili,salt,lime",8,0.2,1.5,0.1,0.5,Spicy chili relish,"Gluten-Free,Vegetarian,Vegan",condiment,condiment,80.0,per_serving,,5,15,none,28,0.4,low,raw,860,high
+SL135,Kochchi Sambol,30,Condiments & Pickles,"Bird's eye chili,coconut,onion,lime",95,1.2,4.5,8.0,2.0,Very spicy sambol,"Gluten-Free,Vegetarian,Vegan",condiment,condiment,316.7,per_serving,,20,40,none,28,1.3,low,raw,600,high
+SL136,Vaangi Bath,200,Grains & Rice Dishes,"Rice,brinjal,spices",350,6.0,58.0,10.0,5.0,Eggplant rice,"Gluten-Free,Vegetarian",lunch_dinner,standalone,175.0,per_serving,,130,270,none,65,37.7,medium,boiled,325,medium
+SL137,Lemon Rice,200,Grains & Rice Dishes,"Rice,lemon,peanuts",330,6.0,52.0,10.0,2.5,Tangy lemon rice,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,standalone,165.0,per_serving,,130,270,nuts,65,33.8,medium,boiled,335,medium
+SL138,Curd Rice,200,Grains & Rice Dishes,"Rice,yogurt",250,7.0,42.0,6.0,1.5,Soothing yogurt rice,"Gluten-Free,Vegetarian",lunch_dinner,standalone,125.0,per_serving,,130,270,dairy,58,24.4,medium,boiled,265,medium
+SL139,Tomato Rice,200,Grains & Rice Dishes,"Rice,tomato,spices",280,5.0,48.0,8.0,3.0,Spicy tomato rice,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,standalone,140.0,per_serving,,130,270,none,65,31.2,medium,boiled,215,medium
+SL140,Coconut Rice,200,Grains & Rice Dishes,"Rice,coconut,spices",380,5.5,55.0,15.0,4.0,Fragrant coconut rice,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,standalone,190.0,per_serving,,130,270,none,65,35.8,medium,boiled,135,low
+SL141,Mint Rice,200,Grains & Rice Dishes,"Rice,mint,spices",290,5.0,50.0,8.0,3.5,Refreshing mint rice,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,standalone,145.0,per_serving,,130,270,none,65,32.5,medium,boiled,165,medium
+SL142,Corriander Rice,200,Grains & Rice Dishes,"Rice,coriander,spices",295,5.0,51.0,8.0,3.0,Herb-infused rice,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,standalone,147.5,per_serving,,130,270,none,65,33.2,medium,boiled,135,low
+SL143,Ghee Rice,200,Grains & Rice Dishes,"Rice,ghee,spices",380,5.0,55.0,15.0,1.0,Rich aromatic rice,"Gluten-Free,Vegetarian",lunch_dinner,main,190.0,per_serving,"SL010,SL020,SL023,SL024,SL025,SL064,SL065",130,270,dairy,68,37.4,medium,stir_fried,165,medium
+SL144,Jeera Rice,200,Grains & Rice Dishes,"Rice,cumin seeds,ghee",340,4.5,55.0,10.0,1.5,Cumin rice,"Gluten-Free,Vegetarian",lunch_dinner,main,170.0,per_serving,"SL010,SL019,SL023,SL025,SL180",130,270,dairy,68,37.4,medium,stir_fried,290,medium
+SL145,Fried Rice,250,Grains & Rice Dishes,"Rice,vegetables,egg,soy sauce",380,10.0,60.0,12.0,3.0,Chinese-style fried rice,Contains Gluten,lunch_dinner,standalone,152.0,per_serving,,160,340,"egg,gluten",65,39.0,medium,stir_fried,245,medium
+SL146,Nasi Goreng,250,Grains & Rice Dishes,"Rice,vegetables,egg,spices",390,10.0,62.0,12.0,3.0,Indonesian fried rice,Contains Gluten,lunch_dinner,standalone,156.0,per_serving,,160,340,"egg,gluten",65,40.3,medium,stir_fried,235,medium
+SL147,Biryani,350,Grains & Rice Dishes,"Rice,meat,spices,yogurt",550,25.0,65.0,22.0,3.0,Fragrant layered rice,Contains Gluten,lunch_dinner,standalone,157.1,per_serving,,250,450,"dairy,gluten",65,42.2,medium,boiled,165,medium
+SL148,Buriyani,350,Grains & Rice Dishes,"Rice,chicken,spices",540,24.0,64.0,22.0,3.0,Sri Lankan biryani,Contains Gluten,lunch_dinner,standalone,154.3,per_serving,,250,450,gluten,65,41.6,medium,boiled,290,medium
+SL149,Mutton Biryani,350,Grains & Rice Dishes,"Rice,mutton,spices",580,28.0,62.0,26.0,3.0,Richer biryani,Contains Gluten,lunch_dinner,standalone,165.7,per_serving,,250,450,gluten,64,39.7,medium,boiled,250,medium
+SL150,Chicken Biryani,350,Grains & Rice Dishes,"Rice,chicken,spices",540,26.0,64.0,22.0,3.0,Popular biryani,Contains Gluten,lunch_dinner,standalone,154.3,per_serving,,250,450,gluten,64,41.0,medium,boiled,210,medium
+SL151,Vegetable Biryani,350,Grains & Rice Dishes,"Rice,mixed vegetables,spices",450,9.0,70.0,15.0,8.0,Vegetarian version,"Contains Gluten,Vegetarian",lunch_dinner,standalone,128.6,per_serving,,250,450,gluten,65,45.5,medium,boiled,330,medium
+SL152,Egg Biryani,350,Grains & Rice Dishes,"Rice,egg,spices",470,14.0,68.0,16.0,3.5,Egg biryani,Contains Gluten,lunch_dinner,standalone,134.3,per_serving,,250,450,"egg,gluten",64,43.5,medium,boiled,250,medium
+SL153,Fish Biryani,350,Grains & Rice Dishes,"Rice,fish,spices",490,22.0,65.0,18.0,3.0,Seafood biryani,"Contains Gluten,Pescatarian",lunch_dinner,standalone,140.0,per_serving,,250,450,"fish,gluten",63,41.0,medium,boiled,200,medium
+SL154,Prawn Biryani,350,Grains & Rice Dishes,"Rice,prawns,spices",510,24.0,64.0,20.0,2.5,Prawn biryani,"Contains Gluten,Pescatarian",lunch_dinner,standalone,145.7,per_serving,,250,450,"gluten,shellfish",63,40.3,medium,boiled,190,medium
+SL155,Breadfruit Biryani,350,Grains & Rice Dishes,"Rice,breadfruit,spices",470,8.0,72.0,16.0,9.0,Breadfruit biryani,"Contains Gluten,Vegetarian",lunch_dinner,standalone,134.3,per_serving,,250,450,gluten,65,46.8,medium,boiled,155,medium
+SL156,Kiri Ala Biryani,350,Grains & Rice Dishes,"Rice,yam,spices",460,7.5,70.0,16.0,6.0,Yam biryani,"Contains Gluten,Vegetarian",lunch_dinner,standalone,131.4,per_serving,,250,450,gluten,64,44.8,medium,boiled,135,low
+SL157,Polos Biryani,350,Grains & Rice Dishes,"Rice,jackfruit,spices",480,8.5,71.0,17.0,8.5,Jackfruit biryani,"Contains Gluten,Vegetarian",lunch_dinner,standalone,137.1,per_serving,,250,450,gluten,65,46.2,medium,boiled,230,medium
+SL158,Kaju Biryani,350,Grains & Rice Dishes,"Rice,cashew nuts,spices",540,12.0,65.0,25.0,5.0,Cashew biryani,"Contains Gluten,Vegetarian",lunch_dinner,standalone,154.3,per_serving,,250,450,"gluten,nuts",64,41.6,medium,boiled,225,medium
+SL159,Paneer Biryani,350,Grains & Rice Dishes,"Rice,paneer,spices",520,18.0,62.0,22.0,3.5,Indian cheese biryani,"Contains Gluten,Vegetarian",lunch_dinner,standalone,148.6,per_serving,,250,450,"dairy,gluten",62,38.4,medium,boiled,125,low
+SL160,Soya Biryani,350,Grains & Rice Dishes,"Rice,soya chunks,spices",470,25.0,58.0,15.0,8.0,Soya protein biryani,"Contains Gluten,Vegetarian",lunch_dinner,standalone,134.3,per_serving,,250,450,gluten,60,34.8,medium,boiled,295,medium
+SL161,Mushroom Biryani,350,Grains & Rice Dishes,"Rice,mushroom,spices",440,12.0,65.0,14.0,6.0,Mushroom biryani,"Contains Gluten,Vegetarian",lunch_dinner,standalone,125.7,per_serving,,250,450,gluten,63,41.0,medium,boiled,110,low
+SL162,Cauliflower Biryani,350,Grains & Rice Dishes,"Rice,cauliflower,spices",430,10.0,64.0,14.0,7.0,Low-carb alternative,"Contains Gluten,Vegetarian",lunch_dinner,standalone,122.9,per_serving,,250,450,gluten,62,39.7,medium,boiled,320,medium
+SL163,Kola Biryani,350,Grains & Rice Dishes,"Rice,spinach,spices",420,9.0,62.0,15.0,8.0,Green leafy biryani,"Contains Gluten,Vegetarian",lunch_dinner,standalone,120.0,per_serving,,250,450,gluten,60,37.2,medium,boiled,130,low
+SL164,Kottu,350,Roti & Flatbreads,"Roti,vegetables,meat,spices",560,18.0,70.0,24.0,6.0,Chopped roti stir-fry,Contains Gluten,lunch_dinner,standalone,160.0,per_serving,,250,450,gluten,70,49.0,medium,stir_fried,190,medium
+SL165,Cheese Kottu,350,Roti & Flatbreads,"Roti,cheese,vegetables",580,22.0,68.0,28.0,5.0,Cheese version,Contains Gluten,lunch_dinner,standalone,165.7,per_serving,,250,450,"dairy,gluten",68,46.2,medium,stir_fried,310,medium
+SL166,Egg Kottu,350,Roti & Flatbreads,"Roti,egg,vegetables",540,16.0,70.0,22.0,5.5,Egg version,Contains Gluten,lunch_dinner,standalone,154.3,per_serving,,250,450,"egg,gluten",70,49.0,medium,stir_fried,190,medium
+SL167,Chicken Kottu,350,Roti & Flatbreads,"Roti,chicken,vegetables",590,28.0,68.0,26.0,5.5,Chicken version,Contains Gluten,lunch_dinner,standalone,168.6,per_serving,,250,450,gluten,68,46.2,medium,stir_fried,350,medium
+SL168,Mutton Kottu,350,Roti & Flatbreads,"Roti,mutton,vegetables",620,30.0,67.0,30.0,5.0,Mutton version,Contains Gluten,lunch_dinner,standalone,177.1,per_serving,,250,450,gluten,67,44.9,medium,stir_fried,325,medium
+SL169,Fish Kottu,350,Roti & Flatbreads,"Roti,fish,vegetables",560,26.0,69.0,24.0,5.0,Fish version,"Contains Gluten,Pescatarian",lunch_dinner,standalone,160.0,per_serving,,250,450,"fish,gluten",68,46.9,medium,stir_fried,260,medium
+SL170,Prawn Kottu,350,Roti & Flatbreads,"Roti,prawns,vegetables",570,28.0,68.0,25.0,4.5,Prawn version,"Contains Gluten,Pescatarian",lunch_dinner,standalone,162.9,per_serving,,250,450,"gluten,shellfish",68,46.2,medium,stir_fried,300,medium
+SL171,Vegetable Kottu,350,Roti & Flatbreads,"Roti,mixed vegetables",520,12.0,72.0,20.0,8.0,Vegetarian version,"Contains Gluten,Vegetarian",lunch_dinner,standalone,148.6,per_serving,,250,450,gluten,72,51.8,high,stir_fried,165,medium
+SL172,Soy Kottu,350,Roti & Flatbreads,"Roti,soya chunks",530,20.0,70.0,21.0,8.0,Soya protein version,"Contains Gluten,Vegetarian",lunch_dinner,standalone,151.4,per_serving,,250,450,gluten,68,47.6,medium,stir_fried,250,medium
+SL173,Paneer Kottu,350,Roti & Flatbreads,"Roti,paneer",580,24.0,68.0,27.0,5.0,Paneer version,"Contains Gluten,Vegetarian",lunch_dinner,standalone,165.7,per_serving,,250,450,"dairy,gluten",66,44.9,medium,stir_fried,245,medium
+SL174,Mushroom Kottu,350,Roti & Flatbreads,"Roti,mushroom",540,14.0,71.0,22.0,7.0,Mushroom version,"Contains Gluten,Vegetarian",lunch_dinner,standalone,154.3,per_serving,,250,450,gluten,68,48.3,medium,stir_fried,300,medium
+SL175,Kottu Rotti,350,Roti & Flatbreads,"Roti,mixed,spices",560,16.0,71.0,24.0,6.0,Spicy version,Contains Gluten,lunch_dinner,standalone,160.0,per_serving,,250,450,gluten,70,49.7,medium,stir_fried,270,medium
+SL176,String Hoppers Kottu,350,Grains & Rice Dishes,"String hoppers,vegetables",480,12.0,75.0,14.0,6.0,String hopper stir-fry,"Gluten-Free,Vegetarian",lunch_dinner,standalone,137.1,per_serving,,250,450,none,72,54.0,high,stir_fried,235,medium
+SL177,Idiyappam Kottu,350,Grains & Rice Dishes,"Idiyappam,vegetables",490,12.0,76.0,15.0,6.0,Idiyappam stir-fry,"Gluten-Free,Vegetarian",lunch_dinner,standalone,140.0,per_serving,,250,450,none,72,54.7,high,stir_fried,165,medium
+SL178,Pittu Kottu,350,Grains & Rice Dishes,"Pittu,vegetables",520,10.0,72.0,20.0,7.0,Pittu stir-fry,"Gluten-Free,Vegetarian",lunch_dinner,standalone,148.6,per_serving,,250,450,none,68,49.0,medium,stir_fried,350,medium
+SL179,Thosai Kottu,350,Fermented Foods,"Thosai,vegetables",480,12.0,68.0,18.0,6.0,Thosai stir-fry,"Gluten-Free,Vegetarian",lunch_dinner,standalone,137.1,per_serving,,250,450,none,52,35.4,low,stir_fried,585,high
+SL180,Paneer Butter Masala,200,Curries & Gravies,"Paneer,tomato,butter,cream",380,15.0,12.0,30.0,2.0,Creamy paneer curry,"Contains Gluten,Vegetarian",lunch_dinner,side,190.0,per_serving,,150,250,"dairy,gluten",40,4.8,low,boiled,255,medium
+SL181,Butter Chicken,200,Poultry & Meat,"Chicken,tomato,butter,cream",450,28.0,10.0,32.0,1.5,Rich creamy chicken,Contains Gluten,lunch_dinner,side,225.0,per_serving,,150,250,"dairy,gluten",0,0.0,low,boiled,550,high
+SL182,Tandoori Chicken,150,Poultry & Meat,"Chicken,yogurt,spices",280,30.0,5.0,15.0,0.5,Grilled spiced chicken,Contains Gluten,lunch_dinner,side,186.7,per_serving,,110,190,"dairy,gluten",0,0.0,low,grilled,570,high
+SL183,Chilli Chicken,150,Poultry & Meat,"Chicken,chili,soy sauce",320,25.0,18.0,16.0,1.0,Spicy Indo-Chinese dish,Contains Gluten,lunch_dinner,side,213.3,per_serving,,110,190,gluten,0,0.0,low,stir_fried,260,medium
+SL184,Garlic Naan,100,Roti & Flatbreads,"Wheat flour,garlic,butter",300,8.0,45.0,10.0,2.0,Leavened garlic bread,"Contains Gluten,Vegetarian",lunch_dinner,main,300.0,per_serving,"SL025,SL063,SL064,SL180,SL181",65,135,"dairy,gluten",68,30.6,medium,shallow_fried,325,medium
+SL185,Butter Naan,100,Roti & Flatbreads,"Wheat flour,butter",310,7.0,46.0,11.0,1.5,Buttered leavened bread,"Contains Gluten,Vegetarian",lunch_dinner,main,310.0,per_serving,"SL025,SL063,SL064,SL180,SL181",65,135,"dairy,gluten",68,31.3,medium,shallow_fried,375,medium
+SL186,Roti Canai,120,Roti & Flatbreads,"Wheat flour,oil,condensed milk",350,6.0,45.0,16.0,1.0,Flaky Malaysian flatbread,"Contains Gluten,Vegetarian",lunch_dinner,main,291.7,per_serving,"SL010,SL019,SL025,SL029",80,160,"dairy,gluten",72,32.4,high,shallow_fried,285,medium
+SL187,Chapati,80,Roti & Flatbreads,"Whole wheat flour,water,salt",180,5.0,30.0,4.0,4.0,Whole wheat flatbread,"Contains Gluten,Vegetarian,Vegan",any,main,225.0,per_serving,"SL010,SL017,SL019,SL053,SL054,SL055,SL180",50,110,gluten,52,15.6,low,shallow_fried,340,medium
+SL188,Phulka,80,Roti & Flatbreads,"Whole wheat flour,water,salt",170,5.0,32.0,2.0,3.5,Soft whole wheat roti,"Contains Gluten,Vegetarian,Vegan",any,main,212.5,per_serving,"SL010,SL017,SL019,SL053,SL054,SL055,SL180",50,110,gluten,52,16.6,low,shallow_fried,220,medium
+SL189,Puri,60,Roti & Flatbreads,"Wheat flour,oil,salt",220,4.0,25.0,12.0,1.0,Deep-fried puffy bread,"Contains Gluten,Vegetarian",lunch_dinner,standalone,366.7,per_serving,,40,80,gluten,70,17.5,medium,deep_fried,345,medium
+SL190,Bhatura,100,Roti & Flatbreads,"Wheat flour,yogurt,oil",280,6.0,38.0,12.0,1.5,Fermented fried bread,"Contains Gluten,Vegetarian",lunch_dinner,standalone,280.0,per_serving,,65,135,"dairy,gluten",70,26.6,medium,deep_fried,315,medium
+SL191,Aloo Paratha,150,Roti & Flatbreads,"Wheat flour,potato,spices",380,8.0,50.0,16.0,4.0,Stuffed potato flatbread,"Contains Gluten,Vegetarian",lunch_dinner,standalone,253.3,per_serving,,100,200,gluten,62,31.0,medium,shallow_fried,235,medium
+SL192,Gobi Paratha,150,Roti & Flatbreads,"Wheat flour,cauliflower,spices",360,9.0,48.0,14.0,5.0,Stuffed cauliflower flatbread,"Contains Gluten,Vegetarian",lunch_dinner,standalone,240.0,per_serving,,100,200,gluten,60,28.8,medium,shallow_fried,180,medium
+SL193,Paneer Paratha,150,Roti & Flatbreads,"Wheat flour,paneer,spices",420,14.0,45.0,20.0,3.0,Stuffed cheese flatbread,"Contains Gluten,Vegetarian",lunch_dinner,standalone,280.0,per_serving,,100,200,"dairy,gluten",58,26.1,medium,shallow_fried,225,medium
+SL194,Samosa,80,Snacks & Appetizers,"Wheat flour,potato,peas,spices",250,5.0,30.0,12.0,3.0,Fried stuffed pastry,"Contains Gluten,Vegetarian",snack,standalone,312.5,per_serving,,70,90,gluten,65,19.5,medium,deep_fried,370,medium
+SL195,Vada,50,Snacks & Appetizers,"Black gram flour,onion,spices",140,6.0,12.0,8.0,3.0,Savory donut-shaped fritter,"Gluten-Free,Vegetarian",snack,standalone,280.0,per_serving,,40,55,none,35,4.2,low,deep_fried,230,medium
+SL196,Idli,80,Fermented Foods,"Rice flour,black gram",140,5.0,28.0,1.0,3.0,Steamed fermented rice cake,"Gluten-Free,Vegetarian",breakfast,main,175.0,per_serving,"SL010,SL029,SL201,SL202",55,105,none,52,14.6,low,steamed,530,high
+SL197,Dosa,120,Fermented Foods,"Rice flour,black gram",210,6.0,38.0,4.0,4.0,Crispy fermented crepe,"Gluten-Free,Vegetarian",any,main,175.0,per_serving,"SL010,SL029,SL201,SL202",85,155,none,52,19.8,low,shallow_fried,300,medium
+SL198,Upma,150,Grains & Rice Dishes,"Semolina,vegetables,spices",280,6.0,45.0,8.0,4.0,Savory semolina porridge,"Contains Gluten,Vegetarian",breakfast,standalone,186.7,per_serving,,100,200,gluten,65,29.2,medium,boiled,345,medium
+SL199,Pongal,200,Grains & Rice Dishes,"Rice,mung dal,pepper,cumin",320,8.0,58.0,8.0,5.0,South Indian rice-lentil dish,"Gluten-Free,Vegetarian",breakfast,standalone,160.0,per_serving,,130,270,none,55,31.9,low,boiled,285,medium
+SL200,Bisi Bele Bath,300,Grains & Rice Dishes,"Rice,lentils,vegetables,spices",400,12.0,70.0,10.0,8.0,Spicy rice-lentil dish,"Gluten-Free,Vegetarian",lunch_dinner,standalone,133.3,per_serving,,195,405,none,55,38.5,low,boiled,325,medium
+SL201,Coconut Chutney,50,Condiments & Pickles,"grated coconut, green chilli, ginger, mustard seeds",95,1.5,4.5,8.0,2.0,Rich in medium-chain fatty acids; typical South Indian accompaniment,"Gluten-Free,Vegetarian,Vegan",breakfast,side,190.0,per_serving,,35,65,none,28,1.3,low,raw,620,high
+SL202,Sambar,150,Soups & Broths,"toor dal, tamarind, tomato, drumstick, curry leaves, spices",90,4.5,13.0,2.0,2.5,High-protein thin lentil soup; rich in vitamins from vegetables,"Gluten-Free,Vegetarian,Vegan",any,side,60.0,per_serving,,120,180,none,25,3.2,low,boiled,655,high
+SL203,Coconut Milk (Light),100,Curries & Gravies,"fresh coconut, water",85,1.0,3.5,8.0,0.5,Thin coconut milk used as accompaniment for pittu and string hoppers,"Gluten-Free,Vegetarian,Vegan",breakfast,side,85.0,per_serving,,75,125,none,40,1.4,low,raw,95,low
+SL204,Fish Cutlet,60,Snacks & Appetizers,"tuna fish, potato, onion, green chilli, breadcrumbs",150,8.0,12.0,7.0,1.0,Popular Sri Lankan street snack; deep fried,Contains Gluten,snack,standalone,250.0,per_serving,,50,70,"fish,gluten",60,7.2,medium,deep_fried,240,medium
+SL205,Vegetable Cutlet,70,Snacks & Appetizers,"potato, carrot, leek, green chilli, breadcrumbs",140,3.0,18.0,6.0,2.0,Vegetarian street snack; deep fried,"Vegetarian,Contains Gluten",snack,standalone,200.0,per_serving,,60,80,gluten,62,11.2,medium,deep_fried,410,high
+SL206,Isso Wade,80,Snacks & Appetizers,"lentil batter, prawns, onion, green chilli",200,9.0,18.0,10.0,1.5,Crispy lentil fritter topped with prawn; iconic street food,"Gluten-Free,Contains Shellfish",snack,standalone,250.0,per_serving,,70,90,shellfish,52,9.4,low,deep_fried,205,medium
+SL207,Ambulthiyal,120,Seafood,"tuna, goraka (gamboge), black pepper, curry leaves",160,22.0,2.0,7.0,0.5,Sour fish curry preserved with goraka; very low carb,Gluten-Free,lunch_dinner,side,133.3,per_serving,,90,150,fish,0,0.0,low,shallow_fried,350,medium
+SL208,King Coconut (Thambili),350,Beverages,king coconut water,60,0.5,15.0,0.0,0.0,Natural electrolyte drink; high in potassium; hydrating,"Gluten-Free,Vegetarian,Vegan",any,standalone,17.1,per_serving,,320,400,none,45,6.8,low,raw,60,low
+SL209,Wood Apple Juice,250,Beverages,"wood apple, water, sugar, salt",80,1.0,20.0,0.5,1.0,High in vitamin C and iron; digestive benefits,"Gluten-Free,Vegetarian,Vegan",any,standalone,32.0,per_serving,,210,290,none,50,10.0,low,raw,45,low
+SL210,Plain Tea,250,Beverages,"Ceylon tea, water",5,0.0,1.0,0.0,0.0,Rich in antioxidants; zero sugar version,"Gluten-Free,Vegetarian,Vegan",any,standalone,2.0,per_serving,,210,290,none,0,0.0,low,raw,35,low
+SL211,Milk Tea,250,Beverages,"Ceylon tea, full cream milk, sugar",80,3.0,12.0,2.0,0.0,Traditional Sri Lankan tea with milk; moderate sugar,"Gluten-Free,Vegetarian",any,standalone,32.0,per_serving,,210,290,dairy,40,4.8,low,raw,45,low
+SL212,Faluda,300,Desserts & Sweets,"rose syrup, basil seeds, vermicelli, ice cream, milk",250,4.0,48.0,5.0,1.0,Cold dessert drink; high sugar; occasional treat,Vegetarian,snack,standalone,83.3,per_serving,,210,390,"dairy,gluten",68,32.6,medium,raw,30,low
+SL213,Corn Flakes,30,Grains & Rice Dishes,"corn, sugar, salt, malt flavouring",110,2.0,25.0,0.5,1.0,Common packaged breakfast; low fibre; often fortified with vitamins,"Vegetarian,Contains Gluten",breakfast,standalone,366.7,per_serving,,25,40,gluten,81,20.2,high,baked,140,medium
+SL214,Oat Porridge,200,Grains & Rice Dishes,"rolled oats, water, salt",150,5.0,27.0,3.0,3.0,High fibre; low GI; excellent for weight management and cholesterol,"Vegetarian,Vegan,Contains Gluten",breakfast,standalone,75.0,per_serving,,130,270,gluten,55,14.8,low,boiled,195,medium
+SL215,Malay Pickle,30,Condiments & Pickles,"vegetables, vinegar, turmeric, mustard seeds, sugar",35,0.5,8.0,0.0,0.5,Traditional Sri Lankan pickle served with rice; small accompaniment,"Gluten-Free,Vegetarian,Vegan",any,condiment,116.7,per_serving,,20,40,none,28,2.2,low,raw,790,high
+SL216,Red Rice,200,Grains & Rice Dishes,"Red rice,water,salt",215,4.5,44.0,1.8,3.5,"Sri Lankan red rice — lower GI than white rice, rich in antioxidants","Gluten-Free,Vegetarian,Vegan",lunch_dinner,main,107.5,per_serving,"SL010,SL011",150,250,none,55,24.2,low,boiled,5,low
+SL217,Brown Rice,200,Grains & Rice Dishes,"Brown rice,water,salt",220,4.8,45.0,1.8,3.8,"Wholegrain rice — retains bran and germ, rich in B vitamins","Gluten-Free,Vegetarian,Vegan",lunch_dinner,main,110.0,per_serving,"SL010,SL011",150,250,none,50,22.5,low,boiled,5,low
+SL218,Atta Roti,80,Roti & Flatbreads,"Whole wheat flour,water,salt,oil",175,5.8,33.0,2.8,4.5,Whole wheat flatbread — higher fibre and lower GI than white roti,"Contains Gluten,Vegetarian,Vegan",any,main,218.8,per_serving,"SL010,SL016,SL018",60,100,gluten,54,17.8,low,pan_fried,120,low
+SL219,Oat Roti,80,Roti & Flatbreads,"Oat flour,whole wheat flour,water,salt",165,5.5,28.0,4.5,5.0,"High-fibre oat flatbread — slow digestion, excellent for weight loss","Contains Gluten,Vegetarian,Vegan",any,main,206.3,per_serving,"SL010,SL016",60,100,gluten,48,13.4,low,pan_fried,115,low
+SL220,Ragi Roti,80,Roti & Flatbreads,"Finger millet flour,water,onion,salt",180,5.5,32.0,3.5,5.0,"Finger millet flatbread — rich in calcium, iron and dietary fibre","Gluten-Free,Vegetarian,Vegan",any,main,225.0,per_serving,"SL010,SL016",60,100,none,55,17.6,low,pan_fried,110,low
+SL221,Wheat Pittu,150,Grains & Rice Dishes,"Wheat flour,grated coconut,water,salt",285,8.5,52.0,5.5,3.0,Steamed wheat flour pittu cylinders — higher protein than rice pittu,"Contains Gluten,Vegetarian,Vegan",lunch_dinner,main,190.0,per_serving,"SL010,SL129",100,200,gluten,62,32.2,medium,steamed,130,low
+SL222,Ragi String Hoppers,120,Grains & Rice Dishes,"Finger millet flour,water,salt",190,4.8,37.0,1.8,4.5,"Finger millet string hoppers — high in calcium and fibre, low GI","Gluten-Free,Vegetarian,Vegan",any,main,158.3,per_serving,"SL010,SL129",80,160,none,52,19.2,low,steamed,115,low
+SL223,Kurakkan String Hoppers,120,Grains & Rice Dishes,"Kurakkan flour,water,salt",195,5.0,38.0,2.0,4.8,Kurakkan (finger millet) string hoppers — rich in minerals,"Gluten-Free,Vegetarian,Vegan",any,main,162.5,per_serving,"SL010,SL129",80,160,none,52,19.8,low,steamed,110,low
+SL224,Akki Roti,90,Roti & Flatbreads,"Rice flour,grated coconut,onion,green chilli,salt",210,3.5,38.0,5.5,2.0,Sri Lankan rice flour flatbread with coconut and spices,"Gluten-Free,Vegetarian,Vegan",any,main,233.3,per_serving,"SL010,SL011",65,115,none,60,22.8,medium,pan_fried,150,low
+SL225,Malabar Parotta,90,Roti & Flatbreads,"Refined flour,oil,water,salt",305,6.5,48.0,10.5,1.5,Layered Sri Lankan parotta — flaky and soft,"Contains Gluten,Vegetarian",lunch_dinner,main,338.9,per_serving,"SL010,SL016,SL018",65,115,gluten,70,33.6,high,pan_fried,220,medium
+SL226,Semolina Upma,200,Grains & Rice Dishes,"Semolina,onion,mustard seeds,curry leaves,vegetables,oil,salt",280,7.0,48.0,7.0,3.5,South Indian semolina porridge with vegetables — popular Sri Lankan breakfast,"Contains Gluten,Vegetarian,Vegan",any,main,140.0,per_serving,SL011,150,250,gluten,65,31.2,medium,stir_fried,280,medium
+SL227,String Hopper Pittu,150,Grains & Rice Dishes,"Rice flour,grated coconut,water,salt",270,5.5,52.0,4.5,3.0,String hoppers pressed into pittu form with coconut layers,"Gluten-Free,Vegetarian,Vegan",any,main,180.0,per_serving,"SL010,SL129",100,200,none,65,33.8,medium,steamed,125,low
+SL228,Millet Rice,200,Millet & Ancient Grains,"Foxtail millet,water,salt",210,6.5,42.0,2.5,4.2,"Foxtail millet cooked like rice — high protein, low GI, gluten-free","Gluten-Free,Vegetarian,Vegan",lunch_dinner,main,105.0,per_serving,"SL010,SL011",150,250,none,50,21.0,low,boiled,5,low
+SL229,Milk Pittu,150,Grains & Rice Dishes,"Rice flour,coconut milk,grated coconut,salt",340,6.0,54.0,11.0,2.5,Steamed rice pittu with coconut milk — creamy and filling,"Gluten-Free,Vegetarian",breakfast,main,226.7,per_serving,"SL011,SL129",100,200,none,68,36.7,medium,steamed,140,low
+SL230,Egg Roti,100,Roti & Flatbreads,"Flour,egg,onion,green chilli,salt,oil",260,9.5,35.0,9.5,1.5,"Sri Lankan egg flatbread — high protein, popular street food",Contains Gluten,breakfast,main,260.0,per_serving,"SL011,SL129",75,125,"gluten,egg",65,22.8,medium,pan_fried,240,medium
+SL231,Wheat Appa,100,Grains & Rice Dishes,"Whole wheat flour,coconut milk,yeast,salt",195,5.5,34.0,5.0,3.5,Bowl-shaped whole wheat hoppers — higher fibre than rice hoppers,"Contains Gluten,Vegetarian",breakfast,main,195.0,per_serving,"SL010,SL129",65,135,gluten,58,19.7,medium,steamed,115,low
+SL232,Banana (medium),120,Fruits,Banana,107,1.3,27.0,0.4,3.1,Rich in potassium and natural energy — ideal pre/post workout snack,"Gluten-Free,Vegetarian,Vegan",snack,standalone,89.2,per_serving,,100,140,none,51,13.8,low,raw,1,low
+SL233,Papaya (sliced),150,Fruits,Papaya,60,0.7,15.0,0.4,2.3,Excellent source of vitamin C and digestive enzymes (papain),"Gluten-Free,Vegetarian,Vegan",snack,standalone,40.0,per_serving,,120,200,none,59,8.8,medium,raw,8,low
+SL234,Mango (sliced),150,Fruits,Mango,99,1.4,25.0,0.6,2.6,Rich in vitamins A and C — moderation advised for diabetics,"Gluten-Free,Vegetarian,Vegan",snack,standalone,66.0,per_serving,,120,200,none,51,12.8,low,raw,2,low
+SL235,Guava (fresh),100,Fruits,Guava,68,2.6,14.0,1.0,5.4,Very high in vitamin C — one guava has 4x the vitamin C of an orange,"Gluten-Free,Vegetarian,Vegan",snack,standalone,68.0,per_serving,,80,130,none,12,1.7,low,raw,2,low
+SL236,Watermelon (sliced),200,Fruits,Watermelon,60,1.2,15.0,0.2,0.6,95% water — excellent for hydration; low in calories,"Gluten-Free,Vegetarian,Vegan",snack,standalone,30.0,per_serving,,150,300,none,72,10.8,high,raw,2,low
+SL237,Pineapple (sliced),150,Fruits,Pineapple,78,0.9,20.0,0.2,2.3,Contains bromelain — anti-inflammatory enzyme; rich in manganese,"Gluten-Free,Vegetarian,Vegan",snack,standalone,52.0,per_serving,,120,200,none,66,13.2,medium,raw,2,low
+SL238,King Coconut Water,300,Beverages,King coconut water,60,0.5,15.0,0.0,0.0,"Sri Lankan king coconut — natural electrolytes, low in calories","Gluten-Free,Vegetarian,Vegan",snack,standalone,20.0,per_serving,,250,350,none,3,0.5,low,raw,252,medium
+SL239,Fresh Jackfruit,150,Fruits,Jackfruit,135,2.5,35.0,0.3,2.3,Mild sweet flavour — good source of B vitamins,"Gluten-Free,Vegetarian,Vegan",snack,standalone,90.0,per_serving,,120,200,none,50,17.5,low,raw,3,low
+SL240,Plain Yogurt,150,Dairy Products,Full cream milk yogurt,110,5.5,10.0,5.0,0.0,Probiotic-rich — supports gut health and immunity,"Gluten-Free,Vegetarian",snack,standalone,73.3,per_serving,,120,180,dairy,36,3.6,low,raw,65,low
+SL241,Low-Fat Yogurt,150,Dairy Products,Skimmed milk yogurt,80,7.5,10.0,1.5,0.0,"High protein, low fat — ideal for weight loss and muscle building","Gluten-Free,Vegetarian",snack,standalone,53.3,per_serving,,120,180,dairy,32,3.2,low,raw,80,low
+SL242,Boiled Egg,60,Dairy Products,"Egg,water",78,6.3,0.6,5.3,0.0,Complete protein source — all 9 essential amino acids,Gluten-Free,snack,standalone,130.0,per_serving,,50,70,egg,0,0.0,low,boiled,62,low
+SL243,Roasted Chana,40,Pulses & Legumes,"Bengal gram,spices,salt",144,7.5,22.0,3.5,5.5,"High-fibre, high-protein snack — excellent for satiety","Gluten-Free,Vegetarian,Vegan",snack,standalone,360.0,per_serving,,30,50,none,28,6.2,low,roasted,180,low
+SL244,Sprouted Mung Salad,100,Pulses & Legumes,"Mung bean sprouts,onion,tomato,lime,salt",85,5.5,14.5,1.0,3.5,Live enzymes and micronutrients — excellent detox snack,"Gluten-Free,Vegetarian,Vegan",snack,standalone,85.0,per_serving,,80,130,none,25,3.6,low,raw,95,low
+SL245,Avocado (half),80,Fruits,Avocado,128,1.3,6.0,12.0,5.0,Rich in healthy monounsaturated fats and potassium,"Gluten-Free,Vegetarian,Vegan",snack,standalone,160.0,per_serving,,60,100,none,10,0.6,low,raw,7,low
+SL246,Fruit Salad,180,Fruits,"Papaya,mango,pineapple,guava,lime",110,1.5,27.0,0.5,3.0,Mixed tropical fruit salad — rich in vitamin C and antioxidants,"Gluten-Free,Vegetarian,Vegan",snack,standalone,61.1,per_serving,,150,220,none,52,14.0,low,raw,5,low
+SL247,Spinach Curry,150,Leafy Greens & Herbs,"Spinach,coconut milk,onion,garlic,turmeric,salt",95,4.5,8.0,5.5,3.5,Iron-rich spinach in mild coconut gravy — excellent for anaemia,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,side,63.3,per_serving,,110,190,none,15,1.2,low,boiled,185,low
+SL248,Mushroom Curry,150,Vegetables,"Button mushrooms,coconut milk,onion,spices,salt",120,4.0,10.0,7.5,2.5,Umami-rich mushroom curry — good source of B vitamins and selenium,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,side,80.0,per_serving,,110,190,none,15,1.5,low,boiled,195,low
+SL250,Tempered Leeks,100,Vegetables,"Leeks,coconut oil,onion,mustard,curry leaves,salt",85,2.0,12.0,4.0,3.0,Stir-fried leeks with Sri Lankan tempering — high in vitamin K,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,side,85.0,per_serving,,75,125,none,20,2.4,low,stir_fried,165,low
+SL251,Drumstick Curry,150,Vegetables,"Drumstick (Murunga),coconut milk,onion,turmeric,salt",105,3.5,12.0,5.0,4.5,Moringa/drumstick curry — exceptionally rich in vitamins and minerals,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,side,70.0,per_serving,,110,190,none,18,2.2,low,boiled,175,low
+SL253,Tempered Chickpeas,150,Pulses & Legumes,"Chickpeas,onion,tomato,spices,coconut oil,salt",175,8.5,24.0,5.5,7.0,"High-protein, high-fibre legume side — excellent for weight management","Gluten-Free,Vegetarian,Vegan",any,side,116.7,per_serving,,110,190,none,28,6.7,low,boiled,195,low
+SL254,Long Bean Curry,150,Vegetables,"Long beans,coconut milk,onion,turmeric,mustard,salt",110,4.0,14.0,5.0,5.5,Stir-fried long beans — high in fibre and folate,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,side,73.3,per_serving,,110,190,none,15,2.1,low,stir_fried,170,low
+SL255,Tomato Curry,120,Vegetables,"Tomatoes,onion,garlic,spices,coconut oil,salt",80,2.0,12.0,3.5,2.5,Tangy tomato curry — rich in lycopene and vitamin C,"Gluten-Free,Vegetarian,Vegan",any,side,66.7,per_serving,,90,150,none,15,1.8,low,boiled,195,low
+SL258,Masala Dosa,200,Grains & Rice Dishes,"Rice flour,urad dal,potato,onion,spices,oil",420,9.5,72.0,11.5,4.5,Crispy rice crepe with spiced potato filling — South Indian classic,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,standalone,210.0,per_serving,,160,240,none,62,44.6,medium,pan_fried,380,medium
+SL259,Uttapam,200,Grains & Rice Dishes,"Rice flour,urad dal,onion,tomato,chilli,oil",320,8.5,58.0,7.5,3.5,Thick Sri Lankan savoury pancake with vegetables,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,standalone,160.0,per_serving,,160,240,none,60,34.8,medium,pan_fried,310,medium
+SL260,Vegetable Fried Rice,300,Grains & Rice Dishes,"Rice,mixed vegetables,egg,soy sauce,sesame oil",380,9.5,62.0,10.5,3.5,Sri Lankan style vegetable fried rice,"Gluten-Free,Vegetarian",lunch_dinner,standalone,126.7,per_serving,,250,350,"egg,soy",65,40.3,medium,stir_fried,620,high
+SL262,Lentil Rice (Parippu Bath),300,Grains & Rice Dishes,"Rice,red lentils,coconut milk,onion,spices",420,14.0,72.0,8.5,8.5,"One-pot rice and lentil dish — complete protein, high fibre","Gluten-Free,Vegetarian,Vegan",lunch_dinner,standalone,140.0,per_serving,,250,350,none,48,34.6,low,boiled,250,medium
+SL263,Mung Bean Rice,300,Grains & Rice Dishes,"Rice,mung beans,coconut milk,onion,turmeric",390,12.5,70.0,6.5,7.5,Nourishing mung bean and rice — popular Sri Lankan comfort food,"Gluten-Free,Vegetarian,Vegan",lunch_dinner,standalone,130.0,per_serving,,250,350,none,45,31.5,low,boiled,175,low
+SL264,Tofu Kottu,300,Roti & Flatbreads,"Roti,tofu,vegetables,spices,oil",480,20.0,60.0,16.5,5.0,Vegan kottu with tofu — high protein plant-based version,"Contains Gluten,Vegetarian,Vegan",lunch_dinner,standalone,160.0,per_serving,,250,350,"gluten,soy",55,33.0,low,stir_fried,520,medium
+SL265,Jackfruit Kottu,300,Roti & Flatbreads,"Roti,green jackfruit,vegetables,spices,coconut oil",460,9.5,72.0,14.5,7.5,Shredded roti with young jackfruit — popular vegan comfort food,"Contains Gluten,Vegetarian,Vegan",lunch_dinner,standalone,153.3,per_serving,,250,350,gluten,58,41.8,medium,stir_fried,480,medium

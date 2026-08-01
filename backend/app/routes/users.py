@@ -1,10 +1,12 @@
+import re
+
 from fastapi import APIRouter, Depends, HTTPException, Form
 from sqlalchemy.orm import Session
 from ..database import get_db
 from ..models.user_profile import UserProfile
 from ..models.user import User
 from ..core.auth import get_current_user
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import Optional
 from ..models.health_metric import HealthMetric
 from ..models.daily_log import DailyLog
@@ -23,6 +25,38 @@ class UpdateProfileRequest(BaseModel):
     health_goal: Optional[str] = None
     dietary_preferences: Optional[str] = None
     allergies: Optional[str] = None
+    medical_conditions: Optional[str] = Field(default=None, max_length=1000)
+    medications: Optional[str] = Field(default=None, max_length=1000)
+
+
+def _normalize_medical_list(value: str, field_label: str) -> str:
+    """Normalize user-entered comma, semicolon, or line separated values."""
+    if value.strip().lower() in {"", "none", "no", "n/a", "not applicable"}:
+        return ""
+
+    normalized: list[str] = []
+    seen: set[str] = set()
+    for raw_item in re.split(r"[,;\n]+", value):
+        item = " ".join(raw_item.split()).strip()
+        if not item:
+            continue
+        if len(item) > 120:
+            raise HTTPException(
+                status_code=422,
+                detail=f"Each {field_label} entry must be 120 characters or fewer.",
+            )
+        key = item.casefold()
+        if key not in seen:
+            seen.add(key)
+            normalized.append(item)
+
+    result = ", ".join(normalized)
+    if len(result) > 1000:
+        raise HTTPException(
+            status_code=422,
+            detail=f"{field_label.title()} must be 1000 characters or fewer.",
+        )
+    return result
 
 
 # ─── HELPER: calculate BMI ────────────────────────
@@ -60,6 +94,8 @@ def user_onboarding(
     healthGoal: str = Form(...),
     dietaryPreferences: str = Form(""),
     allergies: str = Form(""),
+    medicalConditions: str = Form(""),
+    medications: str = Form(""),
     activityLevel: str = Form("moderate"),
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
@@ -69,6 +105,11 @@ def user_onboarding(
 
     height_val = float(height)
     weight_val = float(weight)
+    conditions_val = _normalize_medical_list(
+        medicalConditions,
+        "medical condition",
+    )
+    medications_val = _normalize_medical_list(medications, "medication")
 
     # Save/update UserProfile
     from ..models.user_profile import UserProfile
@@ -84,6 +125,8 @@ def user_onboarding(
         profile.health_goal = healthGoal
         profile.dietary_preferences = dietaryPreferences
         profile.allergies = allergies
+        profile.medical_conditions = conditions_val
+        profile.medications = medications_val
     else:
         profile = UserProfile(
             user_id=current_user.id,
@@ -93,6 +136,8 @@ def user_onboarding(
             health_goal=healthGoal,
             dietary_preferences=dietaryPreferences,
             allergies=allergies,
+            medical_conditions=conditions_val,
+            medications=medications_val,
         )
         db.add(profile)
 
@@ -109,6 +154,8 @@ def user_onboarding(
         age=30,  # default age
         dietary_pref=dietaryPreferences,
         allergies=allergies,
+        medical_conditions=conditions_val,
+        medications=medications_val,
     )
 
     existing_metric = (
@@ -156,6 +203,8 @@ def get_user_profile(
             "health_goal": None,
             "dietary_preferences": None,
             "allergies": None,
+            "medical_conditions": None,
+            "medications": None,
         }
 
     bmi = calculate_bmi(profile.height, profile.weight)
@@ -173,6 +222,8 @@ def get_user_profile(
         "health_goal": profile.health_goal,
         "dietary_preferences": profile.dietary_preferences,
         "allergies": profile.allergies,
+        "medical_conditions": profile.medical_conditions,
+        "medications": profile.medications,
     }
 
 
@@ -231,7 +282,29 @@ def update_user_profile(
             profile.dietary_preferences = data.dietary_preferences
         if data.allergies is not None:
             profile.allergies = data.allergies
+        if data.medical_conditions is not None:
+            profile.medical_conditions = _normalize_medical_list(
+                data.medical_conditions,
+                "medical condition",
+            )
+        if data.medications is not None:
+            profile.medications = _normalize_medical_list(
+                data.medications,
+                "medication",
+            )
         db.commit()
         db.refresh(profile)
+
+        metric = (
+            db.query(HealthMetric)
+            .filter(HealthMetric.user_id == current_user.id)
+            .first()
+        )
+        if metric:
+            if data.medical_conditions is not None:
+                metric.medical_conditions = profile.medical_conditions
+            if data.medications is not None:
+                metric.medications = profile.medications
+            db.commit()
 
     return {"message": "Profile updated successfully!"}

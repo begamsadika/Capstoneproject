@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { expireUserSession } from '../auth/session';
 
 export const API_BASE_URL = 'http://localhost:8000';
 
@@ -18,23 +19,20 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-// // Auto logout if token expires
-// api.interceptors.response.use(
-//     (response) => response,
-//     (error) => {
-//         if (error.response?.status === 401) {
-//             localStorage.removeItem('wellora_token');
-//             localStorage.removeItem('wellora_user');
-//             window.location.href = '/';
-//         }
-//         return Promise.reject(error);
-//     }
-// );
-
-// Don't auto redirect — just reject the error
+// Expire protected sessions on 401. Invalid login credentials also return 401,
+// so the login endpoint is intentionally excluded.
 api.interceptors.response.use(
     (response) => response,
-    (error) => Promise.reject(error)
+    (error) => {
+        const requestUrl = String(error.config?.url ?? '');
+        const isLoginRequest = requestUrl.includes('/api/auth/login');
+
+        if (error.response?.status === 401 && !isLoginRequest) {
+            expireUserSession();
+        }
+
+        return Promise.reject(error);
+    }
 );
 
 export const resolveImageUrl = (imageUrl?: string | null) => {

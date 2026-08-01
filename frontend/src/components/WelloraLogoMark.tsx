@@ -1,6 +1,7 @@
 import { Heart } from 'lucide-react';
 
 const sizes = {
+  xs: { box: 'h-6 w-6 rounded-md p-1', icon: 'h-3 w-3' },
   sm: { box: 'h-8 w-8 rounded-lg p-1.5', icon: 'h-4 w-4' },
   md: { box: 'h-10 w-10 rounded-xl p-2', icon: 'h-5 w-5' },
   lg: { box: 'h-12 w-12 rounded-2xl p-2.5', icon: 'h-7 w-7' },

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import axios from "axios";
 import {
   Mail,
   Lock,
@@ -15,12 +16,14 @@ import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import { VendorStatus } from "../api/vendor";
 import { loginUser } from "../api/auth";
 import type { AppPage } from "../types/page";
+import { consumeSessionNotice } from "../auth/session";
 
 interface LoginPageProps {
   onNavigate: (page: AppPage) => void;
   onLoginSuccess: (
     role: "user" | "vendor" | "partner",
     status?: VendorStatus,
+    onboardingDone?: boolean | null,
   ) => void;
 }
 
@@ -63,7 +66,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
   const [role, setRole] = useState<Role>("user");
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(consumeSessionNotice);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -121,14 +124,30 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
           const vendorStatus = await getVendorStatus();
           onLoginSuccess("vendor", vendorStatus);
         } catch {
+          if (!localStorage.getItem("wellora_token")) return;
           onLoginSuccess("vendor", "NEW");
         }
         return;
       }
 
-      onLoginSuccess(role);
-    } catch (err: any) {
-      setError(err.response?.data?.detail || "Invalid email or password.");
+      onLoginSuccess(role, undefined, data.user.onboarding_done);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err) && err.code === "ECONNABORTED") {
+        setError(
+          "Login is taking too long. Please check the backend database connection and try again.",
+        );
+      } else if (axios.isAxiosError(err) && !err.response) {
+        setError(
+          "Unable to reach the Wellora backend. Please check that it is running.",
+        );
+      } else if (axios.isAxiosError(err)) {
+        const responseData = err.response?.data as
+          | { detail?: string }
+          | undefined;
+        setError(responseData?.detail || "Invalid email or password.");
+      } else {
+        setError("Login failed unexpectedly. Please try again.");
+      }
     } finally {
       setIsLoading(false);
     }

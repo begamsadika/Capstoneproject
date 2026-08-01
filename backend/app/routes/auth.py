@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from ..database import get_db
 from ..models.user import User
+from ..models.user_profile import UserProfile
 from ..core.security import hash_password, verify_password, create_access_token
 
 router = APIRouter(prefix="/api/auth", tags=["Authentication"])
@@ -97,6 +98,14 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
         )
 
     token = create_access_token({"sub": str(user.id)})
+    onboarding_done = None
+    if user.user_type == "general":
+        onboarding_done = (
+            db.query(UserProfile.id)
+            .filter(UserProfile.user_id == user.id)
+            .first()
+            is not None
+        )
 
     return {
         "message":      "Login successful!",
@@ -116,5 +125,6 @@ def login(data: LoginRequest, db: Session = Depends(get_db)):
             "approval_date": str(user.approval_date) if user.approval_date else None,
             "is_active": user.is_active,
             "created_at": str(user.created_at),
+            "onboarding_done": onboarding_done,
         }
     }

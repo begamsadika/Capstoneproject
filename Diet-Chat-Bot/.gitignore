@@ -10,9 +10,16 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Environment variables
+# Environment variables — never commit real .env files
+.env
 .env.local
 .env.*.local
+
+# User-specific data files created at runtime
+DataSets/.disliked_foods.json
+DataSets/.meal_log.json
+DataSets/.meal_plan_cache.json
+DataSets/.user_state/
 
 # IDE files
 .vscode/
@@ -24,3 +31,8 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Generated offline medical-RAG artifacts (rebuild with medical_rag scripts)
+medical_rag/chroma_db/
+medical_rag/sources/medlineplus/*.zip
+medical_rag/sources/medlineplus/*.xml

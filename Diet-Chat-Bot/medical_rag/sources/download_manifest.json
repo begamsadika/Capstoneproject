@@ -1,0 +1,13 @@
+{
+  "downloaded_at_utc": "2026-07-31T20:35:58.337646+00:00",
+  "sources": [
+    {
+      "authority": "MedlinePlus / U.S. National Library of Medicine",
+      "url": "https://medlineplus.gov/xml/mplus_topics_compressed_2026-07-31.zip",
+      "local_file": "sources\\medlineplus\\medlineplus_topics.zip",
+      "sha256": "b9d1bc7513e19beb8331ca97a14f8a4b7e7ec9afceb3b802f04461d093f29318",
+      "bytes": 4748990,
+      "reuse_note": "Attribute information to MedlinePlus.gov; do not imply endorsement."
+    }
+  ]
+}

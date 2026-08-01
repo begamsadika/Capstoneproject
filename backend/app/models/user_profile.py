@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Unicode
 from datetime import datetime
 from ..database import Base
 
@@ -13,5 +13,7 @@ class UserProfile(Base):
     health_goal          = Column(String(20))   # lose/maintain/gain
     dietary_preferences  = Column(String(200))
     allergies            = Column(String(200))
+    medical_conditions   = Column(Unicode(1000))
+    medications          = Column(Unicode(1000))
     created_at           = Column(DateTime, default=datetime.utcnow)
     updated_at           = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
