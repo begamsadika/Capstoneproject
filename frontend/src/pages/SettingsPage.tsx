@@ -299,9 +299,11 @@ export function SettingsPage({ onNavigate }: SettingsPageProps) {
                           setIsEditing(true);
                         }
                       }}
+                      disabled={isSaving}
                       className="rounded-xl bg-wellora px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-wellora-hover"
                       disabled={isSaving}
                     >
+                      {isSaving ? "Saving..." : isEditing ? "Save" : "Edit"}
                       {isSaving ? "Saving…" : isEditing ? "Save" : "Edit"}
                     </button>
                   </div>

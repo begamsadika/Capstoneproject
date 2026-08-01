@@ -14,6 +14,22 @@ from ..core.auth import get_current_user
 router = APIRouter(prefix="/api/admin", tags=["Admin"])
 
 
+def status_from_user(user: User) -> str:
+    if user.registration_status == "rejected":
+        return "Rejected"
+    if user.registration_status == "approved" or user.is_active:
+        return "Approved"
+    return "Pending"
+
+
+def partner_type_label(value: Optional[str]) -> Optional[str]:
+    if value == "gym":
+        return "Gym"
+    if value == "hospital":
+        return "Hospital"
+    return None
+
+
 # ─── HELPER: enforce admin role ───────────────────
 def require_admin(current_user: User = Depends(get_current_user)) -> User:
     if current_user.user_type != "admin":
@@ -86,6 +102,13 @@ def list_users(
                 "email": u.email,
                 "phone": u.phone,
                 "user_type": u.user_type,
+                "partner_type": u.partner_type,
+                "organization_name": u.organization_name,
+                "tin_number": u.tin_number,
+                "company_registration_number": u.company_registration_number,
+                "address": u.address,
+                "registration_status": u.registration_status,
+                "approval_date": str(u.approval_date) if u.approval_date else None,
                 "is_active": u.is_active,
                 "created_at": str(u.created_at),
             }
@@ -142,23 +165,30 @@ def list_vendors(
             VendorProfile.business_name.ilike(q) | User.email.ilike(q)
         )
 
-    total = query.count()
     rows = (
         query.order_by(VendorProfile.submitted_at.desc())
-        .offset((page - 1) * page_size)
-        .limit(page_size)
         .all()
     )
 
     result = []
+    profiled_user_ids = []
     for profile, user in rows:
+        profiled_user_ids.append(user.id)
         latest_approval = (
             db.query(VendorApproval)
             .filter(VendorApproval.vendor_id == profile.id)
             .order_by(VendorApproval.created_at.desc())
             .first()
         )
-        is_approved = latest_approval.is_approved if latest_approval else 0
+        if latest_approval:
+            is_approved = latest_approval.is_approved
+        elif user.registration_status == "approved" or user.is_active:
+            is_approved = 1
+        elif user.registration_status == "rejected":
+            is_approved = -1
+        else:
+            is_approved = 0
+
         if is_approved == 1:
             approval_status = "Approved"
         elif is_approved == -1:
@@ -177,6 +207,9 @@ def list_vendors(
                 "business_name": profile.business_name,
                 "business_type": profile.business_type,
                 "service_area": profile.service_area,
+                "tin_number": user.tin_number,
+                "company_registration_number": user.company_registration_number,
+                "address": user.address,
                 "email": user.email,
                 "owner_name": user.name,
                 "is_approved": is_approved,
@@ -185,6 +218,42 @@ def list_vendors(
                 "review_notes": latest_approval.review_notes if latest_approval else None,
             }
         )
+
+    user_query = db.query(User).filter(User.user_type == "vendor")
+    if profiled_user_ids:
+        user_query = user_query.filter(~User.id.in_(profiled_user_ids))
+    if search:
+        q = f"%{search}%"
+        user_query = user_query.filter(
+            User.name.ilike(q) | User.email.ilike(q) | User.organization_name.ilike(q)
+        )
+
+    for user in user_query.order_by(User.created_at.desc()).all():
+        approval_status = status_from_user(user)
+        if status_filter and approval_status != status_filter:
+            continue
+
+        result.append(
+            {
+                "id": user.id,
+                "user_id": user.id,
+                "business_name": user.organization_name or user.name,
+                "business_type": "Registration",
+                "service_area": user.address or "",
+                "tin_number": user.tin_number,
+                "company_registration_number": user.company_registration_number,
+                "address": user.address,
+                "email": user.email,
+                "owner_name": user.name,
+                "is_approved": 1 if approval_status == "Approved" else -1 if approval_status == "Rejected" else 0,
+                "status": approval_status,
+                "submitted_at": str(user.created_at),
+                "review_notes": None,
+            }
+        )
+
+    total = len(result)
+    result = result[(page - 1) * page_size : page * page_size]
 
     return {
         "total": total,
@@ -203,7 +272,29 @@ def approve_vendor(
 ):
     profile = db.query(VendorProfile).filter(VendorProfile.id == vendor_id).first()
     if not profile:
-        raise HTTPException(status_code=404, detail="Vendor not found")
+        user = db.query(User).filter(User.id == vendor_id, User.user_type == "vendor").first()
+        if not user:
+            raise HTTPException(status_code=404, detail="Vendor not found")
+        profile = VendorProfile(
+            user_id=user.id,
+            business_name=user.organization_name or user.name,
+            business_type="Registered Vendor",
+            service_area=user.address or "",
+        )
+        db.add(profile)
+        db.flush()
+        approval = VendorApproval(
+            vendor_id=profile.id,
+            is_approved=1,
+            reviewed_by=admin.name,
+            reviewed_at=datetime.utcnow(),
+        )
+        db.add(approval)
+        user.is_active = True
+        user.registration_status = "approved"
+        user.approval_date = datetime.utcnow()
+        db.commit()
+        return {"message": "Vendor approved successfully", "vendor_id": profile.id, "status": "Approved"}
 
     latest = (
         db.query(VendorApproval)
@@ -225,6 +316,12 @@ def approve_vendor(
         )
         db.add(approval)
 
+    user = db.query(User).filter(User.id == profile.user_id).first()
+    if user:
+        user.is_active = True
+        user.registration_status = "approved"
+        user.approval_date = datetime.utcnow()
+
     db.commit()
     return {"message": "Vendor approved successfully", "vendor_id": vendor_id, "status": "Approved"}
 
@@ -238,7 +335,13 @@ def suspend_vendor(
 ):
     profile = db.query(VendorProfile).filter(VendorProfile.id == vendor_id).first()
     if not profile:
-        raise HTTPException(status_code=404, detail="Vendor not found")
+        user = db.query(User).filter(User.id == vendor_id, User.user_type == "vendor").first()
+        if not user:
+            raise HTTPException(status_code=404, detail="Vendor not found")
+        user.is_active = False
+        user.registration_status = "rejected"
+        db.commit()
+        return {"message": "Vendor suspended successfully", "vendor_id": vendor_id, "status": "Rejected"}
 
     latest = (
         db.query(VendorApproval)
@@ -260,5 +363,86 @@ def suspend_vendor(
         )
         db.add(approval)
 
+    user = db.query(User).filter(User.id == profile.user_id).first()
+    if user:
+        user.is_active = False
+        user.registration_status = "rejected"
+
     db.commit()
     return {"message": "Vendor suspended successfully", "vendor_id": vendor_id, "status": "Rejected"}
+
+
+@router.get("/partners")
+def list_partners(
+    page: int = 1,
+    page_size: int = 20,
+    search: Optional[str] = None,
+    status_filter: Optional[str] = None,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_admin),
+):
+    query = db.query(User).filter(User.user_type == "partner")
+
+    if search:
+        q = f"%{search}%"
+        query = query.filter(
+            User.name.ilike(q) | User.email.ilike(q) | User.organization_name.ilike(q)
+        )
+
+    result = []
+    for partner in query.order_by(User.created_at.desc()).all():
+        approval_status = status_from_user(partner)
+        if status_filter and approval_status != status_filter:
+            continue
+        result.append(
+            {
+                "id": partner.id,
+                "organization_name": partner.organization_name or partner.name,
+                "partner_type": partner.partner_type,
+                "partner_type_label": partner_type_label(partner.partner_type),
+                "email": partner.email,
+                "phone": partner.phone,
+                "address": partner.address,
+                "tin_number": partner.tin_number,
+                "company_registration_number": partner.company_registration_number,
+                "status": approval_status,
+                "is_active": partner.is_active,
+                "submitted_at": str(partner.created_at),
+                "approval_date": str(partner.approval_date) if partner.approval_date else None,
+            }
+        )
+
+    total = len(result)
+    result = result[(page - 1) * page_size : page * page_size]
+    return {"total": total, "page": page, "page_size": page_size, "partners": result}
+
+
+@router.put("/partners/{partner_id}/approve")
+def approve_partner(
+    partner_id: int,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_admin),
+):
+    partner = db.query(User).filter(User.id == partner_id, User.user_type == "partner").first()
+    if not partner:
+        raise HTTPException(status_code=404, detail="Partner not found")
+    partner.is_active = True
+    partner.registration_status = "approved"
+    partner.approval_date = datetime.utcnow()
+    db.commit()
+    return {"message": "Partner approved successfully", "partner_id": partner_id, "status": "Approved"}
+
+
+@router.put("/partners/{partner_id}/reject")
+def reject_partner(
+    partner_id: int,
+    db: Session = Depends(get_db),
+    admin: User = Depends(require_admin),
+):
+    partner = db.query(User).filter(User.id == partner_id, User.user_type == "partner").first()
+    if not partner:
+        raise HTTPException(status_code=404, detail="Partner not found")
+    partner.is_active = False
+    partner.registration_status = "rejected"
+    db.commit()
+    return {"message": "Partner rejected successfully", "partner_id": partner_id, "status": "Rejected"}

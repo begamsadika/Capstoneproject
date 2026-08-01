@@ -13,6 +13,13 @@ class User(Base):
     password_hash = Column(String(256), nullable=False)
     phone = Column(String(20))
     user_type = Column(String(20), default="general")  # general/vendor/partner/admin
+    partner_type = Column(String(20), nullable=True)  # hospital/gym for partner users
+    organization_name = Column(String(200), nullable=True)
+    tin_number = Column(String(80), nullable=True)
+    company_registration_number = Column(String(100), nullable=True)
+    address = Column(String(300), nullable=True)
+    registration_status = Column(String(30), default="approved", nullable=False, server_default="approved")
+    approval_date = Column(DateTime, nullable=True)
     is_active = Column(Boolean, default=True, nullable=False, server_default="1")
     created_at = Column(DateTime, default=datetime.utcnow)
 

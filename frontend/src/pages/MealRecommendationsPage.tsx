@@ -2,6 +2,7 @@ import { LayoutGrid, Settings, ShoppingCart, Star, Flower2 } from "lucide-react"
 import type { AppPage } from "../types/page";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import { InlineDietChat } from "../components/InlineDietChat";
+import { BackButton } from "../components/BackButton";
 
 interface MealRecommendationsPageProps {
   onNavigate: (page: AppPage) => void;
@@ -43,6 +44,16 @@ export function MealRecommendationsPage({ onNavigate }: MealRecommendationsPageP
 
       {/* ── Main ── */}
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <div className="flex shrink-0 items-center justify-between border-b border-slate-200 bg-white px-4 py-3 dark:border-slate-800 dark:bg-slate-900 lg:hidden">
+          <BackButton
+            label="Dashboard"
+            to="user-dashboard"
+            onNavigate={onNavigate}
+          />
+          <span className="text-sm font-semibold text-slate-900 dark:text-white">
+            Meal Recommendations
+          </span>
+        </div>
         <InlineDietChat />
       </div>
 

@@ -1,3 +1,5 @@
+import { Bot, Send, Sparkles, Square, Trash2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { Send, Bot, Sparkles, Square, Trash2, Plus } from "lucide-react";
 import { getHealthMetrics, HealthMetrics } from "../api/health";
@@ -22,6 +24,15 @@ interface Message {
   streaming?: boolean;
   loadingQuestion?: string;
   sources?: DietChatAnswerSource[];
+}
+
+function isHistoryItem(item: unknown): item is HistoryItem {
+  if (!item || typeof item !== "object") return false;
+  const candidate = item as Partial<HistoryItem>;
+  return (
+    (candidate.role === "user" || candidate.role === "assistant") &&
+    typeof candidate.content === "string"
+  );
 }
 
 function getTimeGreeting(): string {
@@ -125,6 +136,27 @@ export function InlineDietChat() {
   }, [greetingMessage]);
 
   useEffect(() => {
+    // Always fetch the user name so sendMessage can send it
+    getUserProfile()
+      .then((profile) => { userNameRef.current = (profile.name || "").split(" ")[0]; })
+      .catch(() => {});
+
+    try {
+      const saved = sessionStorage.getItem(SESSION_KEY);
+      if (saved) {
+        const { messages: savedMsgs, history: savedHistory, metricsSnapshot } = JSON.parse(saved);
+        if (savedMsgs?.length > 1) {
+          setMessages(savedMsgs.map((m: Message) => ({ ...m, streaming: false })));
+          historyRef.current = Array.isArray(savedHistory)
+            ? savedHistory.filter(isHistoryItem)
+            : [];
+          if (metricsSnapshot) setMetrics(metricsSnapshot);
+          return; // skip greeting — we already have a conversation
+        }
+      }
+    } catch {}
+
+    // No saved session — fetch metrics + name and show greeting
     Promise.all([getHealthMetrics(), getUserProfile()])
       .then(([m, profile]) => {
         setMetrics(m);
@@ -169,6 +201,12 @@ export function InlineDietChat() {
     setMessages((prev) => [...prev, { role: "user", text }]);
     setInput("");
     setStreaming(true);
+
+    // Track history
+    historyRef.current = [
+      ...historyRef.current,
+      { role: "user", content: text } satisfies HistoryItem,
+    ].slice(-MAX_HISTORY);
 
     // Streaming placeholder
     setMessages((prev) => [
@@ -261,6 +299,10 @@ export function InlineDietChat() {
         return next;
       });
 
+      historyRef.current = [
+        ...historyRef.current,
+        { role: "assistant", content: botReply } satisfies HistoryItem,
+      ].slice(-MAX_HISTORY);
       getDietChatConversations().then(setConversations).catch(() => {});
 
       // If the bot reply contains a calculated calorie target, store it
@@ -324,7 +366,7 @@ export function InlineDietChat() {
         <span className="text-sm font-semibold text-slate-900 dark:text-white">Diet AI</span>
         {metrics && (
           <span className="rounded-full bg-wellora/10 px-2.5 py-0.5 text-xs font-medium text-wellora">
-            {metrics.health_goal?.replace(/_/g, " ")} · {metrics.target_calories} kcal
+            {metrics.health_goal?.replace(/_/g, " ")} · {calorieOverride ?? metrics.target_calories} kcal
           </span>
         )}
         {conversations.length > 0 && (

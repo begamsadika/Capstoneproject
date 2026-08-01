@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Eye, EyeOff, Heart, Lock, Mail } from "lucide-react";
+import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { adminLogin } from "../api/admin";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
 

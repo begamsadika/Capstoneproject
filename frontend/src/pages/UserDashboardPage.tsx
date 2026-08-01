@@ -3,6 +3,10 @@ import { getUserProfile, UserProfile } from "../api/user";
 import { getAIRecommendations, AIRecommendation, AIRecommendationResult } from "../api/ai";
 import { getNutritionToday, NutritionToday } from "../api/nutrition";
 import {
+  getMyPartnerRecommendedMeals,
+  type PartnerRecommendedMeal,
+} from "../api/partner";
+import {
   Bell,
   Flame,
   Clock3,
@@ -43,6 +47,7 @@ export function UserDashboardPage({ onNavigate }: UserDashboardPageProps) {
   // ─── Real data from backend ───────────────────
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [aiData, setAiData] = useState<AIRecommendationResult | null>(null);
+  const [partnerMeals, setPartnerMeals] = useState<PartnerRecommendedMeal[]>([]);
   const [aiLoading, setAiLoading] = useState(true);
   const [aiError, setAiError] = useState<string | null>(null);
   const [nutrition, setNutrition] = useState<NutritionToday | null>(null);
@@ -67,6 +72,7 @@ export function UserDashboardPage({ onNavigate }: UserDashboardPageProps) {
 
   useEffect(() => {
     fetchRecommendations();
+    getMyPartnerRecommendedMeals().then(setPartnerMeals).catch(console.error);
   }, []);
 
   return (
@@ -337,6 +343,39 @@ export function UserDashboardPage({ onNavigate }: UserDashboardPageProps) {
                 </p>
               </article>
             </section>
+
+            {partnerMeals.length > 0 && (
+              <section className="rounded-[2rem] border border-emerald-200 bg-white/95 p-6 shadow-sm dark:border-emerald-900/50 dark:bg-slate-900/85">
+                <div className="flex items-center gap-2">
+                  <Star className="h-5 w-5 text-wellora" />
+                  <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
+                    Partner Recommended Meals
+                  </h2>
+                </div>
+                <p className="mt-2 text-sm text-slate-600 dark:text-slate-400">
+                  Meals sent by your assigned wellness partner.
+                </p>
+                <div className="mt-5 grid gap-4 md:grid-cols-3">
+                  {partnerMeals.slice(0, 3).map((meal) => (
+                    <article
+                      key={meal.id}
+                      className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-950"
+                    >
+                      <p className="text-base font-semibold text-slate-900 dark:text-white">
+                        {meal.meal_name}
+                      </p>
+                      <p className="mt-1 text-sm text-slate-500">
+                        {meal.category} · {meal.calories} kcal · Rs{" "}
+                        {meal.price.toFixed(2)}
+                      </p>
+                      <p className="mt-3 text-xs font-medium text-wellora">
+                        Recommended by {meal.partner_name}
+                      </p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            )}
 
             <section className="rounded-[2rem] border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/85 p-8 shadow-sm">
               {/* Header */}

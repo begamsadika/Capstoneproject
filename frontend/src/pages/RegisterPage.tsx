@@ -10,12 +10,14 @@ import {
   Building2,
   ShoppingBag,
   Phone,
+  FileText,
+  MapPin,
 } from "lucide-react";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import { registerUser } from "../api/auth";
 
-type Page = "home" | "login" | "register" | "verification";
+type Page = "home" | "login" | "register" | "verification" | "pending-approval";
 
 interface RegisterPageProps {
   onNavigate: (page: Page, email?: string) => void;
@@ -28,10 +30,15 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
   const [userType, setUserType] = useState<UserType>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [partnerType, setPartnerType] = useState<"hospital" | "gym" | "">("");
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     email: "",
+    organizationName: "",
+    tinNumber: "",
+    companyRegistrationNumber: "",
+    address: "",
     password: "",
     confirmPassword: "",
   });
@@ -56,15 +63,60 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
       return;
     }
 
+    if (userType === "partner" && !partnerType) {
+      setError("Please select Hospital or Gym as the partner type.");
+      return;
+    }
+
     setIsLoading(true);
     try {
-      await registerUser({
+      const registration = await registerUser({
         name: formData.name,
         email: formData.email,
         password: formData.password,
         phone: formData.phone,
         user_type: userType || "general",
+        partner_type: userType === "partner" ? partnerType : undefined,
+        organization_name:
+          userType === "partner" || userType === "vendor"
+            ? formData.organizationName
+            : undefined,
+        tin_number:
+          userType === "partner" || userType === "vendor"
+            ? formData.tinNumber
+            : undefined,
+        company_registration_number:
+          userType === "partner" || userType === "vendor"
+            ? formData.companyRegistrationNumber
+            : undefined,
+        address:
+          userType === "partner" || userType === "vendor"
+            ? formData.address
+            : undefined,
       });
+
+      if (userType === "partner" || userType === "vendor") {
+        const applicationType = userType === "partner" ? "Partner" : "Vendor";
+        localStorage.setItem(
+          "pending-approval-application",
+          JSON.stringify({
+            applicationType,
+            partnerType: userType === "partner" ? partnerType : "",
+            organizationName: formData.organizationName,
+            email: formData.email,
+            status: "Pending Approval",
+            submittedDate: new Date().toLocaleDateString("en-US", {
+              month: "short",
+              day: "numeric",
+              year: "numeric",
+            }),
+            applicationId: `${applicationType.slice(0, 3).toUpperCase()}-${registration.user?.id ?? Date.now()}`,
+          }),
+        );
+        setSuccess("Registration submitted for approval.");
+        setTimeout(() => onNavigate("pending-approval"), 800);
+        return;
+      }
 
       setSuccess("Account created successfully! Redirecting to login...");
       setTimeout(() => onNavigate("login"), 2000);
@@ -280,6 +332,120 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                     />
                   </div>
                 </div>
+
+                {(userType === "partner" || userType === "vendor") && (
+                  <>
+                    {userType === "partner" && (
+                      <div className="space-y-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                          Partner Type
+                        </label>
+                        <div className="grid grid-cols-2 gap-3">
+                          {[
+                            { value: "hospital" as const, label: "Hospital" },
+                            { value: "gym" as const, label: "Gym" },
+                          ].map((option) => (
+                            <label
+                              key={option.value}
+                              className={`flex cursor-pointer items-center gap-3 rounded-xl border px-4 py-3 text-sm font-medium transition ${
+                                partnerType === option.value
+                                  ? "border-wellora bg-wellora-light text-wellora-dark"
+                                  : "border-gray-200 bg-gray-50 text-gray-700 hover:border-wellora/40 dark:border-gray-700 dark:bg-gray-900/50 dark:text-gray-300"
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="partnerType"
+                                value={option.value}
+                                checked={partnerType === option.value}
+                                onChange={() => setPartnerType(option.value)}
+                                className="h-4 w-4 border-gray-300 text-wellora focus:ring-wellora"
+                                required
+                              />
+                              {option.label}
+                            </label>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {userType === "vendor" ? "Business Name" : "Organization Name"}
+                      </label>
+                      <div className="relative">
+                        <Building2 className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                        <input
+                          type="text"
+                          value={formData.organizationName}
+                          onChange={(e) =>
+                            setFormData({ ...formData, organizationName: e.target.value })
+                          }
+                          placeholder={userType === "vendor" ? "Healthy Bites Inc." : "City Hospital"}
+                          className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-800 outline-none transition-all placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-wellora dark:border-gray-700 dark:bg-gray-900/50 dark:text-white"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        TIN Number
+                      </label>
+                      <div className="relative">
+                        <FileText className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                        <input
+                          type="text"
+                          value={formData.tinNumber}
+                          onChange={(e) =>
+                            setFormData({ ...formData, tinNumber: e.target.value })
+                          }
+                          placeholder="Tax Identification Number"
+                          className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-800 outline-none transition-all placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-wellora dark:border-gray-700 dark:bg-gray-900/50 dark:text-white"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Company Registration Number
+                      </label>
+                      <div className="relative">
+                        <FileText className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-400" />
+                        <input
+                          type="text"
+                          value={formData.companyRegistrationNumber}
+                          onChange={(e) =>
+                            setFormData({ ...formData, companyRegistrationNumber: e.target.value })
+                          }
+                          placeholder="Company registration number"
+                          className="w-full rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-800 outline-none transition-all placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-wellora dark:border-gray-700 dark:bg-gray-900/50 dark:text-white"
+                          required
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Address
+                      </label>
+                      <div className="relative">
+                        <MapPin className="absolute left-4 top-4 h-5 w-5 text-gray-400" />
+                        <textarea
+                          value={formData.address}
+                          onChange={(e) =>
+                            setFormData({ ...formData, address: e.target.value })
+                          }
+                          placeholder="Registered business address"
+                          rows={3}
+                          className="w-full resize-none rounded-xl border border-gray-200 bg-gray-50 py-3.5 pl-12 pr-4 text-gray-800 outline-none transition-all placeholder-gray-400 focus:border-transparent focus:ring-2 focus:ring-wellora dark:border-gray-700 dark:bg-gray-900/50 dark:text-white"
+                          required
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
 
                 <div className="space-y-2">
                   <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">

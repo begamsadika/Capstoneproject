@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import { Bell, LogOut, Menu, Users, UserCog, AlertCircle } from "lucide-react";
+import { Bell, LogOut, Menu, Users, UserCog, AlertCircle, FileText, Search } from "lucide-react";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import type { AppPage } from "../types/page";
+import { getPublicMeals, type PublicMeal } from "../api/orders";
 
 interface PartnerDashboardPageProps {
   onNavigate: (page: AppPage) => void;
@@ -10,14 +11,45 @@ interface PartnerDashboardPageProps {
 
 export function PartnerDashboardPage({ onNavigate }: PartnerDashboardPageProps) {
   const [activeSection, setActiveSection] = useState<
-    "dashboard" | "guidance" | "menu"
+    "dashboard" | "guidance" | "menu" | "profile"
   >("dashboard");
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [meals, setMeals] = useState<PublicMeal[]>([]);
+  const [menuSearch, setMenuSearch] = useState("");
+  const [menuCategory, setMenuCategory] = useState("");
+  const [selectedMealIds, setSelectedMealIds] = useState<number[]>([]);
   const profileMenuRef = useRef<HTMLDivElement | null>(null);
+  const storedUser = (() => {
+    try {
+      return JSON.parse(localStorage.getItem("wellora_user") || "{}") as {
+        name?: string;
+        email?: string;
+        phone?: string;
+        partner_type?: "hospital" | "gym";
+        organization_name?: string;
+        address?: string;
+        registration_status?: string;
+        approval_date?: string | null;
+      };
+    } catch {
+      return {};
+    }
+  })();
   const partnerName =
+    storedUser.organization_name ||
     localStorage.getItem("partner-organization-name") ||
     localStorage.getItem("wellora-partner-name") ||
     "City Hospital";
+  const partnerTypeLabel = storedUser.partner_type === "gym" ? "Gym" : "Hospital";
+  const registrationStatus =
+    storedUser.registration_status === "approved" ? "Approved" : "Pending Approval";
+  const approvalDate = storedUser.approval_date
+    ? new Date(storedUser.approval_date).toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      })
+    : "Not approved yet";
 
   const assignedUsers = [
     {
@@ -81,6 +113,27 @@ export function PartnerDashboardPage({ onNavigate }: PartnerDashboardPageProps) 
         "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=80&h=80&q=80",
     },
   ];
+
+  useEffect(() => {
+    getPublicMeals().then(setMeals).catch(console.error);
+  }, []);
+
+  const filteredMeals = meals.filter((meal) => {
+    const matchesSearch =
+      !menuSearch ||
+      meal.name.toLowerCase().includes(menuSearch.toLowerCase()) ||
+      meal.dietary.toLowerCase().includes(menuSearch.toLowerCase());
+    const matchesCategory = !menuCategory || meal.category === menuCategory;
+    return matchesSearch && matchesCategory;
+  });
+
+  const toggleMeal = (mealId: number) => {
+    setSelectedMealIds((prev) =>
+      prev.includes(mealId)
+        ? prev.filter((id) => id !== mealId)
+        : [...prev, mealId],
+    );
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("wellora_token");
@@ -149,6 +202,18 @@ export function PartnerDashboardPage({ onNavigate }: PartnerDashboardPageProps) 
             </button>
             <button
               type="button"
+              onClick={() => setActiveSection("profile")}
+              className={`flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm ${
+                activeSection === "profile"
+                  ? "bg-slate-200 font-medium dark:bg-slate-800"
+                  : "hover:bg-slate-100 dark:hover:bg-slate-800/70"
+              }`}
+            >
+              <FileText className="h-4 w-4" />
+              Profile
+            </button>
+            <button
+              type="button"
               onClick={handleLogout}
               className="mt-auto flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm text-rose-600 hover:bg-rose-50 dark:text-rose-400 dark:hover:bg-rose-950/30"
             >
@@ -201,18 +266,20 @@ export function PartnerDashboardPage({ onNavigate }: PartnerDashboardPageProps) 
           </header>
 
           <main className="min-h-0 flex-1 overflow-y-auto p-6 lg:p-8">
+            {activeSection === "dashboard" && (
+            <>
               <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
                 Partner Dashboard
               </h1>
 
-              <section className="mt-6 grid gap-4 md:grid-cols-3">
+              <section className="mt-6 grid gap-4 md:grid-cols-4">
                 <article className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
                   <p className="text-xs text-slate-500 dark:text-slate-400">Partner Type</p>
                   <p className="mt-2 text-xl font-semibold text-slate-900 dark:text-white">
                     {partnerName}
                   </p>
                   <span className="mt-2 inline-block rounded-full bg-emerald-100 px-2 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-300">
-                    Hospital Partner
+                    {partnerTypeLabel} Partner
                   </span>
                 </article>
                 <article className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
@@ -221,6 +288,11 @@ export function PartnerDashboardPage({ onNavigate }: PartnerDashboardPageProps) 
                   <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     Active users linked to your organization.
                   </p>
+                </article>
+                <article className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Pending Guidance</p>
+                  <p className="mt-2 text-4xl font-bold text-slate-900 dark:text-white">18</p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Open user follow-ups this week.</p>
                 </article>
                 <article className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
                   <div className="flex items-center justify-between">
@@ -233,6 +305,22 @@ export function PartnerDashboardPage({ onNavigate }: PartnerDashboardPageProps) 
                   <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                     Users with unaddressed guidance or critical alerts.
                   </p>
+                </article>
+              </section>
+
+              <section className="mt-4 grid gap-4 md:grid-cols-2">
+                <article className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">Recommended Meals Sent</p>
+                  <p className="mt-2 text-4xl font-bold text-slate-900 dark:text-white">73</p>
+                  <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Recommendations delivered to users in the last 30 days.</p>
+                </article>
+                <article className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+                  <p className="text-sm font-semibold text-slate-900 dark:text-white">Recent Activity</p>
+                  <div className="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                    <p>Jane Smith received nutrition advice.</p>
+                    <p>Robert Johnson was marked Needs Attention.</p>
+                    <p>3 meal recommendations were sent today.</p>
+                  </div>
                 </article>
               </section>
 
@@ -286,6 +374,93 @@ export function PartnerDashboardPage({ onNavigate }: PartnerDashboardPageProps) 
                   ))}
                 </div>
               </section>
+            </>
+            )}
+
+            {activeSection === "menu" && (
+              <>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                  <div>
+                    <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Menu</h1>
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                      Browse all vendor-published meals and recommend them to users.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    disabled={selectedMealIds.length === 0}
+                    className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    Recommend Meal
+                  </button>
+                </div>
+                <div className="mt-6 grid gap-3 sm:grid-cols-[1fr_180px]">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+                    <input
+                      value={menuSearch}
+                      onChange={(e) => setMenuSearch(e.target.value)}
+                      placeholder="Search global menu"
+                      className="w-full rounded-lg border border-slate-300 bg-white py-2 pl-10 pr-3 text-sm dark:border-slate-600 dark:bg-slate-800"
+                    />
+                  </div>
+                  <select
+                    value={menuCategory}
+                    onChange={(e) => setMenuCategory(e.target.value)}
+                    className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm dark:border-slate-600 dark:bg-slate-800"
+                  >
+                    <option value="">All Categories</option>
+                    <option value="Breakfast">Breakfast</option>
+                    <option value="Lunch">Lunch</option>
+                    <option value="Dinner">Dinner</option>
+                    <option value="Snacks">Snacks</option>
+                  </select>
+                </div>
+                <div className="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  {filteredMeals.map((meal) => (
+                    <button
+                      key={meal.id}
+                      type="button"
+                      onClick={() => toggleMeal(meal.id)}
+                      className={`rounded-xl border p-4 text-left transition ${
+                        selectedMealIds.includes(meal.id)
+                          ? "border-emerald-500 bg-emerald-50 dark:bg-emerald-950/30"
+                          : "border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
+                      }`}
+                    >
+                      <p className="font-semibold text-slate-900 dark:text-white">{meal.name}</p>
+                      <p className="mt-1 text-sm text-slate-500">{meal.category} · {meal.calories} kcal</p>
+                      <p className="mt-1 text-sm text-slate-500">Rs {meal.price.toFixed(2)} · {meal.dietary}</p>
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+
+            {activeSection === "profile" && (
+              <>
+                <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Profile</h1>
+                <section className="mt-6 grid gap-4 md:grid-cols-2">
+                  {[
+                    ["Organization Name", partnerName],
+                    ["Partner Type", partnerTypeLabel],
+                    ["Email", storedUser.email || "partner@wellora.com"],
+                    ["Phone", storedUser.phone || "+94 77 123 4567"],
+                    ["Address", storedUser.address || "Colombo, Sri Lanka"],
+                    ["Registration Status", registrationStatus],
+                    ["Approval Date", approvalDate],
+                  ].map(([label, value]) => (
+                    <article key={label} className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+                      <p className="text-xs font-medium uppercase tracking-wide text-slate-500">{label}</p>
+                      <p className="mt-2 text-sm font-medium text-slate-900 dark:text-white">{value}</p>
+                    </article>
+                  ))}
+                </section>
+                <button className="mt-6 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700">
+                  Edit Profile
+                </button>
+              </>
+            )}
           </main>
         </div>
     </div>

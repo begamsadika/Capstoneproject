@@ -555,6 +555,18 @@ class Message(BaseModel):
 
 class ChatRequest(BaseModel):
     message: str
+    condition: str = ""  # optional: diabetes, hypertension, etc.
+
+def query_ollama(prompt: str) -> str:
+    url = "http://localhost:11434/api/generate"
+    response = requests.post(url, json={
+        "model": "llama3.2:3b",
+        "prompt": prompt,
+        "stream": False
+    })
+    return response.json().get("response", "Sorry, I couldn't generate a response.")
+
+@app.post("/chat")
     history: List[Message] = []
     user_metrics: Optional[dict] = None
     calorie_target_override: Optional[int] = None  # set by frontend after a weight goal calculation

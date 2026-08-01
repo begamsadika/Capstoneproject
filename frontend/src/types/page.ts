@@ -16,4 +16,5 @@ export type AppPage =
   | 'vendor-dashboard'
   | 'vendor-order-management'
   | 'partner-dashboard'
-  | 'partner-guidance';
+  | 'partner-guidance'
+  | 'invitation-setup';

@@ -6,6 +6,11 @@ export const registerUser = async (data: {
     password: string;
     phone: string;
     user_type: string;
+    partner_type?: 'hospital' | 'gym' | '';
+    organization_name?: string;
+    tin_number?: string;
+    company_registration_number?: string;
+    address?: string;
 }) => {
     const response = await api.post('/api/auth/register', data);
     return response.data;

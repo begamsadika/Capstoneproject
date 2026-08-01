@@ -13,6 +13,8 @@ export interface VendorMeal {
   image_url?: string;  // returned by backend as full URL
 }
 
+export type Meal = VendorMeal;
+
 export interface MealIngredient {
   ingredientId: string;
   name: string;
