@@ -9,7 +9,6 @@ import {
   Flower2,
   Heart,
   Home,
-  Loader2,
   Minus,
   Plus,
   Search,
@@ -28,6 +27,8 @@ import { resolveImageUrl } from "../api/client";
 import { getMe } from "../api/user";
 import { syncDailyLog } from "../api/health";
 import { BackButton } from "../components/BackButton";
+import { InlineLoader, MealCardSkeleton } from "../components/LoadingStates";
+import { getApiDetail } from "../utils/apiError";
 
 interface MenuOrderPageProps {
   onNavigate: (page: AppPage) => void;
@@ -235,7 +236,11 @@ export function MenuOrderPage({ onNavigate }: MenuOrderPageProps) {
   const toggleFavorite = (id: string) =>
     setFavorites((prev) => {
       const next = new Set(prev);
-      next.has(id) ? next.delete(id) : next.add(id);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
       return next;
     });
 
@@ -366,9 +371,9 @@ export function MenuOrderPage({ onNavigate }: MenuOrderPageProps) {
       setPaymentOpen(false);
       setPaymentStatus("success");
       setPaymentMessage("Payment successful. Order placed and sent to the vendor.");
-    } catch (err: any) {
+    } catch (err: unknown) {
       setPaymentStatus("failed");
-      setPaymentMessage(err.response?.data?.detail ?? "Payment could not be completed. Please try again.");
+      setPaymentMessage(getApiDetail(err, "Payment could not be completed. Please try again."));
     } finally {
       setIsOrdering(false);
     }
@@ -506,7 +511,7 @@ export function MenuOrderPage({ onNavigate }: MenuOrderPageProps) {
               {isLoading ? (
                 <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
                   {Array.from({ length: 6 }).map((_, index) => (
-                    <div key={index} className="h-80 animate-pulse rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900" />
+                    <MealCardSkeleton key={index} />
                   ))}
                 </div>
               ) : filteredMeals.length === 0 ? (
@@ -585,7 +590,7 @@ export function MenuOrderPage({ onNavigate }: MenuOrderPageProps) {
                               }`}
                             >
                               {addingMealId === key ? (
-                                <Loader2 className="h-4 w-4 animate-spin" />
+                                <InlineLoader label="" />
                               ) : addedMealId === key ? (
                                 <Check className="h-4 w-4" />
                               ) : (

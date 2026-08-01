@@ -4,6 +4,7 @@ import { WelloraLogoMark } from "../components/WelloraLogoMark";
 import { setInvitationPassword } from "../api/partner";
 import type { AppPage } from "../types/page";
 import { validateConfirmPassword, validatePassword } from "../utils/authValidation";
+import { getApiDetail } from "../utils/apiError";
 
 interface InvitationSetupPageProps {
   token: string;
@@ -38,8 +39,8 @@ export function InvitationSetupPage({ token, onNavigate }: InvitationSetupPagePr
       localStorage.setItem("current-role", "user");
       window.history.replaceState({}, "", window.location.pathname);
       onNavigate("onboarding-user");
-    } catch (err: any) {
-      setError(err.response?.data?.detail ?? "Invitation setup failed.");
+    } catch (err: unknown) {
+      setError(getApiDetail(err, "Invitation setup failed."));
     } finally {
       setIsSaving(false);
     }

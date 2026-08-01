@@ -16,6 +16,7 @@ import {
 } from "../api/orders";
 import type { AppPage } from "../types/page";
 import { getVendorMeals, type Meal } from "../api/meals";
+import { getApiDetail } from "../utils/apiError";
 
 interface OrderTab {
   label: string;
@@ -181,10 +182,8 @@ export function VendorOrdermanagement({ onNavigate }: VendorOrdermanagementProps
       setManualMessage("Manual order created successfully.");
       resetManualForm();
       await loadOrdersAndStats();
-    } catch (err: any) {
-      const message =
-        err?.response?.data?.detail || "Failed to create manual order. Please try again.";
-      setManualMessage(String(message));
+    } catch (err: unknown) {
+      setManualMessage(getApiDetail(err, "Failed to create manual order. Please try again."));
     } finally {
       setManualSubmitting(false);
     }

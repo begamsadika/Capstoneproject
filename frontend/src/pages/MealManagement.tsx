@@ -20,6 +20,8 @@ import {
   type IngredientSearchResult,
 } from "../api/ingredients";
 import type { AppPage } from "../types/page";
+import { SkeletonBlock } from "../components/LoadingStates";
+import { getApiDetail, getApiStatus } from "../utils/apiError";
 
 interface MealManagementProps {
   onNavigate?: (page: AppPage) => void;
@@ -176,9 +178,10 @@ export const MealManagement: React.FC<MealManagementProps> = ({
     try {
       const data = await getVendorMeals();
       setMeals(data);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to load meals:", err);
-      if (err.response?.status === 401 || err.response?.status === 403) {
+      const status = getApiStatus(err);
+      if (status === 401 || status === 403) {
         localStorage.removeItem("wellora_token");
         localStorage.removeItem("wellora_user");
         if (onNavigate) {
@@ -438,9 +441,9 @@ export const MealManagement: React.FC<MealManagementProps> = ({
       }
 
       closeMealForm();
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Failed to save meal:", err);
-      alert(err.response?.data?.detail ?? "Failed to save meal. Please try again.");
+      alert(getApiDetail(err, "Failed to save meal. Please try again."));
     } finally {
       setIsSaving(false);
     }
@@ -538,8 +541,20 @@ export const MealManagement: React.FC<MealManagementProps> = ({
 
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
         {isLoadingMeals ? (
-          <div className="flex items-center justify-center py-16">
-            <p className="text-slate-500">Loading meals...</p>
+          <div className="overflow-x-auto" aria-busy="true" aria-live="polite">
+            <table className="w-full min-w-[720px] text-left text-sm">
+              <tbody>
+                {Array.from({ length: 5 }).map((_, row) => (
+                  <tr key={row} className="border-b border-slate-100 dark:border-slate-800">
+                    {Array.from({ length: 7 }).map((__, col) => (
+                      <td key={col} className="px-4 py-4">
+                        <SkeletonBlock className={col === 0 ? "h-4 w-36" : "h-4 w-20"} />
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         ) : (
           <div className="overflow-x-auto">

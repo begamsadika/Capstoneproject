@@ -35,7 +35,8 @@ export const validateLoginPassword = (value: string) => {
   return "";
 };
 
-export const validatePassword = (value: string, _email = "") => {
+export const validatePassword = (value: string, email = "") => {
+  void email;
   if (!value) return "Password is required.";
   if (value.length < 8) return "Password must contain at least 8 characters.";
   if (value.length > 64) return "Password must not exceed 64 characters.";

@@ -33,8 +33,6 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
   >("");
   const [dietaryPreferences, setDietaryPreferences] = useState<string>("");
   const [allergies, setAllergies] = useState<string>("");
-  const [medicalConditions, setMedicalConditions] = useState<string>("");
-  const [medications, setMedications] = useState<string>("");
 
   // Vendor specific states
   const [businessName, setBusinessName] = useState("");
@@ -63,6 +61,15 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
 
     try {
       if (role === "user") {
+        console.log({
+          gender,
+          height,
+          weight,
+          healthGoal,
+          dietaryPreferences,
+          allergies,
+        });
+
         const formData = new FormData();
         formData.append("gender", gender);
         formData.append("height", height);
@@ -70,8 +77,6 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
         formData.append("healthGoal", healthGoal);
         formData.append("dietaryPreferences", dietaryPreferences || "");
         formData.append("allergies", allergies || "");
-        formData.append("medicalConditions", medicalConditions || "");
-        formData.append("medications", medications || "");
 
         await submitUserOnboarding(formData);
         localStorage.setItem("user-onboarding-complete", "true");
@@ -260,40 +265,6 @@ export function OnboardingPage({ role, onNavigate }: OnboardingPageProps) {
                     placeholder="e.g., Peanuts, Gluten"
                     rows={3}
                   />
-                </div>
-
-                <div>
-                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
-                    Medical Conditions (Optional)
-                  </label>
-                  <textarea
-                    value={medicalConditions}
-                    onChange={(e) => setMedicalConditions(e.target.value)}
-                    maxLength={1000}
-                    className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white py-3 pl-3 min-h-[80px] resize-none"
-                    placeholder="e.g., Type 2 diabetes, hypertension"
-                    rows={3}
-                  />
-                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                    Enter diagnosed conditions separated by commas.
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-base font-medium text-gray-700 dark:text-gray-300">
-                    Current Medications (Optional)
-                  </label>
-                  <textarea
-                    value={medications}
-                    onChange={(e) => setMedications(e.target.value)}
-                    maxLength={1000}
-                    className="mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md bg-gray-50 dark:bg-gray-900/50 dark:border-gray-700 dark:text-white py-3 pl-3 min-h-[80px] resize-none"
-                    placeholder="e.g., Metformin, warfarin"
-                    rows={3}
-                  />
-                  <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                    Include medicine names only; never include account or prescription numbers.
-                  </p>
                 </div>
               </>
             )}

@@ -22,7 +22,7 @@ export function PendingPage({ onNavigate }: PendingPageProps) {
       if (nextStatus === 'APPROVED') {
         onNavigate('vendor-dashboard');
       }
-    } catch (err) {
+    } catch {
       setError('Unable to check status right now.');
     } finally {
       setIsChecking(false);

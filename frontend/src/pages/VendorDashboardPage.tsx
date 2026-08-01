@@ -38,7 +38,8 @@ import {
   type VendorOrder,
   type VendorOrderStats,
 } from "../api/orders";
-import { getVendorMeals, getVendorStats } from "../api/meals";
+import { getVendorMeals, getVendorStats, type VendorMeal } from "../api/meals";
+import { getApiDetail } from "../utils/apiError";
 import MealManagement from "./MealManagement";
 
 interface VendorDashboardPageProps {
@@ -82,7 +83,7 @@ function VendorOrdersSection() {
   const [manualQty, setManualQty] = useState(1);
   const [manualSubmitting, setManualSubmitting] = useState(false);
   const [manualMessage, setManualMessage] = useState<string | null>(null);
-  const [manualMeals, setManualMeals] = useState<any[]>([]);
+  const [manualMeals, setManualMeals] = useState<VendorMeal[]>([]);
   const [cancelModalOrder, setCancelModalOrder] = useState<VendorOrder | null>(null);
   const [cancelReason, setCancelReason] = useState("");
   const [cancelNotes, setCancelNotes] = useState("");
@@ -336,7 +337,7 @@ function VendorOrdersSection() {
   const loadManualMeals = async () => {
     try {
       const meals = await getVendorMeals();
-      setManualMeals(meals.filter((meal: any) => meal.available));
+      setManualMeals(meals.filter((meal) => meal.available));
     } catch (err) {
       console.error("Failed to load meals for manual order:", err);
       setManualMessage("Unable to load meals.");
@@ -358,10 +359,8 @@ function VendorOrdersSection() {
       setManualMealId("");
       setManualQty(1);
       await loadData();
-    } catch (err: any) {
-      const message =
-        err?.response?.data?.detail || "Failed to create manual order.";
-      setManualMessage(String(message));
+    } catch (err: unknown) {
+      setManualMessage(getApiDetail(err, "Failed to create manual order."));
     } finally {
       setManualSubmitting(false);
     }
@@ -2004,7 +2003,7 @@ export function VendorDashboardPage({
 }: VendorDashboardPageProps) {
   const [vendorSection, setVendorSection] =
     useState<VendorSection>(initialSection);
-  const [meals, setMeals] = useState<any[]>([]); // Only for dashboard stats and menu
+  const [meals, setMeals] = useState<VendorMeal[]>([]); // Only for dashboard stats and menu
   const [vendorOrders, setVendorOrders] = useState<VendorOrder[]>([]);
   const [stats, setStats] = useState<VendorStats>({
     total_meals: 0,

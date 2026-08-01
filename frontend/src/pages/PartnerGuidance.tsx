@@ -22,6 +22,7 @@ import {
   type CreatePartnerClientPayload,
 } from "../api/partner";
 import type { AppPage } from "../types/page";
+import { getApiDetail, getApiStatus } from "../utils/apiError";
 
 interface PartnerGuidanceProps {
   onNavigate: (page: AppPage) => void;
@@ -205,7 +206,7 @@ export function PartnerGuidance({ onNavigate }: PartnerGuidanceProps) {
         );
       })
       .catch((err) => {
-        if (err.response?.status === 401) {
+        if (getApiStatus(err) === 401) {
           localStorage.removeItem("wellora_token");
           localStorage.removeItem("wellora_user");
           localStorage.removeItem("current-role");
@@ -213,7 +214,7 @@ export function PartnerGuidance({ onNavigate }: PartnerGuidanceProps) {
           return;
         }
         setPartnerActionError(
-          err.response?.data?.detail ?? "Unable to load partner clients.",
+          getApiDetail(err, "Unable to load partner clients."),
         );
       })
       .finally(() => setIsLoadingPartnerUsers(false));
@@ -344,14 +345,14 @@ export function PartnerGuidance({ onNavigate }: PartnerGuidanceProps) {
           ? `Invitation sent. Setup link: ${created.invitation_link}`
           : "Invitation sent to the user's email.",
       );
-    } catch (err: any) {
-      if (err.response?.status === 401) {
+    } catch (err: unknown) {
+      if (getApiStatus(err) === 401) {
         localStorage.removeItem("wellora_token");
         localStorage.removeItem("wellora_user");
         localStorage.removeItem("current-role");
         onNavigate("login");
       } else {
-        setPartnerActionError(err.response?.data?.detail ?? "Failed to create user invitation.");
+        setPartnerActionError(getApiDetail(err, "Failed to create user invitation."));
       }
     } finally {
       setIsPartnerActionSaving(false);
@@ -372,14 +373,14 @@ export function PartnerGuidance({ onNavigate }: PartnerGuidanceProps) {
       await recommendPartnerMeals(selectedUser.id, selectedMealIds);
       setPartnerActionMessage("Recommended meals were sent to this user.");
       setSelectedMealIds([]);
-    } catch (err: any) {
-      if (err.response?.status === 401) {
+    } catch (err: unknown) {
+      if (getApiStatus(err) === 401) {
         localStorage.removeItem("wellora_token");
         localStorage.removeItem("wellora_user");
         localStorage.removeItem("current-role");
         onNavigate("login");
       } else {
-        setPartnerActionError(err.response?.data?.detail ?? "Failed to send meal recommendations.");
+        setPartnerActionError(getApiDetail(err, "Failed to send meal recommendations."));
       }
     } finally {
       setIsPartnerActionSaving(false);

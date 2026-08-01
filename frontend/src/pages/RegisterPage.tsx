@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
+import { InlineLoader } from "../components/LoadingStates";
 import { registerUser } from "../api/auth";
 import {
   normalizeEmail,
@@ -27,6 +28,7 @@ import {
   validatePhone,
   validateRequired,
 } from "../utils/authValidation";
+import { getApiDetail, getApiFieldErrors } from "../utils/apiError";
 
 type Page =
   | "home"
@@ -229,14 +231,14 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
 
       setSuccess(registration.message || "Your account has been created successfully.");
       setTimeout(() => onNavigate("onboarding-user"), 800);
-    } catch (err: any) {
-      const detail = err.response?.data?.detail;
-      if (detail?.errors) {
+    } catch (err: unknown) {
+      const errors = getApiFieldErrors(err);
+      if (errors) {
         const mappedErrors: Partial<Record<RegisterField, string>> = {
-          ...detail.errors,
-          organizationName: detail.errors.organization_name,
-          tinNumber: detail.errors.tin_number,
-          companyRegistrationNumber: detail.errors.company_registration_number,
+          ...errors,
+          organizationName: errors.organization_name,
+          tinNumber: errors.tin_number,
+          companyRegistrationNumber: errors.company_registration_number,
         };
         setFieldErrors(mappedErrors);
         const firstField = Object.keys(mappedErrors).find((field) => mappedErrors[field as RegisterField]) as RegisterField | undefined;
@@ -244,7 +246,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
           fieldRefs[firstField as keyof typeof fieldRefs].current?.focus();
         }
       }
-      setError(detail?.message || detail || "Registration failed. Try again.");
+      setError(getApiDetail(err, "Registration failed. Try again."));
     } finally {
       setIsLoading(false);
     }
@@ -719,20 +721,25 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                     required
                   />
                   <label className="text-gray-600 dark:text-gray-400">
-                    I agree to the{" "}
-                    <button
-                      type="button"
+                    I have read and agree to the{" "}
+                    <a
+                      href="/terms-of-service"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-wellora dark:text-wellora hover:text-wellora-dark font-medium"
                     >
-                      Terms of Service
-                    </button>{" "}
+                      Terms & Conditions
+                    </a>{" "}
                     and{" "}
-                    <button
-                      type="button"
+                    <a
+                      href="/privacy-policy"
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-wellora dark:text-wellora hover:text-wellora-dark font-medium"
                     >
                       Privacy Policy
-                    </button>
+                    </a>
+                    .
                   </label>
                 </div>
                 {fieldErrors.terms && <p id="register-terms-error" className="text-xs font-medium text-red-600 dark:text-red-400">{fieldErrors.terms}</p>}
@@ -761,7 +768,7 @@ export function RegisterPage({ onNavigate }: RegisterPageProps) {
                   disabled={isLoading}
                   className="w-full py-4 bg-gradient-to-r from-green-500 to-blue-500 hover:from-green-600 hover:to-blue-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isLoading ? "Creating Account..." : "Register"}
+                  {isLoading ? <InlineLoader label="Creating account..." /> : "Register"}
                 </button>
 
                 <div className="mt-6 text-center">

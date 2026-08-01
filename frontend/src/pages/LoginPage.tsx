@@ -1,5 +1,4 @@
 import { useRef, useState } from "react";
-import axios from "axios";
 import {
   Mail,
   Lock,
@@ -13,18 +12,18 @@ import {
 } from "lucide-react";
 import { ThemeToggle } from "../components/ThemeToggle";
 import { WelloraLogoMark } from "../components/WelloraLogoMark";
+import { InlineLoader } from "../components/LoadingStates";
 import { VendorStatus } from "../api/vendor";
 import { loginUser } from "../api/auth";
 import type { AppPage } from "../types/page";
-import { consumeSessionNotice } from "../auth/session";
 import { normalizeEmail, validateEmail, validateLoginPassword } from "../utils/authValidation";
+import { getApiDetail, getApiFieldErrors } from "../utils/apiError";
 
 interface LoginPageProps {
   onNavigate: (page: AppPage) => void;
   onLoginSuccess: (
     role: "user" | "vendor" | "partner",
     status?: VendorStatus,
-    onboardingDone?: boolean | null,
   ) => void;
 }
 
@@ -67,7 +66,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
   const [role, setRole] = useState<Role>("user");
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(consumeSessionNotice);
+  const [error, setError] = useState("");
   const [fieldErrors, setFieldErrors] = useState<{ email?: string; password?: string }>({});
   const [touched, setTouched] = useState<{ email?: boolean; password?: boolean }>({});
   const emailRef = useRef<HTMLInputElement>(null);
@@ -156,41 +155,21 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
           const vendorStatus = await getVendorStatus();
           onLoginSuccess("vendor", vendorStatus);
         } catch {
-          if (!localStorage.getItem("wellora_token")) return;
           onLoginSuccess("vendor", "NEW");
         }
         return;
       }
 
-      onLoginSuccess(role, undefined, data.user.onboarding_done);
+      onLoginSuccess(role);
     } catch (err: unknown) {
-      const responseData = axios.isAxiosError(err) ? err.response?.data : undefined;
-      const detail = responseData?.detail;
-
-      if (detail?.errors) {
-        setFieldErrors(detail.errors);
-        const firstField = Object.keys(detail.errors)[0];
+      const errors = getApiFieldErrors(err);
+      if (errors) {
+        setFieldErrors(errors);
+        const firstField = Object.keys(errors)[0];
         if (firstField === "email") emailRef.current?.focus();
         if (firstField === "password") passwordRef.current?.focus();
       }
-
-      if (axios.isAxiosError(err) && err.code === "ECONNABORTED") {
-        setError(
-          "Login is taking too long. Please check the backend database connection and try again.",
-        );
-      } else if (axios.isAxiosError(err) && !err.response) {
-        setError(
-          "Unable to reach the Wellora backend. Please check that it is running.",
-        );
-      } else if (axios.isAxiosError(err)) {
-        setError(
-          detail?.message ||
-            (typeof detail === "string" ? detail : "") ||
-            "Invalid email address or password.",
-        );
-      } else {
-        setError("Login failed unexpectedly. Please try again.");
-      }
+      setError(getApiDetail(err, "Invalid email address or password."));
     } finally {
       setIsLoading(false);
     }
@@ -404,7 +383,7 @@ export function LoginPage({ onNavigate, onLoginSuccess }: LoginPageProps) {
                 disabled={isLoading}
                 className="w-full rounded-lg bg-wellora py-4 font-semibold text-white shadow-lg transition-all hover:bg-wellora-hover disabled:cursor-not-allowed disabled:opacity-70"
               >
-                {isLoading ? "Signing in..." : "Login"}
+                {isLoading ? <InlineLoader label="Signing in..." /> : "Login"}
               </button>
             </form>
 
